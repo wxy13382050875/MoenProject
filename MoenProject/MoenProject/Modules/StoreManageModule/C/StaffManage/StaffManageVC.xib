@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StaffManageVC">
+            <connections>
+                <outlet property="addBtnHeight" destination="Ehr-0q-xGg" id="i5y-63-wrf"/>
+                <outlet property="tableview" destination="AkO-MJ-LNI" id="gJd-Vf-O4a"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="AkO-MJ-LNI">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="622"/>
+                    <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eoH-mK-21f" customClass="NSDampButton">
+                    <rect key="frame" x="0.0" y="622" width="375" height="45"/>
+                    <color key="backgroundColor" red="0.098039215686274508" green="0.20784313725490194" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="Ehr-0q-xGg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="添加导购">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="addShoppingGuideAction:" destination="-1" eventType="touchUpInside" id="glI-Ok-epk"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="AkO-MJ-LNI" secondAttribute="bottom" constant="45" id="0cR-bu-OM3"/>
+                <constraint firstItem="eoH-mK-21f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="8yW-a4-QJV"/>
+                <constraint firstAttribute="trailing" secondItem="eoH-mK-21f" secondAttribute="trailing" id="KCM-pC-8xJ"/>
+                <constraint firstAttribute="trailing" secondItem="AkO-MJ-LNI" secondAttribute="trailing" id="Q40-fH-xoz"/>
+                <constraint firstItem="AkO-MJ-LNI" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Qca-kv-UAn"/>
+                <constraint firstItem="AkO-MJ-LNI" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hhF-dU-Fga"/>
+                <constraint firstAttribute="bottom" secondItem="eoH-mK-21f" secondAttribute="bottom" id="qHq-PH-O1w"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="4Qo-4x-cV7" customClass="CommonSearchView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hDg-iy-s4H">
+                    <rect key="frame" x="335" y="2.5" width="25" height="45"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="h_time_select_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7fj-bP-Gtu">
+                            <rect key="frame" x="0.0" y="0.0" width="25" height="45"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="7fj-bP-Gtu" secondAttribute="trailing" id="26Y-Zs-bYh"/>
+                        <constraint firstAttribute="bottom" secondItem="7fj-bP-Gtu" secondAttribute="bottom" id="ALJ-vW-kFm"/>
+                        <constraint firstAttribute="width" constant="25" id="JBu-Jy-M4P"/>
+                        <constraint firstAttribute="height" constant="45" id="fsg-9w-OmP"/>
+                        <constraint firstItem="7fj-bP-Gtu" firstAttribute="top" secondItem="hDg-iy-s4H" secondAttribute="top" id="hAc-UK-Got"/>
+                        <constraint firstItem="7fj-bP-Gtu" firstAttribute="leading" secondItem="hDg-iy-s4H" secondAttribute="leading" id="v6y-u7-mCo"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="eXN-En-FT5"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T5b-YM-HlA">
+                    <rect key="frame" x="9" y="8" width="357" height="34"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入客户手机，识别后进入快速服务" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="CXq-nQ-OqV">
+                            <rect key="frame" x="18" y="0.0" width="268" height="34"/>
+                            <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Wb-nM-oY4">
+                            <rect key="frame" x="306" y="6" width="1" height="22"/>
+                            <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="6uT-g7-yv5"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Vy-2j-Gsy" customClass="NSDampButton">
+                            <rect key="frame" x="306" y="0.0" width="50" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="34" id="Alg-Ha-yl1"/>
+                                <constraint firstAttribute="width" constant="50" id="Z22-nB-8wR"/>
+                            </constraints>
+                            <state key="normal" image="h_search_icon"/>
+                            <connections>
+                                <action selector="searchBtnAction:" destination="4Qo-4x-cV7" eventType="touchUpInside" id="UaL-jc-HX6"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="CXq-nQ-OqV" firstAttribute="top" secondItem="T5b-YM-HlA" secondAttribute="top" id="8os-DI-abv"/>
+                        <constraint firstItem="6Wb-nM-oY4" firstAttribute="top" secondItem="T5b-YM-HlA" secondAttribute="top" constant="6" id="CMo-EF-tvG"/>
+                        <constraint firstItem="CXq-nQ-OqV" firstAttribute="leading" secondItem="T5b-YM-HlA" secondAttribute="leading" constant="18" id="GJU-8l-WHw"/>
+                        <constraint firstAttribute="trailing" secondItem="0Vy-2j-Gsy" secondAttribute="trailing" constant="1" id="aH0-Z2-cpR"/>
+                        <constraint firstAttribute="trailing" secondItem="6Wb-nM-oY4" secondAttribute="trailing" constant="50" id="o2A-8G-a8Q"/>
+                        <constraint firstAttribute="bottom" secondItem="6Wb-nM-oY4" secondAttribute="bottom" constant="6" id="oZv-z3-HIx"/>
+                        <constraint firstAttribute="bottom" secondItem="CXq-nQ-OqV" secondAttribute="bottom" id="pZY-Kg-iro"/>
+                        <constraint firstItem="0Vy-2j-Gsy" firstAttribute="centerY" secondItem="T5b-YM-HlA" secondAttribute="centerY" id="tUj-hj-rVA"/>
+                        <constraint firstAttribute="height" constant="34" id="wIB-Jh-crl"/>
+                        <constraint firstItem="6Wb-nM-oY4" firstAttribute="leading" secondItem="CXq-nQ-OqV" secondAttribute="trailing" constant="20" id="wlh-c8-aVj"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="17"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColorWithUIColor">
+                            <color key="value" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="qWo-Cf-VHK" firstAttribute="trailing" secondItem="hDg-iy-s4H" secondAttribute="trailing" constant="15" id="CON-zf-oxh"/>
+                <constraint firstItem="T5b-YM-HlA" firstAttribute="centerY" secondItem="4Qo-4x-cV7" secondAttribute="centerY" id="G3B-Bk-lu8"/>
+                <constraint firstItem="qWo-Cf-VHK" firstAttribute="trailing" secondItem="T5b-YM-HlA" secondAttribute="trailing" constant="9" id="HQO-30-k0b"/>
+                <constraint firstItem="hDg-iy-s4H" firstAttribute="centerY" secondItem="4Qo-4x-cV7" secondAttribute="centerY" id="Zb5-5f-WtP"/>
+                <constraint firstItem="T5b-YM-HlA" firstAttribute="leading" secondItem="qWo-Cf-VHK" secondAttribute="leading" constant="9" id="oXC-AH-bYg"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="qWo-Cf-VHK"/>
+            <connections>
+                <outlet property="container_view_Right" destination="HQO-30-k0b" id="ZS9-S9-Ych"/>
+                <outlet property="input_Txt" destination="CXq-nQ-OqV" id="g8K-bk-MCk"/>
+                <outlet property="searchBtn" destination="0Vy-2j-Gsy" id="Kbb-d6-j4N"/>
+                <outlet property="time_Select_View" destination="hDg-iy-s4H" id="1Zu-Ws-HNG"/>
+            </connections>
+            <point key="canvasLocation" x="-263.19999999999999" y="19.790104947526238"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="h_search_icon" width="20" height="20"/>
+        <image name="h_time_select_icon" width="24" height="38"/>
+    </resources>
+</document>

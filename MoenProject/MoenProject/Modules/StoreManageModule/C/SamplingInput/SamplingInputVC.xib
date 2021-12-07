@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SamplingInputVC">
+            <connections>
+                <outlet property="submitBtnHeight" destination="mXO-TR-HFM" id="hCq-ns-Bnx"/>
+                <outlet property="submit_Btn" destination="ftK-jg-1TX" id="VJ4-54-2mt"/>
+                <outlet property="tableview" destination="Nun-M0-f3D" id="mxk-MJ-sjd"/>
+                <outlet property="tableview_Bottom" destination="V0u-3P-B86" id="m5k-oF-zEE"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Nun-M0-f3D">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                </tableView>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftK-jg-1TX" customClass="NSDampButton">
+                    <rect key="frame" x="0.0" y="622" width="375" height="45"/>
+                    <color key="backgroundColor" red="0.098039215686274508" green="0.20784313725490194" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="mXO-TR-HFM"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="提交">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="SubmitAction:" destination="-1" eventType="touchUpInside" id="YKB-Si-xF0"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Nun-M0-f3D" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="BsP-5c-Mo0"/>
+                <constraint firstAttribute="trailing" secondItem="Nun-M0-f3D" secondAttribute="trailing" id="IUy-Ed-xEh"/>
+                <constraint firstAttribute="trailing" secondItem="ftK-jg-1TX" secondAttribute="trailing" id="IWu-oi-3SO"/>
+                <constraint firstItem="ftK-jg-1TX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="QhW-re-Snp"/>
+                <constraint firstAttribute="bottom" secondItem="Nun-M0-f3D" secondAttribute="bottom" id="V0u-3P-B86"/>
+                <constraint firstAttribute="bottom" secondItem="ftK-jg-1TX" secondAttribute="bottom" id="eBJ-vW-4x2"/>
+                <constraint firstItem="Nun-M0-f3D" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nRq-9z-Ore"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+</document>

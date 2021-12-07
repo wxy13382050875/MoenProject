@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="PackageDetailInfoTCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="103"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="102.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CH) 新90+三通角阀+淋浴过滤器+不锈钢" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hpc-RM-ZYK">
+                        <rect key="frame" x="15" y="43" width="290" height="17"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KAC0211+KAC0271+KAC0272" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eH0-hU-JG4">
+                        <rect key="frame" x="15" y="70.5" width="290" height="17"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CH) 新90+三通角阀+淋浴过滤器+不锈钢" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rtC-AZ-d9g">
+                        <rect key="frame" x="15" y="15" width="290" height="17"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="rtC-AZ-d9g" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="5oe-hB-zwS"/>
+                    <constraint firstAttribute="trailing" secondItem="rtC-AZ-d9g" secondAttribute="trailing" constant="15" id="Dhl-q2-rGS"/>
+                    <constraint firstItem="hpc-RM-ZYK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="GsZ-cf-5oj"/>
+                    <constraint firstAttribute="bottom" secondItem="eH0-hU-JG4" secondAttribute="bottom" constant="15" id="XEV-4a-jiR"/>
+                    <constraint firstItem="eH0-hU-JG4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="YOa-p1-twX"/>
+                    <constraint firstAttribute="trailing" secondItem="eH0-hU-JG4" secondAttribute="trailing" constant="15" id="ZpY-0y-p5z"/>
+                    <constraint firstAttribute="trailing" secondItem="hpc-RM-ZYK" secondAttribute="trailing" constant="15" id="oVm-tH-7t9"/>
+                    <constraint firstItem="hpc-RM-ZYK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="43" id="qVz-2d-d0k"/>
+                    <constraint firstItem="rtC-AZ-d9g" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="rfE-ZS-dse"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="bottom_Lab" destination="eH0-hU-JG4" id="avc-iT-wn5"/>
+                <outlet property="middle_Lab" destination="rtC-AZ-d9g" id="m8R-gF-7Kx"/>
+                <outlet property="top_Lab" destination="hpc-RM-ZYK" id="2KA-xD-cc4"/>
+            </connections>
+            <point key="canvasLocation" x="-304" y="23"/>
+        </tableViewCell>
+    </objects>
+</document>

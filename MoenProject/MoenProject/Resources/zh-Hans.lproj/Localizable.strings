@@ -1,0 +1,347 @@
+/* 
+  Localizable.strings
+  MoenProject
+
+  Created by Kevin Jin on 2018/11/28.
+  Copyright © 2018年 Kevin Jin. All rights reserved.
+*/
+
+
+/**
+ *  TabBar
+ */
+"home" = "首页";
+"storeManage" = "门店管理";
+"statistics" = "统计";
+"mine" = "我的";
+
+
+/**
+ *  Common
+ */
+"c_phone_number" = "手机号码";
+"c_verification_code" = "验证码";
+"c_enter_phone_number" = "请输入手机号码";
+"c_enter_validation_code" = "请输入验证码";
+"c_get_code" = "获取验证码";
+"c_register" = "注册";
+"c_login_with_password" = "使用账号密码登录";
+"c_confirm_submit" = "确认提交";
+"c_delete" = "删除";
+"c_no_data" = "暂无数据";
+"c_no_more_data" = "暂无更多数据";
+
+"c_remind" = "提醒";
+"c_update_remind" = "更新提示";
+"c_cancel" = "取消";
+"c_clear" = "清除";
+"c_confirm" = "确定";
+"c_update" = "更新";
+"c_edit" = "编辑";
+
+
+
+
+
+/**
+ *  Tips
+ */
+"t_please_enter_phone_number" = "请输入手机号码";
+"t_please_enter_new_password" = "请输入新密码";
+"t_please_enter_original_password" = "请输入原密码";
+"t_please_enter_confirm_password" = "请输入确认密码";
+"t_please_enter_password" = "请输入密码";
+"t_please_enter_validation_code" = "请输入六位验证码";
+"t_incorrect_format_phone" = "手机号格式不正确";
+"t_please_enter_correct_password" = "请输入6-20数字或字母密码";
+"t_please_enter_correct_new_password" = "请输入6-20数字或字母新密码";
+"t_please_enter_correct_confirm_password" = "请输入6-20数字或字母确认密码";
+"t_please_enter_correct_original_password" = "请输入6-20数字或字母原密码";
+"t_inconsistent_passwords" = "两次密码输入不一致";
+"t_successful_password_modification" = "密码修改成功";
+"t_request_error" = "请求出错";
+
+
+"t_no_camera_access" = "无相机使用权限！";
+
+
+
+
+/**
+ *  Home - Identify
+ */
+"customer_identification" = "客户识别";
+"identify_success_title" = "识别成功";
+"register_success_title" = "注册成功";
+"identify_success" = "识别成功!";
+"register_success" = "注册成功!";
+"quick_service" = "快速服务";
+"phone_number_t" = "手机号码:";
+"identity_t" = "身份:";
+"recommender_t" = "推荐人:";
+
+
+
+/**
+ *  Home - Register
+ */
+"customer_registration" = "客户注册";
+
+/**
+ *  Home - sale
+ */
+"sale" = "卖货";
+"sales_Counter" = "卖货柜台";
+"confirm_info" = "确认信息";
+"confirm_add" = "确认添加";
+"up_area" = "收起扫描区";
+"down_area" = "展开扫描区";
+"goods_added" = "商品已添加";
+"please_add_goods" = "请添加商品";
+"confirm_order" = "确认订单";
+"is_delete_this_goods" = "是否删除该商品";
+"is_delete_shopping_car" = "是否清空购物车";
+"order_success" = "下单成功";
+"data_empty" = "暂无数据";
+"order_promotion" = "订单促销";
+"mark_info_check" = "填写的备注信息请不要包含表情";
+
+"input_additional_price" = "输入增项加价";
+"input_PU_code" = "输入PO单号";
+
+"no_coupons" = "无优惠券";
+"no_available" = "无可用";
+"chosen_one" = "已选1张";
+"not_used" = "未使用";
+"_available" = "张可用";
+"store_discount_check" = "门店优惠金额不能大于实收金额";
+
+"please_choose_pickup" = "请选择提货方式";
+"please_choose_delivery" = "请选择配送方式";
+"please_choose_payment" = "请选择收款方式";
+
+"please_input_pocode" = "请输入PO单号";
+
+
+/**
+ *  Home - IntentGoods
+ */
+"add_intent_goods" = "添加意向商品";
+"add_intent_goods_success" = "意向商品添加成功";
+"store_staff" = "门店员工";
+
+/**
+ *  Home - Package
+ */
+"package_list" = "套餐列表";
+"add_intent_goods_success" = "意向商品添加成功";
+//"store_staff" = "门店员工";
+
+"package_detail" = "套餐详情";
+
+
+
+/**
+ *  Home - SalesActivities
+ */
+"sales_activities" = "促销活动";
+
+
+
+
+"today_regist_number" = "今日客户注册数";
+/**
+ *  Store - Customer
+ */
+"store_customer" = "门店客户";
+
+
+
+
+
+
+/**
+ *  Store - Order
+ */
+"order_complete" = "订单完成";
+"order_complete_t" = "订单完成！";
+"order_detail" = "订单详情";
+"return_complete" = "退货完成";
+"return_complete_t" = "退货完成！";
+"return_order_detail" = "退货单详情";
+"order_list" = "订单列表";
+"professional_order" = "专业客户订单";
+"recommend_order" = "推荐订单";
+
+"stock_save" = "进货申请保存成功";
+"stock_submit" = "进货申请提交成功";
+
+
+"transfers_submit" = "调拨申请提交成功！";
+
+"transfers_order_detail" ="调拨单详情";
+/**
+ *  Store - Manage
+ */
+"store_manage" = "员工管理";
+"stop_success" = "停用成功";
+
+
+/**
+ *  Store - Sampling
+ */
+"sampling_info" = "出样信息";
+"stop_success" = "停用成功";
+"submit_success" = "提交成功";
+"sampling_release" = "出样发布";
+
+/**
+ *  Store - Check
+ */
+"store_check" = "巡店查询";
+
+
+/**
+ *  Store - Check
+ */
+"ccoupon_reocrd" = "优惠券使用记录";
+
+
+
+
+/**
+ *  Store - Activities
+ */
+"store_activities" = "门店活动";
+"customer_activities" = "客户活动";
+"store_history_activities" = "门店历史活动";
+"history_info" = "历史信息";
+
+
+/**
+ *  Store - Customer Account
+ */
+"customer_account" = "客户账户";
+"history_info" = "历史信息";
+
+
+
+/**
+ *  Store - Address
+ */
+"address_manage" = "地址管理";
+"add_address" = "新增地址";
+"no_use_address" = "不使用";
+
+"please_choose_province" = "请选择省份";
+"please_choose_city" = "请选择城市";
+"please_choose_district" = "请选择县/区";
+"please_choose_street" = "请选择街道";
+"address_add_success" = "地址添加成功";
+"please_input_name" = "请输入收件人姓名";
+"please_input_detail_address" = "请输入详细地址";
+
+
+/**
+ *  Store - Intent
+ */
+"intent_manage" = "意向管理";
+"no_notes" = "暂无备注";
+"modify_notes" = "修改备注";
+"add_notes" = "添加备注";
+"modify_success" = "修改成功";
+"add_notes_success" = "添加成功";
+"delete_success" = "删除成功";
+"select_staff" = "选择员工";
+"unmark" = "未标记";
+
+/**
+ *  Store - Return
+ */
+"select_order" = "选择订单";
+"whole_return" = "整单退货";
+"partial_return" = "部分退货";
+"return_counter" = "退货柜台";
+"contirm_return" = "确认退货";
+"select_goods" = "选择商品";
+"return_order_detail" = "退货单详情";
+"stock_order_detail" = "进货单详情";
+"return_order_success" = "退单成功";
+"please_input_return_number" = "请输入退货商品数量";
+"please_input_refound_amount" = "请输入退货金额";
+"please_choose_refund_method" = "请选择退款方式";
+"please_choose_return_reason" = "请选择退货原因";
+"please_input_return_reason" = "请输入退货原因";
+
+"customer_return_order" = "客户退货单";
+"store_return_order" = "门店退货单";
+"return_info_check" = "填写的退货原因请不要包含表情";
+
+
+
+/**
+ *  Statistics - StoreSalesVolume
+ */
+"store_sales_volume" = "门店销量";
+"store_sales_volume_Today" = "今日门店销售额";
+"clerk" = "店员";
+"total_number_orders" = "订单总数";
+"order_amount" = "订单金额";
+"customer_price" = "客单价";
+
+"date_str" = "日期";
+
+
+/**
+ *  Statistics - GoodsSales
+ */
+"good_sales_number" = "商品销售数量";
+"good_sales_number_Today" = "今日单品销量排名";
+"goods_code" = "商品编号";
+"sales_number" = "销售数量";
+"sales_amount" = "销售金额";
+
+/**
+ *  Statistics - PackageRank
+ */
+"package_rank" = "套餐排名";
+"package_rank_Today" = "今日套餐销量排名";
+"package_code" = "套餐号";
+
+/**
+ *  Statistics - GoodsCategoryRank
+ */
+"goods_category_rank" = "商品品类排名";
+"goods_category_rank_Today" = "今日商品品类销量排名";
+"goods_category" = "商品品类";
+
+/**
+ *  Statistics - GoodsManage
+ */
+"goods_list" = "商品列表";
+
+/**
+ * Stock
+ */
+"stock_manage" = "库存管理";
+"select_purchase_apply_type" = "选择进货申请类型";
+"purchase_apply" = "进货申请";
+"allocate_apply" = "调拨申请";
+"store_self_apply" = "门店自提";
+"stocker_apply" = "总仓发货";
+"allocate_order" = "调拨单";
+"allocate_task" = "调拨任务";
+
+
+
+
+
+
+
+
+
+
+
+
+
+

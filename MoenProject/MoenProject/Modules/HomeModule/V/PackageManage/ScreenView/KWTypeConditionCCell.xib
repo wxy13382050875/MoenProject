@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="KWTypeConditionCCell">
+            <rect key="frame" x="0.0" y="0.0" width="70" height="30"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="70" height="30"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyp-1p-yDX">
+                        <rect key="frame" x="0.0" y="0.0" width="70" height="30"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="全部" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CM0-FH-QRP">
+                        <rect key="frame" x="8" y="0.0" width="54" height="30"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.35686274509803922" green="0.49803921568627452" blue="0.58431372549019611" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="CM0-FH-QRP" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="4ZM-vI-hXI"/>
+                <constraint firstItem="CM0-FH-QRP" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="TIy-EJ-v92"/>
+                <constraint firstAttribute="trailing" secondItem="CM0-FH-QRP" secondAttribute="trailing" constant="8" id="Vgb-fn-Cno"/>
+                <constraint firstAttribute="bottom" secondItem="CM0-FH-QRP" secondAttribute="bottom" id="cd6-78-f9A"/>
+                <constraint firstItem="dyp-1p-yDX" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="gi2-Os-O9o"/>
+                <constraint firstItem="dyp-1p-yDX" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="iwz-Th-wIs"/>
+                <constraint firstAttribute="trailing" secondItem="dyp-1p-yDX" secondAttribute="trailing" id="xDb-Ec-hVI"/>
+                <constraint firstAttribute="bottom" secondItem="dyp-1p-yDX" secondAttribute="bottom" id="zlL-rQ-bg7"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <connections>
+                <outlet property="bg_View" destination="dyp-1p-yDX" id="BDM-QO-QfK"/>
+                <outlet property="title_Lab" destination="CM0-FH-QRP" id="qqm-27-rke"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

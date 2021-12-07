@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KGk-i7-Jjw" customClass="OrderPromotionTCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LRQ-3c-YBL">
+                        <rect key="frame" x="15" y="0.0" width="290" height="29.5"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Frm-Ry-6wM">
+                                <rect key="frame" x="15" y="12" width="6" height="6"/>
+                                <color key="backgroundColor" red="0.77647058823529413" green="0.53725490196078429" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="6" id="ap4-ye-yTK"/>
+                                    <constraint firstAttribute="height" constant="6" id="yEk-VB-u8m"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="订单满 2000元立减100元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXi-cd-r7x">
+                                <rect key="frame" x="31" y="7" width="159" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s6U-Cv-8JW">
+                                <rect key="frame" x="280" y="15" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                <color key="textColor" red="0.76470588240000004" green="0.50196078430000002" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="s6U-Cv-8JW" firstAttribute="centerY" secondItem="Frm-Ry-6wM" secondAttribute="centerY" id="FXN-Gh-IG3"/>
+                            <constraint firstItem="hXi-cd-r7x" firstAttribute="leading" secondItem="Frm-Ry-6wM" secondAttribute="trailing" constant="10" id="LeV-NN-pRY"/>
+                            <constraint firstAttribute="trailing" secondItem="hXi-cd-r7x" secondAttribute="trailing" constant="100" id="Nfd-4m-6Rw"/>
+                            <constraint firstAttribute="trailing" secondItem="s6U-Cv-8JW" secondAttribute="trailing" constant="10" id="cT8-RC-NRQ"/>
+                            <constraint firstItem="hXi-cd-r7x" firstAttribute="centerY" secondItem="LRQ-3c-YBL" secondAttribute="centerY" id="hC4-4E-seG"/>
+                            <constraint firstItem="Frm-Ry-6wM" firstAttribute="centerY" secondItem="LRQ-3c-YBL" secondAttribute="centerY" id="kHK-sx-Y9f"/>
+                            <constraint firstItem="Frm-Ry-6wM" firstAttribute="leading" secondItem="LRQ-3c-YBL" secondAttribute="leading" constant="15" id="rr9-eT-UQv"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                <integer key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColorWithUIColor">
+                                <color key="value" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="LRQ-3c-YBL" secondAttribute="trailing" constant="15" id="7hv-kL-Zfr"/>
+                    <constraint firstAttribute="bottom" secondItem="LRQ-3c-YBL" secondAttribute="bottom" constant="10" id="FeJ-3D-ZuS"/>
+                    <constraint firstItem="LRQ-3c-YBL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="KGP-iS-rdg"/>
+                    <constraint firstItem="LRQ-3c-YBL" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="rhX-jE-UGg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="left_Lab" destination="hXi-cd-r7x" id="kWd-Q5-pCw"/>
+                <outlet property="right_Lab" destination="s6U-Cv-8JW" id="70y-BR-p6c"/>
+            </connections>
+            <point key="canvasLocation" x="52.799999999999997" y="48.575712143928037"/>
+        </tableViewCell>
+    </objects>
+</document>

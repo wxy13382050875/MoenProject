@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KGk-i7-Jjw" customClass="ChangeStoreTCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GjH-fz-qOO">
+                        <rect key="frame" x="10" y="0.5" width="300" height="49"/>
+                        <color key="backgroundColor" red="0.93333333333333335" green="0.94901960784313721" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="3"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="南京市雨花台区软件大道170号天溯顾家家居二 楼摩恩旗舰店" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ngi-YO-NKf">
+                        <rect key="frame" x="18" y="8.5" width="254" height="33.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="p_selected_icon" translatesAutoresizingMaskIntoConstraints="NO" id="jZ8-8d-QHR">
+                        <rect key="frame" x="282" y="15" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="gsm-eZ-eSD"/>
+                            <constraint firstAttribute="height" constant="20" id="zPY-RK-Dek"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="GjH-fz-qOO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="0.5" id="1Ix-zA-hRT"/>
+                    <constraint firstItem="GjH-fz-qOO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="AJa-p4-erD"/>
+                    <constraint firstItem="jZ8-8d-QHR" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ByK-K9-1JT"/>
+                    <constraint firstAttribute="bottom" secondItem="GjH-fz-qOO" secondAttribute="bottom" constant="0.5" id="FSo-vH-1nS"/>
+                    <constraint firstAttribute="trailing" secondItem="GjH-fz-qOO" secondAttribute="trailing" constant="10" id="U5n-0j-7tG"/>
+                    <constraint firstItem="Ngi-YO-NKf" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="UdZ-Ne-76X"/>
+                    <constraint firstItem="Ngi-YO-NKf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="dbR-K9-ara"/>
+                    <constraint firstAttribute="trailing" secondItem="jZ8-8d-QHR" secondAttribute="trailing" constant="18" id="msg-F6-7BX"/>
+                    <constraint firstAttribute="trailing" secondItem="Ngi-YO-NKf" secondAttribute="trailing" constant="48" id="xk4-I5-6l0"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="bg_View" destination="GjH-fz-qOO" id="C05-K0-wRr"/>
+                <outlet property="selected_Icon" destination="jZ8-8d-QHR" id="7jN-Fa-39y"/>
+                <outlet property="title_Lab" destination="Ngi-YO-NKf" id="EII-Wy-eOu"/>
+            </connections>
+            <point key="canvasLocation" x="156.52173913043478" y="147.99107142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="p_selected_icon" width="23" height="23"/>
+    </resources>
+</document>
