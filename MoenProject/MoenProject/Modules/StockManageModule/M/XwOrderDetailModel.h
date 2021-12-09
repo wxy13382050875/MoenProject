@@ -30,6 +30,8 @@
 
 @property (nonatomic, copy) NSString *orderStatus;
 
+@property (nonatomic, copy) NSString *sendOrderStatus;
+
 @property (nonatomic, strong) NSArray *sendOrderInfo;
 
 @property (nonatomic, copy) NSString *wishReceiveDate;

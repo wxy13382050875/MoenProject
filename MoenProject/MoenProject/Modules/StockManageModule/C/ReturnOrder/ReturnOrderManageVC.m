@@ -152,6 +152,12 @@
               orderStatus = @"已完成";
           }else if([model.orderStatus isEqualToString:@"refuse"]){
               orderStatus = @"已拒绝";
+          }else if([model.orderStatus isEqualToString:@"waitGoods"]){
+              orderStatus = @"待收货";
+          }else if([model.orderStatus isEqualToString:@"refuseAD"]){
+              orderStatus = @"AD已拒绝";
+          } else if([model.orderStatus isEqualToString:@"waitAD"]){
+              orderStatus = @"待AD审核";
           }
     
     UIView *headerView = [[UIView alloc] init];

@@ -7,6 +7,7 @@
 @class Inventorylist;
 @interface XwInventoryModel : NSObject
 
+@property (nonatomic, copy) NSString *inventoryNo;
 @property (nonatomic, strong) NSArray *inventoryList;
 
 @end

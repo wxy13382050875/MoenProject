@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 /**商品管理*/
 @interface StockQueryVC : BaseViewController
-
+//@property (nonatomic, assign) PurchaseOrderManageVCType controllerType;
 @end
 
 NS_ASSUME_NONNULL_END

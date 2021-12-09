@@ -23,13 +23,17 @@
 #import "OrderOperationSuccessVC.h"
 #import "XwOrderDetailModel.h"
 #import "ReturnOrderDetailReasonTCell.h"
+#import "PurchaseCounterVC.h"
 @interface XwOrderDetailVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) UIButton *btn;
 @property (nonatomic, strong) UIButton *btn1;
 @property (nonatomic, strong) UIButton *btn2;
+@property (nonatomic, strong) UIButton *btn3;
 
+@property (nonatomic, strong) UIButton *btn4;
+@property (nonatomic, strong) UIButton *btn5;
 
 @property (nonatomic, strong) XwOrderDetailModel *dataModel;
 
@@ -38,6 +42,11 @@
 @property (nonatomic, strong) NSMutableArray *goodsList;
 
 @property (nonatomic, strong) NSMutableArray *giftGoodsList;
+
+@property (nonatomic, strong) NSString *wishReceiveDate;
+
+@property (nonatomic, strong) NSString *orderRemarks;
+ 
 
 @end
 
@@ -73,36 +82,82 @@
     .spaceToSuperView(UIEdgeInsetsMake(0, 0, 40, 0)) ;
     
 //    审核（同意/拒绝/发货） approve/refuse/deliver
-    self.btn = [UIButton buttonWithTitie:@"同意" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor blueColor] WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+    self.btn = [UIButton buttonWithTitie:@"同意" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
         NSLog(@"同意");
-        [self httpPath_refund_returnOperate:@"approve"];
+        if(self.controllerType ==PurchaseOrderManageVCTypeReturn){
+            [self httpPath_refund_returnOperate:@"approve"];
+        } else{
+            [self httpPath_dallot_transferOperate:@"approve"];
+        }
+        
     }];
     [self.view addSubview:self.btn];
     self.btn1 = [UIButton buttonWithTitie:@"拒绝" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor grayColor] WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
         NSLog(@"拒绝");
-        [self httpPath_refund_returnOperate:@"refuse"];
+        if(self.controllerType ==PurchaseOrderManageVCTypeReturn){
+            [self httpPath_refund_returnOperate:@"refuse"];
+        } else{
+            [self httpPath_dallot_transferOperate:@"refuse"];
+        }
     }];
     [self.view addSubview:self.btn1];
     
-    self.btn2 = [UIButton buttonWithTitie:@"确认发货" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor grayColor] WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+    self.btn2 = [UIButton buttonWithTitie:@"确认发货" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
         NSLog(@"确认发货");
-        [self httpPath_refund_returnOperate:@"deliver"];
+        if(self.controllerType ==PurchaseOrderManageVCTypeReturn){
+            [self httpPath_refund_returnOperate:@"deliver"];
+        } else{
+            [self httpPath_dallot_transferOperate:@"deliver"];
+        }
     }];
     [self.view addSubview:self.btn2];
+    
+    self.btn3 = [UIButton buttonWithTitie:@"确认收货" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+
+        [self httpPath_delivery_confirmReceipt];
+    }];
+    [self.view addSubview:self.btn3];
+    
+    
+    self.btn4 = [UIButton buttonWithTitie:@"继续添加" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+//        PurchaseCounterVC *purchaseCounterVC = [[PurchaseCounterVC alloc] init];
+//        purchaseCounterVC.dataSource = [self.shoppingCarDataList copy];
+//        purchaseCounterVC.controllerType = self.controllerType;
+//        purchaseCounterVC.storeID = self.storeID;
+//        purchaseCounterVC.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:purchaseCounterVC animated:YES];
+//        [self httpPath_refund_returnOperate:@"deliver"];
+    }];
+    [self.view addSubview:self.btn4];
+    
+    self.btn5 = [UIButton buttonWithTitie:@"提交审核" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor grayColor]  WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+        [self httpPath_stock_apply];
+    }];
+    [self.view addSubview:self.btn5];
+    
     
     self.btn.sd_layout.leftEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
     self.btn1.sd_layout.rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
  
     self.btn2.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
     
+    self.btn3.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
+    
+    self.btn4.sd_layout.leftEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
+    self.btn5.sd_layout.rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
+    
     self.btn.hidden = YES;
     self.btn1.hidden = YES;
     self.btn2.hidden = YES;
-    
+    self.btn3.hidden = YES;
+    self.btn4.hidden = YES;
+    self.btn5.hidden = YES;
 }
 
 - (void)configBaseData
 {
+    self.wishReceiveDate = @"";
+    self.orderRemarks = @"";
     [self httpPath_orderDetail];
 }
 
@@ -181,6 +236,14 @@
             orderStatus = @"已完成";
         }else if([self.dataModel.orderApplyProgress isEqualToString:@"refuse"]||[self.dataModel.generalOrderProgress isEqualToString:@"refuse"]){
             orderStatus = @"已拒绝";
+        }else if([self.dataModel.orderApplyProgress isEqualToString:@"waitGoods"]||[self.dataModel.generalOrderProgress isEqualToString:@"waitGoods"]){
+            orderStatus = @"待收货";
+        }else if([self.dataModel.orderApplyProgress isEqualToString:@"refuseAD"]||
+                 [self.dataModel.orderApplyProgress isEqualToString:@"refuseAD"]){
+            orderStatus = @"AD已拒绝";
+        } else if([self.dataModel.orderApplyProgress isEqualToString:@"waitAD"]||
+                  [self.dataModel.generalOrderProgress isEqualToString:@"waitAD"]){
+            orderStatus = @"待AD审核";
         }
         NSString* TitleAndDsc = @"";
         if(self.controllerType ==PurchaseOrderManageVCTypeAllocteOrder||
@@ -470,10 +533,118 @@
     else
     {
         if (parserObject.success) {
-            if ([operation.urlTag isEqualToString:Path_stock_orderDetail]||
+            if ([operation.urlTag isEqualToString:Path_stock_orderDetail]) {//进货单详情
+                XwOrderDetailModel *dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
+                
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    self.isShowEmptyData = NO;
+                    self.dataModel = dataModel;
+                    if([self.dataModel.orderApplyProgress isEqualToString:@"waitSub"]){
+                        self.btn4.hidden = NO;
+                        self.btn5.hidden = NO;
+                    }
+                    [self handleTableViewFloorsData];
+                    [self.tableView reloadData];
+                }
+                else
+                {
+                    self.isShowEmptyData = YES;
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+            } else if([operation.urlTag isEqualToString:Path_stock_apply]){
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    [[NSToastManager manager] showtoast:@"提交审核成功"];
+                    [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+            } else if ([operation.urlTag isEqualToString:Path_delivery_sendOrderDetail]) {//发货单详情
+                XwOrderDetailModel *dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
+                
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    self.isShowEmptyData = NO;
+                    self.dataModel = dataModel;
+                    if([self.dataModel.sendOrderStatus isEqualToString:@"waitGoods"]){
+                        self.btn3.hidden = NO;
+                    }
+                    [self handleTableViewFloorsData];
+                    [self.tableView reloadData];
+                }
+                else
+                {
+                    self.isShowEmptyData = YES;
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+            }  else if([operation.urlTag isEqualToString:Path_delivery_confirmReceipt]){
+                
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    [[NSToastManager manager] showtoast:@"确认收货成功"];
+                    [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+            }  if ([operation.urlTag isEqualToString:Path_dallot_transferOrderDetail]) {//调拔单详情
+                XwOrderDetailModel *dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
+                
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    self.isShowEmptyData = NO;
+                    self.dataModel = dataModel;
+                    if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]||
+                       [self.dataModel.orderApplyProgress isEqualToString:@"partDeliver"]){
+                        self.btn2.hidden = NO;
+                    } else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
+                        self.btn.hidden = NO;
+                        self.btn1.hidden = NO;
+                    }
+                    [self handleTableViewFloorsData];
+                    [self.tableView reloadData];
+                }
+                else
+                {
+                    self.isShowEmptyData = YES;
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+            } else if([operation.urlTag isEqualToString:Path_dallot_transferOperate]){
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    [[NSToastManager manager] showtoast:@"调拨操作成功"];
+                    [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+                
+                
+            } else if ([operation.urlTag isEqualToString:Path_refund_returnOrderDetail]) {//调拔单详情
+                XwOrderDetailModel *dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
+                
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    self.isShowEmptyData = NO;
+                    self.dataModel = dataModel;
+                    if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]){
+                        self.btn2.hidden = NO;
+                    } else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
+                        self.btn.hidden = NO;
+                        self.btn1.hidden = NO;
+                    }
+                    [self handleTableViewFloorsData];
+                    [self.tableView reloadData];
+                }
+                else
+                {
+                    self.isShowEmptyData = YES;
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+            }else if([operation.urlTag isEqualToString:Path_refund_returnOperate]){
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    [[NSToastManager manager] showtoast:@"退仓操作成功"];
+                    [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+                
+                
+            }
+             else if (
                 [operation.urlTag isEqualToString:Path_refund_returnOrderDetail]||
-                [operation.urlTag isEqualToString:Path_dallot_transferOrderDetail]||
-                [operation.urlTag isEqualToString:Path_delivery_sendOrderDetail]||
                 [operation.urlTag isEqualToString:Path_inventory_generalOrderDetail]||
                 [operation.urlTag isEqualToString:Path_inventory_inventoryCheckOrderDetail]||
                 [operation.urlTag isEqualToString:Path_inventory_callInventoryOrderDetail]
@@ -493,6 +664,13 @@
                             self.btn2.hidden = NO;
                         }
                         
+                    } else if( self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+                         self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
+                         self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
+                         self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+                        if([self.dataModel.sendOrderStatus isEqualToString:@"waitGoods"]){
+                            self.btn3.hidden = NO;
+                        }
                     }
                     [self handleTableViewFloorsData];
                     [self.tableView reloadData];
@@ -504,6 +682,10 @@
                 }
             } else if([operation.urlTag isEqualToString:Path_stock_orderDetail]) {
                 [self httpPath_orderDetail];;
+                
+            }else if([operation.urlTag isEqualToString:Path_delivery_confirmReceipt]) {
+                [[NSToastManager manager] showtoast:@"收货成功"];
+                [self.navigationController popViewControllerAnimated:YES];;
                 
             }
         }
@@ -684,6 +866,38 @@
     }
           
 }
+
+/**进货申请Api*/
+- (void)httpPath_stock_apply
+{
+    NSMutableArray* array = [NSMutableArray array];
+    for (Goodslist* model in self.dataModel.goodsList) {
+//        NSLog(@"goodsID = %@ goodsCount =%@ type=%@",model.id,@(model.kGoodsCount),model.isSetMeal?@"setMeal":@"product")
+        NSDictionary* dict = @{
+            @"goodsID":model.goodsID,
+            @"goodsCount":model.goodsCount,
+            @"type":model.goodsPackage!=nil?@"setMeal":@"product",
+        };
+        [array addObject:dict ];
+    }
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setValue:[array copy] forKey:@"apply"];
+    
+    [parameters setValue:@"apply" forKey:@"commitType"];
+    
+    [parameters setValue:self.wishReceiveDate forKey:@"wishReceiveDate"];
+    [parameters setValue:self.orderRemarks forKey:@"orderRemarks"];
+    
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    [[NSToastManager manager] showprogress];
+    
+    self.requestURL = Path_stock_apply;
+    
+}
+
 /**订单详情Api*/
 - (void)httpPath_refund_returnOperate:(NSString*)operate
 {
@@ -698,6 +912,53 @@
 //
     self.requestURL = Path_refund_returnOperate;
     
+}
+/**调拔操作Api*/
+- (void)httpPath_dallot_transferOperate:(NSString*)operate
+{
+    
+    NSMutableArray* array = [NSMutableArray array];
+    for (Goodslist* model in self.dataModel.goodsList) {
+        NSDictionary* dict = @{
+            @"goodsID":model.goodsID,
+            @"goodsCount":model.goodsCount,
+            @"type":model.goodsPackage!=nil?@"setMeal":@"product",
+        };
+        [array addObject:dict ];
+    }
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:self.orderID forKey:@"orderID"];
+    [parameters setValue:operate forKey:@"operate"];
+//    [parameters setValue:@"" forKey:@"checkRemarks"];
+//    [parameters setValue:@"" forKey:@"expressID"];
+//    [parameters setValue:@"" forKey:@"expressIMG"];
+//    [parameters setValue:@"" forKey:@"remarks"];
+//    [parameters setValue:array forKey:@"goodsList"];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    [[NSToastManager manager] showprogress];
+//
+    self.requestURL = Path_dallot_transferOperate;
+    
+}
+/**确认收货Api*/
+- (void)httpPath_delivery_confirmReceipt{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    [parameters setValue: self.orderID forKey:@"orderID"];
+    if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder){
+        [parameters setValue:@"order" forKey:@"orderType"];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryApply){
+        [parameters setValue:@"apply" forKey:@"orderType"];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf){
+        [parameters setValue:@"shopSelf" forKey:@"orderType"];
+    }else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+        [parameters setValue:@"stocker" forKey:@"orderType"];
+    }
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_delivery_confirmReceipt;
 }
 
 #pragma mark -- Getter&Setter

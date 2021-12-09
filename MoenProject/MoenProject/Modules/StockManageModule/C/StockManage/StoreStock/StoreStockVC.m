@@ -23,6 +23,8 @@
 #import "XwLastGoodsListModel.h"
 
 #import "StockOperationSuccessVC.h"
+#import "StartCountStockVC.h"
+#import "ChangeStockAdjustVC.h"
 @interface StoreStockVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource, SegmentHeaderViewDelegate>
 
 
@@ -52,7 +54,8 @@
 @property (nonatomic, copy) NSString *skuCode;
 
 @property (nonatomic, copy) NSString *operateType;
-
+//调库单编号
+@property (nonatomic, copy) NSString *inventoryNo;
 
 @end
 
@@ -79,7 +82,13 @@
     else if (self.controllerType == PurchaseOrderManageVCTypeInventoryStockSample)
     {
         self.title = @"样品库存";
-    } else {
+    } else if (self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment||
+               self.controllerType == PurchaseOrderManageVCTypeStockSampleAdjustment)
+    {
+        self.title = @"库存调整";
+        [self.view addSubview:self.submitBtn];
+        self.submitBtn.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
+    } else  {
         self.title = @"盘库";
         [self.view addSubview:self.saveBth];
         [self.view addSubview:self.submitBtn];
@@ -88,9 +97,13 @@
 
         
     }
-    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"调整库存" style:UIBarButtonItemStylePlain target:self action:@selector(goChangeStockVC:)];
-    [rightBarButton setTintColor: [UIColor whiteColor]];
-    self.navigationItem.rightBarButtonItem = rightBarButton;
+    if (self.controllerType == PurchaseOrderManageVCTypeInventoryStockGoods||
+        self.controllerType == PurchaseOrderManageVCTypeInventoryStockSample){
+        UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"调整库存" style:UIBarButtonItemStylePlain target:self action:@selector(goChangeStockVC:)];
+        [rightBarButton setTintColor: [UIColor whiteColor]];
+        self.navigationItem.rightBarButtonItem = rightBarButton;
+    }
+    
 }
 
 - (void)configBaseData
@@ -129,9 +142,23 @@
 }
 
 - (void)goChangeStockVC:(UIBarButtonItem *)sender {
-    StockQueryVC *stockQueryVC = [[StockQueryVC alloc] init];
-    stockQueryVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:stockQueryVC animated:YES];
+//    StockQueryVC *stockQueryVC = [[StockQueryVC alloc] init];
+//    stockQueryVC.hidesBottomBarWhenPushed = YES;
+//
+//    [self.navigationController pushViewController:stockQueryVC animated:YES];
+    StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
+    startCountStockVC.hidesBottomBarWhenPushed = YES;
+    
+    
+    if (self.controllerType == PurchaseOrderManageVCTypeInventoryStockGoods) {
+        startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockGoodsAdjustment;
+    }
+    else if (self.controllerType == PurchaseOrderManageVCTypeInventoryStockSample)
+    {
+        startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockSampleAdjustment;
+    }
+    
+    [self.navigationController pushViewController:startCountStockVC animated:YES];
 }
 
 
@@ -262,6 +289,7 @@
             if ([operation.urlTag isEqualToString:Path_inventory_storeInventory]
                 ) {
                 XwInventoryModel *listModel = [XwInventoryModel mj_objectWithKeyValues:parserObject.datas];
+                self.inventoryNo = listModel.inventoryNo;
                 if (listModel.inventoryList.count) {
                     self.isShowEmptyData = NO;
                     if (weakSelf.pageNumber == 1) {
@@ -286,7 +314,7 @@
                     [weakSelf.tableview hidenRefreshFooter];
                 }
             }
-            if (
+            else if (
                 [operation.urlTag isEqualToString:Path_inventory_inventoryCheckOperate]
                 ) {
                     if ([parserObject.code isEqualToString:@"200"]) {
@@ -307,7 +335,7 @@
                 }
             
             
-            if (
+            else if (
                 [operation.urlTag isEqualToString:Path_inventory_inventoryCheckChoice]
                 ) {
                     XwLastGoodsListModel *listModel = [XwLastGoodsListModel mj_objectWithKeyValues:parserObject.datas];
@@ -334,8 +362,33 @@
                     }
                     [weakSelf.tableview hidenRefreshFooter];
                 }
-            }
-            if ([operation.urlTag isEqualToString:Path_getProductCategory]) {
+            }else if ([operation.urlTag isEqualToString:Path_inventory_callInventoryCheckChoice]) {
+                          XwLastGoodsListModel *listModel = [XwLastGoodsListModel mj_objectWithKeyValues:parserObject.datas];
+                      if (listModel.LastGoodsList.count) {
+                          self.isShowEmptyData = NO;
+                          if (weakSelf.pageNumber == 1) {
+                              [weakSelf.dataList removeAllObjects];
+                          }
+                          [weakSelf.dataList addObjectsFromArray:listModel.LastGoodsList];
+                          [weakSelf.tableview reloadData];
+                      }
+                      else
+                      {
+                          if (weakSelf.pageNumber == 1) {
+      //                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_data", nil)];
+                              [weakSelf.dataList removeAllObjects];
+                              [weakSelf.tableview reloadData];
+                              self.isShowEmptyData = YES;
+                          }
+                          else
+                          {
+                              weakSelf.pageNumber -= 1;
+                              [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_more_data", nil)];
+                          }
+                          [weakSelf.tableview hidenRefreshFooter];
+                      }
+                  }
+            else if ([operation.urlTag isEqualToString:Path_getProductCategory]) {
                 CommonTypeListModel *listModel = (CommonTypeListModel *)parserObject;
                 [self.typeList removeAllObjects];
                 for (CommonTypeModel *itemModel in listModel.listData)
@@ -376,6 +429,11 @@
         
     } else if (self.controllerType == PurchaseOrderManageVCTypeStocktakingStockSample){
         [parameters setValue:@"sample" forKey:@"goodsType"];
+    } else if (self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment){
+        [parameters setValue:@"product" forKey:@"goodsType"];
+        
+    } else if (self.controllerType == PurchaseOrderManageVCTypeStockSampleAdjustment){
+        [parameters setValue:@"sample" forKey:@"goodsType"];
     }
     [parameters setValue:self.skuCode forKey:@"goodsKey"];
     [parameters setValue:@(self.mealTypeID) forKey:@"inventorySortID"];
@@ -392,6 +450,8 @@
              self.controllerType == PurchaseOrderManageVCTypeStocktakingStockSample)
     {
         self.requestURL = Path_inventory_inventoryCheckChoice;
+    } else {
+        self.requestURL = Path_inventory_callInventoryCheckChoice;
     }
     
     
@@ -404,10 +464,10 @@
     NSMutableArray* array = [NSMutableArray array];
     for(Lastgoodslist* model in self.dataList){
         NSMutableDictionary* dict =[NSMutableDictionary dictionary];
-        if(![model.goodsCount isEqualToString:@""]){
+        if(![model.goodsCountAfter isEqualToString:@""]){
             [dict setObject:model.goodsID forKey:@"goodsID"];
-            [dict setObject:model.goodsCount forKey:@"goodsCount"];
-            [dict setObject:model.reason forKey:@"reason"];
+            [dict setObject:model.goodsCountAfter forKey:@"goodsCount"];
+            [dict setObject:model.reason==nil?@"":model.reason forKey:@"reason"];
             [array addObject:dict];
         }
     }
@@ -431,7 +491,33 @@
     }
     
 }
-
+/**调库单调整（保存或确认）Api*/
+- (void)httpPath_inventory_callInventoryOrderOperate
+{
+    NSMutableArray* array = [NSMutableArray array];
+    for(Goodslist* model in self.dataList){
+        NSMutableDictionary* dict =[NSMutableDictionary dictionary];
+        if(![model.goodsCount isEqualToString:@""]&&model.goodsCount !=nil){
+            [dict setObject:model.goodsID forKey:@"goodsID"];
+            [dict setObject:model.goodsCount forKey:@"goodsCount"];
+            [dict setObject:@"" forKey:@"reason"];
+            [array addObject:dict];
+        }
+    }
+    if (array.count > 0) {
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+        [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+        [parameters setValue:self.inventoryNo forKey:@"callInventoryOrderID"];
+        
+        [parameters setValue:array forKey:@"goodsList"];
+        self.requestType = NO;
+        self.requestParams = parameters;
+        self.requestURL = Path_inventory_callInventoryOrderOperate;
+    } else {
+        [[NSToastManager manager] showtoast:@"请输入库存数"];
+    }
+    
+}
 /**获取商品品类Api*/
 - (void)httpPath_getProductCategory
 {
@@ -546,7 +632,16 @@
     if(!_submitBtn){
         _submitBtn = [UIButton buttonWithTitie:@"盘库确认" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnDeepBlueColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
             NSLog(@"盘库确认");
-            [self httpPath_Path_inventory_inventoryCheckOperate:@"confirm"];
+            if (self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment||
+                       self.controllerType == PurchaseOrderManageVCTypeStockSampleAdjustment)
+            {
+//                ChangeStockAdjustVC *startCountStockVC = [[ChangeStockAdjustVC alloc] init];
+//                startCountStockVC.hidesBottomBarWhenPushed = YES;
+//                [self.navigationController pushViewController:startCountStockVC animated:YES];
+            } else {
+                [self httpPath_Path_inventory_inventoryCheckOperate:@"confirm"];
+            }
+            
         }];
     }
     return  _submitBtn;

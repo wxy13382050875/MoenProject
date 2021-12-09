@@ -235,7 +235,7 @@
 //    [parameters setValue:@(self.pageNumber) forKey:@"pageNum"];
 //    [parameters setValue:@(self.pageSize) forKey:@"pageSize"];
     [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
-    [parameters setValue:@"" forKey:@"goodsID"];
+    [parameters setValue:self.skuCode forKey:@"goodsID"];
 
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;

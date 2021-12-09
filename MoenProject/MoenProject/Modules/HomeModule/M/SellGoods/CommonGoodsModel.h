@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CommonGoodsListModel : MoenBaseModel
 
 /**商品集合*/
-@property (nonatomic, strong) NSArray<CommonGoodsModel *> *selectProducts;
+@property (nonatomic, strong) NSArray *selectProducts;
 
 @end
 

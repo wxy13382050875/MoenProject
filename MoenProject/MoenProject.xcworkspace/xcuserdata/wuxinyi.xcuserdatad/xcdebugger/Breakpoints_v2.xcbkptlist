@@ -279,22 +279,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "433F68FB-B7D8-4B3C-B93A-8065789A2F3B"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "434"
-            endingLineNumber = "434"
-            landmarkName = "-handleTableViewFloorsData"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "BA44EBFA-849C-4788-9DA9-EF714D2EEBD9"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -302,8 +286,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -318,8 +302,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "276"
-            endingLineNumber = "276"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "-handleGoodsShowOrHiddenDetailWith:WithAtIndex:"
             landmarkType = "7">
          </BreakpointContent>
@@ -334,8 +318,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -350,8 +334,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
+            startingLineNumber = "450"
+            endingLineNumber = "450"
             landmarkName = "-httpPath_stock_apply:"
             landmarkType = "7">
          </BreakpointContent>
@@ -430,8 +414,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "537"
-            endingLineNumber = "537"
+            startingLineNumber = "461"
+            endingLineNumber = "461"
             landmarkName = "-httpPath_stock_apply:"
             landmarkType = "7">
          </BreakpointContent>
@@ -446,8 +430,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "551"
-            endingLineNumber = "551"
+            startingLineNumber = "475"
+            endingLineNumber = "475"
             landmarkName = "-httpPath_stock_apply:"
             landmarkType = "7">
          </BreakpointContent>
@@ -462,8 +446,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
             landmarkName = "-actionFetchRequest:result:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -478,8 +462,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "380"
-            endingLineNumber = "380"
+            startingLineNumber = "362"
+            endingLineNumber = "362"
             landmarkName = "-actionFetchRequest:result:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -494,8 +478,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseOrder/PurchaseOrderManageVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "407"
-            endingLineNumber = "407"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
             landmarkName = "-actionFetchRequest:result:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -510,8 +494,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseOrder/PurchaseOrderManageVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "435"
-            endingLineNumber = "435"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
             landmarkName = "-actionFetchRequest:result:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -526,8 +510,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseOrder/PurchaseOrderManageVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -536,15 +520,15 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "E988E789-13E2-4032-9864-116DFBE6F643"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MoenProject/Modules/StockManageModule/C/PurchaseOrder/PurchaseOrderManageVC.m"
             startingColumnNumber = "5"
             endingColumnNumber = "5"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
-            landmarkName = "-tableView:viewForHeaderInSection:"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "-tableView:viewForFooterInSection:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -574,8 +558,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "485"
-            endingLineNumber = "485"
+            startingLineNumber = "656"
+            endingLineNumber = "656"
             landmarkName = "-actionFetchRequest:result:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -622,8 +606,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "595"
-            endingLineNumber = "595"
+            startingLineNumber = "777"
+            endingLineNumber = "777"
             landmarkName = "-handleTableViewFloorsData"
             landmarkType = "7">
          </BreakpointContent>
@@ -638,8 +622,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
+            startingLineNumber = "290"
+            endingLineNumber = "290"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -654,8 +638,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
+            startingLineNumber = "278"
+            endingLineNumber = "278"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -670,8 +654,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
+            startingLineNumber = "450"
+            endingLineNumber = "450"
             landmarkName = "-handleGoodsShowOrHiddenDetailWith:WithAtIndex:"
             landmarkType = "7">
          </BreakpointContent>
@@ -686,8 +670,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "373"
-            endingLineNumber = "373"
+            startingLineNumber = "436"
+            endingLineNumber = "436"
             landmarkName = "-handleGoodsShowOrHiddenDetailWith:WithAtIndex:"
             landmarkType = "7">
          </BreakpointContent>
@@ -702,8 +686,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -718,8 +702,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
+            startingLineNumber = "463"
+            endingLineNumber = "463"
             landmarkName = "-handleGoodsShowOrHiddenDetailWith:WithAtIndex:"
             landmarkType = "7">
          </BreakpointContent>
@@ -855,22 +839,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CC9ADF6D-F42D-4D54-830C-E8CD007BFD94"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
-            startingColumnNumber = "9"
-            endingColumnNumber = "44"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "-configBaseUI"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "15B03FAF-90E5-442A-AD64-45FCCBEB9DE5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -878,10 +846,10 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "507"
-            endingLineNumber = "507"
-            landmarkName = "-actionFetchRequest:result:error:"
-            landmarkType = "7">
+            startingLineNumber = "685"
+            endingLineNumber = "685"
+            landmarkName = "XwOrderDetailVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -894,8 +862,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "473"
-            endingLineNumber = "473"
+            startingLineNumber = "646"
+            endingLineNumber = "646"
             landmarkName = "-actionFetchRequest:result:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -910,8 +878,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
             landmarkName = "-actionFetchRequest:result:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -926,8 +894,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
             landmarkName = "-SegmentHeaderViewSelectedBlock:"
             landmarkType = "7">
          </BreakpointContent>
@@ -958,8 +926,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/StockManage/CountStock/StartCountStockVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
             landmarkName = "-configBaseUI"
             landmarkType = "7">
          </BreakpointContent>
@@ -974,8 +942,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/StockManage/CountStock/StartCountStockVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
             landmarkName = "-alertView:clickedButtonAtIndex:WithInputStr:"
             landmarkType = "7">
          </BreakpointContent>
@@ -990,8 +958,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/StockManage/CountStock/StartCountStockVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
             landmarkName = "-alertView:clickedButtonAtIndex:WithInputStr:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1006,8 +974,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/StockManage/CountStock/StartCountStockVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "-actionFetchRequest:result:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1022,8 +990,8 @@
             filePath = "MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "407"
-            endingLineNumber = "407"
+            startingLineNumber = "467"
+            endingLineNumber = "467"
             landmarkName = "-httpPath_Path_inventory_inventoryCheckOperate:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1217,6 +1185,214 @@
             startingLineNumber = "72"
             endingLineNumber = "72"
             landmarkName = "-setGoodsModel:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D4940AFF-7A50-4A2F-9E6C-33AB369D9A87"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/HomeModule/C/SellGoods/SearchGoodsVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "505"
+            endingLineNumber = "505"
+            landmarkName = "-handleTableViewFloorsData:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7856DA06-DD64-4C4B-9B8E-9B4B437CAE6B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/PurchaseApply/PurchaseCounterVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "422"
+            endingLineNumber = "422"
+            landmarkName = "-handleTableViewFloorsData"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F22D3E35-4527-4391-BA1A-72663C70CC5F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "539"
+            endingLineNumber = "539"
+            landmarkName = "-actionFetchRequest:result:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3C24EE62-C7DF-4C49-A4A9-75DCD3097A5E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/XwOrderDetail/XwOrderDetailVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "562"
+            endingLineNumber = "562"
+            landmarkName = "-actionFetchRequest:result:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6B64F4F2-9B2A-4566-9C15-75784B2B4873"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "-configBaseUI"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "24BD4182-3A15-4ADD-BDAA-B58A7B5A7723"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "465"
+            endingLineNumber = "465"
+            landmarkName = "-httpPath_Path_inventory_inventoryCheckOperate:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "30EE9BB8-9BB5-4486-AC8D-77B7DD7AD56B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "473"
+            endingLineNumber = "473"
+            landmarkName = "-httpPath_Path_inventory_inventoryCheckOperate:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "30EE9BB8-9BB5-4486-AC8D-77B7DD7AD56B - 57c3ff57164ec504"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[StoreStockVC httpPath_Path_inventory_inventoryCheckOperate:]"
+                  moduleName = "MoenProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wuxinyi/Desktop/MeObject/MoenProject/MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "413"
+                  endingLineNumber = "413"
+                  offsetFromSymbolStart = "632">
+               </Location>
+               <Location
+                  uuid = "30EE9BB8-9BB5-4486-AC8D-77B7DD7AD56B - 57c3ff57164ec504"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[StoreStockVC httpPath_Path_inventory_inventoryCheckOperate:]"
+                  moduleName = "MoenProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wuxinyi/Desktop/MeObject/MoenProject/MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "413"
+                  endingLineNumber = "413"
+                  offsetFromSymbolStart = "644">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "80FF4B3B-8B98-4B6D-8C01-DE9A81438706"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "474"
+            endingLineNumber = "474"
+            landmarkName = "-httpPath_Path_inventory_inventoryCheckOperate:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0A937F30-D542-4886-B71C-62F4F7467F73"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
+            landmarkName = "-actionFetchRequest:result:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E6E8CA0A-9AA7-4A42-88E6-0CDAFD4C3B7D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/StockManage/StoreStock/StoreStockVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "278"
+            endingLineNumber = "278"
+            landmarkName = "-actionFetchRequest:result:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "00CC555A-073C-4392-81D2-BDDA63476FA7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoenProject/Modules/StockManageModule/C/StockManage/CheckStockOrder/CheckStockOrderVC.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "327"
+            endingLineNumber = "327"
+            landmarkName = "-actionFetchRequest:result:error:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

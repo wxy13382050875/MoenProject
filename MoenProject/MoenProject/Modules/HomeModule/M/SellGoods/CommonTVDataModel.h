@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger dataIndex;
 
 /**数据展示索引*/
-@property (nonatomic, copy) id Data;
+@property (nonatomic, strong) id Data;
 
 /**是否展示*/
 @property (nonatomic, assign) BOOL isShow;

@@ -117,105 +117,60 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Orderlist *model1;
-    OrderManageModel *model2;
-    if(self.controllerType == PurchaseOrderManageVCTypeSTOCK||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-        model1 = self.dataList[indexPath.section];
-    } else {
-        model2 = self.dataList[indexPath.section];
-    }
+    Orderlist *model = self.dataList[indexPath.section];;
+    
         
     
     
-    if (model2.orderItemInfos.count > 1||model1.goodsList.count > 1) {
+    if (model.goodsList.count > 1) {
         OrderListTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderListTCell" forIndexPath:indexPath];
-        if(self.controllerType == PurchaseOrderManageVCTypeSTOCK||
-           self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder||
-           self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
-           self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
-           self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
-           self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-            model1 = self.dataList[indexPath.section];
-            cell.model = model1;
-        } else {
-            [cell showDataWithOrderManageModel:model2];
-        }
+        cell.model = model;
        
         return cell;
     }
     else
     {
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
-        [cell showDataWithOrderManageModel:model2];
-        if(self.controllerType == PurchaseOrderManageVCTypeSTOCK||
-           self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder||
-           self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
-           self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
-           self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
-           self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-            cell.model = model1.goodsList[0];
-        } else {
-            [cell showDataWithOrderManageModel:model2];
-        }
+        
+        cell.model = model.goodsList[0];
         return cell;
     }
     
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    Orderlist *model1;
-    OrderManageModel *model2;
-    NSString* createDate;
-    NSString* orderCode;
+    Orderlist *model = self.dataList[section];
     NSString* orderStatus;
-    if(self.controllerType == PurchaseOrderManageVCTypeSTOCK||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-        model1 = self.dataList[section];
-        createDate = model1.orderTime;
-        orderCode =model1.orderID;
 //        订单状态（筛选条件）待提交/待审核/待发货/配货中/部分发货/全部发货/已完成/已拒绝等  all/waitSub/wait/waitDeliver/allocate/partDeliver/allDeliver/finish/refuse
-              if([model1.orderStatus isEqualToString:@"waitSub"]){
-                  orderStatus = @"待提交";
-              } else if([model1.orderStatus isEqualToString:@"wait"]){
-                  orderStatus = @"待审核";
-              } else if([model1.orderStatus isEqualToString:@"waitDeliver"]){
-                  orderStatus = @"待发货";
-              } else if([model1.orderStatus isEqualToString:@"allocate"]){
-                  orderStatus = @"配货中";
-              } else if([model1.orderStatus isEqualToString:@"partDeliver"]){
-                  orderStatus = @"部分发货";
-              }else if([model1.orderStatus isEqualToString:@"allDeliver"]){
-                  orderStatus = @"全部发货";
-              }else if([model1.orderStatus isEqualToString:@"finish"]){
-                  orderStatus = @"已完成";
-              }else if([model1.orderStatus isEqualToString:@"refuse"]){
-                  orderStatus = @"已拒绝";
-              }
-    } else {
-        model2 = self.dataList[section];
-        createDate =  model2.createDate;
-        orderCode =  model2.orderCode;
+    if([model.orderStatus isEqualToString:@"waitSub"]){
+        orderStatus = @"待提交";
+    } else if([model.orderStatus isEqualToString:@"wait"]){
         orderStatus = @"待审核";
+    } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+        orderStatus = @"待发货";
+    } else if([model.orderStatus isEqualToString:@"allocate"]){
+        orderStatus = @"配货中";
+    } else if([model.orderStatus isEqualToString:@"partDeliver"]){
+        orderStatus = @"部分发货";
+    }else if([model.orderStatus isEqualToString:@"allDeliver"]){
+        orderStatus = @"全部发货";
+    }else if([model.orderStatus isEqualToString:@"finish"]){
+        orderStatus = @"已完成";
+    }else if([model.orderStatus isEqualToString:@"refuse"]){
+        orderStatus = @"已拒绝";
+    }else if([model.orderStatus isEqualToString:@"waitGoods"]){
+        orderStatus = @"待收货";
+    }else if([model.orderStatus isEqualToString:@"refuseAD"]){
+        orderStatus = @"AD已拒绝";
+    } else if([model.orderStatus isEqualToString:@"waitAD"]){
+        orderStatus = @"待AD审核";
     }
     UIView *headerView = [[UIView alloc] init];
     headerView.backgroundColor = AppBgWhiteColor;
     UILabel *timeLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 200, 20)];
     timeLab.font = FontBinB(14);
     timeLab.textColor = AppTitleBlackColor;
-    timeLab.text = createDate;
+    timeLab.text = model.orderTime;
     [headerView addSubview:timeLab];
     
     UILabel *orderStatusLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, SCREEN_WIDTH - 15, 20)];
@@ -229,7 +184,7 @@
     orderLab.font = FONTLanTingR(14);
     orderLab.textColor = AppTitleBlackColor;
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"订单编号: %@",orderCode]];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"订单编号: %@",model.orderID]];
     [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6, str.length - 6)];
     orderLab.attributedText = str;
     [headerView addSubview:orderLab];
@@ -237,94 +192,42 @@
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    Orderlist *model1;
-    OrderManageModel *model2;
-    NSString* productNum;
+    Orderlist *model = self.dataList[section];
     
     
-    if(self.controllerType == PurchaseOrderManageVCTypeSTOCK||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-        model1 = self.dataList[section];
-        productNum =  model1.goodsCount;
-//
-    } else {
-        model2 = self.dataList[section];
-        productNum =  model2.productNum;
-    }
+    
     UIView *footerView = [[UIView alloc] init];
     footerView.backgroundColor = AppBgWhiteColor;
     
-    if (self.controllerType == PurchaseOrderManageVCTypeMAJOR ||
-        self.controllerType == PurchaseOrderManageVCTypeGROOM) {
-        UILabel *userLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, SCREEN_WIDTH - 30, 20)];
-        userLab.font = FONTLanTingR(14);
-        userLab.textColor = AppTitleBlackColor;
-        userLab.textAlignment = NSTextAlignmentLeft;
-        userLab.text = model2.recommender;
-        [footerView addSubview:userLab];
-    }
-    
+   
     UILabel *infoLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, SCREEN_WIDTH - 30, 20)];
     infoLab.font = FONTLanTingR(14);
     infoLab.textColor = AppTitleBlackColor;
     infoLab.textAlignment = NSTextAlignmentRight;
-    
-    
- //   NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%ld",(long)model.giftNum];
-    //NSString *productNumCountStr = [NSString stringWithFormat:@"%ld",(long)model.productNum];
-//    if (model.giftNum > 0) {
-//        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品, %@件赠品  实付款:￥%@",(long)model.productNum,giftGoodsCountStr, model.payAmount]];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//
-//
-//        infoLab.attributedText = str;
-//    }
-//    else
-    {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品",productNum]];
-        
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//
-//           [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//           [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-           infoLab.attributedText = str;
-    }
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品",model.goodsCount]];
+    infoLab.attributedText = str;
 
     
     [footerView addSubview:infoLab];
     
     
-    UIButton *againBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30)];
-    //UIButton *againBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    //againBtn.frame = CGRectMake(0, 40, 60, 20);
-    //againBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    againBtn.titleLabel.font = FONTSYS(14);
-    //againBtn.clipsToBounds = YES;
+    
+    UIButton *againBtn =[UIButton buttonWithTitie:@"" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+        if([model.orderStatus isEqualToString:@"waitGoods"]){
+            [self httpPath_delivery_confirmReceipt:model];
+        } else {
+        }
+    }];
     againBtn.layer.cornerRadius = 5;
-    [againBtn setTitleColor:AppTitleWhiteColor forState:UIControlStateNormal];
-    [againBtn setBackgroundColor:AppTitleBlueColor];
-    [againBtn setTitle:@"再来一单" forState:UIControlStateNormal];
-    //[againBtn addTarget:self action:@selector(confirmAction:) forControlEvents:UIControlEventTouchDown];
+    againBtn.frame = CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30);
+    
+    if([model.orderStatus isEqualToString:@"waitGoods"]){
+        [againBtn setTitle:@"确认收货" forState:UIControlStateNormal];
+    } else {
+        [againBtn setTitle:@"再来一单" forState:UIControlStateNormal];
+    }
     [footerView addSubview:againBtn];
     
-    
-//    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 50, SCREEN_WIDTH, 5)];
-//    lineView2.backgroundColor = AppBgBlueGrayColor;
-//    [footerView addSubview:lineView2];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 80, SCREEN_WIDTH, 5)];
     lineView.backgroundColor = AppBgBlueGrayColor;
@@ -339,27 +242,13 @@
     
     
    
-    NSString* orderID;
+   
     
+    Orderlist *model = self.dataList[indexPath.section];
+   
     
-    if(self.controllerType == PurchaseOrderManageVCTypeSTOCK||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-        Orderlist *model1 = self.dataList[indexPath.section];
-        orderID =  model1.orderID;
-//
-    } else {
-        OrderManageModel *model2 = self.dataList[indexPath.section];
-        orderID =  model2.ID;
-    }
-    
-//    OrderDetailVC *orderDetailVC = [[OrderDetailVC alloc] init];
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
-    orderDetailVC.orderID = orderID;
+    orderDetailVC.orderID = model.orderID;
     orderDetailVC.controllerType = self.controllerType;
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
@@ -475,6 +364,9 @@
                     }
                 }
             }
+            if ([operation.urlTag isEqualToString:Path_delivery_confirmReceipt]){
+                [self reconnectNetworkRefresh];
+            }
         }
     }
 }
@@ -485,68 +377,27 @@
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
-    if(self.controllerType == PurchaseOrderManageVCTypeSTOCK||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-       self.controllerType == PurchaseOrderManageVCTypeAllocteOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
-       self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-        
-        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
-            [parameters setValue:@"task" forKey:@"orderType"];
-        } else if(self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
-            [parameters setValue:@"order" forKey:@"orderType"];
-        } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder){
-            [parameters setValue:@"order" forKey:@"orderType"];
-        } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryApply){
-            [parameters setValue:@"apply" forKey:@"orderType"];
-        } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf){
-            [parameters setValue:@"shopSelf" forKey:@"orderType"];
-        }else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-            [parameters setValue:@"stocker" forKey:@"orderType"];
-        }
-        
-        [parameters setValue:@"" forKey:@"orderKey"];
-        [parameters setValue:@"" forKey:@"orderDateStart"];
-        [parameters setValue:@"" forKey:@"orderDateEnd"];
-        [parameters setValue:@"" forKey:@"orderStatus"];
-        [parameters setValue:@(self.pageNumber) forKey:@"page"];
-        [parameters setValue:@(self.pageSize) forKey:@"size"];
-        
-
-        
-    }  else {
-        [parameters setValue:@(self.pageNumber) forKey:@"pageNum"];
-        [parameters setValue:@(self.pageSize) forKey:@"pageSize"];
-        if (self.isIdentifion) {
-            [parameters setValue:[NSNumber numberWithBool:YES] forKey:@"identifion"];
-        }
-        [parameters setValue:self.customerId forKey:@"customerId"];
-        if (self.orderCode.length) {
-             [parameters setValue:self.orderCode forKey:@"orderCode"];
-        }
-        
-        if (self.selectedTimeType.length) {
-            [parameters setValue:self.selectedTimeType forKey:@"timeQuantum"];
-        }
-        else
-        {
-            [parameters setValue:@"ALL" forKey:@"timeQuantum"];
-        }
-        if (self.controllerType == PurchaseOrderManageVCTypeMAJOR) {
-            [parameters setValue:@"MAJOR" forKey:@"type"];
-        }
-        else if (self.controllerType == PurchaseOrderManageVCTypeGROOM)
-        {
-            [parameters setValue:@"GROOM" forKey:@"type"];
-        }
-        else
-        {
-            [parameters setValue:@"ALL" forKey:@"type"];
-        }
-        [parameters setValue:[NSNumber numberWithBool:NO] forKey:@"isReturn"];
+    if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
+        [parameters setValue:@"task" forKey:@"orderType"];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+        [parameters setValue:@"order" forKey:@"orderType"];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder){
+        [parameters setValue:@"order" forKey:@"orderType"];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryApply){
+        [parameters setValue:@"apply" forKey:@"orderType"];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf){
+        [parameters setValue:@"shopSelf" forKey:@"orderType"];
+    }else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+        [parameters setValue:@"stocker" forKey:@"orderType"];
     }
+    
+    [parameters setValue:@"" forKey:@"orderKey"];
+    [parameters setValue:@"" forKey:@"orderDateStart"];
+    [parameters setValue:@"" forKey:@"orderDateEnd"];
+    [parameters setValue:@"" forKey:@"orderStatus"];
+    [parameters setValue:@(self.pageNumber) forKey:@"page"];
+    [parameters setValue:@(self.pageSize) forKey:@"size"];
+    
     
     
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
@@ -570,6 +421,23 @@
     } else {
         self.requestURL = Path_orderList;
     }
+}
+- (void)httpPath_delivery_confirmReceipt:(Orderlist*)model{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    [parameters setValue: model.orderID forKey:@"orderID"];
+    if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder){
+        [parameters setValue:@"order" forKey:@"orderType"];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryApply){
+        [parameters setValue:@"apply" forKey:@"orderType"];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf){
+        [parameters setValue:@"shopSelf" forKey:@"orderType"];
+    }else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+        [parameters setValue:@"stocker" forKey:@"orderType"];
+    }
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_delivery_confirmReceipt;
 }
 
 /**获取下拉数据Api*/

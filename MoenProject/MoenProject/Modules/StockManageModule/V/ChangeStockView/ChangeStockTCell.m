@@ -55,8 +55,8 @@
     [self.changeCountTxt addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
     self.skuLabel.text = _lastModel.goodsSKU;
     
-    self.changeCountTxt.text = _lastModel.goodsCount;
-    self.goodsCountLabel.text =[NSString stringWithFormat:@"x%@",_lastModel.goodsCountAfter];
+    self.changeCountTxt.text = _lastModel.goodsCountAfter;
+    self.goodsCountLabel.text =[NSString stringWithFormat:@"x%@",_lastModel.goodsCountBefor];
     [self.goodsImage sd_setImageWithURL:[NSURL URLWithString:_lastModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
     self.differenceReasonLabel.text = _lastModel.reason;
 }
@@ -73,7 +73,7 @@
 }
 -(void)textFieldTextChange:(UITextField *)textField{
     NSLog(@"textField1 - 输入框内容改变,当前内容为: %@",textField.text);
-    self.lastModel.goodsCount =textField.text;
+    self.lastModel.goodsCountAfter =textField.text;
     self.goodsModel.goodsCount =textField.text;
 }
 @end

@@ -22,7 +22,14 @@
     [super viewDidLoad];
     
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
-    self.title = @"开始盘库";
+    
+    if(self.controllerType == PurchaseOrderManageVCTypeStockSampleAdjustment ||
+       self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment){
+        self.title = @"调整库存";
+    } else {
+        self.title = @"开始盘库";
+    }
+    
     
     
     [self configBaseUI];
@@ -69,32 +76,40 @@
     optTimeLabel.numberOfLines = 0;
     optTimeLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:optTimeLabel];
+    if(self.controllerType == PurchaseOrderManageVCTypeStockSampleAdjustment ||
+       self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment){
+        UIButton *goodsStockBtn = [[UIButton alloc] initWithFrame:CGRectMake(leftMargin, optButtonStartTop, (SCREEN_WIDTH - leftMargin * 2 - btnSpace), btnHeight)];
+        [goodsStockBtn setTitle:@"开始调库" forState:(UIControlStateNormal)];
+        goodsStockBtn.backgroundColor = AppTitleBlueColor;
+        goodsStockBtn.layer.cornerRadius = 20;
+        [goodsStockBtn addTarget:self action:@selector(returnAction) forControlEvents:UIControlEventTouchDown];
+        [self.view addSubview:goodsStockBtn];
+        
+    } else {
+        UIButton *goodsStockBtn = [[UIButton alloc] initWithFrame:CGRectMake(leftMargin, optButtonStartTop, (SCREEN_WIDTH - leftMargin * 2 - btnSpace)/2, btnHeight)];
+        [goodsStockBtn setTitle:@"打印" forState:(UIControlStateNormal)];
+        goodsStockBtn.backgroundColor = AppTitleBlueColor;
+        goodsStockBtn.layer.cornerRadius = 20;
+        [goodsStockBtn addTarget:self action:@selector(printAction) forControlEvents:UIControlEventTouchDown];
+        [self.view addSubview:goodsStockBtn];
+        
+        
+        UIButton *sampleStockBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 2 + btnSpace/2, optButtonStartTop, (SCREEN_WIDTH - leftMargin * 2 - btnSpace)/2, btnHeight)];
+        [sampleStockBtn setTitle:@"开始盘库" forState:(UIControlStateNormal)];
+        sampleStockBtn.backgroundColor = AppTitleBlueColor;
+        sampleStockBtn.layer.cornerRadius = 20;
+        [sampleStockBtn addTarget:self action:@selector(returnAction) forControlEvents:UIControlEventTouchDown];
+        [self.view addSubview:sampleStockBtn];
+    }
     
     
-    UIButton *goodsStockBtn = [[UIButton alloc] initWithFrame:CGRectMake(leftMargin, optButtonStartTop, (SCREEN_WIDTH - leftMargin * 2 - btnSpace)/2, btnHeight)];
-    [goodsStockBtn setTitle:@"打印" forState:(UIControlStateNormal)];
-    goodsStockBtn.backgroundColor = AppTitleBlueColor;
-    goodsStockBtn.layer.cornerRadius = 20;
-    [goodsStockBtn addTarget:self action:@selector(printAction) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:goodsStockBtn];
     
-    
-    UIButton *sampleStockBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 2 + btnSpace/2, optButtonStartTop, (SCREEN_WIDTH - leftMargin * 2 - btnSpace)/2, btnHeight)];
-    [sampleStockBtn setTitle:@"开始盘库" forState:(UIControlStateNormal)];
-    sampleStockBtn.backgroundColor = AppTitleBlueColor;
-    sampleStockBtn.layer.cornerRadius = 20;
-    [sampleStockBtn addTarget:self action:@selector(returnAction) forControlEvents:UIControlEventTouchDown];
-    [self.view addSubview:sampleStockBtn];
 }
 -(void) returnAction{
     StoreStockVC *sellGoodsScanVC = [[StoreStockVC alloc] init];
     sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
-    if(self.controllerType == PurchaseOrderManageVCTypeInventoryStockGoods){
-        sellGoodsScanVC.controllerType = PurchaseOrderManageVCTypeStocktakingStockGoods;
-    } else {
-        sellGoodsScanVC.controllerType = PurchaseOrderManageVCTypeStocktakingStockSample;
-    }
     
+    sellGoodsScanVC.controllerType = self.controllerType;
     
     [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
 }
@@ -120,7 +135,8 @@
     else
     {
         if (parserObject.success) {
-            if ([operation.urlTag isEqualToString:Path_inventory_haveCallInventory]) {
+            if ([operation.urlTag isEqualToString:Path_inventory_haveCallInventory]||
+                [operation.urlTag isEqualToString:Path_inventory_haveInventoryCheckChoice]) {
                 if(parserObject.datas[@"info"]){
                     FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否继续上次的盘点" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
                     [alert show];
@@ -184,7 +200,8 @@
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
-    if (self.controllerType == PurchaseOrderManageVCTypeInventoryStockGoods) {
+    if (self.controllerType == PurchaseOrderManageVCTypeInventoryStockGoods||
+        self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment) {
         [parameters setValue:@"product" forKey:@"goodsType"];
     }
     else
@@ -195,6 +212,15 @@
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;
-    self.requestURL = Path_inventory_haveCallInventory;
+    
+    if(self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment||
+       self.controllerType == PurchaseOrderManageVCTypeStockSampleAdjustment){
+        self.requestURL = Path_inventory_haveCallInventory;
+    } else {
+        self.requestURL = Path_inventory_haveInventoryCheckChoice;
+    }
+    
+    
+    
 }
 @end

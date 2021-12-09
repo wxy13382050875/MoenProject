@@ -175,10 +175,10 @@
 #pragma mark -- UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    OrderManageModel *model = self.dataList[indexPath.section];
-    OrderDetailVC *orderDetailVC = [[OrderDetailVC alloc] init];
-    orderDetailVC.orderID = model.ID;
-    [self.navigationController pushViewController:orderDetailVC animated:YES];
+//    OrderManageModel *model = self.dataList[indexPath.section];
+//    OrderDetailVC *orderDetailVC = [[OrderDetailVC alloc] init];
+//    orderDetailVC.orderID = model.ID;
+//    [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
 
 #pragma mark -- SearchViewCompleteDelete

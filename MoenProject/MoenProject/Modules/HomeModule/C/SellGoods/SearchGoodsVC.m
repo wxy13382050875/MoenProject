@@ -405,7 +405,8 @@
         if (parserObject.success) {
             if ([operation.urlTag isEqualToString:Path_selectProduct] ||
                 [operation.urlTag isEqualToString:Path_selectPromoCombo]) {
-                CommonGoodsListModel *listModel = (CommonGoodsListModel *)parserObject;
+//                CommonGoodsListModel *listModel = (CommonGoodsListModel *)parserObject;
+                CommonGoodsListModel *listModel = [CommonGoodsListModel mj_objectWithKeyValues:parserObject];
                 if ([listModel.code isEqualToString:@"200"]) {
                     if (listModel.selectProducts.count) {
                         self.isShowEmptyData = NO;
