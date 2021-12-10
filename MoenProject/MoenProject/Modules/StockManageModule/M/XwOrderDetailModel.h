@@ -30,13 +30,28 @@
 
 @property (nonatomic, copy) NSString *orderStatus;
 
-@property (nonatomic, copy) NSString *sendOrderStatus;
+@property (nonatomic, copy) NSString *orderStatusText;
 
-@property (nonatomic, strong) NSArray *sendOrderInfo;
+@property (nonatomic, copy) NSString *progressName;
 
 @property (nonatomic, copy) NSString *wishReceiveDate;
 
 @property (nonatomic, strong) NSArray *goodsList;
+
+@property (nonatomic, strong) NSArray *sendOrderInfo;
+
+//发货单详情
+@property (nonatomic, copy) NSString *sendOrderStatus;
+
+@property (nonatomic, copy) NSString *sendOrderTime;
+
+@property (nonatomic, copy) NSString *businessMark;
+
+@property (nonatomic, copy) NSString *sendOrderID;
+
+@property (nonatomic, copy) NSString *sender;
+
+@property (nonatomic, copy) NSString *ordeID;
 
 @end
 

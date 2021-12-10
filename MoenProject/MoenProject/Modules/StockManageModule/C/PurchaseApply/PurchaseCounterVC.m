@@ -23,7 +23,8 @@
 #import "PurchaseCounterModel.h"
 #import "OrderPromotionTCell.h"
 
-
+#import "XwSystemTCellModel.h"
+#import "XWOrderDetailDefaultCell.h"
 
 
 @interface PurchaseCounterVC ()<UITableViewDelegate, UITableViewDataSource>
@@ -93,7 +94,8 @@
     [self.myTableView registerNib:[UINib nibWithNibName:@"SellGoodsOrderMarkTCell" bundle:nil] forCellReuseIdentifier:@"SellGoodsOrderMarkTCell"];
     
     [self.myTableView registerNib:[UINib nibWithNibName:@"OrderPromotionTCell" bundle:nil] forCellReuseIdentifier:@"OrderPromotionTCell"];
-    [self.myTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+    [self.myTableView registerClass:[XWOrderDetailDefaultCell class] forCellReuseIdentifier:@"XWOrderDetailDefaultCell"];
+    self.myTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.btn1.sd_layout.leftEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
     self.btn2.sd_layout.rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
@@ -103,40 +105,11 @@
 
 - (void)configBaseData
 {
-//    [self httpPath_orderDetail];
-//    self.isShowEmptyData = NO;
-//    self.dataModel = [[PurchaseCounterModel alloc] init];
-//
-//
-//    CommonProdutcModel *productModel = [[CommonProdutcModel alloc] init];
-//    productModel.name = [NSMutableString stringWithFormat:@"Test"];
-//    productModel.count = 10;
-//    productModel.sku =[NSMutableString stringWithFormat:@"KF00261AD"];
-//    productModel.price = [NSMutableString stringWithFormat:@"12.00"];
-//
-//    NSMutableArray<CommonProdutcModel *> *productArray = [NSMutableArray array];
-//    [productArray addObject:productModel];
-//
-//    CommonMealProdutcModel *mealProduct = [[CommonMealProdutcModel alloc] init];
-//    mealProduct.comboDescribe = [NSMutableString stringWithFormat:@"1+102+123123"];
-//    mealProduct.code = [NSMutableString stringWithFormat:@"N09090000005"];
-//    mealProduct.count = 20;
-//    mealProduct.comboName = [NSMutableString stringWithFormat:@"Test"];
-//    mealProduct.price = [NSMutableString stringWithFormat:@"11.00"];
-//    mealProduct.productList = productArray;
-//
-//
-//    NSMutableArray<CommonMealProdutcModel *> *orderSetMealList = [NSMutableArray array];
-//    [orderSetMealList addObject:mealProduct];
-//
-//    self.dataModel.orderProductList = productArray;
-//    self.dataModel.orderSetMealList = orderSetMealList;
-//
-//
-    
-//
-//    self.dataModel = self.dataSource;
+
     [self handleTableViewFloorsData];
+    [self handleTabWishReceivekData];
+    [self handleTabStatisticsData];
+    [self handleTabMarkData];
     [self.myTableView reloadData];
 }
 
@@ -219,17 +192,9 @@
         SellGoodsOrderMarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SellGoodsOrderMarkTCell" forIndexPath:indexPath];
         [cell showDataWithString: model.Data];
         return cell;
-    }else if ([model.cellIdentify isEqualToString:@"UITableViewCell"])
-    {
-        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
-           // 如果没有,则创建(解释:一般刚进入界面的时候,是不需要重用的,当时显示的是能够映入界面的足够的cell,只有拖动的时候,才需要)
-           if (!cell) {
-               cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"UITableViewCell"];
-           }
-        cell.textLabel.text = model.Data[@"title"];
-        cell.detailTextLabel.text =model.Data[@"value"];
-        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }else if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
+        XWOrderDetailDefaultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XWOrderDetailDefaultCell" forIndexPath:indexPath];
+        cell.model = model.Data;
         return cell;
     }
     return nil;
@@ -376,6 +341,7 @@
 
 
 #pragma  mark -- 配置楼层信息
+
 - (void)handleTableViewFloorsData
 {
     [self.floorsAarr removeAllObjects];
@@ -396,6 +362,8 @@
 //            cellModel.isShow = YES;
             cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
         }
+        cellModel.cellHeaderHeight = 0.01;
+        cellModel.cellFooterHeight =  5;
         cellModel.Data = model;
         [sectionArr addObject:cellModel];
         
@@ -406,17 +374,30 @@
     [self.floorsAarr addObject:sectionArr];
     
    
-    //期望收货日期
-    NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
-    CommonTVDataModel *wishReceiveDateModel = [[CommonTVDataModel alloc] init];
-    wishReceiveDateModel.cellIdentify = @"UITableViewCell";
-    wishReceiveDateModel.cellHeight = 40;
-    wishReceiveDateModel.cellHeaderHeight = 0.01;
-    wishReceiveDateModel.cellFooterHeight =  0.01;
-    wishReceiveDateModel.Data = @{@"title":@"期望收货日期",@"value":@"请填写"};
-    [section4Arr addObject:wishReceiveDateModel];
-    [self.floorsAarr addObject:section4Arr];
     
+    
+    
+    
+    
+}
+//期望收货日期
+-(void)handleTabWishReceivekData{
+    XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
+    tmModel.title =@"期望收货日期";
+    tmModel.value =@"请填写";
+    tmModel.showArrow = NO;
+    NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
+    CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+    delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+    delivereModel.cellHeight = 30;
+    delivereModel.cellHeaderHeight = 0.01;
+    delivereModel.cellFooterHeight =  5;
+    delivereModel.Data = tmModel;
+    [section4Arr addObject:delivereModel];
+    [self.floorsAarr addObject:section4Arr];
+}
+////统计
+-(void)handleTabStatisticsData{
     //统计
     NSMutableArray *section5Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *statisticsCellModel = [[CommonTVDataModel alloc] init];
@@ -428,7 +409,9 @@
     statisticsCellModel.Data = self.detailModel;
     [section5Arr addObject:statisticsCellModel];
     [self.floorsAarr addObject:section5Arr];
-    
+}
+////备注
+-(void)handleTabMarkData{
     //备注
     NSMutableArray *section6Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *markCellModel = [[CommonTVDataModel alloc] init];
@@ -439,10 +422,7 @@
     markCellModel.Data = self.detailModel.comment;
     [section6Arr addObject:markCellModel];
     [self.floorsAarr addObject:section6Arr];
-    
 }
-
-
 /**进货申请Api*/
 - (void)httpPath_stock_apply:(NSString*)commitType
 {

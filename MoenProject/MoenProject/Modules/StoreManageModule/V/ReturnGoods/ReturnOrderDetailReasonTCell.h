@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ReturnOrderDetailReasonTCell : UITableViewCell
 
-
+- (void)showDataRefundWithString:(NSString *)str;//退仓原因
 - (void)showDataWithString:(NSString *)reaseon;
 - (void)showPickupWithString:(NSString *)pickupMethod;
 - (void)showRefundWithString:(NSString *)refundMethod;

@@ -544,18 +544,6 @@ NSString* const ME_Store_Owner_StockManageChild = @"{\
 \"skipid\": 6,\
 \"isskip\": 0\
 },\
-{\
-\"title\": \"门店下单\",\
-\"icon\": \"return_icon\",\
-\"skipid\": 7,\
-\"isskip\": 0\
-},\
-{\
-\"title\": \"门店退货\",\
-\"icon\": \"return_icon\",\
-\"skipid\": 8,\
-\"isskip\": 0\
-}\
 ]\
 }";
 

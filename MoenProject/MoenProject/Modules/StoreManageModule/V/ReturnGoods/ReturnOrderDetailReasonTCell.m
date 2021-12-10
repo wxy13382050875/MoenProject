@@ -23,6 +23,11 @@
     // Initialization code
 }
 
+- (void)showDataRefundWithString:(NSString *)reaseon
+{
+    self.reason_Title_Lab.text = @"退仓原因";
+    self.reason_Lab.text = reaseon;
+}
 - (void)showDataWithString:(NSString *)reaseon
 {
     self.reason_Title_Lab.text = @"退货原因";

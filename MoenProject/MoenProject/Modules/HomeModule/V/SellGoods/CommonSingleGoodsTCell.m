@@ -94,8 +94,8 @@
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:model.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
     self.goodsCode.text = model.goodsID;
     self.goodsName.text = model.goodsName;
-    [self.goodsPrice setHidden:YES];
-    
+//    [self.goodsPrice setHidden:YES];
+    self.goodsPrice.text = model.goodsCount;
     self.atIndex = model.indexPath.section;
     self.isShowDetail = model.isShowDetail;
     

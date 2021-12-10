@@ -36,7 +36,10 @@
     self.left_Lab.text = leftText;
     self.right_Lab.text = rightText;
 }
-
+-(void)setModel:(XwOrderDetailModel *)model{
+    self.left_Lab.text = model.progressName;
+    self.right_Lab.text = model.orderStatusText;
+}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

@@ -126,7 +126,7 @@
         
     
     
-    if (model.goodsList.count > 1) {
+    if (model.goodsList.count != 1) {
         OrderListTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderListTCell" forIndexPath:indexPath];
         cell.model = model;
        
@@ -136,6 +136,7 @@
     {
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
         cell.model = model.goodsList[0];
+        
         return cell;
     }
     

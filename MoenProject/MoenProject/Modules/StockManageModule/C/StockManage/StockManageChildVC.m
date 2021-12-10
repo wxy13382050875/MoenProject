@@ -226,7 +226,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
             [self.navigationController pushViewController:storeStockVC animated:YES];
             break;
         }
-        case 7:
+        case 7://门店下单
         {
             xw_StoreOrderVC *storeOrderVC = [xw_StoreOrderVC new];
             storeOrderVC.hidesBottomBarWhenPushed = YES;
@@ -234,7 +234,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
             [self.navigationController pushViewController:storeOrderVC animated:YES];
             break;
         }
-        case 8:
+        case 8://门店退货
         {
             xw_StoreReturnVC *storeReturnVC = [xw_StoreReturnVC new];
             storeReturnVC.hidesBottomBarWhenPushed = YES;

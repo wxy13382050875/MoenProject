@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XwOrderDetailModel.h"
 static NSString *KOrderInstallationTCell = @"OrderInstallationTCell";
 static CGFloat kOrderInstallationTCellH = 40;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OrderInstallationTCell : UITableViewCell
+@property(nonatomic,strong)XwOrderDetailModel* model;
 
 - (void)showDataWithDescription:(NSString *)installation;
 

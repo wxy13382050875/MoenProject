@@ -55,6 +55,17 @@
 		2E384D2B26E0D86F0021EA4A /* xw_DeliveryInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E384D2A26E0D86F0021EA4A /* xw_DeliveryInfoVC.m */; };
 		2E384D3226E0D95B0021EA4A /* xwDeliveryInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E384D3026E0D95B0021EA4A /* xwDeliveryInfoCell.m */; };
 		2E384D3326E0D95B0021EA4A /* xwDeliveryInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E384D3126E0D95B0021EA4A /* xwDeliveryInfoCell.xib */; };
+		2E6F966A2761D56A00660B4D /* XwOrderDetailStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F96692761D56A00660B4D /* XwOrderDetailStockCell.m */; };
+		2E6F966D2761E41600660B4D /* XwSystemTCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F966C2761E41600660B4D /* XwSystemTCellModel.m */; };
+		2E6F96702761E94A00660B4D /* XwOrderDetailDeliveryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F966F2761E94A00660B4D /* XwOrderDetailDeliveryCell.m */; };
+		2E6F96732762089A00660B4D /* XWOrderDetailDefaultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F96722762089900660B4D /* XWOrderDetailDefaultCell.m */; };
+		2E6F967627623A4200660B4D /* XwOrderDetailStockInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F967527623A4200660B4D /* XwOrderDetailStockInfoCell.m */; };
+		2E6F967C276240CD00660B4D /* XwOrderDetailAllotCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F967B276240CD00660B4D /* XwOrderDetailAllotCell.m */; };
+		2E6F967F2762454600660B4D /* XwOrderDetailAuditMarkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F967E2762454600660B4D /* XwOrderDetailAuditMarkCell.m */; };
+		2E6F9682276249FD00660B4D /* XwOrderDetailRefundCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F9681276249FD00660B4D /* XwOrderDetailRefundCell.m */; };
+		2E6F968527624FF000660B4D /* XwOrderDetailTotalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F968427624FF000660B4D /* XwOrderDetailTotalCell.m */; };
+		2E6F9688276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F9687276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m */; };
+		2E6F968B276258D100660B4D /* XwOrderDetailGoodsInventory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */; };
 		2EB5B27B275DF92000787E05 /* XwInventoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5B279275DF91F00787E05 /* XwInventoryModel.m */; };
 		2EB5B27E275E042900787E05 /* XwInOrOutWaterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5B27D275E042900787E05 /* XwInOrOutWaterModel.m */; };
 		2EB5B281275E423B00787E05 /* XwLastGoodsListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5B27F275E423B00787E05 /* XwLastGoodsListModel.m */; };
@@ -588,6 +599,28 @@
 		2E384D2F26E0D95B0021EA4A /* xwDeliveryInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xwDeliveryInfoCell.h; sourceTree = "<group>"; };
 		2E384D3026E0D95B0021EA4A /* xwDeliveryInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = xwDeliveryInfoCell.m; sourceTree = "<group>"; };
 		2E384D3126E0D95B0021EA4A /* xwDeliveryInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xwDeliveryInfoCell.xib; sourceTree = "<group>"; };
+		2E6F96682761D56A00660B4D /* XwOrderDetailStockCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailStockCell.h; sourceTree = "<group>"; };
+		2E6F96692761D56A00660B4D /* XwOrderDetailStockCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailStockCell.m; sourceTree = "<group>"; };
+		2E6F966B2761E41600660B4D /* XwSystemTCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwSystemTCellModel.h; sourceTree = "<group>"; };
+		2E6F966C2761E41600660B4D /* XwSystemTCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwSystemTCellModel.m; sourceTree = "<group>"; };
+		2E6F966E2761E94A00660B4D /* XwOrderDetailDeliveryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailDeliveryCell.h; sourceTree = "<group>"; };
+		2E6F966F2761E94A00660B4D /* XwOrderDetailDeliveryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailDeliveryCell.m; sourceTree = "<group>"; };
+		2E6F96712762089900660B4D /* XWOrderDetailDefaultCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XWOrderDetailDefaultCell.h; sourceTree = "<group>"; };
+		2E6F96722762089900660B4D /* XWOrderDetailDefaultCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XWOrderDetailDefaultCell.m; sourceTree = "<group>"; };
+		2E6F967427623A4200660B4D /* XwOrderDetailStockInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailStockInfoCell.h; sourceTree = "<group>"; };
+		2E6F967527623A4200660B4D /* XwOrderDetailStockInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailStockInfoCell.m; sourceTree = "<group>"; };
+		2E6F967A276240CD00660B4D /* XwOrderDetailAllotCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailAllotCell.h; sourceTree = "<group>"; };
+		2E6F967B276240CD00660B4D /* XwOrderDetailAllotCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailAllotCell.m; sourceTree = "<group>"; };
+		2E6F967D2762454600660B4D /* XwOrderDetailAuditMarkCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailAuditMarkCell.h; sourceTree = "<group>"; };
+		2E6F967E2762454600660B4D /* XwOrderDetailAuditMarkCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailAuditMarkCell.m; sourceTree = "<group>"; };
+		2E6F9680276249FD00660B4D /* XwOrderDetailRefundCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailRefundCell.h; sourceTree = "<group>"; };
+		2E6F9681276249FD00660B4D /* XwOrderDetailRefundCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailRefundCell.m; sourceTree = "<group>"; };
+		2E6F968327624FF000660B4D /* XwOrderDetailTotalCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailTotalCell.h; sourceTree = "<group>"; };
+		2E6F968427624FF000660B4D /* XwOrderDetailTotalCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailTotalCell.m; sourceTree = "<group>"; };
+		2E6F9686276254E000660B4D /* XwOrderDetailAdjustInventoryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailAdjustInventoryCell.h; sourceTree = "<group>"; };
+		2E6F9687276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailAdjustInventoryCell.m; sourceTree = "<group>"; };
+		2E6F9689276258D100660B4D /* XwOrderDetailGoodsInventory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailGoodsInventory.h; sourceTree = "<group>"; };
+		2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailGoodsInventory.m; sourceTree = "<group>"; };
 		2EB5B279275DF91F00787E05 /* XwInventoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XwInventoryModel.m; sourceTree = "<group>"; };
 		2EB5B27A275DF91F00787E05 /* XwInventoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XwInventoryModel.h; sourceTree = "<group>"; };
 		2EB5B27C275E042800787E05 /* XwInOrOutWaterModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XwInOrOutWaterModel.h; sourceTree = "<group>"; };
@@ -1548,6 +1581,33 @@
 			path = resource;
 			sourceTree = "<group>";
 		};
+		2E6F96672761D50E00660B4D /* XwOrderDetail */ = {
+			isa = PBXGroup;
+			children = (
+				2E6F96682761D56A00660B4D /* XwOrderDetailStockCell.h */,
+				2E6F96692761D56A00660B4D /* XwOrderDetailStockCell.m */,
+				2E6F966E2761E94A00660B4D /* XwOrderDetailDeliveryCell.h */,
+				2E6F966F2761E94A00660B4D /* XwOrderDetailDeliveryCell.m */,
+				2E6F96712762089900660B4D /* XWOrderDetailDefaultCell.h */,
+				2E6F96722762089900660B4D /* XWOrderDetailDefaultCell.m */,
+				2E6F967427623A4200660B4D /* XwOrderDetailStockInfoCell.h */,
+				2E6F967527623A4200660B4D /* XwOrderDetailStockInfoCell.m */,
+				2E6F967A276240CD00660B4D /* XwOrderDetailAllotCell.h */,
+				2E6F967B276240CD00660B4D /* XwOrderDetailAllotCell.m */,
+				2E6F967D2762454600660B4D /* XwOrderDetailAuditMarkCell.h */,
+				2E6F967E2762454600660B4D /* XwOrderDetailAuditMarkCell.m */,
+				2E6F9680276249FD00660B4D /* XwOrderDetailRefundCell.h */,
+				2E6F9681276249FD00660B4D /* XwOrderDetailRefundCell.m */,
+				2E6F968327624FF000660B4D /* XwOrderDetailTotalCell.h */,
+				2E6F968427624FF000660B4D /* XwOrderDetailTotalCell.m */,
+				2E6F9686276254E000660B4D /* XwOrderDetailAdjustInventoryCell.h */,
+				2E6F9687276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m */,
+				2E6F9689276258D100660B4D /* XwOrderDetailGoodsInventory.h */,
+				2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */,
+			);
+			path = XwOrderDetail;
+			sourceTree = "<group>";
+		};
 		368F97CC26B0668B003B8F37 /* StockManageModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -1575,6 +1635,8 @@
 				2E13BED2275C055800287371 /* XwOrderDetailModel.m */,
 				36A508C726B7009000C536DE /* ChangeStock */,
 				36A5084026B5A05300C536DE /* PurchaseApply */,
+				2E6F966B2761E41600660B4D /* XwSystemTCellModel.h */,
+				2E6F966C2761E41600660B4D /* XwSystemTCellModel.m */,
 			);
 			path = M;
 			sourceTree = "<group>";
@@ -1582,6 +1644,7 @@
 		368F982A26B0F532003B8F37 /* V */ = {
 			isa = PBXGroup;
 			children = (
+				2E6F96672761D50E00660B4D /* XwOrderDetail */,
 				368F982C26B0F569003B8F37 /* ChangeStockView */,
 			);
 			path = V;
@@ -3992,6 +4055,7 @@
 				72C4C93721DC6A8600CB861F /* SalesCounterConfigModel.m in Sources */,
 				72613BDC21C74DA80084FBF9 /* StoreCustomerDetailVC.m in Sources */,
 				725DD10321B129DC0060C0BD /* UserIdentifySuccessCCell.m in Sources */,
+				2E6F966A2761D56A00660B4D /* XwOrderDetailStockCell.m in Sources */,
 				72684C1621BA351A00380622 /* CouponRecordVC.m in Sources */,
 				2E384CEF26DF77940021EA4A /* UITextView+XWAdd.m in Sources */,
 				7242B28721AF95990049E497 /* Role_ProfileConfig.m in Sources */,
@@ -4066,9 +4130,11 @@
 				7235DBF221F07A4200AA60F1 /* ReturnOrderCounterModel.m in Sources */,
 				7242B27D21AF8B240049E497 /* HomePageItemCCell.m in Sources */,
 				72458C792382FCB2005CA4AB /* UICollectionViewLeftAlignedLayout.m in Sources */,
+				2E6F967C276240CD00660B4D /* XwOrderDetailAllotCell.m in Sources */,
 				721D62182200536300C4987E /* TZPhotoPickerController.m in Sources */,
 				721D61B621FCC1F500C4987E /* ReturnOrderDetailReasonTCell.m in Sources */,
 				725407BE224E1D0D000DF47C /* NSString+CheckFormat.m in Sources */,
+				2E6F967F2762454600660B4D /* XwOrderDetailAuditMarkCell.m in Sources */,
 				725DD0FE21B128450060C0BD /* UserIdentifySuccessVC.m in Sources */,
 				2E384CF726DF77940021EA4A /* UIColor+XWAdd.m in Sources */,
 				72FFB23321AC134E00614F14 /* GestureVerifyViewController.m in Sources */,
@@ -4080,6 +4146,7 @@
 				2E384CF326DF77940021EA4A /* UITabBar+XWAdd.m in Sources */,
 				2E384CED26DF77940021EA4A /* UIButton+XWAdd.m in Sources */,
 				2E384CF126DF77940021EA4A /* NSAttributedString+XWAdd.m in Sources */,
+				2E6F9688276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m in Sources */,
 				722D86C321D4B07F002593EF /* PackageDetailModel.m in Sources */,
 				7235A44221F19F8D0033E09C /* ReturnOrderDetailVC.m in Sources */,
 				7242B29121AFE17C0049E497 /* MineItemTCell.m in Sources */,
@@ -4092,6 +4159,7 @@
 				725DD13021B5107C0060C0BD /* GoodsCategoryRankTCell.m in Sources */,
 				72C1E96C21E32A5800B61942 /* OrderConfigTCell.m in Sources */,
 				7240A53321D0AD1B0058E279 /* CouponInfoModel.m in Sources */,
+				2E6F968B276258D100660B4D /* XwOrderDetailGoodsInventory.m in Sources */,
 				7240A4BD21CB30BF0058E279 /* BaseTableViewCell.m in Sources */,
 				7242B28A21AF9A010049E497 /* RoleProfileModel.m in Sources */,
 				72ED755A2211272E00682DC9 /* OrderReturnStatusTCell.m in Sources */,
@@ -4104,12 +4172,14 @@
 				2E384D1526DF99A10021EA4A /* SKSTableView.m in Sources */,
 				72FFB22B21AC134E00614F14 /* SDCollectionViewCell.m in Sources */,
 				7240A4D521CC87450058E279 /* CommonTypeSelectedView.m in Sources */,
+				2E6F967627623A4200660B4D /* XwOrderDetailStockInfoCell.m in Sources */,
 				7289A46523BB4BE7005D1A5D /* UIResponder+STPopup.m in Sources */,
 				7242B24821AD53250049E497 /* HomePageVC.m in Sources */,
 				721D620E2200536300C4987E /* TZImageCropManager.m in Sources */,
 				2E13BED1275BFFF600287371 /* XwOrderDetailVC.m in Sources */,
 				7235DBFC21F081ED00AA60F1 /* ReturnGoodsCounterStatisticsTCell.m in Sources */,
 				72FFB1FF21AC134E00614F14 /* UIViewController+HeightAdjustKeyBorad.m in Sources */,
+				2E6F966D2761E41600660B4D /* XwSystemTCellModel.m in Sources */,
 				72F1F26821E6F46200625848 /* IntentionGoodsVC.m in Sources */,
 				7240A4FA21CCC47F0058E279 /* SellGoodsOrderConfigTCell.m in Sources */,
 				2E384CFF26DF79BF0021EA4A /* xw_StoreOrderVC.m in Sources */,
@@ -4131,6 +4201,7 @@
 				72FFB20621AC134E00614F14 /* KWCommonPickView.m in Sources */,
 				72FFB23521AC134E00614F14 /* PCCircleViewConst.m in Sources */,
 				721D61BA21FCD37500C4987E /* CommonWebViewVC.m in Sources */,
+				2E6F9682276249FD00660B4D /* XwOrderDetailRefundCell.m in Sources */,
 				721D619721FAF3AB00C4987E /* ReturnAllGoodsCounterVC.m in Sources */,
 				72B6B6B4237FEBA3003F2AAE /* StoreStaffsVC.m in Sources */,
 				725DD13621B513350060C0BD /* StoreActivityVC.m in Sources */,
@@ -4159,6 +4230,7 @@
 				72FFB21221AC134E00614F14 /* JHPieForeBGView.m in Sources */,
 				72B6B69F237E911D003F2AAE /* MineAwardsTCell.m in Sources */,
 				7289A44023B9FF8A005D1A5D /* ChangeStoreVC.m in Sources */,
+				2E6F96732762089A00660B4D /* XWOrderDetailDefaultCell.m in Sources */,
 				725DD16821B550D60060C0BD /* AddressAddVC.m in Sources */,
 				722D86AC21D3A014002593EF /* IntentionManageVC.m in Sources */,
 				72C1E98221E4DE1100B61942 /* KWTypeConditionCCell.m in Sources */,
@@ -4248,6 +4320,7 @@
 				724D1075223F42BE000B4262 /* VideoTestVC.m in Sources */,
 				725DD14B21B530DB0060C0BD /* OrderPromotionTCell.m in Sources */,
 				72C4C94F21DF578A00CB861F /* OrderManageModel.m in Sources */,
+				2E6F968527624FF000660B4D /* XwOrderDetailTotalCell.m in Sources */,
 				722D86BB21D4A189002593EF /* CommonSkipHelper.m in Sources */,
 				7235DBF721F07EED00AA60F1 /* ReturnGoodsCounterConfigTCell.m in Sources */,
 				722D86B021D4781E002593EF /* WelcomeVC.m in Sources */,
@@ -4274,6 +4347,7 @@
 				72684BFF21B9513000380622 /* SamplingInputTCell.m in Sources */,
 				2E384CC526DF74990021EA4A /* xw_BaseView.m in Sources */,
 				2E384CC026DF74990021EA4A /* xw_BaseViewController.m in Sources */,
+				2E6F96702761E94A00660B4D /* XwOrderDetailDeliveryCell.m in Sources */,
 				72B6B6B1237FDD43003F2AAE /* AwardsDetailModel.m in Sources */,
 				722D86FA21D6937A002593EF /* PatrolShopDetailModel.m in Sources */,
 				7232CBF821BA4EC1003E9F9B /* PatrolStoreCheckResultTcell.m in Sources */,
@@ -4484,7 +4558,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4498,7 +4572,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moen.kitchen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4514,7 +4588,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4528,7 +4602,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moen.kitchen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
