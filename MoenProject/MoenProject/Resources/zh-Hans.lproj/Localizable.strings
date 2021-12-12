@@ -193,6 +193,7 @@
 "sampling_info" = "出样信息";
 "stop_success" = "停用成功";
 "submit_success" = "提交成功";
+"save_success" = "保存成功";
 "sampling_release" = "出样发布";
 
 /**
@@ -325,12 +326,13 @@
  */
 "stock_manage" = "库存管理";
 "select_purchase_apply_type" = "选择进货申请类型";
+"select_purchase_delivery_type" = "选择发货方式";
 "purchase_apply" = "进货申请";
 "allocate_apply" = "调拨申请";
 "store_self_apply" = "门店自提";
 "stocker_apply" = "总仓发货";
-"allocate_order" = "调拨单";
-"allocate_task" = "调拨任务";
+"allocate_order" = "我店调拨申请";
+"allocate_task" = "他店调拨申请";
 
 
 

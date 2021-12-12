@@ -98,7 +98,8 @@
     self.goodsPrice.text = model.goodsCount;
     self.atIndex = model.indexPath.section;
     self.isShowDetail = model.isShowDetail;
-    
+    self.goodsCount.text = model.goodsStatus;
+//    self.editCountView.hidden = YES;
     if (model.goodsPackage.goodsList.count > 0) {
         [self.goodsPackageDes setHidden:NO];
         [self.goodsPackageDetailBtn setHidden:NO];
@@ -160,6 +161,10 @@
     
     if (controllerType == 1) {
         [self.goodsSelectBtn setHidden:YES];
+    }
+    else if (controllerType == 2) {
+        [self.goodsPrice setHidden:YES];
+        [self.goodsSelectBtn setHidden:NO];
     }
     else
     {
@@ -575,6 +580,8 @@
 
 
 #pragma  mark -- UITextFieldDelegate
+// 可用下个方法替换
+
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
@@ -729,7 +736,7 @@
                         return NO;
                     }
                 }
-                if (textField.text.length >= 4 && ![string isEqualToString:@""]) {
+                if (textField.text.length >= 3 && ![string isEqualToString:@""]) {
                     return NO;
                 }
                 //限制只能输入：1234567890.

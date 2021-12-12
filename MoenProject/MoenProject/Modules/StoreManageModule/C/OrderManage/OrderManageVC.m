@@ -14,7 +14,8 @@
 #import "OrderDetailVC.h"
 #import "CommonCategoryModel.h"
 #import "OrderScreenSideslipView.h"
-
+#import "xw_SelectDeliveryWayVC.h"
+#import "XwSubscribeTakeVC.h"
 @interface OrderManageVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) CommonSearchView *searchView;
@@ -36,6 +37,9 @@
 
 @property (nonatomic, copy) NSString *selectedTimeType;
 
+@property (nonatomic, copy) NSString *dataStart;
+
+@property (nonatomic, copy) NSString *dataEnd;
 
 @end
 
@@ -112,6 +116,17 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    OrderManageModel *model = self.dataList[section];
+    if([QZLUserConfig sharedInstance].useInventory){
+        if([model.orderStatus isEqualToString:@"waitDeliver"]||
+           [model.orderStatus isEqualToString:@"partDeliver"]||
+           [model.orderStatus isEqualToString:@"allDeliver"]){
+            return 85;
+        } else if([model.orderStatus isEqualToString:@"allDeliver"]){
+            return 45;
+        }
+    }
+    
     return 45;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -135,13 +150,22 @@
     OrderManageModel *model = self.dataList[section];
     UIView *headerView = [[UIView alloc] init];
     headerView.backgroundColor = AppBgWhiteColor;
-    UILabel *timeLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 200, 20)];
+    UILabel *timeLab = [UILabel new];
     timeLab.font = FontBinB(14);
     timeLab.textColor = AppTitleBlackColor;
     timeLab.text = model.createDate;;
     [headerView addSubview:timeLab];
+    timeLab.sd_layout.leftSpaceToView(headerView, 15).topEqualToView(headerView).widthIs(200).heightIs(40);
     
-    UILabel *orderLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 34, SCREEN_WIDTH - 30, 20)];
+    UILabel *statueLab = [UILabel new];
+    statueLab.font = FontBinB(14);
+    statueLab.textColor = AppTitleBlackColor;
+    statueLab.text = [self getOrderStatus:model.orderStatus];
+    statueLab.textAlignment = NSTextAlignmentRight;
+    [headerView addSubview:statueLab];
+    statueLab.sd_layout.rightSpaceToView(headerView, 15).topEqualToView(headerView).leftSpaceToView(timeLab, 0).heightIs(40);
+    
+    UILabel *orderLab = [UILabel new];
     orderLab.font = FONTLanTingR(14);
     orderLab.textColor = AppTitleBlackColor;
     
@@ -150,6 +174,12 @@
     [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6, str.length - 6)];
     orderLab.attributedText = str;
     [headerView addSubview:orderLab];
+    
+    
+    
+    orderLab.sd_layout.rightSpaceToView(headerView, 15).topSpaceToView(timeLab, 0).leftSpaceToView(headerView, 15).heightIs(40);
+    
+    
     return headerView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -175,13 +205,13 @@
     infoLab.textAlignment = NSTextAlignmentRight;
     
     
-    NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%ld",(long)model.giftNum];
-    NSString *productNumCountStr = [NSString stringWithFormat:@"%ld",(long)model.productNum];
+    NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%@",model.giftNum];
+    NSString *productNumCountStr = [NSString stringWithFormat:@"%@",model.productNum];
     if (model.giftNum > 0) {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品, %@件赠品  实付款:￥%@",(long)model.productNum,giftGoodsCountStr, model.payAmount]];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品, %@件赠品  实付款:￥%@",model.productNum,giftGoodsCountStr, model.payAmount]];
         
-        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
+        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%@",model.productNum].length)];
+        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%@",model.productNum].length)];
         
         [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
         [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
@@ -194,10 +224,10 @@
     }
     else
     {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品 实付款:￥%@",(long)model.productNum, model.payAmount]];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品 实付款:￥%@",model.productNum, model.payAmount]];
         
-        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
+        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%@",model.productNum].length)];
+        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%@",model.productNum].length)];
         
            [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
            [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
@@ -207,10 +237,39 @@
     
     [footerView addSubview:infoLab];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 40, SCREEN_WIDTH, 5)];
+    if([QZLUserConfig sharedInstance].useInventory){
+       
+//        waitDeliver partDeliver allDeliver
+        UIButton *againBtn =[UIButton buttonWithTitie:@"再来一单" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+            [self buttonClick:0 orderID:model.ID];
+        }];
+        ViewRadius(againBtn, 5)
+        UIButton *pickBtn =[UIButton buttonWithTitie:@"预约自提" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+            [self buttonClick:2 orderID:model.ID];
+        }];
+        ViewRadius(pickBtn, 5)
+        UIButton *updateBtn =[UIButton buttonWithTitie:@"更新发货" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+            [self buttonClick:1 orderID:model.ID];
+        }];
+        ViewRadius(updateBtn, 5)
+        if([model.orderStatus isEqualToString:@"waitDeliver"]||
+           [model.orderStatus isEqualToString:@"partDeliver"]){
+            [footerView addSubview:againBtn];
+            [footerView addSubview:pickBtn];
+            [footerView addSubview:updateBtn];
+            updateBtn.sd_layout.rightSpaceToView(footerView, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+            pickBtn.sd_layout.rightSpaceToView(updateBtn, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+            againBtn.sd_layout.rightSpaceToView(pickBtn, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+        } else if([model.orderStatus isEqualToString:@"allDeliver"]){
+            [footerView addSubview:againBtn];
+            againBtn.sd_layout.rightSpaceToView(footerView, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+        }
+    }
+    
+    UIView *lineView = [UIView new];
     lineView.backgroundColor = AppBgBlueGrayColor;
     [footerView addSubview:lineView];
-    
+    lineView.sd_layout.leftEqualToView(footerView).rightEqualToView(footerView).bottomEqualToView(footerView).heightIs(5);
     return footerView;
 }
 #pragma mark -- UITableViewDelegate
@@ -238,9 +297,16 @@
 - (void)showConditionSelectView
 {
     WEAKSELF
-    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(KWOSSVDataModel *model, NSInteger type) {
-        weakSelf.selectedTimeType = model.itemId;
-        [[NSToastManager manager] showprogress];
+    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(XwScreenModel *model, NSInteger type) {
+        //
+                weakSelf.dataStart = model.dateStart;
+                weakSelf.dataEnd = model.dateEnd;
+                for (XWSelectModel* tm in model.selectList) {
+                    if([tm.module isEqualToString:@"TimeQuantum"]){
+                        weakSelf.selectedTimeType = tm.selectID;
+                    }
+                }
+                [[NSToastManager manager] showprogress];
         [weakSelf httpPath_orderList];
     }];
 }
@@ -445,5 +511,57 @@
 {
     NSLog(@"d订单列表页面释放");
 }
+-(NSString*)getOrderStatus:(NSString*)status{
+    NSString* orderStatus= @"";
+    if([status isEqualToString:@"waitSub"]){
+        orderStatus = @"待提交";
+    } else if([status isEqualToString:@"wait"]){
+        orderStatus = @"待审核";
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+            orderStatus = @"待门店审核";
+        }
+    } else if([status isEqualToString:@"waitDeliver"]){
+        orderStatus = @"待发货";
+    } else if([status isEqualToString:@"allocate"]){
+        orderStatus = @"配货中";
+    } else if([status isEqualToString:@"partDeliver"]){
+        orderStatus = @"部分发货";
+    }else if([status isEqualToString:@"allDeliver"]){
+        orderStatus = @"全部发货";
+    }else if([status isEqualToString:@"finish"]){
+        orderStatus = @"已完成";
+    }else if([status isEqualToString:@"refuse"]){
+        orderStatus = @"已拒绝";
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+            orderStatus = @"门店已拒绝";
+        }
+    }else if([status isEqualToString:@"waitGoods"]){
+        orderStatus = @"待收货";
+    }else if([status isEqualToString:@"refuseAD"]){
+        orderStatus = @"AD已拒绝";
+    } else if([status isEqualToString:@"waitAD"]){
+        orderStatus = @"待AD审核";
+    }
+    
+    
+   
+    
+    return orderStatus;
+}
+-(void)buttonClick:(NSInteger)type orderID:(NSString*)orderID{
+    if(type == 1){//更新发货
+        xw_SelectDeliveryWayVC *orderDetailVC = [[xw_SelectDeliveryWayVC alloc] init];
+        orderDetailVC.orderID = orderID;
+        [self.navigationController pushViewController:orderDetailVC animated:YES];
+    } else if(type == 2){//预约自提
+        XwSubscribeTakeVC *orderDetailVC = [[XwSubscribeTakeVC alloc] init];
+        orderDetailVC.orderID = orderID;
+        [self.navigationController pushViewController:orderDetailVC animated:YES];
+    } else {
+        NSLog(@"再来一单");
+    }
 
+}
 @end

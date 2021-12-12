@@ -23,11 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString* productNum;
 
-@property (nonatomic, assign) NSInteger giftNum;
+@property (nonatomic, copy) NSString* giftNum;
 
 @property (nonatomic, copy) NSString *payAmount;
 
 @property (nonatomic, copy) NSString *recommender;
+
+@property (nonatomic, copy) NSString *orderStatus;
 
 
 @property (nonatomic, copy) NSString *orderCode;

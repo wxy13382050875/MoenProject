@@ -38,6 +38,18 @@
         self.bg_View.backgroundColor = UIColorFromRGB(0xF9F9F9);
     }
 }
+-(void)setWarehouseModel:(UserLoginInfoModel *)warehouseModel{
+    self.title_Lab.text = warehouseModel.name;
+    if (warehouseModel.isSelected) {
+        self.selected_Icon.hidden = NO;
+        self.bg_View.backgroundColor = AppBgShoppingCarColor;
+    }
+    else
+    {
+        self.selected_Icon.hidden = YES;
+        self.bg_View.backgroundColor = UIColorFromRGB(0xF9F9F9);
+    }
+}
 -(void)setModel:(UserLoginInfoModel *)model{
     
     self.title_Lab.text = model.storeName;

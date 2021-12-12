@@ -46,6 +46,8 @@ typedef NS_ENUM(NSInteger, FDAltertViewType)
     FDAltertViewTypeSubmitOrder,
 };
 
+typedef void(^buttonBlock)(NSInteger buttonIndex,NSString* inputStr);
+
 @interface FDAlertView : UIView
 
 @property (strong, nonatomic) UIView *contentView;
@@ -53,6 +55,9 @@ typedef NS_ENUM(NSInteger, FDAltertViewType)
 @property (strong, nonatomic) NSString *message;
 @property (nonatomic, assign) FDAltertViewType alterType;
 @property (weak, nonatomic) id<FDAlertViewDelegate> delegate;
+
+
+-(instancetype)initWithBlockTItle:(NSString *)title alterType:(FDAltertViewType)alterType message:(NSString *)message block:(buttonBlock) buttonBlock buttonTitles:(NSString *)buttonTitles, ... NS_REQUIRES_NIL_TERMINATION;
 
 - (instancetype)initWithTitle:(NSString *)title alterType:(FDAltertViewType)alterType message:(NSString *)message delegate:(id<FDAlertViewDelegate>)delegate buttonTitles:(NSString *)buttonTitles, ... NS_REQUIRES_NIL_TERMINATION;
 

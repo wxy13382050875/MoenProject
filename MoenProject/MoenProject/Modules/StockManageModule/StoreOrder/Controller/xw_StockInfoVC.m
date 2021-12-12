@@ -8,11 +8,12 @@
 
 #import "xw_StockInfoVC.h"
 #import "CommonSingleGoodsDarkTCell.h"
-#import "xw_StoreOrderViewModel.h"
+//#import "xw_StoreOrderViewModel.h"
+#import "XwStockInfoModel.h"
 @interface xw_StockInfoVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
-@property (nonatomic, strong) xw_StoreOrderViewModel *viewModel;
+//@property (nonatomic, strong) xw_StoreOrderViewModel *viewModel;
 @end
 
 @implementation xw_StockInfoVC
@@ -42,6 +43,7 @@
     
     
 //    kSetMJRefresh(self.tableView);
+    [self httpPath_stores_getShopDealerStock];
     
 }
 -(void)xw_loadNewData{
@@ -58,29 +60,59 @@
     [self getData];
 }
 -(void)getData{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            /// 下拉时候一定要停止当前播放，不然有新数据，播放位置会错位。
-           
-//            [[self.viewModel.requestCommand execute: nil] subscribeNext:^(id x) {;
-//                [self.tableView.mj_header endRefreshing];
-//
-////                if (array.count < 10) {
-////
-////                    [self.tableView.mj_footer endRefreshingWithNoMoreData];
-////                }
-////                [self.dataSource addObjectsFromArray:array];
-////                [self.tableView reloadData];
-//
-//            } error:^(NSError *error) {
-////                Dialog().wTypeSet(DialogTypeAuto).wMessageSet(error.localizedDescription).wDisappelSecondSet(1).wStart();
-//                [self.tableView.mj_header endRefreshing];
-//            }];
-    //
-        });
+    
 }
 
 -(void)xw_bindViewModel{
     
+}
+//库存参考信息
+-(void)httpPath_stores_getShopDealerStock{
+    NSMutableArray* arr= [NSMutableArray array];
+    
+    for (CommonGoodsModel* model in self.array) {
+        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+        [dict setObject:model.code forKey:@"goodsSKU"];
+        [dict setObject:@(model.kGoodsCount) forKey:@"num"];
+        
+        [arr addObject:dict];
+    }
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:arr forKey:@"goodsSkuInfos"];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    [[NSToastManager manager] showprogress];
+//
+    self.requestURL = Path_stores_getShopDealerStock;
+}
+#pragma mark - 接口数据处理
+- (void)actionFetchRequest:(NSURLSessionDataTask *)operation result:(MoenBaseModel *)parserObject error:(NSError *)requestErr
+{
+    WEAKSELF
+    [[NSToastManager manager] hideprogress];
+    if (requestErr) {
+        if ([operation.urlTag isEqualToString:Path_orderDetail]) {
+            
+        }
+    }
+    else
+    {
+        if (parserObject.success) {
+            if ([parserObject.code isEqualToString:@"200"]) {
+                if ([operation.urlTag isEqualToString:Path_stores_getShopDealerStock]) {//进货单详情
+                    self.dataSource = [XwStockInfoModel mj_objectArrayWithKeyValuesArray:parserObject.datas[@"productList"]];
+                }
+                [self.tableView reloadData];
+            }
+            else
+            {
+                self.isShowEmptyData = YES;
+                [[NSToastManager manager] showtoast:parserObject.message];
+            }
+            
+        }
+    }
 }
 /*
 #pragma mark - Navigation
@@ -95,7 +127,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return self.dataSource.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -109,6 +141,7 @@
     
     CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([CommonSingleGoodsDarkTCell class])];
 //    [cell showDataWithOrderManageModel:model];
+    cell.stockInfoModel = self.dataSource[indexPath.section];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
     
@@ -126,8 +159,10 @@
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView* footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
  
-    UILabel *titleLa =[UILabel labelWithText:[NSString stringWithFormat:@"本店库存数量：%@",@"0"] WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentLeft WithFont:14];
-    UILabel *titleLb =[UILabel labelWithText:[NSString stringWithFormat:@"AD库存数量：%@",@"0"] WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentLeft WithFont:14];
+    XwStockInfoModel* model = self.dataSource[section];
+    
+    UILabel *titleLa =[UILabel labelWithText:[NSString stringWithFormat:@"本店库存数量：%@",model.shopNum] WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentLeft WithFont:14];
+    UILabel *titleLb =[UILabel labelWithText:[NSString stringWithFormat:@"AD库存数量：%@",model.dealerNum] WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentLeft WithFont:14];
     [footer addSubview:titleLa];
     [footer addSubview:titleLb];
     titleLa.sd_layout.
@@ -147,12 +182,7 @@
     }
     return _tableView;
 }
--(xw_StoreOrderViewModel*)viewModel{
-    if (!_viewModel) {
-        _viewModel = [[xw_StoreOrderViewModel alloc] init];
-    }
-    return _viewModel;
-}
+//
 -(NSMutableArray*)dataSource{
  
     if (!_dataSource) {

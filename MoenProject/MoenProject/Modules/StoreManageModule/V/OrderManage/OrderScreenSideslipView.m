@@ -8,12 +8,8 @@
 
 #import "OrderScreenSideslipView.h"
 #import "KWTypeConditionCCell.h"
-
-@implementation KWOSSVDataModel
-@end
-
-
-@interface OrderScreenSideslipView()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
+#import "ZLTimeView.h"
+@interface OrderScreenSideslipView()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate,ZLTimeViewDelegate>
 
 @property (nonatomic, strong) UIView *containerView;
 
@@ -31,6 +27,7 @@
 
 @property (nonatomic, strong) UIButton *confirmBtn;
 
+@property (nonatomic, strong) XwScreenModel *model;//选中筛选条件
 
 @end
 
@@ -65,14 +62,9 @@
     self.popSheetView.frame = CGRectMake(83, 0, SCREEN_WIDTH - 85, SCREEN_HEIGHT - marginTop);
     [self.containerView addSubview:self.popSheetView];
     
-    self.collectionView.frame = CGRectMake(0, 40, self.popSheetView.frame.size.width, self.popSheetView.frame.size.height - 83);
+    self.collectionView.frame = CGRectMake(0, 0, self.popSheetView.frame.size.width, self.popSheetView.frame.size.height - 43);
     [self.popSheetView addSubview:self.collectionView];
-    
-    UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 40)];
-    titleLab.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-    titleLab.textColor = AppTitleBlackColor;
-    titleLab.text = @"下单时间";
-    [self.popSheetView addSubview:titleLab];
+
     
     
     UIButton *resetBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, self.popSheetView.frame.size.height - 43, self.popSheetView.frame.size.width/2, 43)];
@@ -164,53 +156,141 @@
 }
 
 #pragma mark - UICollectionViewDataSource
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    
     return self.dataArr.count;
+}
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    XwScreenModel* model = self.dataArr[section];
+    return model.list.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    KWOSSVDataModel *model = self.dataArr[indexPath.row];
+//    KWOSSVDataModel *model = self.dataArr[indexPath.row];
     KWTypeConditionCCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"KWTypeConditionCCell" forIndexPath:indexPath];
-    [cell showDataWithKWOSSVDataModel:model];
+    XwScreenModel* model = self.dataArr[indexPath.section];
+    
+    [cell showDataWithKWOSSVDataModel:model.list[indexPath.row]];
     return cell;
 }
-
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
+    
+    return CGSizeMake(SCREEN_WIDTH - 85, 40);
+}
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
+    XwScreenModel* model = self.dataArr[section];
+    if(model.showFooter){
+        return CGSizeMake(SCREEN_WIDTH - 85, 70);
+    } else {
+        return CGSizeZero;
+    }
+}
+-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
+    
+    XwScreenModel* model = self.dataArr[indexPath.section];
+    
+    if (kind == UICollectionElementKindSectionHeader) {
+        UICollectionReusableView * header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:NSStringFromClass([UICollectionReusableView class]) forIndexPath:indexPath];
+        
+        UILabel* titleLabel = [UILabel labelWithText:@"" WithTextColor:COLOR(@"#333333") WithNumOfLine:1 WithBackColor:[UIColor whiteColor] WithTextAlignment:NSTextAlignmentLeft WithFont:  14];
+        titleLabel.font = [UIFont boldSystemFontOfSize:14];
+        [header addSubview: titleLabel];
+        
+        titleLabel.sd_layout.centerYEqualToView(header)
+        .leftSpaceToView(header, 5)
+        .rightSpaceToView(header, 10)
+        .heightIs(30);
+        
+        
+        titleLabel.text = model.title;
+        
+        return header;
+    } else if (kind == UICollectionElementKindSectionFooter) {
+        if(model.showFooter){
+            UICollectionReusableView * footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:NSStringFromClass([UICollectionReusableView class]) forIndexPath:indexPath];
+            
+            UILabel* titleLabel = [UILabel labelWithText:@"" WithTextColor:COLOR(@"#333333") WithNumOfLine:1 WithBackColor:[UIColor whiteColor] WithTextAlignment:NSTextAlignmentLeft WithFont:  14];
+            titleLabel.font = [UIFont boldSystemFontOfSize:14];
+            [footer addSubview: titleLabel];
+            
+            titleLabel.sd_layout.topSpaceToView(footer, 5)
+            .leftSpaceToView(footer, 5)
+            .rightSpaceToView(footer, 10)
+            .heightIs(30);
+            titleLabel.text = @"时间段";
+            
+            ZLTimeView *timeView = [ZLTimeView new];
+            timeView.delegate = self;
+            [footer addSubview: timeView];
+            timeView.sd_layout.topSpaceToView(titleLabel, 5)
+            .leftSpaceToView(footer, 10)
+            .rightSpaceToView(footer, 10)
+            .heightIs(30);
+            
+            return footer;
+        }
+        
+        
+        
+        
+        return nil;
+    }
+    return nil;
+}
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    for (KWOSSVDataModel *model in self.dataArr) {
+    
+    XwScreenModel* tmodel = self.dataArr[indexPath.section];
+    for (KWOSSVDataModel *model in tmodel.list) {
         model.isSelected = NO;
     }
-    KWOSSVDataModel *model = self.dataArr[indexPath.row];
+    KWOSSVDataModel *model = tmodel.list[indexPath.row];
     model.isSelected = YES;
     [self.collectionView reloadData];
-//    if (self.actionBlock) {
-//        self.actionBlock(model, indexPath.row);
-//    }
-//    [self dismiss];
+}
+
+- (void)timeView:(ZLTimeView *)timeView seletedDateBegin:(NSString *)beginTime end:(NSString *)endTime {
+    // TODO: 进行上传时间段
+    self.model.dateStart = beginTime;
+    self.model.dateEnd = endTime;
 }
 
 
 - (void)resetBtnAction
 {
-    for (KWOSSVDataModel *model in self.dataArr) {
-        model.isSelected = NO;
+    for (XwScreenModel *model in self.dataArr) {
+        for (KWOSSVDataModel *model1 in model.list) {
+            model1.isSelected = NO;
+        }
     }
-    KWOSSVDataModel *model = self.dataArr[0];
+    XwScreenModel *tmodel = self.dataArr[0];
+    KWOSSVDataModel *model = tmodel.list[0];
     model.isSelected = YES;
     [self.collectionView reloadData];
 }
 
 - (void)confirmBtnAction
 {
-    for (KWOSSVDataModel *model in self.dataArr) {
-        if (model.isSelected) {
-            if (self.actionBlock) {
-                self.actionBlock(model, 0);
+    NSMutableArray* array = [NSMutableArray array];
+    for (XwScreenModel *model in self.dataArr) {
+        for (KWOSSVDataModel *model1 in model.list) {
+            if (model1.isSelected) {//将所有选中的tag放到一个模型中方便处理
+                XWSelectModel* tmd = [XWSelectModel new];
+                tmd.module = model.className;
+                tmd.selectID = model1.itemId;
+                
+                [array addObject:tmd];
+
+//                break;
             }
-            break;
         }
     }
+    self.model.selectList = array;
+    if (self.actionBlock) {
+        self.actionBlock(self.model, 0);
+    }
+    
     [self dismiss];
 }
 
@@ -248,6 +328,11 @@
         _collectionView.dataSource = self;
         _collectionView.bounces = NO;
         [_collectionView registerNib:[UINib nibWithNibName:@"KWTypeConditionCCell" bundle:nil] forCellWithReuseIdentifier:@"KWTypeConditionCCell"];
+        //注册header
+        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:NSStringFromClass([UICollectionReusableView class])];
+        
+        //注册header
+        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:NSStringFromClass([UICollectionReusableView class])];
     }
     return _collectionView;
 }
@@ -259,6 +344,14 @@
         _dataArr = [[NSMutableArray alloc] init];
     }
     return _dataArr;
+}
+-(XwScreenModel*)model{
+    if(!_model){
+        _model = [XwScreenModel new];
+        _model.dateStart =[[NSDate date] timeFormat:@"yyyy-MM-dd"];
+        _model.dateEnd =[[NSDate date] timeFormat:@"yyyy-MM-dd"];
+    }
+    return _model;
 }
 
 @end

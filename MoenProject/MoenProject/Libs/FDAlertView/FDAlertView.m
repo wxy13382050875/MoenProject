@@ -35,7 +35,7 @@
 @property (strong, nonatomic) NSMutableArray *buttonArray;
 @property (strong, nonatomic) NSMutableArray *buttonTitleArray;
 
-
+@property (nonatomic, copy) buttonBlock buttonBlock;
 
 @end
 
@@ -47,6 +47,42 @@ CGFloat contentViewHeight;
 - (instancetype)init {
     if (self = [super initWithFrame:[UIScreen mainScreen].bounds]) {
         self.backgroundColor = [UIColor clearColor];
+    }
+    return self;
+}
+
+-(instancetype)initWithBlockTItle:(NSString *)title alterType:(FDAltertViewType)alterType message:(NSString *)message block:(buttonBlock)buttonBlock buttonTitles:(NSString *)buttonTitles, ...{
+    if (self = [super initWithFrame:[UIScreen mainScreen].bounds]) {
+        _title = title;
+        _message = message;
+        _buttonBlock = buttonBlock;
+        _buttonArray = [NSMutableArray array];
+        _buttonTitleArray = [NSMutableArray array];
+        _alterType = alterType;
+        
+        va_list args;
+        va_start(args, buttonTitles);
+        if (buttonTitles)
+        {
+            [_buttonTitleArray addObject:buttonTitles];
+            while (1)
+            {
+                NSString *  otherButtonTitle = va_arg(args, NSString *);
+                if(otherButtonTitle == nil) {
+                    break;
+                } else {
+                    [_buttonTitleArray addObject:otherButtonTitle];
+                }
+            }
+        }
+        va_end(args);
+        
+        self.backgroundColor = [UIColor clearColor];
+        
+        _backgroundView = [[UIView alloc] initWithFrame:self.frame];
+        _backgroundView.backgroundColor = [UIColor blackColor];
+        [self addSubview:_backgroundView];
+        [self initContentView];
     }
     return self;
 }
@@ -357,12 +393,19 @@ CGFloat contentViewHeight;
             }
             
         }
+        if (self.buttonBlock) {
+            NSInteger index = [_buttonTitleArray indexOfObject:button.titleLabel.text];
+            self.buttonBlock(index,nil);
+        }
     }
     else
     {
         if (_delegate && [_delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:WithInputStr:)])
         {
             [_delegate alertView:self clickedButtonAtIndex:0 WithInputStr:nil];
+        }
+        if (self.buttonBlock) {
+            self.buttonBlock(0,nil);
         }
     }
     

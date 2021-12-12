@@ -21,6 +21,7 @@
 #import "FDAlertView.h"
 #import "GiftTitleTCell.h"
 #import "CommonSingleGoodsDarkTCell.h"
+#import "Xw_SelectWarehouseVC.h"
 @interface ReturnGoodsCounterVC ()<UITableViewDelegate, UITableViewDataSource, FDAlertViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableview;
@@ -430,7 +431,14 @@
         return;
     }
     
-    [self isConfirmReturnGoods];
+    if ([QZLUserConfig sharedInstance].useInventory){
+        Xw_SelectWarehouseVC *orderManageVC = [[Xw_SelectWarehouseVC alloc] init];
+        orderManageVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:orderManageVC animated:YES];
+    } else {
+        [self isConfirmReturnGoods];
+    }
+   
 }
 
 #pragma mark- event response
@@ -585,6 +593,7 @@
                 
             }
             if ([operation.urlTag isEqualToString:Path_load]) {
+                
                 CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
                 for (CommonCategoryModel *itemModel in model.enums) {
                     if ([itemModel.className isEqualToString:@"ReturnPickUpStatus"]) {
@@ -706,6 +715,10 @@
     [parameters setValue:[NSString stringWithFormat:@"%ld",(long)self.dataModel.actualRefundAmount] forKey:@"actualRefundAmount"];
     [parameters setValue:self.dataModel.ID forKey:@"id"];
     [parameters setValue:paramArr forKey:@"reshippedGoodsDataList"];
+    
+    //
+    [parameters setValue:@"" forKey:@"returnAddress"];
+    [parameters setValue:@"" forKey:@"stockeId"];
     
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;

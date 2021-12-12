@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,6 +21,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="25" height="45"/>
                         </imageView>
                     </subviews>
+                    <viewLayoutGuide key="safeArea" id="eXN-En-FT5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="7fj-bP-Gtu" secondAttribute="trailing" id="26Y-Zs-bYh"/>
@@ -32,7 +31,6 @@
                         <constraint firstItem="7fj-bP-Gtu" firstAttribute="top" secondItem="hDg-iy-s4H" secondAttribute="top" id="hAc-UK-Got"/>
                         <constraint firstItem="7fj-bP-Gtu" firstAttribute="leading" secondItem="hDg-iy-s4H" secondAttribute="leading" id="v6y-u7-mCo"/>
                     </constraints>
-                    <viewLayoutGuide key="safeArea" id="eXN-En-FT5"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T5b-YM-HlA">
                     <rect key="frame" x="9" y="8" width="357" height="34"/>
@@ -89,6 +87,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="qWo-Cf-VHK"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="qWo-Cf-VHK" firstAttribute="trailing" secondItem="hDg-iy-s4H" secondAttribute="trailing" constant="15" id="CON-zf-oxh"/>
@@ -98,7 +97,6 @@
                 <constraint firstItem="T5b-YM-HlA" firstAttribute="leading" secondItem="qWo-Cf-VHK" secondAttribute="leading" constant="9" id="oXC-AH-bYg"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="qWo-Cf-VHK"/>
             <connections>
                 <outlet property="container_view_Right" destination="HQO-30-k0b" id="ZS9-S9-Ych"/>
                 <outlet property="input_Txt" destination="CXq-nQ-OqV" id="g8K-bk-MCk"/>
@@ -110,6 +108,6 @@
     </objects>
     <resources>
         <image name="h_search_icon" width="20" height="20"/>
-        <image name="h_time_select_icon" width="24" height="38"/>
+        <image name="h_time_select_icon" width="24" height="38.5"/>
     </resources>
 </document>

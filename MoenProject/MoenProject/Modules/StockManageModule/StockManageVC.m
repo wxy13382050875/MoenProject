@@ -213,9 +213,14 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
             break;
         case 6:
         {
-            ReturnOrderManageVC *returnOrderManageVC = [[ReturnOrderManageVC alloc] init];
-            returnOrderManageVC.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:returnOrderManageVC animated:YES];
+//            ReturnOrderManageVC *returnOrderManageVC = [[ReturnOrderManageVC alloc] init];
+//            returnOrderManageVC.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:returnOrderManageVC animated:YES];
+            
+            PurchaseOrderManageVC *purchaseOrderManageVC = [[PurchaseOrderManageVC alloc] init];
+            purchaseOrderManageVC.hidesBottomBarWhenPushed = YES;
+            purchaseOrderManageVC.controllerType =PurchaseOrderManageVCTypeReturn;
+            [self.navigationController pushViewController:purchaseOrderManageVC animated:YES];
         }
             break;
             

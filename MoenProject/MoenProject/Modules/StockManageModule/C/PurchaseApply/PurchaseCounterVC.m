@@ -27,7 +27,7 @@
 #import "XWOrderDetailDefaultCell.h"
 
 
-@interface PurchaseCounterVC ()<UITableViewDelegate, UITableViewDataSource>
+@interface PurchaseCounterVC ()<UITableViewDelegate, UITableViewDataSource,FDAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIButton* btn1;
 @property (weak, nonatomic) IBOutlet UIButton* btn2;
@@ -41,6 +41,10 @@
 
 @property (nonatomic, assign) OrderOperationSuccessVCType successType;
 
+@property (nonatomic, strong) NSString *wishReceiveDate;
+
+@property (nonatomic, strong) NSString *orderRemarks;
+ 
 @end
 
 @implementation PurchaseCounterVC
@@ -190,7 +194,13 @@
     else if ([model.cellIdentify isEqualToString:KSellGoodsOrderMarkTCell])
     {
         SellGoodsOrderMarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SellGoodsOrderMarkTCell" forIndexPath:indexPath];
-        [cell showDataWithString: model.Data];
+        if(self.controllerType == SearchGoodsVCType_Stock){//进货柜台需要添写备注
+//            [cell showDataEditableWithString: self.orderRemarks];
+            cell.orderRemarks = self.orderRemarks;
+        } else {
+            [cell showDataWithString: model.Data];
+        }
+        
         return cell;
     }else if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
         XWOrderDetailDefaultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XWOrderDetailDefaultCell" forIndexPath:indexPath];
@@ -282,11 +292,16 @@
 -(IBAction)onSave:(UIButton*)sender
 {
     NSLog(@"保存");
-    if(self.controllerType == SearchGoodsVCType_Stock){
-        self.successType = OrderOperationSuccessVCTypeStockSave;
-        [self httpPath_stock_apply:@"save"];
-    } else if (self.controllerType == SearchGoodsVCType_Transfers ){
+    
+    
+    if (self.controllerType == SearchGoodsVCType_Transfers ){
         [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        NSString* message =@"";
+        self.successType = OrderOperationSuccessVCTypeStockSave;
+        message=@"确认保存进货申请信息吗？";
+        FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:message delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+        [alert show];
     }
     
     
@@ -294,13 +309,30 @@
 -(IBAction)onSubmit:(UIButton*)sender
 {
     NSLog(@"提交审核");
+    NSString* message =@"";
     if(self.controllerType == SearchGoodsVCType_Stock ){
         self.successType = OrderOperationSuccessVCTypeStockSubmit;
-        
+        message = @"确认将进货申请提交至AD审核吗？";
     } else if (self.controllerType == SearchGoodsVCType_Transfers ){
         self.successType = OrderOperationSuccessVCTypeTransfersSubmit;
+        message = @"确认提交调拨申请吗？";
     }
-    [self httpPath_stock_apply:@"apply"];
+    
+    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:message delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+    [alert show];
+}
+
+- (void)alertView:(FDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex WithInputStr:(NSString *)inputStr {
+    NSLog(@"%ld", (long)buttonIndex);
+    if (buttonIndex == 1) {
+        
+        if(self.successType == OrderOperationSuccessVCTypeStockSave){
+            [self httpPath_stock_apply:@"save"];
+        } else {
+            [self httpPath_stock_apply:@"apply"];
+        }
+        
+    }
 }
 
 #pragma mark -- HTTP
@@ -447,8 +479,8 @@
         [parameters setValue:self.storeID forKey:@"allotBy"];
     }
     
-    [parameters setValue:@"20211212113000" forKey:@"wishReceiveDate"];
-    [parameters setValue:@"123" forKey:@"orderRemarks"];
+    [parameters setValue:self.wishReceiveDate forKey:@"wishReceiveDate"];
+    [parameters setValue:self.orderRemarks forKey:@"orderRemarks"];
    
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;

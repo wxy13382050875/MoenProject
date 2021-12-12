@@ -454,7 +454,7 @@ NSString* const ME_Store_Owner_StockManage = @"{\
 \"isskip\": 0\
 },\
 {\
-\"title\": \"挑拨申请\",\
+\"title\": \"调拨申请\",\
 \"icon\": \"customer_activity_icon\",\
 \"skipid\": 1,\
 \"isskip\": 0\
@@ -478,7 +478,7 @@ NSString* const ME_Store_Owner_StockManage = @"{\
 \"isskip\": 0\
 },\
 {\
-\"title\": \"挑拨单管理\",\
+\"title\": \"调拨单管理\",\
 \"icon\": \"customer_order_icon\",\
 \"skipid\": 5,\
 \"isskip\": 0\

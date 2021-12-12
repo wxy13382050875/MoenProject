@@ -23,7 +23,7 @@
 #import "FDAlertView.h"
 #import "OrderOperationSuccessVC.h"
 #import "GiftTitleTCell.h"
-
+#import "Xw_SelectWarehouseVC.h"
 
 @interface ReturnAllGoodsCounterVC ()<UITableViewDelegate, UITableViewDataSource, FDAlertViewDelegate>
 
@@ -534,7 +534,13 @@
         return;
     }
     
-    [self isConfirmReturnGoods];
+    if (![QZLUserConfig sharedInstance].useInventory){
+        Xw_SelectWarehouseVC *orderManageVC = [[Xw_SelectWarehouseVC alloc] init];
+        orderManageVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:orderManageVC animated:YES];
+    } else {
+        [self isConfirmReturnGoods];
+    }
 }
 
 #pragma mark- event response

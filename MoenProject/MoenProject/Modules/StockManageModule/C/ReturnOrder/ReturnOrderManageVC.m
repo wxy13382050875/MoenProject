@@ -37,7 +37,9 @@
 
 @property (nonatomic, copy) NSString *selectedTimeType;
 
+@property (nonatomic, copy) NSString *dataStart;
 
+@property (nonatomic, copy) NSString *dataEnd;
 @end
 
 @implementation ReturnOrderManageVC
@@ -134,38 +136,45 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     Orderlist *model = self.dataList[section];
-    NSString* orderStatus =@"";
+    NSString* orderStatus;
 //        订单状态（筛选条件）待提交/待审核/待发货/配货中/部分发货/全部发货/已完成/已拒绝等  all/waitSub/wait/waitDeliver/allocate/partDeliver/allDeliver/finish/refuse
-          if([model.orderStatus isEqualToString:@"waitSub"]){
-              orderStatus = @"待提交";
-          } else if([model.orderStatus isEqualToString:@"wait"]){
-              orderStatus = @"待审核";
-          } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
-              orderStatus = @"待发货";
-          } else if([model.orderStatus isEqualToString:@"allocate"]){
-              orderStatus = @"配货中";
-          } else if([model.orderStatus isEqualToString:@"partDeliver"]){
-              orderStatus = @"部分发货";
-          }else if([model.orderStatus isEqualToString:@"allDeliver"]){
-              orderStatus = @"全部发货";
-          }else if([model.orderStatus isEqualToString:@"finish"]){
-              orderStatus = @"已完成";
-          }else if([model.orderStatus isEqualToString:@"refuse"]){
-              orderStatus = @"已拒绝";
-          }else if([model.orderStatus isEqualToString:@"waitGoods"]){
-              orderStatus = @"待收货";
-          }else if([model.orderStatus isEqualToString:@"refuseAD"]){
-              orderStatus = @"AD已拒绝";
-          } else if([model.orderStatus isEqualToString:@"waitAD"]){
-              orderStatus = @"待AD审核";
-          }
-    
+    if([model.orderStatus isEqualToString:@"waitSub"]){
+        orderStatus = @"待提交";
+    } else if([model.orderStatus isEqualToString:@"wait"]){
+        orderStatus = @"待审核";
+//        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+//           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+//            orderStatus = @"待门店审核";
+//        }
+    } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+        orderStatus = @"待发货";
+    } else if([model.orderStatus isEqualToString:@"allocate"]){
+        orderStatus = @"配货中";
+    } else if([model.orderStatus isEqualToString:@"partDeliver"]){
+        orderStatus = @"部分发货";
+    }else if([model.orderStatus isEqualToString:@"allDeliver"]){
+        orderStatus = @"全部发货";
+    }else if([model.orderStatus isEqualToString:@"finish"]){
+        orderStatus = @"已完成";
+    }else if([model.orderStatus isEqualToString:@"refuse"]){
+        orderStatus = @"已拒绝";
+//        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+//           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+//            orderStatus = @"门店已拒绝";
+//        }
+    }else if([model.orderStatus isEqualToString:@"waitGoods"]){
+        orderStatus = @"待收货";
+    }else if([model.orderStatus isEqualToString:@"refuseAD"]){
+        orderStatus = @"AD已拒绝";
+    } else if([model.orderStatus isEqualToString:@"waitAD"]){
+        orderStatus = @"待AD审核";
+    }
     UIView *headerView = [[UIView alloc] init];
     headerView.backgroundColor = AppBgWhiteColor;
     UILabel *timeLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 200, 20)];
     timeLab.font = FontBinB(14);
     timeLab.textColor = AppTitleBlackColor;
-    timeLab.text =  model.orderTime;
+    timeLab.text = model.orderTime;
     [headerView addSubview:timeLab];
     
     UILabel *orderStatusLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, SCREEN_WIDTH - 15, 20)];
@@ -178,8 +187,9 @@
     UILabel *orderLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 34, SCREEN_WIDTH - 30, 20)];
     orderLab.font = FONTLanTingR(14);
     orderLab.textColor = AppTitleBlackColor;
+    NSMutableAttributedString *str ;
+    str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"退仓单编号: %@",model.orderID]];
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"订单编号: %@",model.orderID]];
     [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6, str.length - 6)];
     orderLab.attributedText = str;
     [headerView addSubview:orderLab];
@@ -187,72 +197,52 @@
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    
     Orderlist *model = self.dataList[section];
+    
+    
+    
     UIView *footerView = [[UIView alloc] init];
     footerView.backgroundColor = AppBgWhiteColor;
     
-    UILabel *infoLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, SCREEN_WIDTH - 30, 20)];
+   
+    UILabel *infoLab = [[UILabel alloc] initWithFrame:CGRectZero];
     infoLab.font = FONTLanTingR(14);
     infoLab.textColor = AppTitleBlackColor;
     infoLab.textAlignment = NSTextAlignmentRight;
-    
-    
- //   NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%ld",(long)model.giftNum];
-    //NSString *productNumCountStr = [NSString stringWithFormat:@"%ld",(long)model.productNum];
-//    if (model.giftNum > 0) {
-//        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品, %@件赠品  实付款:￥%@",(long)model.productNum,giftGoodsCountStr, model.payAmount]];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//
-//
-//        infoLab.attributedText = str;
-//    }
-//    else
-    {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品",model.goodsCount]];
-        
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//
-//           [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//           [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-           infoLab.attributedText = str;
-    }
-
-    
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品",model.goodsCount]];
+    infoLab.attributedText = str;
     [footerView addSubview:infoLab];
     
+    infoLab.sd_layout.leftSpaceToView(footerView, 15).topEqualToView(footerView).rightSpaceToView(footerView, 15).heightIs(40);
     
-    UIButton *againBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30)];
-    //UIButton *againBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    //againBtn.frame = CGRectMake(0, 40, 60, 20);
-    //againBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    againBtn.titleLabel.font = FONTSYS(14);
-    //againBtn.clipsToBounds = YES;
+    UIButton *againBtn =[UIButton buttonWithTitie:@"" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+        if([model.orderStatus isEqualToString:@"waitGoods"]){
+//            [self httpPath_delivery_confirmReceipt:model];
+        } else {
+        }
+    }];
     againBtn.layer.cornerRadius = 5;
-    [againBtn setTitleColor:AppTitleWhiteColor forState:UIControlStateNormal];
-    [againBtn setBackgroundColor:AppTitleBlueColor];
-    [againBtn setTitle:@"再来一单" forState:UIControlStateNormal];
-    //[againBtn addTarget:self action:@selector(confirmAction:) forControlEvents:UIControlEventTouchDown];
+    againBtn.frame = CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30);
     [footerView addSubview:againBtn];
     
+    againBtn.sd_layout.rightSpaceToView(footerView, 15).topSpaceToView(infoLab, 5).widthIs(90).heightIs(30);
     
-//    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 50, SCREEN_WIDTH, 5)];
-//    lineView2.backgroundColor = AppBgBlueGrayColor;
-//    [footerView addSubview:lineView2];
+    if([model.orderStatus isEqualToString:@"wait"]){
+        [againBtn setTitle:@"审核" forState:UIControlStateNormal];
+    }  else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+        [againBtn setTitle:@"发货" forState:UIControlStateNormal];
+    } else {
+        againBtn.hidden = YES;
+    }
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 80, SCREEN_WIDTH, 5)];
+    
+    
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectZero];
     lineView.backgroundColor = AppBgBlueGrayColor;
     [footerView addSubview:lineView];
     
+    lineView.sd_layout.leftEqualToView(footerView).rightEqualToView(footerView).bottomEqualToView(footerView).heightIs(5);
     return footerView;
 }
 #pragma mark -- UITableViewDelegate
@@ -281,9 +271,16 @@
 - (void)showConditionSelectView
 {
     WEAKSELF
-    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(KWOSSVDataModel *model, NSInteger type) {
-        weakSelf.selectedTimeType = model.itemId;
-        [[NSToastManager manager] showprogress];
+    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(XwScreenModel *model, NSInteger type) {
+        //
+                weakSelf.dataStart = model.dateStart;
+                weakSelf.dataEnd = model.dateEnd;
+                for (XWSelectModel* tm in model.selectList) {
+                    if([tm.module isEqualToString:@"TimeQuantum"]){
+                        weakSelf.selectedTimeType = tm.selectID;
+                    }
+                }
+                [[NSToastManager manager] showprogress];
         [weakSelf httpPath_refund_returnOrderList];
     }];
 }
@@ -331,9 +328,15 @@
             }
             if ([operation.urlTag isEqualToString:Path_load]) {
                 CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
+               
+                [self.selectDataArr removeAllObjects];
                 for (CommonCategoryModel *itemModel in model.enums) {
                     if ([itemModel.className isEqualToString:@"TimeQuantum"]) {
-                        [self.selectDataArr removeAllObjects];
+                        XwScreenModel* tmModel = [XwScreenModel new];
+                        tmModel.title = @"下单时间";
+                        tmModel.className = itemModel.className;
+                        tmModel.showFooter =YES;
+                        NSMutableArray* array = [NSMutableArray array];
                         
                         for (CommonCategoryDataModel *model in itemModel.datas) {
                             KWOSSVDataModel *itemModel = [[KWOSSVDataModel alloc] init];
@@ -342,8 +345,11 @@
                             }
                             itemModel.title = model.des;
                             itemModel.itemId = model.ID;
-                            [self.selectDataArr addObject:itemModel];
+                            [array addObject:itemModel];
                         }
+                        tmModel.list = array;
+                        [self.selectDataArr addObject:tmModel];
+                    
                     }
                 }
             }
@@ -390,7 +396,7 @@
         _searchView = [[[NSBundle mainBundle] loadNibNamed:@"CommonSearchView" owner:self options:nil] lastObject];
         _searchView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 56);
         _searchView.delegate = self;
-        _searchView.viewType = CommonSearchViewTypeOrder;
+        _searchView.viewType = CommonSearchViewTypeChangeReturn;
         
     }
     return _searchView;

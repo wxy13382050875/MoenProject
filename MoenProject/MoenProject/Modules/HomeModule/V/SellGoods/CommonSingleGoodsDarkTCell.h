@@ -14,6 +14,8 @@
 #import "ReturnOrderInfoModel.h"
 #import "xWStockOrderModel.h"
 #import "XwInOrOutWaterModel.h"
+#import "XwStockInfoModel.h"
+
 static NSString *KCommonSingleGoodsDarkTCell = @"CommonSingleGoodsDarkTCell";
 static NSString *KCommonSingleGiftGoodsDarkTCell = @"CommonSingleGiftGoodsDarkTCell";
 static CGFloat KCommonSingleGoodsDarkTCellH = 118;
@@ -24,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CommonSingleGoodsDarkTCell : BaseTableViewCell
 @property(nonatomic,strong)Goodslist* model;
 @property(nonatomic,strong)OrderlistModel* orderModel;
-
+@property(nonatomic,strong)XwStockInfoModel* stockInfoModel;
 
 - (void)showDataWithCommonProdutcModelForSearch:(CommonProdutcModel *)model;
 

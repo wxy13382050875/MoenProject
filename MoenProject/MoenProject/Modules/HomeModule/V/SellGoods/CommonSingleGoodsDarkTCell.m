@@ -174,7 +174,13 @@
 //    self.goods_Price.text = [NSString stringWithFormat:@"¥%@",model.refundAmount];
     self.goods_Count.text = [NSString stringWithFormat:@"x%@", orderModel.goodsCount];
 }
-
+-(void)setStockInfoModel:(XwStockInfoModel *)stockInfoModel{
+    [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:stockInfoModel.goodsImg] placeholderImage:ImageNamed(@"defaultImage")];
+    self.goods_Code.text = stockInfoModel.goodsSKU;
+    self.goods_Name.text = stockInfoModel.goodsName;
+    self.goods_Count.hidden = YES;
+    self.goods_Price.text = [NSString stringWithFormat:@"x%@", stockInfoModel.num];
+}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

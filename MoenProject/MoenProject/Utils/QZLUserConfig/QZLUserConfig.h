@@ -65,11 +65,15 @@
 @property(nonatomic,assign) BOOL isMultipleStores;
 
 
+/**
+ * 当前用户ID
+ */
+@property(nonatomic,copy)  NSString * customerId;
 
-
-
-
-
+/**
+ * 是否是二期接口
+ */
+@property(nonatomic,assign) BOOL useInventory;
 
 
 /**

@@ -58,6 +58,7 @@
 - (void)configBaseUI
 {
     
+    [QZLUserConfig sharedInstance].customerId = self.infoModel.customerId;
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
     if (self.controllerType == UserIdentifySuccessVCTypeRegister) {
         self.title = NSLocalizedString(@"register_success_title", nil);

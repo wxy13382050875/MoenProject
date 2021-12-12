@@ -141,49 +141,9 @@
                     FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否继续上次的盘点" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
                     [alert show];
                 }
-//                XwInOrOutWaterModel *listModel = [XwInOrOutWaterModel mj_objectWithKeyValues:parserObject.datas];
-//                if (listModel.orderList.count) {
-//                    self.isShowEmptyData = NO;
-//                    if (weakSelf.pageNumber == 1) {
-//                        [weakSelf.dataList removeAllObjects];
-//                    }
-//                    [weakSelf.dataList addObjectsFromArray:listModel.orderList];
-//                    [weakSelf.tableview reloadData];
-//                }
-//                else
-//                {
-//                    if (weakSelf.pageNumber == 1) {
-////                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_data", nil)];
-//                        [weakSelf.dataList removeAllObjects];
-//                        [weakSelf.tableview reloadData];
-//                        self.isShowEmptyData = YES;
-//                    }
-//                    else
-//                    {
-//                        weakSelf.pageNumber -= 1;
-//                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_more_data", nil)];
-//                    }
-//                    [weakSelf.tableview hidenRefreshFooter];
-//                }
+
             }
-//            if ([operation.urlTag isEqualToString:Path_load]) {
-//                CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
-//                for (CommonCategoryModel *itemModel in model.enums) {
-//                    if ([itemModel.className isEqualToString:@"TimeQuantum"]) {
-//                        [self.selectDataArr removeAllObjects];
-//
-//                        for (CommonCategoryDataModel *model in itemModel.datas) {
-//                            KWOSSVDataModel *itemModel = [[KWOSSVDataModel alloc] init];
-//                            if ([model.ID isEqualToString:@"ALL"]) {
-//                                itemModel.isSelected = YES;
-//                            }
-//                            itemModel.title = model.des;
-//                            itemModel.itemId = model.ID;
-//                            [self.selectDataArr addObject:itemModel];
-//                        }
-//                    }
-//                }
-//            }
+
         }
     }
 }

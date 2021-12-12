@@ -12,6 +12,8 @@
 #import "ReturnOrderDetailModel.h"
 #import "ReturnOrderInfoModel.h"
 
+typedef void(^OrderMarkBlock)(NSString* text);
+
 static NSString *KSellGoodsOrderMarkTCell = @"SellGoodsOrderMarkTCell";
 static CGFloat KSellGoodsOrderMarkTCellH = 80;
 
@@ -28,13 +30,13 @@ typedef NS_ENUM(NSInteger, SellGoodsOrderMarkTCellType)
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SellGoodsOrderMarkTCell : UITableViewCell
+@property(nonatomic,strong)NSString* orderRemarks;
 
+@property (nonatomic, copy) OrderMarkBlock orderMarkBlock;
 
 - (void)showDataWithSalesCounterConfigModel:(SalesCounterConfigModel *)model;
 
 - (void)showDataWithString:(NSString *)str;
-
-
 
 - (void)showDataWithReturnOrderCounterModel:(ReturnOrderCounterModel *)model;
 

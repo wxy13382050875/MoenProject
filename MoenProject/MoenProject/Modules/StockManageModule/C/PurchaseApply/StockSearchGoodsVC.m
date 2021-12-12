@@ -80,7 +80,7 @@
     }
     else
     {
-        self.title = @"查找商品/套餐";
+        self.title = @"添加商品/套餐";
         [self.view addSubview:self.shoppingCarView];
     }
 }

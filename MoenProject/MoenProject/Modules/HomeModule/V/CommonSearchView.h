@@ -28,6 +28,17 @@ typedef NS_ENUM(NSInteger, CommonSearchViewType)
     CommonSearchViewTypeCheckStockOrder,
     /**调库单*/
     CommonSearchViewTypeChangeStockOrder,
+    /**调拨单*/
+    CommonSearchViewTypeChangeDllot,
+    
+    /**进货单*/
+    CommonSearchViewTypeChangeSTOCK,
+    
+    /**发货单*/
+    CommonSearchViewTypeChangeDeliver,
+    
+    /**退仓单*/
+    CommonSearchViewTypeChangeReturn,
     
 };
 

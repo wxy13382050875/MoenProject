@@ -9,6 +9,7 @@
 #import "CommonGoodsModel.h"
 
 @implementation CommonGoodsListModel
+
 //+ (NSDictionary *)modelContainerPropertyGenericClass {
 //    return @{@"selectProducts" : [CommonGoodsModel class]};
 //}
@@ -29,6 +30,7 @@
     p.gcode = [self.gcode mutableCopy];
     p.price = [self.price mutableCopy];
     p.photo = [self.photo mutableCopy];
+    p.code = [self.code mutableCopy];
     p.activityName = [self.activityName mutableCopy];
     p.comboDescribe = [self.comboDescribe mutableCopy];
     p.isSetMeal = self.isSetMeal;
@@ -119,6 +121,7 @@
 
 
 @implementation CommonProdutcModel
+@dynamic code;
 - (id)copyWithZone:(NSZone *)zone {
     CommonProdutcModel *p = [[CommonProdutcModel allocWithZone:zone] init];
     //属性也要拷贝赋值

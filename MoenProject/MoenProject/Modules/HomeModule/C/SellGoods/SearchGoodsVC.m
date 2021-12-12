@@ -276,7 +276,7 @@
     copyModel.isShowDetail = NO;
     BOOL isNewGoods = YES;
     for (CommonGoodsModel *singleModel in self.shoppingCarDataList) {
-        if ([singleModel.ID isEqualToString:copyModel.ID]) {
+        if ([singleModel.id isEqualToString:copyModel.id]) {
             if (singleModel.isSpecial) {
 //                卖货柜台多次扫描相同淋浴房时，初始化到最小销售单位，不加数量与平方
                 singleModel.kGoodsArea = [copyModel.minNum floatValue];

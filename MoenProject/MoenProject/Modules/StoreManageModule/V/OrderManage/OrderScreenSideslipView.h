@@ -7,25 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface KWOSSVDataModel:MoenBaseModel
-
-@property (nonatomic, copy) NSString *title;
-
-@property (nonatomic, copy) NSString *minValue;
-
-@property (nonatomic, copy) NSString *maxValue;
-
-@property (nonatomic, copy) NSString *itemId;
-
-@property (nonatomic, assign) NSInteger statusValue;
-
-@property (nonatomic, assign) BOOL isSelected;
+#import "XwScreenModel.h"
 
 
-@end
-
-typedef void(^KWOrderScreenSideslipViewActionBlock)(KWOSSVDataModel *model, NSInteger type);
+typedef void(^KWOrderScreenSideslipViewActionBlock)(XwScreenModel *model, NSInteger type);
 
 
 NS_ASSUME_NONNULL_BEGIN

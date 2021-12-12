@@ -36,6 +36,9 @@
 
 @property (nonatomic, copy) NSString *goodsCount;
 
+@property (nonatomic, copy) NSString *goodsStatus;
+
+
 @property (nonatomic, copy) NSString *goodsCountBefor;
 
 @property (nonatomic, copy) NSString *goodsCountAfter;

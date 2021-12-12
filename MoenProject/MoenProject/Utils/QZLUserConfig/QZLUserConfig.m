@@ -26,7 +26,8 @@
 @dynamic isTestEnter;
 @dynamic isMultipleStores;
 
-
+@dynamic customerId;
+@dynamic useInventory;
 
 
 @dynamic userName;

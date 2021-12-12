@@ -71,6 +71,8 @@
 - (void)setViewType:(CommonSearchViewType)viewType
 {
     _viewType = viewType;
+    
+    
     if (_viewType == CommonSearchViewTypePackage) {
         self.input_Txt.placeholder = @"输入商品SKU/套餐号";
     }
@@ -83,10 +85,7 @@
     }
     if (_viewType == CommonSearchViewTypeOrder) {
         self.input_Txt.placeholder = @"搜索订单编号";
-        self.container_view_Right.constant = 55;
-        [self.time_Select_View setHidden:NO];
-        self.time_Select_View.userInteractionEnabled = YES;
-        [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
+        
     }
     if (_viewType == CommonSearchViewTypeIntention) {
         self.input_Txt.placeholder = @"搜索客户手机号码";
@@ -118,7 +117,34 @@
         self.time_Select_View.userInteractionEnabled = YES;
         [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
     }
-    
+    if (_viewType == CommonSearchViewTypeChangeDllot) {
+        self.input_Txt.placeholder = @"搜索调拨单编号";
+        self.container_view_Right.constant = 55;
+        [self.time_Select_View setHidden:NO];
+        self.time_Select_View.userInteractionEnabled = YES;
+        [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
+    }
+    if (_viewType == CommonSearchViewTypeChangeSTOCK) {
+        self.input_Txt.placeholder = @"搜索进货单编号";
+        self.container_view_Right.constant = 55;
+        [self.time_Select_View setHidden:NO];
+        self.time_Select_View.userInteractionEnabled = YES;
+        [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
+    }
+    if (_viewType == CommonSearchViewTypeChangeDeliver) {
+        self.input_Txt.placeholder = @"搜索发货单编号";
+        self.container_view_Right.constant = 55;
+        [self.time_Select_View setHidden:NO];
+        self.time_Select_View.userInteractionEnabled = YES;
+        [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
+    }
+    if (_viewType == CommonSearchViewTypeChangeReturn) {
+        self.input_Txt.placeholder = @"搜索退仓单编号";
+        self.container_view_Right.constant = 55;
+        [self.time_Select_View setHidden:NO];
+        self.time_Select_View.userInteractionEnabled = YES;
+        [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
+    }
 }
 
 - (void)time_Select_ViewAction

@@ -45,8 +45,6 @@
         self.mark_Txt.text = @"添加备注：";
     }
 }
-
-
 - (void)showDataWithString:(NSString *)str
 {
     if (str.length == 0) {
@@ -61,6 +59,18 @@
     [self.mark_Txt setEditable:NO];
 }
 
+-(void)setOrderRemarks:(NSString *)orderRemarks{
+    _orderRemarks = orderRemarks;
+    
+    if (_orderRemarks.length == 0) {
+        self.mark_Txt.text = @"备注：无";
+    }
+    else
+    {
+        self.mark_Txt.text = _orderRemarks;
+        
+    }
+}
 
 - (void)showDataWithReturnOrderCounterModel:(ReturnOrderCounterModel *)model
 {
@@ -128,6 +138,12 @@
         self.returnOrderModel.markStr = textView.text;
         if ([textView.text isEqualToString:@""]) {
             textView.text = @"请输入退货原因";
+        }
+    }
+    
+    if(self.orderMarkBlock){
+        if (self.orderMarkBlock) {
+            self.orderMarkBlock(textView.text);
         }
     }
 }

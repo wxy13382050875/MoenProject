@@ -38,6 +38,10 @@
 
 @property (nonatomic, assign) NSInteger currentIndex;
 
+@property (nonatomic, copy) NSString *dataStart;
+
+@property (nonatomic, copy) NSString *dataEnd;
+
 @end
 
 @implementation ChangeStockOrderVC
@@ -291,9 +295,16 @@
 - (void)showConditionSelectView
 {
     WEAKSELF
-    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(KWOSSVDataModel *model, NSInteger type) {
-        weakSelf.selectedTimeType = model.itemId;
-        [[NSToastManager manager] showprogress];
+    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(XwScreenModel *model, NSInteger type) {
+        //
+                weakSelf.dataStart = model.dateStart;
+                weakSelf.dataEnd = model.dateEnd;
+                for (XWSelectModel* tm in model.selectList) {
+                    if([tm.module isEqualToString:@"TimeQuantum"]){
+                        weakSelf.selectedTimeType = tm.selectID;
+                    }
+                }
+                [[NSToastManager manager] showprogress];
         [weakSelf httpPath_orderList];
     }];
 }
@@ -342,9 +353,15 @@
             }
             if ([operation.urlTag isEqualToString:Path_load]) {
                 CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
+               
+                [self.selectDataArr removeAllObjects];
                 for (CommonCategoryModel *itemModel in model.enums) {
                     if ([itemModel.className isEqualToString:@"TimeQuantum"]) {
-                        [self.selectDataArr removeAllObjects];
+                        XwScreenModel* tmModel = [XwScreenModel new];
+                        tmModel.title = @"下单时间";
+                        tmModel.className = itemModel.className;
+                        tmModel.showFooter =YES;
+                        NSMutableArray* array = [NSMutableArray array];
                         
                         for (CommonCategoryDataModel *model in itemModel.datas) {
                             KWOSSVDataModel *itemModel = [[KWOSSVDataModel alloc] init];
@@ -353,8 +370,11 @@
                             }
                             itemModel.title = model.des;
                             itemModel.itemId = model.ID;
-                            [self.selectDataArr addObject:itemModel];
+                            [array addObject:itemModel];
                         }
+                        tmModel.list = array;
+                        [self.selectDataArr addObject:tmModel];
+                    
                     }
                 }
             }

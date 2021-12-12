@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class CommonProdutcModel, CommonTVDataModel;
 
-@interface CommonGoodsModel : MoenBaseModel<NSCopying>
+@interface CommonGoodsModel : NSObject<NSCopying>
 
 /** 经销商发布id或者经销商活动套餐id*/
 @property (nonatomic, copy) NSMutableString *ID;
@@ -31,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 名称*/
 @property (nonatomic, copy) NSMutableString *name;
+
+/** 名称*/
+@property (nonatomic, copy) NSMutableString *code;
 
 /** sku或者套餐号*/
 @property (nonatomic, copy) NSMutableString *gcode;

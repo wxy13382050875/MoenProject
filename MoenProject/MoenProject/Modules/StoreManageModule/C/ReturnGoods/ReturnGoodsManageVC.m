@@ -38,6 +38,10 @@
 
 @property (nonatomic, strong) NSMutableArray *selectDataArr;
 
+@property (nonatomic, copy) NSString *dataStart;
+
+@property (nonatomic, copy) NSString *dataEnd;
+
 @end
 
 @implementation ReturnGoodsManageVC
@@ -169,13 +173,13 @@
     infoLab.textColor = AppTitleBlackColor;
     infoLab.textAlignment = NSTextAlignmentRight;
     
-    NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%ld",(long)model.giftNum];
-    NSString *productNumCountStr = [NSString stringWithFormat:@"%ld",(long)model.productNum];
+    NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%@",model.giftNum];
+    NSString *productNumCountStr = [NSString stringWithFormat:@"%@",model.productNum];
     if (model.giftNum > 0) {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品, %@件赠品  实付款:￥%@",(long)model.productNum,giftGoodsCountStr, model.actualRefundAmount]];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品, %@件赠品  实付款:￥%@",model.productNum,giftGoodsCountStr, model.actualRefundAmount]];
         
-        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
+        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%@",model.productNum].length)];
+        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%@",model.productNum].length)];
         
         [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
         [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
@@ -188,10 +192,10 @@
     }
     else
     {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品 实付款:￥%@",(long)model.productNum, model.actualRefundAmount]];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品 实付款:￥%@",model.productNum, model.actualRefundAmount]];
         
-        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
+        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%@",model.productNum].length)];
+        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%@",model.productNum].length)];
         
            [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.actualRefundAmount.length - 1, model.actualRefundAmount.length + 1)];
            [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.actualRefundAmount.length - 1, model.actualRefundAmount.length + 1)];
@@ -238,9 +242,16 @@
 - (void)showConditionSelectView
 {
     WEAKSELF
-    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(KWOSSVDataModel *model, NSInteger type) {
-        weakSelf.selectedTimeType = model.itemId;
-        [[NSToastManager manager] showprogress];
+    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(XwScreenModel *model, NSInteger type) {
+        //
+                weakSelf.dataStart = model.dateStart;
+                weakSelf.dataEnd = model.dateEnd;
+                for (XWSelectModel* tm in model.selectList) {
+                    if([tm.module isEqualToString:@"TimeQuantum"]){
+                        weakSelf.selectedTimeType = tm.selectID;
+                    }
+                }
+                [[NSToastManager manager] showprogress];
         [weakSelf httpPath_returnOrderList];
     }];
 }
@@ -289,9 +300,15 @@
             }
             if ([operation.urlTag isEqualToString:Path_load]) {
                 CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
+               
+                [self.selectDataArr removeAllObjects];
                 for (CommonCategoryModel *itemModel in model.enums) {
                     if ([itemModel.className isEqualToString:@"TimeQuantum"]) {
-                        [self.selectDataArr removeAllObjects];
+                        XwScreenModel* tmModel = [XwScreenModel new];
+                        tmModel.title = @"下单时间";
+                        tmModel.className = itemModel.className;
+                        tmModel.showFooter =YES;
+                        NSMutableArray* array = [NSMutableArray array];
                         
                         for (CommonCategoryDataModel *model in itemModel.datas) {
                             KWOSSVDataModel *itemModel = [[KWOSSVDataModel alloc] init];
@@ -300,8 +317,11 @@
                             }
                             itemModel.title = model.des;
                             itemModel.itemId = model.ID;
-                            [self.selectDataArr addObject:itemModel];
+                            [array addObject:itemModel];
                         }
+                        tmModel.list = array;
+                        [self.selectDataArr addObject:tmModel];
+                    
                     }
                 }
             }

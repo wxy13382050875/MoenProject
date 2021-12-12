@@ -69,6 +69,12 @@
 
 /** 备注：门店ID*/
 @property (nonatomic, copy) NSString *storeName;
+
+/** 备注：仓库ID*/
+@property (nonatomic, copy) NSString *id;
+
+/** 备注：仓库名*/
+@property (nonatomic, copy) NSString *name;
 @end
 
 

@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**是否存在新套餐*/
 @property (nonatomic, assign) BOOL newCombo;
 
+@property (nonatomic, assign) BOOL useInventory;
 
 /**banner图url*/
 @property (nonatomic, strong) NSArray<HomeBannerModel *> *bannerImageData;

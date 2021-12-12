@@ -29,6 +29,9 @@
 #import "GiftAddTCell.h"
 #import "SearchGoodsVC.h"
 #import "GiftTitleTCell.h"
+#import "XWOrderDetailDefaultCell.h"
+#import "XwSystemTCellModel.h"
+#import "xw_StockInfoVC.h"
 
 @interface SalesCounterVC ()<UITableViewDelegate, UITableViewDataSource, AddressListVCDelegate, CommonCouponPopViewDelegate, FDAlertViewDelegate, AddressAddVCDelegate, SearchGoodsVCDelegate>
 
@@ -162,9 +165,10 @@
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsTCell])
     {
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonGoodsModelForSalesCounter:self.dataArr[indexPath.section - 1] AtIndex:indexPath.section];
+        [cell showDataWithCommonGoodsModelForSalesCounter:model.Data AtIndex:indexPath.section];
         cell.goodsShowDetailBlock = ^(BOOL isShow, NSInteger atIndex) {
-            [weakSelf handleGoodsShowOrHiddenDetailWith:isShow WithAtIndex:atIndex];
+//            [weakSelf handleGoodsShowOrHiddenDetailWith:isShow WithAtIndex:atIndex];
+            [weakSelf handleGoodsShowOrHiddenDetailWith:isShow WithAtIndex:indexPath];
         };
         cell.goodsNumberChangeBlock = ^{
             [weakSelf httpPath_sale];
@@ -175,11 +179,11 @@
     //赠品展示
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsTCellForGift])
     {
-        NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
+//        NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonGoodsModelForGift:self.giftDataArr[indexPath.section - beginIndex - self.dataArr.count] AtIndex:indexPath.section];
+        [cell showDataWithCommonGoodsModelForGift:model.Data AtIndex:indexPath.section];
         cell.goodsShowDetailBlock = ^(BOOL isShow, NSInteger atIndex) {
-            [weakSelf handleGiftGoodsShowOrHiddenDetailWith:isShow WithAtIndex:atIndex];
+            [weakSelf handleGiftGoodsShowOrHiddenDetailWith:isShow WithAtIndex:indexPath];
         };
         cell.goodsNumberChangeBlock = ^{
             [weakSelf httpPath_sale];
@@ -190,17 +194,17 @@
     
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsDarkTCell])
     {
-        CommonGoodsModel *goodsModel = self.dataArr[indexPath.section - 1];
+//        CommonGoodsModel *goodsModel = self.dataArr[indexPath.section - 1];
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonProdutcModelForSearch:goodsModel.productList[indexPath.row - 1]];
+        [cell showDataWithCommonProdutcModelForSearch:model.Data];
         return cell;
     }
     else if ([model.cellIdentify isEqualToString:KCommonSingleGiftGoodsDarkTCell])
     {
-        NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
-        CommonGoodsModel *goodsModel = self.giftDataArr[indexPath.section - beginIndex - self.dataArr.count];
+//        NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
+//        CommonGoodsModel *goodsModel = self.giftDataArr[indexPath.section - beginIndex - self.dataArr.count];
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonProdutcModelForSearch:goodsModel.productList[indexPath.row - 1]];
+        [cell showDataWithCommonProdutcModelForSearch:model.Data];
         return cell;
     }
     else if ([model.cellIdentify isEqualToString:KOrderPromotionTCell])
@@ -246,6 +250,11 @@
         GiftTitleTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GiftTitleTCell" forIndexPath:indexPath];
         return cell;
     }
+    else if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
+        XWOrderDetailDefaultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XWOrderDetailDefaultCell" forIndexPath:indexPath];
+        cell.model = model.Data;
+        return cell;
+    }
     
     
     
@@ -274,7 +283,7 @@
     NSMutableArray *dataArr = self.floorsAarr[section];
     CommonTVDataModel *cellModel = dataArr[0];
     if ([cellModel.cellIdentify isEqualToString:KCommonSingleGoodsTCell]) {
-        CommonGoodsModel *model =  self.dataArr[section - 1];
+        CommonGoodsModel *model =  cellModel.Data;
         if (model.isSpecial) {
             CGFloat marginTop = 0;
             CGFloat marginLeft = SCREEN_WIDTH - 95;
@@ -348,8 +357,8 @@
     }
     
     if ([cellModel.cellIdentify isEqualToString:KCommonSingleGoodsTCellForGift]) {
-        NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
-        CommonGoodsModel *model =  self.giftDataArr[section - beginIndex - self.dataArr.count];
+//        NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
+        CommonGoodsModel *model =  cellModel.Data;
         if (model.isSpecial) {
             CGFloat marginTop = 0;
             CGFloat marginLeft = SCREEN_WIDTH - 95;
@@ -426,8 +435,17 @@
 #pragma mark -- UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    
+    NSMutableArray *dataArr = self.floorsAarr[indexPath.section];
+    CommonTVDataModel *model = dataArr[indexPath.row];
+    if ([model.cellIdentify isEqualToString:KCounterAddressTCell]) {
         [self skipToAddressListVC];
+    } else if([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
+        NSLog(@"库存参考信息");
+        xw_StockInfoVC *storeInfoVC = [xw_StockInfoVC new];
+        storeInfoVC.array = [self.dataArr copy];
+        storeInfoVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:storeInfoVC animated:YES];
     }
 }
 #pragma mark -- AddressListVCDelegate
@@ -1139,15 +1157,34 @@
     [section1Arr addObject:addressCellModel];
     [self.floorsAarr addObject:section1Arr];
     
+    //库存参考信息
+    NSMutableArray *section2Arr = [[NSMutableArray alloc] init];
+    XwSystemTCellModel* model = [XwSystemTCellModel new];
+    model.title = @"库存参考信息";
+    model.showArrow = YES;
+
+    CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+    delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+    delivereModel.cellHeight = 40;
+    delivereModel.cellHeaderHeight = 0.01;
+    delivereModel.cellFooterHeight =  5;
+    delivereModel.Data = model;
+    [section2Arr addObject:delivereModel];
+    [self.floorsAarr addObject:section2Arr];
+    
     //商品
+    NSMutableArray *sectionArr = [[NSMutableArray alloc] init];
     for (CommonGoodsModel *model in self.dataArr) {
         model.isShowDetail = NO;
-        NSMutableArray *sectionArr = [[NSMutableArray alloc] init];
+        
         //当前商品的Cell
         CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
+        cellModel.Data = model;
+        
         if (!model.isSetMeal) {
             cellModel.cellIdentify = KCommonSingleGoodsTCell;
             cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
+            
             if (model.isSpecial) {
                 cellModel.cellHeaderHeight = 0.01;
                 if (model.kAddPrice == 0 &&
@@ -1177,14 +1214,15 @@
             cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
             cellModel.cellHeaderHeight = 0.01;
             cellModel.cellFooterHeight = 5;
+            cellModel.Data = model;
             self.goodsCount += model.kGoodsCount;
         }
         
         [sectionArr addObject:cellModel];
         
-        [self.floorsAarr addObject:sectionArr];
+        
     }
-    
+    [self.floorsAarr addObject:sectionArr];
     //订单活动
     if (self.counterDataModel.rules.length > 0) {
         NSMutableArray *section3Arr = [[NSMutableArray alloc] init];
@@ -1193,6 +1231,7 @@
         orderActivitiesCellModel.cellHeight = KOrderPromotionTCellH;
         orderActivitiesCellModel.cellHeaderHeight = 35;
         orderActivitiesCellModel.cellFooterHeight = 5;
+        orderActivitiesCellModel.Data = self.counterDataModel.rules;
         [section3Arr addObject:orderActivitiesCellModel];
         [self.floorsAarr addObject:section3Arr];
     }
@@ -1212,14 +1251,17 @@
     
     
     //赠品
+    NSMutableArray *giftArr = [[NSMutableArray alloc] init];
     for (CommonGoodsModel *model in self.giftDataArr) {
         model.isShowDetail = NO;
         //当前商品的Cell
-        NSMutableArray *giftArr = [[NSMutableArray alloc] init];
+        
         CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
+       
         if (!model.isSetMeal) {
             cellModel.cellIdentify = KCommonSingleGoodsTCellForGift;
             cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
+            cellModel.Data = model;
             if (model.isSpecial) {
                 cellModel.cellHeaderHeight = 0.01;
                 if (model.kAddPrice == 0 &&
@@ -1249,9 +1291,13 @@
             cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
             cellModel.cellHeaderHeight = 0.01;
             cellModel.cellFooterHeight = 5;
+            cellModel.Data = model;
             self.giftGoodsCount += model.kGoodsCount;
         }
         [giftArr addObject:cellModel];
+        
+    }
+    if(self.giftDataArr.count > 0){
         [self.floorsAarr addObject:giftArr];
     }
     
@@ -1302,56 +1348,71 @@
     [self.floorsAarr addObject:section6Arr];
     
 }
-
-
-- (void)handleGoodsShowOrHiddenDetailWith:(BOOL)isShow WithAtIndex:(NSInteger)atIndex
+- (void)handleGoodsShowOrHiddenDetailWith:(BOOL)isShow WithAtIndex:(NSIndexPath*)indexPath
 {
-    NSMutableArray *sectionArr = self.floorsAarr[atIndex];
-    CommonGoodsModel *goodsModel = self.dataArr[atIndex - 1];
+    
+    NSMutableArray *sectionArr = self.floorsAarr[indexPath.section];
+    CommonGoodsModel *goodsModel = self.dataArr[indexPath.row];
+    
+    
+    
+    
     if (isShow) {
+        NSInteger index  = indexPath.row;
         for (CommonProdutcModel *model in goodsModel.productList) {
             CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
             cellModel.cellIdentify = KCommonSingleGoodsDarkTCell;
             cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
-            [sectionArr addObject:cellModel];
+            cellModel.Data = model;
+            index ++;
+            [sectionArr insertObject:cellModel atIndex:index];
         }
         goodsModel.isShowDetail = YES;
     }
     else
     {
         goodsModel.isShowDetail = NO;
-        [sectionArr removeObjectsInRange:NSMakeRange(sectionArr.count - goodsModel.productList.count, goodsModel.productList.count)];
+
+        [sectionArr removeObjectsInRange:NSMakeRange(indexPath.row + 1, goodsModel.productList.count)];
     }
     
+    
+    
+    
     [UIView performWithoutAnimation:^{
-        NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:atIndex];
+        NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:indexPath.section];
         [self.tableview reloadSections:reloadSet withRowAnimation:UITableViewRowAnimationNone];
     }];
 }
 
 
-- (void)handleGiftGoodsShowOrHiddenDetailWith:(BOOL)isShow WithAtIndex:(NSInteger)atIndex
+
+- (void)handleGiftGoodsShowOrHiddenDetailWith:(BOOL)isShow WithAtIndex:(NSIndexPath*)indexPath
 {
-    NSMutableArray *sectionArr = self.floorsAarr[atIndex];
-    NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
-    CommonGoodsModel *goodsModel = self.giftDataArr[atIndex - beginIndex - self.dataArr.count];
+    NSMutableArray *sectionArr = self.floorsAarr[indexPath.section];
+//    NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
+    CommonGoodsModel *goodsModel = self.giftDataArr[indexPath.row];
     if (isShow) {
+        NSInteger index  = indexPath.row;
         for (CommonProdutcModel *model in goodsModel.productList) {
             CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
             cellModel.cellIdentify = KCommonSingleGiftGoodsDarkTCell;
             cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
-            [sectionArr addObject:cellModel];
+            cellModel.Data = model;
+            index ++;
+            [sectionArr insertObject:cellModel atIndex:index];
         }
         goodsModel.isShowDetail = YES;
     }
     else
     {
         goodsModel.isShowDetail = NO;
-        [sectionArr removeObjectsInRange:NSMakeRange(sectionArr.count - goodsModel.productList.count, goodsModel.productList.count)];
+
+        [sectionArr removeObjectsInRange:NSMakeRange(indexPath.row + 1, goodsModel.productList.count)];
     }
     
     [UIView performWithoutAnimation:^{
-        NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:atIndex];
+        NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:indexPath.section];
         [self.tableview reloadSections:reloadSet withRowAnimation:UITableViewRowAnimationNone];
     }];
 }
@@ -1397,7 +1458,7 @@
     for (CommonGoodsModel *model in self.dataArr) {
         if (model.isSetMeal) {
             NSMutableDictionary *orderSetMealDic = [[NSMutableDictionary alloc] init];
-            [orderSetMealDic setObject:model.ID forKey:@"setMealId"];
+            [orderSetMealDic setObject:model.id forKey:@"setMealId"];
             [orderSetMealDic setObject:[NSString stringWithFormat:@"%ld",(long)model.kGoodsCount] forKey:@"num"];
             
             [orderSetMealArr addObject:orderSetMealDic];
@@ -1405,7 +1466,7 @@
         else
         {
             NSMutableDictionary *orderProductDic = [[NSMutableDictionary alloc] init];
-            [orderProductDic setObject:model.ID forKey:@"productId"];
+            [orderProductDic setObject:model.id forKey:@"productId"];
             [orderProductDic setObject:[NSString stringWithFormat:@"%ld",(long)model.kGoodsCount] forKey:@"num"];
             if (model.isSpecial) {
                 [orderProductDic setObject:[NSString stringWithFormat:@"%.3f",model.kGoodsArea] forKey:@"square"];
@@ -1472,7 +1533,7 @@
     for (CommonGoodsModel *model in self.dataArr) {
         if (model.isSetMeal) {
             NSMutableDictionary *orderSetMealDic = [[NSMutableDictionary alloc] init];
-            [orderSetMealDic setObject:model.ID forKey:@"setMealId"];
+            [orderSetMealDic setObject:model.id forKey:@"setMealId"];
             [orderSetMealDic setObject:[NSString stringWithFormat:@"%ld",(long)model.kGoodsCount] forKey:@"num"];
             
             [orderSetMealArr addObject:orderSetMealDic];
@@ -1480,7 +1541,7 @@
         else
         {
             NSMutableDictionary *orderProductDic = [[NSMutableDictionary alloc] init];
-            [orderProductDic setObject:model.ID forKey:@"productId"];
+            [orderProductDic setObject:model.id forKey:@"productId"];
             [orderProductDic setObject:[NSString stringWithFormat:@"%ld",(long)model.kGoodsCount] forKey:@"num"];
             if (model.isSpecial) {
                 [orderProductDic setObject:[NSString stringWithFormat:@"%.3f",model.kGoodsArea] forKey:@"square"];
@@ -1576,6 +1637,7 @@
         [_tableview registerNib:[UINib nibWithNibName:@"GiftAddTCell" bundle:nil] forCellReuseIdentifier:@"GiftAddTCell"];
         [_tableview registerNib:[UINib nibWithNibName:@"GiftTitleTCell" bundle:nil] forCellReuseIdentifier:@"GiftTitleTCell"];
         
+        [_tableview registerClass:[XWOrderDetailDefaultCell class] forCellReuseIdentifier:@"XWOrderDetailDefaultCell"];
     }
     return _tableview;
 }

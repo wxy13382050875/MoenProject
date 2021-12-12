@@ -16,6 +16,8 @@
 #import "OrderScreenSideslipView.h"
 #import "xWStockOrderModel.h"
 #import "XwOrderDetailVC.h"
+
+#import "XwScreenModel.h"
 @interface PurchaseOrderManageVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) CommonSearchView *searchView;
@@ -37,6 +39,9 @@
 
 @property (nonatomic, copy) NSString *selectedTimeType;
 
+@property (nonatomic, copy) NSString *dataStart;
+
+@property (nonatomic, copy) NSString *dataEnd;
 
 @end
 
@@ -46,17 +51,21 @@
     [super viewDidLoad];
     
     
+    
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     [self configBaseUI];
     [self configBaseData];
 }
-
 - (void)configBaseUI
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
-    self.title = @"进货单管理";
+    
     
     [self.view addSubview:self.searchView];
     [self.view addSubview:self.tableview];
+    
 }
 
 - (void)configBaseData
@@ -113,7 +122,45 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 85;
+    Orderlist *model = self.dataList[section];;
+    BOOL isShowBtn = YES ;
+    if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+        self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+        if([model.orderStatus isEqualToString:@"wait"]){
+            
+        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+            
+        } else {
+//            againBtn.hidden = YES;
+            isShowBtn = NO;
+        }
+    } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
+       
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+  
+        if([model.orderStatus isEqualToString:@"waitGoods"]){
+            
+        } else {
+            isShowBtn = NO;
+        }
+    } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+        if([model.orderStatus isEqualToString:@"wait"]){
+            
+        } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+            
+        } else {
+            isShowBtn = NO;
+        }
+    }
+    if(isShowBtn){
+        return 85;
+    } else {
+        return 45;
+    }
+    
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -146,6 +193,10 @@
         orderStatus = @"待提交";
     } else if([model.orderStatus isEqualToString:@"wait"]){
         orderStatus = @"待审核";
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+            orderStatus = @"待门店审核";
+        }
     } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
         orderStatus = @"待发货";
     } else if([model.orderStatus isEqualToString:@"allocate"]){
@@ -158,6 +209,10 @@
         orderStatus = @"已完成";
     }else if([model.orderStatus isEqualToString:@"refuse"]){
         orderStatus = @"已拒绝";
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+            orderStatus = @"门店已拒绝";
+        }
     }else if([model.orderStatus isEqualToString:@"waitGoods"]){
         orderStatus = @"待收货";
     }else if([model.orderStatus isEqualToString:@"refuseAD"]){
@@ -183,8 +238,24 @@
     UILabel *orderLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 34, SCREEN_WIDTH - 30, 20)];
     orderLab.font = FONTLanTingR(14);
     orderLab.textColor = AppTitleBlackColor;
+    NSMutableAttributedString *str ;
+    if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+       self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+        str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"调拔单编号: %@",model.orderID]];
+    }
+    else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
+        str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"进货单编号: %@",model.orderID]];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+              self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
+              self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
+              self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+        str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"发货单编号: %@",model.orderID]];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+        str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"退仓单编号: %@",model.orderID]];
+    } else {
+        str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"订单编号: %@",model.orderID]];
+    }
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"订单编号: %@",model.orderID]];
     [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6, str.length - 6)];
     orderLab.attributedText = str;
     [headerView addSubview:orderLab];
@@ -200,17 +271,15 @@
     footerView.backgroundColor = AppBgWhiteColor;
     
    
-    UILabel *infoLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, SCREEN_WIDTH - 30, 20)];
+    UILabel *infoLab = [[UILabel alloc] initWithFrame:CGRectZero];
     infoLab.font = FONTLanTingR(14);
     infoLab.textColor = AppTitleBlackColor;
     infoLab.textAlignment = NSTextAlignmentRight;
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品",model.goodsCount]];
     infoLab.attributedText = str;
-
-    
     [footerView addSubview:infoLab];
     
-    
+    infoLab.sd_layout.leftSpaceToView(footerView, 15).topEqualToView(footerView).rightSpaceToView(footerView, 15).heightIs(40);
     
     UIButton *againBtn =[UIButton buttonWithTitie:@"" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
         if([model.orderStatus isEqualToString:@"waitGoods"]){
@@ -220,19 +289,53 @@
     }];
     againBtn.layer.cornerRadius = 5;
     againBtn.frame = CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30);
-    
-    if([model.orderStatus isEqualToString:@"waitGoods"]){
-        [againBtn setTitle:@"确认收货" forState:UIControlStateNormal];
-    } else {
-        [againBtn setTitle:@"再来一单" forState:UIControlStateNormal];
-    }
     [footerView addSubview:againBtn];
     
+    againBtn.sd_layout.rightSpaceToView(footerView, 15).topSpaceToView(infoLab, 5).widthIs(90).heightIs(30);
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 80, SCREEN_WIDTH, 5)];
+    if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+        self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+        if([model.orderStatus isEqualToString:@"wait"]){
+            [againBtn setTitle:@"审核" forState:UIControlStateNormal];
+        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+            [againBtn setTitle:@"发货" forState:UIControlStateNormal];
+        } else {
+            againBtn.hidden = YES;
+        }
+    } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
+        if([model.orderStatus isEqualToString:@"waitSub"]){
+            [againBtn setTitle:@"编辑" forState:UIControlStateNormal];
+        }  else {
+            [againBtn setTitle:@"再来一单" forState:UIControlStateNormal];
+        }
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+  
+        if([model.orderStatus isEqualToString:@"waitGoods"]){
+            [againBtn setTitle:@"确认收货" forState:UIControlStateNormal];
+        } else {
+            againBtn.hidden = YES;
+        }
+    } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+        if([model.orderStatus isEqualToString:@"wait"]){
+            [againBtn setTitle:@"审核" forState:UIControlStateNormal];
+        } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+            [againBtn setTitle:@"确认发货" forState:UIControlStateNormal];
+        } else {
+            againBtn.hidden = YES;
+        }
+    }
+    
+    
+    
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectZero];
     lineView.backgroundColor = AppBgBlueGrayColor;
     [footerView addSubview:lineView];
     
+    lineView.sd_layout.leftEqualToView(footerView).rightEqualToView(footerView).bottomEqualToView(footerView).heightIs(5);
     return footerView;
 }
 #pragma mark -- UITableViewDelegate
@@ -269,8 +372,15 @@
 - (void)showConditionSelectView
 {
     WEAKSELF
-    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(KWOSSVDataModel *model, NSInteger type) {
-        weakSelf.selectedTimeType = model.itemId;
+    [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(XwScreenModel *model, NSInteger type) {
+//
+        weakSelf.dataStart = model.dateStart;
+        weakSelf.dataEnd = model.dateEnd;
+        for (XWSelectModel* tm in model.selectList) {
+            if([tm.module isEqualToString:@"TimeQuantum"]){
+                weakSelf.selectedTimeType = tm.selectID;
+            }
+        }
         [[NSToastManager manager] showprogress];
         [weakSelf httpPath_orderList];
     }];
@@ -305,7 +415,6 @@
                 else
                 {
                     if (weakSelf.pageNumber == 1) {
-//                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_data", nil)];
                         [weakSelf.dataList removeAllObjects];
                         [weakSelf.tableview reloadData];
                         self.isShowEmptyData = YES;
@@ -320,7 +429,8 @@
             }
             if ([operation.urlTag isEqualToString:Path_stock_orderList]||
                 [operation.urlTag isEqualToString:Path_dallot_transferOrderList]||
-                [operation.urlTag isEqualToString:Path_delivery_sendOrderList]) {
+                [operation.urlTag isEqualToString:Path_delivery_sendOrderList]||
+                [operation.urlTag isEqualToString:Path_refund_returnOrderList]) {
                 xWStockOrderModel *listModel = [xWStockOrderModel mj_objectWithKeyValues:parserObject.datas];
                 if (listModel.orderList.count) {
                     self.isShowEmptyData = NO;
@@ -347,10 +457,17 @@
                 }
             }
             if ([operation.urlTag isEqualToString:Path_load]) {
+                
                 CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
+               
+                [self.selectDataArr removeAllObjects];
                 for (CommonCategoryModel *itemModel in model.enums) {
                     if ([itemModel.className isEqualToString:@"TimeQuantum"]) {
-                        [self.selectDataArr removeAllObjects];
+                        XwScreenModel* tmModel = [XwScreenModel new];
+                        tmModel.title = @"下单时间";
+                        tmModel.className = itemModel.className;
+                        tmModel.showFooter =YES;
+                        NSMutableArray* array = [NSMutableArray array];
                         
                         for (CommonCategoryDataModel *model in itemModel.datas) {
                             KWOSSVDataModel *itemModel = [[KWOSSVDataModel alloc] init];
@@ -359,10 +476,14 @@
                             }
                             itemModel.title = model.des;
                             itemModel.itemId = model.ID;
-                            [self.selectDataArr addObject:itemModel];
+                            [array addObject:itemModel];
                         }
-                    }
+                        tmModel.list = array;
+                        [self.selectDataArr addObject:tmModel];
+                    
+                    } 
                 }
+                
             }
             if ([operation.urlTag isEqualToString:Path_delivery_confirmReceipt]){
                 [self reconnectNetworkRefresh];
@@ -392,8 +513,8 @@
     }
     
     [parameters setValue:@"" forKey:@"orderKey"];
-    [parameters setValue:@"" forKey:@"orderDateStart"];
-    [parameters setValue:@"" forKey:@"orderDateEnd"];
+    [parameters setValue:self.dataStart forKey:@"orderDateStart"];
+    [parameters setValue:self.dataEnd forKey:@"orderDateEnd"];
     [parameters setValue:@"" forKey:@"orderStatus"];
     [parameters setValue:@(self.pageNumber) forKey:@"page"];
     [parameters setValue:@(self.pageSize) forKey:@"size"];
@@ -409,18 +530,34 @@
     self.requestParams = parameters;
     
     if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
+        self.title = @"进货单管理";
         self.requestURL = Path_stock_orderList;
     } else if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
          self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+        self.title = @"调拨单管理";
         self.requestURL = Path_dallot_transferOrderList;
     } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
               self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
               self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
               self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+        self.title = @"发货单管理";
              self.requestURL = Path_delivery_sendOrderList;
+    } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+             self.requestURL = Path_refund_returnOrderList;
+        self.title = @"退仓单管理";
     } else {
+        self.title = @"订单管理";
         self.requestURL = Path_orderList;
     }
+    
+    
+    
+   
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+//    [parameters setValue:[NSNumber numberWithBool:NO] forKey:@"isReturn"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_refund_returnOrderList;
 }
 - (void)httpPath_delivery_confirmReceipt:(Orderlist*)model{
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -460,7 +597,22 @@
         _searchView = [[[NSBundle mainBundle] loadNibNamed:@"CommonSearchView" owner:self options:nil] lastObject];
         _searchView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 56);
         _searchView.delegate = self;
-        _searchView.viewType = CommonSearchViewTypeOrder;
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+            _searchView.viewType = CommonSearchViewTypeChangeDllot;
+        } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
+                   _searchView.viewType = CommonSearchViewTypeChangeSTOCK;
+        } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+                 self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
+                 self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
+                 self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+            _searchView.viewType = CommonSearchViewTypeChangeDeliver;
+        } else if(self.controllerType == CommonSearchViewTypeChangeReturn){
+              _searchView.viewType = CommonSearchViewTypeChangeReturn;
+          }else{
+            _searchView.viewType = CommonSearchViewTypeOrder;
+        }
+        
         
     }
     return _searchView;

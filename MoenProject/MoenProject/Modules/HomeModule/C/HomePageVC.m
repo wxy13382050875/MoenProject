@@ -313,6 +313,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
         if (parserObject.success) {
             if ([operation.urlTag isEqualToString:Path_getHomePage]) {
                 HomeDataModel *model = (HomeDataModel *)parserObject;
+                [QZLUserConfig sharedInstance].useInventory = model.useInventory;
                 if ([model.code isEqualToString:@"200"]) {
                     self.bannerModel = model;
                     [self.collectionview reloadData];
@@ -343,6 +344,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
 - (void)httpPath_getHomePage
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
     [parameters setObject:[QZLUserConfig sharedInstance].token.length > 0 ? [QZLUserConfig sharedInstance].token:@"" forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;

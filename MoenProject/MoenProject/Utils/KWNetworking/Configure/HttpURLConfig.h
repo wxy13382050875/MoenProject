@@ -667,4 +667,31 @@ static NSString * const Path_inventory_callInventoryOrderOperate = @"/v1/app/sec
 
 /**门店库存调整（商品和样品）（直营和分销）接口*/
 static NSString * const Path_inventory_storeInventoryOperate = @"/v1/app/second/storeInventoryOperate";
+
+
+//////////////////////////门店下单，退货/////////////////////////////////////
+
+//库存参考信息
+static NSString * const Path_stores_getShopDealerStock = @"/v1/app/second/getShopDealerStock";
+
+//更新发货确定
+static NSString * const Path_stores_confirmSend = @"/v1/app/second/confirmSend";
+
+//更新发货（ 首次 和 再次发货 复用接口）
+static NSString * const Path_stores_getOrderProductInfo = @"/v1/app/second/getOrderProductInfo";
+
+//经销商总仓列表
+static NSString * const Path_stores_dealerStockerList = @"/v1/app/second/dealerStockerList";
+
+//订单预约自提信息
+static NSString * const Path_stores_selfInfo = @"/v1/app/second/selfInfo";
+
+//退货选择仓库
+static NSString * const Path_stores_returnAddress = @"/v1/app/second/returnAddress";
+
+//预约自提确认保存
+static NSString * const Path_stores_selfSave = @"/v1/app/second/selfSave";
+
+
+
 #endif /* HttpURLConfig_h */
