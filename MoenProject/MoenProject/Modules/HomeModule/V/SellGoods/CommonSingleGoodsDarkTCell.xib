@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -38,7 +39,10 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KAC0211" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X3a-Fg-M65">
-                        <rect key="frame" x="113" y="17" width="192" height="21"/>
+                        <rect key="frame" x="113" y="17" width="100" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="100" id="RVD-C1-h2c"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                         <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -124,6 +128,16 @@
                         <color key="textColor" red="0.30588235289999999" green="0.30588235289999999" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZFO-IV-qpY">
+                        <rect key="frame" x="205" y="17" width="100" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="WGQ-nL-Y7Q"/>
+                            <constraint firstAttribute="width" constant="100" id="qcc-X4-QLs"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" systemColor="systemPinkColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" red="0.98431372549019602" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
@@ -140,12 +154,13 @@
                     <constraint firstItem="ape-aF-VM6" firstAttribute="bottom" secondItem="Wlw-n3-TsW" secondAttribute="bottom" id="cNd-Tg-sSR"/>
                     <constraint firstItem="Wlw-n3-TsW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="cZ1-jx-WjV"/>
                     <constraint firstItem="X3a-Fg-M65" firstAttribute="leading" secondItem="Wlw-n3-TsW" secondAttribute="trailing" constant="10" id="gFJ-si-yKV"/>
+                    <constraint firstItem="ZFO-IV-qpY" firstAttribute="top" secondItem="WeR-A3-VjL" secondAttribute="bottom" constant="14" id="gid-uV-Ahj"/>
                     <constraint firstAttribute="trailing" secondItem="WeR-A3-VjL" secondAttribute="trailing" id="k0l-PQ-TOr"/>
                     <constraint firstAttribute="trailing" secondItem="V5e-QN-U9q" secondAttribute="trailing" constant="15" id="lG4-Vk-3PX"/>
                     <constraint firstItem="X3a-Fg-M65" firstAttribute="top" secondItem="Wlw-n3-TsW" secondAttribute="top" id="pRG-Iu-3fA"/>
                     <constraint firstAttribute="trailing" secondItem="BVq-ik-Sfl" secondAttribute="trailing" constant="15" id="s5u-kl-MkH"/>
                     <constraint firstAttribute="trailing" secondItem="ape-aF-VM6" secondAttribute="trailing" constant="15" id="taC-pB-63p"/>
-                    <constraint firstAttribute="trailing" secondItem="X3a-Fg-M65" secondAttribute="trailing" constant="15" id="zEq-Ez-Crm"/>
+                    <constraint firstAttribute="trailing" secondItem="ZFO-IV-qpY" secondAttribute="trailing" constant="15" id="yG2-Wp-kYT"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
@@ -161,6 +176,7 @@
                 <outlet property="line_View" destination="WeR-A3-VjL" id="IMZ-Yk-xrk"/>
                 <outlet property="minus_Btn" destination="MY2-gL-jRr" id="KgR-NU-H8o"/>
                 <outlet property="returnCount_Lab" destination="V5e-QN-U9q" id="lod-De-uFE"/>
+                <outlet property="sendInfo_lab" destination="ZFO-IV-qpY" id="Zs8-zY-3sS"/>
             </connections>
             <point key="canvasLocation" x="-128" y="-10"/>
         </tableViewCell>
@@ -169,5 +185,8 @@
         <image name="defaultImage" width="1024" height="1024"/>
         <image name="s_add_count_icon" width="8" height="8"/>
         <image name="s_minus_count_icon" width="8" height="8"/>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

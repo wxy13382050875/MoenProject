@@ -45,6 +45,9 @@
 @property (nonatomic, strong) NSMutableArray *pickUpDataArr;
 @property (nonatomic, strong) NSMutableArray *returnTypeDataArr;
 @property (nonatomic, strong) NSMutableArray *returnReasonDataArr;
+
+@property (nonatomic, strong) NSString *returnAddress;
+@property (nonatomic, strong) NSString *stockeId;
 @end
 
 @implementation ReturnAllGoodsCounterVC
@@ -534,9 +537,15 @@
         return;
     }
     
-    if (![QZLUserConfig sharedInstance].useInventory){
+    if ([QZLUserConfig sharedInstance].useInventory){
         Xw_SelectWarehouseVC *orderManageVC = [[Xw_SelectWarehouseVC alloc] init];
         orderManageVC.hidesBottomBarWhenPushed = YES;
+        orderManageVC.operaBlock = ^(NSString * _Nonnull returnAddress, NSString * _Nonnull stockeId) {
+            self.returnAddress = returnAddress;
+            self.stockeId = stockeId;
+            [self httpPath_saveReturnOrder];
+            
+        };
         [self.navigationController pushViewController:orderManageVC animated:YES];
     } else {
         [self isConfirmReturnGoods];
@@ -857,6 +866,9 @@
     [parameters setValue:[NSString stringWithFormat:@"%ld",(long)self.dataModel.actualRefundAmount] forKey:@"actualRefundAmount"];
     [parameters setValue:self.dataModel.ID forKey:@"id"];
     [parameters setValue:paramArr forKey:@"reshippedGoodsDataList"];
+    
+    [parameters setValue:self.returnAddress forKey:@"returnAddress"];
+    [parameters setValue:self.stockeId forKey:@"stockeId"];
     
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;

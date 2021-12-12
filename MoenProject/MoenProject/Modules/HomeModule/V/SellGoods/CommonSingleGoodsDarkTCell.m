@@ -21,6 +21,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *line_View;
 
+@property (weak, nonatomic) IBOutlet UILabel *sendInfo_lab;
 
 @property (weak, nonatomic) IBOutlet UIView *editCountView;
 @property (weak, nonatomic) IBOutlet UIButton *minus_Btn;
@@ -137,6 +138,12 @@
     self.goods_Price.text = [NSString stringWithFormat:@"¥%@",model.refundAmount];
     [self.goods_Count setHidden:YES];
     
+    if([QZLUserConfig sharedInstance].useInventory){
+        self.sendInfo_lab.hidden = NO;
+        self.sendInfo_lab.text = model.sendInfo;
+    } else {
+        self.sendInfo_lab.hidden = YES;
+    }
     [self.editCountView setHidden:NO];
     [self.returnCount_Lab setHidden:NO];
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"可退%ld件",(long)model.count]];

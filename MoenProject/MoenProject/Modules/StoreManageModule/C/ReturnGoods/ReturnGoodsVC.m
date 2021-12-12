@@ -220,6 +220,10 @@
     lineView.backgroundColor = AppBgBlueGrayColor;
     [footerView addSubview:lineView];
     
+    if(!model.wholeOtherReturn){
+        leftBtn.hidden = YES;
+    }
+    
     return footerView;
 }
 #pragma mark -- UITableViewDelegate

@@ -23,6 +23,8 @@
 @property(nonatomic,strong)NSMutableArray* buttons;
 
 @property (nonatomic, strong) UserLoginInfoModel *selectedModel;
+
+@property (nonatomic, strong) NSString* returnAddress;
 @end
 
 @implementation Xw_SelectWarehouseVC
@@ -60,6 +62,7 @@
     
     [self.buttons[0] setSelected:YES]; // Making the first button initially selected
     self.tableView.hidden = YES;
+    self.returnAddress = @"shop";
 }
 -(void)configBaseData{
     [self httpPath_stores_dealerStockerList];
@@ -176,11 +179,19 @@
 -(UIButton*)submitBtn{
     if(!_submitBtn){
         _submitBtn = [UIButton buttonWithTitie:@"确定" WithtextColor:COLOR(@"#ffffff") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
-            
-            if (self.selectedModel.id.length == 0) {
-                [[NSToastManager manager] showtoast:@"请选择总仓"];
-                return;
+            NSString* stockeId = @"";
+            if([self.returnAddress isEqualToString:@"stocke"]){
+                if (self.selectedModel.id.length == 0) {
+                    [[NSToastManager manager] showtoast:@"请选择总仓"];
+                    return;
+                } else {
+                    stockeId = self.selectedModel.id;
+                }
             }
+            if(self.operaBlock){
+                self.operaBlock(self.returnAddress, stockeId);
+            }
+            [self.navigationController popViewControllerAnimated:YES];
         }];
     }
     return _submitBtn;
@@ -226,8 +237,10 @@
         NSLog(@"Selected color: %@", sender.titleLabel.text);
         if([sender.titleLabel.text isEqualToString:@"门店"]){
             self.tableView.hidden = YES;
+            self.returnAddress = @"shop";
         } else {
             self.tableView.hidden = NO;
+            self.returnAddress = @"stocke";
         }
     }
 }
