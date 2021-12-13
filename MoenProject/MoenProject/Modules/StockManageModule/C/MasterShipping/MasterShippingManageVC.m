@@ -141,14 +141,25 @@
 {
     Orderlist *model = self.dataList[section];
     NSString* orderStatus;
-    if([model.orderStatus isEqualToString:@"waitSub"]){
+    if([model.orderStatus isEqualToString:@"all"]){
+        orderStatus = @"全部";
+    }
+    else if([model.orderStatus isEqualToString:@"waitSub"]){
         orderStatus = @"待提交";
-    } else if([model.orderStatus isEqualToString:@"wait"]){
+    }
+    else if([model.orderStatus isEqualToString:@"wait"]){
         orderStatus = @"待审核";
+        
     } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
         orderStatus = @"待发货";
+    }  else if([model.orderStatus isEqualToString:@"waitAllocate"]){
+        orderStatus = @"待配货";
     } else if([model.orderStatus isEqualToString:@"allocate"]){
         orderStatus = @"配货中";
+    } else if([model.orderStatus isEqualToString:@"partAllocate"]){
+        orderStatus = @"部分配货";
+    } else if([model.orderStatus isEqualToString:@"allAllocate"]){
+        orderStatus = @"全部配货";
     } else if([model.orderStatus isEqualToString:@"partDeliver"]){
         orderStatus = @"部分发货";
     }else if([model.orderStatus isEqualToString:@"allDeliver"]){
@@ -157,6 +168,7 @@
         orderStatus = @"已完成";
     }else if([model.orderStatus isEqualToString:@"refuse"]){
         orderStatus = @"已拒绝";
+        
     }else if([model.orderStatus isEqualToString:@"waitGoods"]){
         orderStatus = @"待收货";
     }else if([model.orderStatus isEqualToString:@"refuseAD"]){

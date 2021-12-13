@@ -513,9 +513,13 @@
 }
 -(NSString*)getOrderStatus:(NSString*)status{
     NSString* orderStatus= @"";
-    if([status isEqualToString:@"waitSub"]){
+    if([status isEqualToString:@"all"]){
+        orderStatus = @"全部";
+    }
+    else if([status isEqualToString:@"waitSub"]){
         orderStatus = @"待提交";
-    } else if([status isEqualToString:@"wait"]){
+    }
+    else if([status isEqualToString:@"wait"]){
         orderStatus = @"待审核";
         if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
            self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
@@ -523,8 +527,14 @@
         }
     } else if([status isEqualToString:@"waitDeliver"]){
         orderStatus = @"待发货";
+    }  else if([status isEqualToString:@"waitAllocate"]){
+        orderStatus = @"待配货";
     } else if([status isEqualToString:@"allocate"]){
         orderStatus = @"配货中";
+    } else if([status isEqualToString:@"partAllocate"]){
+        orderStatus = @"部分配货";
+    } else if([status isEqualToString:@"allAllocate"]){
+        orderStatus = @"全部配货";
     } else if([status isEqualToString:@"partDeliver"]){
         orderStatus = @"部分发货";
     }else if([status isEqualToString:@"allDeliver"]){

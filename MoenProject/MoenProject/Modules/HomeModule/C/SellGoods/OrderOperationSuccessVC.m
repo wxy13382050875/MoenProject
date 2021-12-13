@@ -176,7 +176,11 @@ static CGFloat kMagin = 1.f;
         [self.dataSource addObject:model];
     }
     else if (self.controllerType == OrderOperationSuccessVCTypeTransfersSave||self.controllerType == OrderOperationSuccessVCTypeTransfersSubmit) {
-        self.title = NSLocalizedString(@"order_complete", nil);
+        if(self.controllerType == OrderOperationSuccessVCTypeTransfersSubmit){
+            self.title = NSLocalizedString(@"submit_success", nil);
+        } else {
+            self.title = NSLocalizedString(@"save_success", nil);
+        }
         RoleProfileModel * model = [[RoleProfileModel alloc]init];
         model.title = @"调拨单详情";
         model.icon =@"o_placing_orderDetail_icon";

@@ -167,7 +167,7 @@
 }
 -(void)setModel:(Goodslist *)model{
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:model.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
-    self.goods_Code.text = model.goodsID;
+    self.goods_Code.text = model.goodsSKU;
     self.goods_Name.text = model.goodsName;
     [self.goods_Price setHidden:YES];
 //    self.goods_Price.text = [NSString stringWithFormat:@"¥%@",model.refundAmount];

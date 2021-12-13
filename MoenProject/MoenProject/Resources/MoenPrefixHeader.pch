@@ -57,5 +57,7 @@
 #import "FDAlertView.h"
 
 #import "NSDate+ZLDateTimeStr.h"
+
+#import "WMZDialog.h"
 //#import "xw_MacroDefinition.h"
 #endif /* MoenPrefixHeader_pch */

@@ -51,8 +51,8 @@
 -(void)setModel:(XwSystemTCellModel *)model{
     self.titleLabel.text = model.title;
     self.valueLabel.text = model.value;
-    if(model.showArrow){
-        self.arrowImg.hidden = NO;
+    if(!model.showArrow){
+        self.arrowImg.hidden = YES;
     } else {
         self.arrowImg.hidden = NO;
     }

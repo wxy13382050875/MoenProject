@@ -1173,8 +1173,9 @@
     [self.floorsAarr addObject:section2Arr];
     
     //商品
-    NSMutableArray *sectionArr = [[NSMutableArray alloc] init];
+    
     for (CommonGoodsModel *model in self.dataArr) {
+        NSMutableArray *sectionArr = [[NSMutableArray alloc] init];
         model.isShowDetail = NO;
         
         //当前商品的Cell
@@ -1220,9 +1221,9 @@
         
         [sectionArr addObject:cellModel];
         
-        
+        [self.floorsAarr addObject:sectionArr];
     }
-    [self.floorsAarr addObject:sectionArr];
+    
     //订单活动
     if (self.counterDataModel.rules.length > 0) {
         NSMutableArray *section3Arr = [[NSMutableArray alloc] init];
@@ -1251,11 +1252,11 @@
     
     
     //赠品
-    NSMutableArray *giftArr = [[NSMutableArray alloc] init];
+    
     for (CommonGoodsModel *model in self.giftDataArr) {
         model.isShowDetail = NO;
         //当前商品的Cell
-        
+        NSMutableArray *giftArr = [[NSMutableArray alloc] init];
         CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
        
         if (!model.isSetMeal) {
@@ -1295,11 +1296,11 @@
             self.giftGoodsCount += model.kGoodsCount;
         }
         [giftArr addObject:cellModel];
-        
-    }
-    if(self.giftDataArr.count > 0){
         [self.floorsAarr addObject:giftArr];
     }
+//    if(self.giftDataArr.count > 0){
+//        
+//    }
     
     
     //添加赠品
@@ -1352,8 +1353,9 @@
 {
     
     NSMutableArray *sectionArr = self.floorsAarr[indexPath.section];
-    CommonGoodsModel *goodsModel = self.dataArr[indexPath.row];
-    
+//    CommonGoodsModel *goodsModel = self.dataArr[indexPath.row];
+    CommonTVDataModel* tm =  sectionArr[indexPath.row];
+    CommonGoodsModel *goodsModel = tm.Data;
     
     
     
@@ -1365,7 +1367,7 @@
             cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
             cellModel.Data = model;
             index ++;
-            [sectionArr insertObject:cellModel atIndex:index];
+            [sectionArr addObject:cellModel];
         }
         goodsModel.isShowDetail = YES;
     }
@@ -1391,7 +1393,9 @@
 {
     NSMutableArray *sectionArr = self.floorsAarr[indexPath.section];
 //    NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
-    CommonGoodsModel *goodsModel = self.giftDataArr[indexPath.row];
+//    CommonGoodsModel *goodsModel = self.giftDataArr[indexPath.row];
+    CommonTVDataModel* tm =  sectionArr[indexPath.row];
+    CommonGoodsModel *goodsModel = tm.Data;
     if (isShow) {
         NSInteger index  = indexPath.row;
         for (CommonProdutcModel *model in goodsModel.productList) {
@@ -1400,7 +1404,7 @@
             cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
             cellModel.Data = model;
             index ++;
-            [sectionArr insertObject:cellModel atIndex:index];
+            [sectionArr addObject:cellModel];
         }
         goodsModel.isShowDetail = YES;
     }

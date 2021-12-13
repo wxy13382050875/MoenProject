@@ -155,7 +155,8 @@
     
     self.goodsCode.text = self.dataModel .code;
     self.goodsName.text = self.dataModel .name;
-    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel .price];
+    self.goodsPrice.text = [NSString stringWithFormat:@"%ld",self.dataModel.kGoodsCount];;
+//    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel .price];
     self.goodsPackageDes.text = self.dataModel.comboDescribe;
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
     

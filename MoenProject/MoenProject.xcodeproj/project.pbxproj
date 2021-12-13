@@ -10,6 +10,36 @@
 		2E13BEC6275BDD6D00287371 /* xWStockOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E13BEC5275BDD6D00287371 /* xWStockOrderModel.m */; };
 		2E13BED1275BFFF600287371 /* XwOrderDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E13BECF275BFFF500287371 /* XwOrderDetailVC.m */; };
 		2E13BED4275C055900287371 /* XwOrderDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E13BED2275C055800287371 /* XwOrderDetailModel.m */; };
+		2E2A69C527677C62004FC164 /* WMZDialog+Write.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A697327677C61004FC164 /* WMZDialog+Write.m */; };
+		2E2A69C627677C62004FC164 /* WMZDialog+NaviMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A697627677C61004FC164 /* WMZDialog+NaviMenu.m */; };
+		2E2A69C727677C62004FC164 /* WMZDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A697727677C61004FC164 /* WMZDialog.m */; };
+		2E2A69C827677C62004FC164 /* WMZDialog+Loading.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A697927677C61004FC164 /* WMZDialog+Loading.m */; };
+		2E2A69C927677C62004FC164 /* WMZDialog+TabbarMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A697C27677C61004FC164 /* WMZDialog+TabbarMenu.m */; };
+		2E2A69CA27677C62004FC164 /* WMZDialog+AutoDisappear.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A697F27677C61004FC164 /* WMZDialog+AutoDisappear.m */; };
+		2E2A69CB27677C62004FC164 /* WMZDialog+Down.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A698527677C61004FC164 /* WMZDialog+Down.m */; };
+		2E2A69CC27677C62004FC164 /* WMZDialog+Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A698727677C61004FC164 /* WMZDialog+Location.m */; };
+		2E2A69CD27677C62004FC164 /* WMZDialog+DatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A698A27677C61004FC164 /* WMZDialog+DatePicker.m */; };
+		2E2A69CE27677C62004FC164 /* WMZDialog+PopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A698D27677C61004FC164 /* WMZDialog+PopView.m */; };
+		2E2A69CF27677C62004FC164 /* WMZDialog+Pay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A699127677C61004FC164 /* WMZDialog+Pay.m */; };
+		2E2A69D027677C62004FC164 /* WMZDialog+Calander.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A699527677C61004FC164 /* WMZDialog+Calander.m */; };
+		2E2A69D127677C62004FC164 /* CalanderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A699627677C61004FC164 /* CalanderModel.m */; };
+		2E2A69D227677C62004FC164 /* WMZDialog+time.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A699827677C61004FC164 /* WMZDialog+time.m */; };
+		2E2A69D327677C62004FC164 /* WMZDialog+MenusSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A699D27677C61004FC164 /* WMZDialog+MenusSelect.m */; };
+		2E2A69D427677C62004FC164 /* WMZDialog+CardPresent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69A027677C61004FC164 /* WMZDialog+CardPresent.m */; };
+		2E2A69D527677C62004FC164 /* WMZDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E2A69A127677C61004FC164 /* WMZDialog.bundle */; };
+		2E2A69D627677C62004FC164 /* WMZDialog+PickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69A427677C61004FC164 /* WMZDialog+PickView.m */; };
+		2E2A69D727677C62004FC164 /* WMZDialogShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69A927677C61004FC164 /* WMZDialogShareView.m */; };
+		2E2A69D827677C62004FC164 /* WMZDialogTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69AB27677C61004FC164 /* WMZDialogTool.m */; };
+		2E2A69D927677C62004FC164 /* WMZDialogTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69AC27677C61004FC164 /* WMZDialogTableView.m */; };
+		2E2A69DA27677C62004FC164 /* NSDate+WMZCalendarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69AD27677C61004FC164 /* NSDate+WMZCalendarDate.m */; };
+		2E2A69DB27677C62004FC164 /* WMZDialogAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69AF27677C61004FC164 /* WMZDialogAnimation.m */; };
+		2E2A69DC27677C62004FC164 /* WMZDialog+BuyCar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69B127677C61004FC164 /* WMZDialog+BuyCar.m */; };
+		2E2A69DD27677C62004FC164 /* WMZDialog+Normal.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69B427677C61004FC164 /* WMZDialog+Normal.m */; };
+		2E2A69DE27677C62004FC164 /* WMZDialog+Advertisement.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69B727677C61004FC164 /* WMZDialog+Advertisement.m */; };
+		2E2A69DF27677C62004FC164 /* WMZDialog+Select.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69BA27677C61004FC164 /* WMZDialog+Select.m */; };
+		2E2A69E027677C62004FC164 /* WMZDialog+Sheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69BD27677C61004FC164 /* WMZDialog+Sheet.m */; };
+		2E2A69E127677C62004FC164 /* WMZDiaLogBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69C127677C61004FC164 /* WMZDiaLogBase.m */; };
+		2E2A69E227677C62004FC164 /* WMZDialog+Share.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2A69C327677C61004FC164 /* WMZDialog+Share.m */; };
 		2E2B4869275F09F500743AD5 /* StockOperationSuccessVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2B4868275F09F500743AD5 /* StockOperationSuccessVC.m */; };
 		2E2B486C275F2ACA00743AD5 /* ChangeStockAdjustVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E2B486B275F2ACA00743AD5 /* ChangeStockAdjustVC.m */; };
 		2E384CC026DF74990021EA4A /* xw_BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E384CAD26DF74990021EA4A /* xw_BaseViewController.m */; };
@@ -526,6 +556,66 @@
 		2E13BED0275BFFF500287371 /* XwOrderDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailVC.h; sourceTree = "<group>"; };
 		2E13BED2275C055800287371 /* XwOrderDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailModel.m; sourceTree = "<group>"; };
 		2E13BED3275C055900287371 /* XwOrderDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailModel.h; sourceTree = "<group>"; };
+		2E2A697227677C61004FC164 /* WMZDialog+Write.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Write.h"; sourceTree = "<group>"; };
+		2E2A697327677C61004FC164 /* WMZDialog+Write.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Write.m"; sourceTree = "<group>"; };
+		2E2A697527677C61004FC164 /* WMZDialog+NaviMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+NaviMenu.h"; sourceTree = "<group>"; };
+		2E2A697627677C61004FC164 /* WMZDialog+NaviMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+NaviMenu.m"; sourceTree = "<group>"; };
+		2E2A697727677C61004FC164 /* WMZDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMZDialog.m; sourceTree = "<group>"; };
+		2E2A697927677C61004FC164 /* WMZDialog+Loading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Loading.m"; sourceTree = "<group>"; };
+		2E2A697A27677C61004FC164 /* WMZDialog+Loading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Loading.h"; sourceTree = "<group>"; };
+		2E2A697C27677C61004FC164 /* WMZDialog+TabbarMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+TabbarMenu.m"; sourceTree = "<group>"; };
+		2E2A697D27677C61004FC164 /* WMZDialog+TabbarMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+TabbarMenu.h"; sourceTree = "<group>"; };
+		2E2A697F27677C61004FC164 /* WMZDialog+AutoDisappear.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+AutoDisappear.m"; sourceTree = "<group>"; };
+		2E2A698027677C61004FC164 /* WMZDialog+AutoDisappear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+AutoDisappear.h"; sourceTree = "<group>"; };
+		2E2A698227677C61004FC164 /* WMZDialogMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMZDialogMacro.h; sourceTree = "<group>"; };
+		2E2A698427677C61004FC164 /* WMZDialog+Down.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Down.h"; sourceTree = "<group>"; };
+		2E2A698527677C61004FC164 /* WMZDialog+Down.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Down.m"; sourceTree = "<group>"; };
+		2E2A698727677C61004FC164 /* WMZDialog+Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Location.m"; sourceTree = "<group>"; };
+		2E2A698827677C61004FC164 /* WMZDialog+Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Location.h"; sourceTree = "<group>"; };
+		2E2A698A27677C61004FC164 /* WMZDialog+DatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+DatePicker.m"; sourceTree = "<group>"; };
+		2E2A698B27677C61004FC164 /* WMZDialog+DatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+DatePicker.h"; sourceTree = "<group>"; };
+		2E2A698D27677C61004FC164 /* WMZDialog+PopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+PopView.m"; sourceTree = "<group>"; };
+		2E2A698E27677C61004FC164 /* WMZDialog+PopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+PopView.h"; sourceTree = "<group>"; };
+		2E2A699027677C61004FC164 /* WMZDialog+Pay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Pay.h"; sourceTree = "<group>"; };
+		2E2A699127677C61004FC164 /* WMZDialog+Pay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Pay.m"; sourceTree = "<group>"; };
+		2E2A699327677C61004FC164 /* WMZDialog+Calander.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Calander.h"; sourceTree = "<group>"; };
+		2E2A699427677C61004FC164 /* CalanderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalanderModel.h; sourceTree = "<group>"; };
+		2E2A699527677C61004FC164 /* WMZDialog+Calander.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Calander.m"; sourceTree = "<group>"; };
+		2E2A699627677C61004FC164 /* CalanderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalanderModel.m; sourceTree = "<group>"; };
+		2E2A699827677C61004FC164 /* WMZDialog+time.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+time.m"; sourceTree = "<group>"; };
+		2E2A699927677C61004FC164 /* WMZDialog+time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+time.h"; sourceTree = "<group>"; };
+		2E2A699A27677C61004FC164 /* WMZDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMZDialog.h; sourceTree = "<group>"; };
+		2E2A699C27677C61004FC164 /* WMZDialog+MenusSelect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+MenusSelect.h"; sourceTree = "<group>"; };
+		2E2A699D27677C61004FC164 /* WMZDialog+MenusSelect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+MenusSelect.m"; sourceTree = "<group>"; };
+		2E2A699F27677C61004FC164 /* WMZDialog+CardPresent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+CardPresent.h"; sourceTree = "<group>"; };
+		2E2A69A027677C61004FC164 /* WMZDialog+CardPresent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+CardPresent.m"; sourceTree = "<group>"; };
+		2E2A69A127677C61004FC164 /* WMZDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WMZDialog.bundle; sourceTree = "<group>"; };
+		2E2A69A327677C61004FC164 /* WMZDialog+PickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+PickView.h"; sourceTree = "<group>"; };
+		2E2A69A427677C61004FC164 /* WMZDialog+PickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+PickView.m"; sourceTree = "<group>"; };
+		2E2A69A627677C61004FC164 /* WMZDialogTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMZDialogTableView.h; sourceTree = "<group>"; };
+		2E2A69A727677C61004FC164 /* WMZDialogTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMZDialogTool.h; sourceTree = "<group>"; };
+		2E2A69A827677C61004FC164 /* NSDate+WMZCalendarDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+WMZCalendarDate.h"; sourceTree = "<group>"; };
+		2E2A69A927677C61004FC164 /* WMZDialogShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMZDialogShareView.m; sourceTree = "<group>"; };
+		2E2A69AA27677C61004FC164 /* WMZDialogAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMZDialogAnimation.h; sourceTree = "<group>"; };
+		2E2A69AB27677C61004FC164 /* WMZDialogTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMZDialogTool.m; sourceTree = "<group>"; };
+		2E2A69AC27677C61004FC164 /* WMZDialogTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMZDialogTableView.m; sourceTree = "<group>"; };
+		2E2A69AD27677C61004FC164 /* NSDate+WMZCalendarDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+WMZCalendarDate.m"; sourceTree = "<group>"; };
+		2E2A69AE27677C61004FC164 /* WMZDialogShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMZDialogShareView.h; sourceTree = "<group>"; };
+		2E2A69AF27677C61004FC164 /* WMZDialogAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMZDialogAnimation.m; sourceTree = "<group>"; };
+		2E2A69B127677C61004FC164 /* WMZDialog+BuyCar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+BuyCar.m"; sourceTree = "<group>"; };
+		2E2A69B227677C61004FC164 /* WMZDialog+BuyCar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+BuyCar.h"; sourceTree = "<group>"; };
+		2E2A69B427677C61004FC164 /* WMZDialog+Normal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Normal.m"; sourceTree = "<group>"; };
+		2E2A69B527677C61004FC164 /* WMZDialog+Normal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Normal.h"; sourceTree = "<group>"; };
+		2E2A69B727677C61004FC164 /* WMZDialog+Advertisement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Advertisement.m"; sourceTree = "<group>"; };
+		2E2A69B827677C61004FC164 /* WMZDialog+Advertisement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Advertisement.h"; sourceTree = "<group>"; };
+		2E2A69BA27677C61004FC164 /* WMZDialog+Select.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Select.m"; sourceTree = "<group>"; };
+		2E2A69BB27677C61004FC164 /* WMZDialog+Select.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Select.h"; sourceTree = "<group>"; };
+		2E2A69BD27677C61004FC164 /* WMZDialog+Sheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Sheet.m"; sourceTree = "<group>"; };
+		2E2A69BE27677C61004FC164 /* WMZDialog+Sheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Sheet.h"; sourceTree = "<group>"; };
+		2E2A69C027677C61004FC164 /* WMZDiaLogBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMZDiaLogBase.h; sourceTree = "<group>"; };
+		2E2A69C127677C61004FC164 /* WMZDiaLogBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMZDiaLogBase.m; sourceTree = "<group>"; };
+		2E2A69C327677C61004FC164 /* WMZDialog+Share.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMZDialog+Share.m"; sourceTree = "<group>"; };
+		2E2A69C427677C61004FC164 /* WMZDialog+Share.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMZDialog+Share.h"; sourceTree = "<group>"; };
 		2E2B4867275F09F500743AD5 /* StockOperationSuccessVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StockOperationSuccessVC.h; sourceTree = "<group>"; };
 		2E2B4868275F09F500743AD5 /* StockOperationSuccessVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StockOperationSuccessVC.m; sourceTree = "<group>"; };
 		2E2B486A275F2ACA00743AD5 /* ChangeStockAdjustVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangeStockAdjustVC.h; sourceTree = "<group>"; };
@@ -1461,6 +1551,265 @@
 				2E13BED0275BFFF500287371 /* XwOrderDetailVC.h */,
 			);
 			path = XwOrderDetail;
+			sourceTree = "<group>";
+		};
+		2E2A697027677C61004FC164 /* WMZDialog */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A697127677C61004FC164 /* Write */,
+				2E2A697427677C61004FC164 /* NaviMenu */,
+				2E2A697727677C61004FC164 /* WMZDialog.m */,
+				2E2A697827677C61004FC164 /* Loading */,
+				2E2A697B27677C61004FC164 /* TabbarMenu */,
+				2E2A697E27677C61004FC164 /* AutoDisappear */,
+				2E2A698127677C61004FC164 /* Config */,
+				2E2A698327677C61004FC164 /* Dowm */,
+				2E2A698627677C61004FC164 /* Location */,
+				2E2A698927677C61004FC164 /* DatePicker */,
+				2E2A698C27677C61004FC164 /* PopView */,
+				2E2A698F27677C61004FC164 /* Pay */,
+				2E2A699227677C61004FC164 /* Calander */,
+				2E2A699727677C61004FC164 /* Time */,
+				2E2A699A27677C61004FC164 /* WMZDialog.h */,
+				2E2A699B27677C61004FC164 /* MenusSelect */,
+				2E2A699E27677C61004FC164 /* CardPresent */,
+				2E2A69A127677C61004FC164 /* WMZDialog.bundle */,
+				2E2A69A227677C61004FC164 /* PickView */,
+				2E2A69A527677C61004FC164 /* WMZDialogTool */,
+				2E2A69B027677C61004FC164 /* BuyCar */,
+				2E2A69B327677C61004FC164 /* Normal */,
+				2E2A69B627677C61004FC164 /* Advertisement */,
+				2E2A69B927677C61004FC164 /* Select */,
+				2E2A69BC27677C61004FC164 /* Sheet */,
+				2E2A69BF27677C61004FC164 /* Base */,
+				2E2A69C227677C61004FC164 /* Share */,
+			);
+			path = WMZDialog;
+			sourceTree = "<group>";
+		};
+		2E2A697127677C61004FC164 /* Write */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A697227677C61004FC164 /* WMZDialog+Write.h */,
+				2E2A697327677C61004FC164 /* WMZDialog+Write.m */,
+			);
+			path = Write;
+			sourceTree = "<group>";
+		};
+		2E2A697427677C61004FC164 /* NaviMenu */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A697527677C61004FC164 /* WMZDialog+NaviMenu.h */,
+				2E2A697627677C61004FC164 /* WMZDialog+NaviMenu.m */,
+			);
+			path = NaviMenu;
+			sourceTree = "<group>";
+		};
+		2E2A697827677C61004FC164 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A697927677C61004FC164 /* WMZDialog+Loading.m */,
+				2E2A697A27677C61004FC164 /* WMZDialog+Loading.h */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
+		2E2A697B27677C61004FC164 /* TabbarMenu */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A697C27677C61004FC164 /* WMZDialog+TabbarMenu.m */,
+				2E2A697D27677C61004FC164 /* WMZDialog+TabbarMenu.h */,
+			);
+			path = TabbarMenu;
+			sourceTree = "<group>";
+		};
+		2E2A697E27677C61004FC164 /* AutoDisappear */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A697F27677C61004FC164 /* WMZDialog+AutoDisappear.m */,
+				2E2A698027677C61004FC164 /* WMZDialog+AutoDisappear.h */,
+			);
+			path = AutoDisappear;
+			sourceTree = "<group>";
+		};
+		2E2A698127677C61004FC164 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A698227677C61004FC164 /* WMZDialogMacro.h */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		2E2A698327677C61004FC164 /* Dowm */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A698427677C61004FC164 /* WMZDialog+Down.h */,
+				2E2A698527677C61004FC164 /* WMZDialog+Down.m */,
+			);
+			path = Dowm;
+			sourceTree = "<group>";
+		};
+		2E2A698627677C61004FC164 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A698727677C61004FC164 /* WMZDialog+Location.m */,
+				2E2A698827677C61004FC164 /* WMZDialog+Location.h */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		2E2A698927677C61004FC164 /* DatePicker */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A698A27677C61004FC164 /* WMZDialog+DatePicker.m */,
+				2E2A698B27677C61004FC164 /* WMZDialog+DatePicker.h */,
+			);
+			path = DatePicker;
+			sourceTree = "<group>";
+		};
+		2E2A698C27677C61004FC164 /* PopView */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A698D27677C61004FC164 /* WMZDialog+PopView.m */,
+				2E2A698E27677C61004FC164 /* WMZDialog+PopView.h */,
+			);
+			path = PopView;
+			sourceTree = "<group>";
+		};
+		2E2A698F27677C61004FC164 /* Pay */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A699027677C61004FC164 /* WMZDialog+Pay.h */,
+				2E2A699127677C61004FC164 /* WMZDialog+Pay.m */,
+			);
+			path = Pay;
+			sourceTree = "<group>";
+		};
+		2E2A699227677C61004FC164 /* Calander */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A699327677C61004FC164 /* WMZDialog+Calander.h */,
+				2E2A699427677C61004FC164 /* CalanderModel.h */,
+				2E2A699527677C61004FC164 /* WMZDialog+Calander.m */,
+				2E2A699627677C61004FC164 /* CalanderModel.m */,
+			);
+			path = Calander;
+			sourceTree = "<group>";
+		};
+		2E2A699727677C61004FC164 /* Time */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A699827677C61004FC164 /* WMZDialog+time.m */,
+				2E2A699927677C61004FC164 /* WMZDialog+time.h */,
+			);
+			path = Time;
+			sourceTree = "<group>";
+		};
+		2E2A699B27677C61004FC164 /* MenusSelect */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A699C27677C61004FC164 /* WMZDialog+MenusSelect.h */,
+				2E2A699D27677C61004FC164 /* WMZDialog+MenusSelect.m */,
+			);
+			path = MenusSelect;
+			sourceTree = "<group>";
+		};
+		2E2A699E27677C61004FC164 /* CardPresent */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A699F27677C61004FC164 /* WMZDialog+CardPresent.h */,
+				2E2A69A027677C61004FC164 /* WMZDialog+CardPresent.m */,
+			);
+			path = CardPresent;
+			sourceTree = "<group>";
+		};
+		2E2A69A227677C61004FC164 /* PickView */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A69A327677C61004FC164 /* WMZDialog+PickView.h */,
+				2E2A69A427677C61004FC164 /* WMZDialog+PickView.m */,
+			);
+			path = PickView;
+			sourceTree = "<group>";
+		};
+		2E2A69A527677C61004FC164 /* WMZDialogTool */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A69A627677C61004FC164 /* WMZDialogTableView.h */,
+				2E2A69A727677C61004FC164 /* WMZDialogTool.h */,
+				2E2A69A827677C61004FC164 /* NSDate+WMZCalendarDate.h */,
+				2E2A69A927677C61004FC164 /* WMZDialogShareView.m */,
+				2E2A69AA27677C61004FC164 /* WMZDialogAnimation.h */,
+				2E2A69AB27677C61004FC164 /* WMZDialogTool.m */,
+				2E2A69AC27677C61004FC164 /* WMZDialogTableView.m */,
+				2E2A69AD27677C61004FC164 /* NSDate+WMZCalendarDate.m */,
+				2E2A69AE27677C61004FC164 /* WMZDialogShareView.h */,
+				2E2A69AF27677C61004FC164 /* WMZDialogAnimation.m */,
+			);
+			path = WMZDialogTool;
+			sourceTree = "<group>";
+		};
+		2E2A69B027677C61004FC164 /* BuyCar */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A69B127677C61004FC164 /* WMZDialog+BuyCar.m */,
+				2E2A69B227677C61004FC164 /* WMZDialog+BuyCar.h */,
+			);
+			path = BuyCar;
+			sourceTree = "<group>";
+		};
+		2E2A69B327677C61004FC164 /* Normal */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A69B427677C61004FC164 /* WMZDialog+Normal.m */,
+				2E2A69B527677C61004FC164 /* WMZDialog+Normal.h */,
+			);
+			path = Normal;
+			sourceTree = "<group>";
+		};
+		2E2A69B627677C61004FC164 /* Advertisement */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A69B727677C61004FC164 /* WMZDialog+Advertisement.m */,
+				2E2A69B827677C61004FC164 /* WMZDialog+Advertisement.h */,
+			);
+			path = Advertisement;
+			sourceTree = "<group>";
+		};
+		2E2A69B927677C61004FC164 /* Select */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A69BA27677C61004FC164 /* WMZDialog+Select.m */,
+				2E2A69BB27677C61004FC164 /* WMZDialog+Select.h */,
+			);
+			path = Select;
+			sourceTree = "<group>";
+		};
+		2E2A69BC27677C61004FC164 /* Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A69BD27677C61004FC164 /* WMZDialog+Sheet.m */,
+				2E2A69BE27677C61004FC164 /* WMZDialog+Sheet.h */,
+			);
+			path = Sheet;
+			sourceTree = "<group>";
+		};
+		2E2A69BF27677C61004FC164 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A69C027677C61004FC164 /* WMZDiaLogBase.h */,
+				2E2A69C127677C61004FC164 /* WMZDiaLogBase.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		2E2A69C227677C61004FC164 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				2E2A69C327677C61004FC164 /* WMZDialog+Share.m */,
+				2E2A69C427677C61004FC164 /* WMZDialog+Share.h */,
+			);
+			path = Share;
 			sourceTree = "<group>";
 		};
 		2E384C8426DF72010021EA4A /* StoreOrder */ = {
@@ -3553,6 +3902,7 @@
 		72FFB17921AC134E00614F14 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				2E2A697027677C61004FC164 /* WMZDialog */,
 				2E835F982763BDE100C31E2D /* ZLDatePicker */,
 				2E384D1C26E0A2A20021EA4A /* NumberCalculate */,
 				2E384D0926DF99A00021EA4A /* SKSTableView */,
@@ -4001,6 +4351,7 @@
 				72FFB11321AC0F0800614F14 /* LaunchScreen.storyboard in Resources */,
 				7289A45D23BB4BE7005D1A5D /* LICENSE in Resources */,
 				7242B25321AD535E0049E497 /* StatisticsVC.xib in Resources */,
+				2E2A69D527677C62004FC164 /* WMZDialog.bundle in Resources */,
 				7289A45E23BB4BE7005D1A5D /* README.md in Resources */,
 				2E384D1326DF99A10021EA4A /* expandableImage.png in Resources */,
 				2E384D1B26E075E90021EA4A /* xwStoreOrderGoodsCell.xib in Resources */,
@@ -4121,20 +4472,26 @@
 				725DD12421B50DB60060C0BD /* PackageRankVC.m in Sources */,
 				721D61B221FBEDF700C4987E /* KWConditionSelectView.m in Sources */,
 				2E384CC826DF74990021EA4A /* xw_NavBar.m in Sources */,
+				2E2A69D427677C62004FC164 /* WMZDialog+CardPresent.m in Sources */,
 				72FFB10B21AC0F0600614F14 /* ViewController.m in Sources */,
 				725DD16321B54E4D0060C0BD /* AddressListItemTCell.m in Sources */,
+				2E2A69D327677C62004FC164 /* WMZDialog+MenusSelect.m in Sources */,
 				2E835FB42765092100C31E2D /* XwStockInfoModel.m in Sources */,
 				72FDC5B821C7A4EE0068F6AB /* CustomerRegistVC.m in Sources */,
 				7232CBF221BA4DFE003E9F9B /* PatrolStoreCheckDetailVC.m in Sources */,
 				72C1E97E21E4D95F00B61942 /* KWTypeConditionSelectView.m in Sources */,
 				7232CBE221BA42D5003E9F9B /* CouponRecordDetailTCell.m in Sources */,
+				2E2A69C727677C62004FC164 /* WMZDialog.m in Sources */,
 				722D86CD21D60EE3002593EF /* SCExpandModel.m in Sources */,
 				72FFB20321AC134E00614F14 /* UIImage+ImageEffects.m in Sources */,
 				72FFB22A21AC134E00614F14 /* UIView+SDExtension.m in Sources */,
 				72A4684021F5A0B50069DCFE /* SDBrowserImageView.m in Sources */,
+				2E2A69C827677C62004FC164 /* WMZDialog+Loading.m in Sources */,
+				2E2A69CD27677C62004FC164 /* WMZDialog+DatePicker.m in Sources */,
 				72FDC5AF21C796570068F6AB /* HomeDataModel.m in Sources */,
 				7242B26321AD57A30049E497 /* MoenBaseModel.m in Sources */,
 				72C4C92621DA16BB00CB861F /* GoodsSalesVolumeModel.m in Sources */,
+				2E2A69DC27677C62004FC164 /* WMZDialog+BuyCar.m in Sources */,
 				722D86A821D39F06002593EF /* IMStoreStaffVC.m in Sources */,
 				7240A4F021CC98D40058E279 /* PackageDetailVC.m in Sources */,
 				72684BF421B944DB00380622 /* SamplingDetailVC.m in Sources */,
@@ -4144,14 +4501,18 @@
 				722D86A121D39C35002593EF /* IMLeaderManageVC.m in Sources */,
 				2E384CC726DF74990021EA4A /* xw_BaseCollectionReusableView.m in Sources */,
 				2E835FAD2763BE1300C31E2D /* ZLTimeBtn.m in Sources */,
+				2E2A69E027677C62004FC164 /* WMZDialog+Sheet.m in Sources */,
 				72C4C93721DC6A8600CB861F /* SalesCounterConfigModel.m in Sources */,
 				72613BDC21C74DA80084FBF9 /* StoreCustomerDetailVC.m in Sources */,
 				725DD10321B129DC0060C0BD /* UserIdentifySuccessCCell.m in Sources */,
 				2E6F966A2761D56A00660B4D /* XwOrderDetailStockCell.m in Sources */,
+				2E2A69CA27677C62004FC164 /* WMZDialog+AutoDisappear.m in Sources */,
 				72684C1621BA351A00380622 /* CouponRecordVC.m in Sources */,
 				2E384CEF26DF77940021EA4A /* UITextView+XWAdd.m in Sources */,
 				7242B28721AF95990049E497 /* Role_ProfileConfig.m in Sources */,
 				2E384CF426DF77940021EA4A /* NSString+XWAdd.m in Sources */,
+				2E2A69E227677C62004FC164 /* WMZDialog+Share.m in Sources */,
+				2E2A69D827677C62004FC164 /* WMZDialogTool.m in Sources */,
 				7240A4D121CBAB6F0058E279 /* AddressInfoModel.m in Sources */,
 				72FFB22E21AC134E00614F14 /* TAAnimatedDotView.m in Sources */,
 				2E384D0826DF946C0021EA4A /* xw_StockInfoVC.m in Sources */,
@@ -4161,9 +4522,11 @@
 				72FFB20821AC134E00614F14 /* JHPieChart.m in Sources */,
 				2E384CEE26DF77940021EA4A /* NSObject+XWKeychain.m in Sources */,
 				72FFB20421AC134E00614F14 /* UIView+NSAdditions.m in Sources */,
+				2E2A69D127677C62004FC164 /* CalanderModel.m in Sources */,
 				72FFB1FE21AC134E00614F14 /* UINavigationItem+NSAdditions.m in Sources */,
 				7232CBFD21BA545A003E9F9B /* CheckedUnqualifiedVC.m in Sources */,
 				72A4684321F5B7FE0069DCFE /* StoreQRCodeModel.m in Sources */,
+				2E2A69CE27677C62004FC164 /* WMZDialog+PopView.m in Sources */,
 				72C4C92A21DA69F100CB861F /* PackageRankModel.m in Sources */,
 				7289A46223BB4BE7005D1A5D /* UIViewController+STPopup.m in Sources */,
 				72B6B6AE237FCD18003F2AAE /* AwardsStatisticsModel.m in Sources */,
@@ -4180,7 +4543,9 @@
 				7240A53C21D0D3ED0058E279 /* OrderDetailVC.m in Sources */,
 				7240A4B221C8E8790058E279 /* CommonSingleGoodsDarkTCell.m in Sources */,
 				72935E0A2248700400937C4C /* NSDampButton.m in Sources */,
+				2E2A69D727677C62004FC164 /* WMZDialogShareView.m in Sources */,
 				7240A50421CCCBAE0058E279 /* SellGoodsOrderMarkTCell.m in Sources */,
+				2E2A69D927677C62004FC164 /* WMZDialogTableView.m in Sources */,
 				72C4C94321DCACDD00CB861F /* AddressSelectedModel.m in Sources */,
 				2E384D2426E0A2A20021EA4A /* NumberCalculate.m in Sources */,
 				72FFB20D21AC134E00614F14 /* JHRingChart.m in Sources */,
@@ -4197,6 +4562,7 @@
 				2E384D2B26E0D86F0021EA4A /* xw_DeliveryInfoVC.m in Sources */,
 				72458C7523828C29005CA4AB /* SelectedTagVC.m in Sources */,
 				7289A46123BB4BE7005D1A5D /* STPopupLeftBarItem.m in Sources */,
+				2E2A69D027677C62004FC164 /* WMZDialog+Calander.m in Sources */,
 				36A5087E26B5DB7F00C536DE /* StockManageChildVC.m in Sources */,
 				7240A4EC21CC97F60058E279 /* GoodsDetailExtraInfoTCell.m in Sources */,
 				72FFB21421AC134E00614F14 /* JHScatterChart.m in Sources */,
@@ -4205,10 +4571,12 @@
 				72FFB1F321AC134E00614F14 /* NSTool.m in Sources */,
 				2E384CF226DF77940021EA4A /* UIImage+XWAdd.m in Sources */,
 				722D86F321D64FB7002593EF /* SamplingSingleModel.m in Sources */,
+				2E2A69E127677C62004FC164 /* WMZDiaLogBase.m in Sources */,
 				2E384CFA26DF77940021EA4A /* UIBarButtonItem+XWAdd.m in Sources */,
 				72FFB1F821AC134E00614F14 /* QZLUserConfig.m in Sources */,
 				721D621D2200536300C4987E /* TZImageRequestOperation.m in Sources */,
 				72684C0A21B9574500380622 /* CStatisticsNumberTCell.m in Sources */,
+				2E2A69D627677C62004FC164 /* WMZDialog+PickView.m in Sources */,
 				36A508C326B7008600C536DE /* ChangeStockModel.m in Sources */,
 				7240A52C21D084190058E279 /* ReturnGoodsManageVC.m in Sources */,
 				7232CC0921BA5BF8003E9F9B /* StaffManageVCTCell.m in Sources */,
@@ -4228,12 +4596,15 @@
 				721D62182200536300C4987E /* TZPhotoPickerController.m in Sources */,
 				2E835FA82763BE1300C31E2D /* NSDate+ZLDateTimeStr.m in Sources */,
 				721D61B621FCC1F500C4987E /* ReturnOrderDetailReasonTCell.m in Sources */,
+				2E2A69C627677C62004FC164 /* WMZDialog+NaviMenu.m in Sources */,
 				725407BE224E1D0D000DF47C /* NSString+CheckFormat.m in Sources */,
 				2E6F967F2762454600660B4D /* XwOrderDetailAuditMarkCell.m in Sources */,
 				725DD0FE21B128450060C0BD /* UserIdentifySuccessVC.m in Sources */,
 				2E384CF726DF77940021EA4A /* UIColor+XWAdd.m in Sources */,
 				72FFB23321AC134E00614F14 /* GestureVerifyViewController.m in Sources */,
+				2E2A69D227677C62004FC164 /* WMZDialog+time.m in Sources */,
 				7242B29621AFE2AE0049E497 /* MineVC.m in Sources */,
+				2E2A69C927677C62004FC164 /* WMZDialog+TabbarMenu.m in Sources */,
 				7240A52F21D086D50058E279 /* CommonTimeSelectView.m in Sources */,
 				7232CC2321BE9A00003E9F9B /* PhotoDisplayView.m in Sources */,
 				368F983026B0F9FA003B8F37 /* PurchaseTypeChooseVC.m in Sources */,
@@ -4242,6 +4613,7 @@
 				2E835FAE2763BE1300C31E2D /* ZLDatePickerView.m in Sources */,
 				2E384CED26DF77940021EA4A /* UIButton+XWAdd.m in Sources */,
 				2E384CF126DF77940021EA4A /* NSAttributedString+XWAdd.m in Sources */,
+				2E2A69CF27677C62004FC164 /* WMZDialog+Pay.m in Sources */,
 				2E6F9688276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m in Sources */,
 				722D86C321D4B07F002593EF /* PackageDetailModel.m in Sources */,
 				7235A44221F19F8D0033E09C /* ReturnOrderDetailVC.m in Sources */,
@@ -4279,6 +4651,7 @@
 				2E6F966D2761E41600660B4D /* XwSystemTCellModel.m in Sources */,
 				2E835FA92763BE1300C31E2D /* UIView+ZLExtension.m in Sources */,
 				72F1F26821E6F46200625848 /* IntentionGoodsVC.m in Sources */,
+				2E2A69CB27677C62004FC164 /* WMZDialog+Down.m in Sources */,
 				7240A4FA21CCC47F0058E279 /* SellGoodsOrderConfigTCell.m in Sources */,
 				2E384CFF26DF79BF0021EA4A /* xw_StoreOrderVC.m in Sources */,
 				7240A52221D07A400058E279 /* OrderManageVC.m in Sources */,
@@ -4287,6 +4660,7 @@
 				7242B29B21AFEE2E0049E497 /* UserIdentifyVC.m in Sources */,
 				72A4683F21F5A0B50069DCFE /* SDWaitingView.m in Sources */,
 				72F1F25121E5F0FD00625848 /* CouponStoreTCell.m in Sources */,
+				2E2A69DE27677C62004FC164 /* WMZDialog+Advertisement.m in Sources */,
 				7235DBE821EF063600AA60F1 /* ReturnGoodsSelectVC.m in Sources */,
 				72684C0521B9553500380622 /* StoreCustomerVC.m in Sources */,
 				72FFB1FD21AC134E00614F14 /* CALayer+ComXibBorderColor.m in Sources */,
@@ -4316,6 +4690,7 @@
 				2E835FB127649D3B00C31E2D /* XwOrderDetailGoodCell.m in Sources */,
 				720DA550222E4606004D355D /* HXDRefreshFooter.m in Sources */,
 				72FFB23421AC134E00614F14 /* PCCircle.m in Sources */,
+				2E2A69CC27677C62004FC164 /* WMZDialog+Location.m in Sources */,
 				722D86A421D39DDC002593EF /* IMSellerManageVC.m in Sources */,
 				72F1F26321E600FD00625848 /* IntentionManageTCell.m in Sources */,
 				2EB5B281275E423B00787E05 /* XwLastGoodsListModel.m in Sources */,
@@ -4334,6 +4709,7 @@
 				2E6F96732762089A00660B4D /* XWOrderDetailDefaultCell.m in Sources */,
 				725DD16821B550D60060C0BD /* AddressAddVC.m in Sources */,
 				722D86AC21D3A014002593EF /* IntentionManageVC.m in Sources */,
+				2E2A69DB27677C62004FC164 /* WMZDialogAnimation.m in Sources */,
 				72C1E98221E4DE1100B61942 /* KWTypeConditionCCell.m in Sources */,
 				2E384D0226DF7A4D0021EA4A /* xw_StoreOrderViewModel.m in Sources */,
 				721D62132200536300C4987E /* UIView+Layout.m in Sources */,
@@ -4380,6 +4756,7 @@
 				722D869B21D38737002593EF /* UnLabelUserInfoModel.m in Sources */,
 				36A508A726B6D9BF00C536DE /* ChangeStockOrderVC.m in Sources */,
 				72FFB1F421AC134E00614F14 /* Utils.m in Sources */,
+				2E2A69DD27677C62004FC164 /* WMZDialog+Normal.m in Sources */,
 				7232CC1E21BE88EA003E9F9B /* CurrentDayStatisticsCCell.m in Sources */,
 				72FFB1F621AC134E00614F14 /* NSHttpClient+EncrypteData.m in Sources */,
 				7289A44423BAF03A005D1A5D /* ChangeStoreTCell.m in Sources */,
@@ -4414,6 +4791,7 @@
 				72FFB20F21AC134E00614F14 /* JHShowInfoView.m in Sources */,
 				2E384CC626DF74990021EA4A /* xw_NavigationController.m in Sources */,
 				72FFB23621AC134E00614F14 /* PCCircleView.m in Sources */,
+				2E2A69C527677C62004FC164 /* WMZDialog+Write.m in Sources */,
 				72FFB1F221AC134E00614F14 /* TransCodingHelper.m in Sources */,
 				72F1F25F21E5FC0E00625848 /* CustomerIntentModel.m in Sources */,
 				72684BEC21B8E44200380622 /* KWPhotoAuthHelper.m in Sources */,
@@ -4435,6 +4813,7 @@
 				72F1F24721E5B67F00625848 /* OrderListTCell.m in Sources */,
 				72FFB10821AC0F0600614F14 /* AppDelegate.m in Sources */,
 				72F1F25B21E5F1B900625848 /* CouponStoreAddressTCell.m in Sources */,
+				2E2A69DF27677C62004FC164 /* WMZDialog+Select.m in Sources */,
 				725DD11E21B505410060C0BD /* CommonStoreSalesVolumeTCell.m in Sources */,
 				72FFB20121AC134E00614F14 /* BaseViewController+CustomNav.m in Sources */,
 				725DD11821B503AF0060C0BD /* StoreSalesVolumeVC.m in Sources */,
@@ -4467,6 +4846,7 @@
 				72C1E97021E4844F00B61942 /* PatrolProblemModel.m in Sources */,
 				721D61B121FBEDF700C4987E /* KWConditionSelectTCell.m in Sources */,
 				2E384CFC26DF77940021EA4A /* UINavigationBar+XWAdd.m in Sources */,
+				2E2A69DA27677C62004FC164 /* NSDate+WMZCalendarDate.m in Sources */,
 				72C4C91A21D9FD6F00CB861F /* StoreSalesVolumeModel.m in Sources */,
 				7242B25221AD535E0049E497 /* StatisticsVC.m in Sources */,
 				7289A46923BDD75F005D1A5D /* GiftAddTCell.m in Sources */,
@@ -4660,7 +5040,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4690,7 +5070,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

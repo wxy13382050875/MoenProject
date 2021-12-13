@@ -78,7 +78,7 @@
         self.title = @"进货柜台";
         self.btn1.titleLabel.text =@"保存";
     } if(self.controllerType == SearchGoodsVCType_Transfers){
-        self.title = @"调拔柜台";
+        self.title = @"调拨柜台";
         self.btn1.titleLabel.text =@"继续添加";
         self.btn2.titleLabel.text =@"确认订单";
     }
@@ -110,6 +110,8 @@
 - (void)configBaseData
 {
 
+    self.wishReceiveDate = @"";
+    self.orderRemarks = @"";
     [self handleTableViewFloorsData];
     [self handleTabWishReceivekData];
     [self handleTabStatisticsData];
@@ -160,8 +162,6 @@
     
     if ([model.cellIdentify isEqualToString:KCommonSingleGoodsTCell])
     {
-        //NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 3:2;
-//        CommonMealProdutcModel *goodsModel = self.goodsList[indexPath.section];
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
 //        [cell showDataWithCommonMealProdutcModel:goodsModel AtIndex:indexPath.section];
         [cell showDataWithCommonGoodsModel:model.Data AtIndex:indexPath.section WihtControllerType:1];
@@ -178,8 +178,6 @@
     }
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsDarkTCell])
     {
-        //NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 3:2;
-//        CommonMealProdutcModel *goodsModel = self.dataSource[indexPath.section];
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
         [cell showDataWithCommonProdutcModelForSearch:model.Data];
         return cell;
@@ -194,9 +192,12 @@
     else if ([model.cellIdentify isEqualToString:KSellGoodsOrderMarkTCell])
     {
         SellGoodsOrderMarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SellGoodsOrderMarkTCell" forIndexPath:indexPath];
-        if(self.controllerType == SearchGoodsVCType_Stock){//进货柜台需要添写备注
-//            [cell showDataEditableWithString: self.orderRemarks];
+        if(self.controllerType == SearchGoodsVCType_Stock||
+           self.controllerType ==SearchGoodsVCType_Transfers){//进货柜台需要添写备注
             cell.orderRemarks = self.orderRemarks;
+            cell.orderMarkBlock = ^(NSString *text) {
+                self.orderRemarks = text;
+            };
         } else {
             [cell showDataWithString: model.Data];
         }
@@ -204,7 +205,11 @@
         return cell;
     }else if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
         XWOrderDetailDefaultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XWOrderDetailDefaultCell" forIndexPath:indexPath];
-        cell.model = model.Data;
+        XwSystemTCellModel* tmModel = model.Data;
+        if([tmModel.value isEqualToString:@"请填写"]&& ![self.wishReceiveDate isEqualToString:@""]){
+            tmModel.value = self.wishReceiveDate;
+        }
+        cell.model = tmModel;
         return cell;
     }
     return nil;
@@ -212,57 +217,39 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[UIView alloc] init];
-    //    NSMutableArray *dataArr = self.floorsAarr[section];
-    //    CommonTVDataModel *model = dataArr[0];
-    //    if ([model.cellIdentify isEqualToString:KOrderPromotionTCell]) {
-    //        headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 35);
-    //        headerView.backgroundColor = AppBgWhiteColor;
-    //
-    //        UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, SCREEN_WIDTH - 30, 35)];
-    //        [titleLab setText:@"订单促销"];
-    //        titleLab.font = FONTSYS(14);
-    //        [titleLab setTextColor:AppTitleBlackColor];
-    //        [headerView addSubview:titleLab];
-    //    }
+    
     return headerView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView *footerView = [[UIView alloc] init];
-    //    NSMutableArray *dataArr = self.floorsAarr[section];
-    //    CommonTVDataModel *model = dataArr[0];
-    //    if ([model.cellIdentify isEqualToString:KCounterAddressTCell]) {
-    //        footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 45);
-    //        footerView.backgroundColor = AppBgWhiteColor;
-    //
-    //        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 5)];
-    //        lineView.backgroundColor = AppBgBlueGrayColor;
-    //        [footerView addSubview:lineView];
-    //
-    //        UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 100, 40)];
-    //        [titleLab setText:@"安装进度"];
-    //        titleLab.font = FONTSYS(14);
-    //        [titleLab setTextColor:AppTitleBlackColor];
-    //        [footerView addSubview:titleLab];
-    //
-    //        UILabel *statusLab = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 100, 5, 85, 40)];
-    //        [statusLab setText:self.dataModel.installStatus];
-    //        statusLab.textAlignment = NSTextAlignmentRight;
-    //        statusLab.font = FONTSYS(14);
-    //        [statusLab setTextColor:AppTitleBlackColor];
-    //        [footerView addSubview:statusLab];
-    //
-    //        UIView *blineView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, SCREEN_WIDTH, 1)];
-    //        blineView.backgroundColor = AppBgBlueGrayColor;
-    //        [footerView addSubview:blineView];
-    //    }
+    
     return footerView;
 }
-
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CommonTVDataModel *model = self.floorsAarr[indexPath.section][indexPath.row];
+    if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
+        XwSystemTCellModel* tm = model.Data;
+        if([tm.title isEqualToString:@"期望收货日期"]){
+            Dialog()
+                .wEventOKFinishSet(^(id anyID, id otherData) {
+                    NSLog(@"选中 %@ %@",anyID,otherData);
+                    self.wishReceiveDate =[NSString stringWithFormat:@"%@-%@-%@",anyID[0],anyID[1],anyID[2]];
+                    [self.myTableView reloadData];
+                })
+                .wDateTimeTypeSet(@"yyyy年MM月dd日")
+                .wDefaultDateSet([NSDate date])
+                .wTypeSet(DialogTypeDatePicker)
+                .wStart();
+            
+        }
+    }
+}
 - (void)handleGoodsShowOrHiddenDetailWith:(BOOL)isShow WithAtIndex:(NSIndexPath*)indexPath
 {
     NSMutableArray *sectionArr = self.floorsAarr[indexPath.section];
-    CommonGoodsModel *goodsModel = self.dataSource[indexPath.row];
+    CommonTVDataModel* tm =  sectionArr[indexPath.row];
+    CommonGoodsModel *goodsModel = tm.Data;
     if (isShow) {
         NSInteger index  = indexPath.row;
         for (CommonProdutcModel *model in goodsModel.productList) {
@@ -271,7 +258,7 @@
             cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
             cellModel.Data = model;
             index ++;
-            [sectionArr insertObject:cellModel atIndex:index];
+            [sectionArr addObject:cellModel];
         }
         goodsModel.isShowDetail = YES;
     }
@@ -378,9 +365,9 @@
 {
     [self.floorsAarr removeAllObjects];
     self.detailModel = [[OrderDetailModel alloc] init];
-    NSMutableArray *sectionArr = [[NSMutableArray alloc] init];
+    
     for (CommonGoodsModel *model in self.dataSource) {
-        
+        NSMutableArray *sectionArr = [[NSMutableArray alloc] init];
         //当前商品的Cell
         CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
         if (!model.isSetMeal) {
@@ -395,15 +382,16 @@
             cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
         }
         cellModel.cellHeaderHeight = 0.01;
-        cellModel.cellFooterHeight =  5;
+        cellModel.cellFooterHeight =  0.01;
         cellModel.Data = model;
         [sectionArr addObject:cellModel];
         
 
         
         self.detailModel.productCount += model.kGoodsCount;
+        [self.floorsAarr addObject:sectionArr];
     }
-    [self.floorsAarr addObject:sectionArr];
+    
     
    
     
@@ -417,7 +405,7 @@
     XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
     tmModel.title =@"期望收货日期";
     tmModel.value =@"请填写";
-    tmModel.showArrow = NO;
+    tmModel.showArrow = YES;
     NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
     delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";

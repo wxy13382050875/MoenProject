@@ -71,7 +71,7 @@
 }
 -(void)setModel:(Goodslist *)model{
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:model.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
-    self.goodsCode.text = model.goodsID;
+    self.goodsCode.text = model.goodsSKU;
     self.goodsName.text = model.goodsName;
     self.isShowDetail = model.isShowDetail;
     self.goodsCount.text = [NSString stringWithFormat:@"x%@",model.goodsCount];
@@ -80,7 +80,7 @@
         [self.packView setHidden:NO];
         NSString* strPackageDes=@"";
         for (Goodslist* tmModel in model.goodsPackage.goodsList) {
-            strPackageDes = [NSString stringWithFormat:@"%@ %@",strPackageDes,tmModel.goodsID];
+            strPackageDes = [NSString stringWithFormat:@"%@ %@",strPackageDes,tmModel.goodsSKU];
         }
         self.goodsPackageDes.text = strPackageDes;
     }
