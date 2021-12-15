@@ -23,6 +23,8 @@
 
 @property (nonatomic, copy) NSString *orderID;
 
+@property (nonatomic, copy) NSString *orderType;
+
 @end
 
 @interface Goodslist : NSObject
@@ -38,6 +40,7 @@
 
 @property (nonatomic, copy) NSString *goodsStatus;
 
+@property (nonatomic, copy) NSString *orderStatus;
 
 @property (nonatomic, copy) NSString *goodsCountBefor;
 

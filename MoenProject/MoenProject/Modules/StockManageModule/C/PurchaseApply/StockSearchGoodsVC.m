@@ -805,6 +805,7 @@
         [self.shoppingCarDataList addObject:copyModel];
         [self handleTableViewFloorsDataCommonGoodsModel:copyModel];
     }
+    [self updateShoppingCarStatus];
 }
 
 

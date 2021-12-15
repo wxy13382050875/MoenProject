@@ -138,16 +138,51 @@
     
     self.btn3 = [UIButton buttonWithTitie:@"确认收货" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
 
-        [self httpPath_delivery_confirmReceipt];
+        
+        FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否确认收货" block:^(NSInteger buttonIndex, NSString *inputStr) {
+            if(buttonIndex == 1){
+                [self httpPath_delivery_confirmReceipt];
+            }
+        } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
+        [alert show];
     }];
     [self.view addSubview:self.btn3];
     
     
     self.btn4 = [UIButton buttonWithTitie:@"继续添加" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
-        PurchaseTypeChooseVC *purchaseTypeChooseVC = [[PurchaseTypeChooseVC alloc] init];
-        purchaseTypeChooseVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:purchaseTypeChooseVC animated:YES];
-//        [self httpPath_refund_returnOperate:@"deliver"];
+       
+        NSMutableArray* selectArr = [NSMutableArray new];
+        for (Goodslist* tm in self.dataModel.goodsList) {
+            CommonGoodsModel* coModel = [CommonGoodsModel new];
+            coModel.id = tm.goodsID;
+            coModel.isSetMeal = tm.goodsPackage!=nil?true:false;
+            coModel.code = [tm.goodsSKU mutableCopy];
+            coModel.price = [tm.goodsPrice mutableCopy];
+            coModel.name = [tm.goodsName mutableCopy];
+            coModel.photo = [tm.goodsIMG mutableCopy];
+            coModel.kGoodsCount = [tm.goodsCount integerValue];
+            if(tm.goodsPackage != nil){
+                NSMutableArray* productList =[NSMutableArray new];
+                for (Goodslist* packs  in tm.goodsPackage.goodsList) {
+                    CommonProdutcModel* prModel = [CommonProdutcModel new];
+                    prModel.sku = [packs.goodsSKU mutableCopy];
+                    prModel.price = [packs.goodsPrice mutableCopy];
+                    prModel.count = [packs.goodsCount integerValue];
+                    prModel.photo = [packs.goodsIMG mutableCopy];
+                    prModel.name = [packs.goodsName mutableCopy];
+                    [productList addObject:prModel];
+                }
+                coModel.productList = productList;
+            }
+            
+            [selectArr addObject:coModel];
+        }
+        StockSearchGoodsVC *sellGoodsScanVC = [[StockSearchGoodsVC alloc] init];
+        sellGoodsScanVC.goodsType = self.dataModel.orderType;
+        sellGoodsScanVC.controllerType = SearchGoodsVCType_Stock;
+        sellGoodsScanVC.selectedDataArr = selectArr;
+        sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
     }];
     [self.view addSubview:self.btn4];
     
@@ -260,7 +295,12 @@
     else if ([model.cellIdentify isEqualToString:@"XwOrderDetailGoodCell"])
     {
         XwOrderDetailGoodCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XwOrderDetailGoodCell" forIndexPath:indexPath];
-        cell.model = model.Data;
+        if(self.isDeliver){
+            cell.delModel = model.Data;
+        } else {
+            cell.model = model.Data;
+        }
+        
         cell.goodsShowDetailBlock = ^(BOOL isShow) {
             [weakSelf handleGoodsShowOrHiddenDetailWith:isShow WithAtIndex:indexPath];
         };
@@ -382,8 +422,25 @@
     
     if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
         XwSystemTCellModel* tm = model.Data;
-        if([tm.title isEqualToString:@"期望收货日期"]){
-            NSLog(@"期望收货日期");
+        if([tm.type isEqualToString:@"select"]){
+            NSLog(@"期望收货时间");
+        } else if([tm.type isEqualToString:@"skip"]){
+            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+            orderDetailVC.orderID = tm.deliverID;
+            if(self.controllerType ==PurchaseOrderManageVCTypeAllocteOrder||
+                      self.controllerType ==PurchaseOrderManageVCTypeAllocteTask){
+                orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryApply;
+            }  else if( self.controllerType == PurchaseOrderManageVCTypeInventoryStocker){
+                 self.title = @"总仓任务详情";
+                 orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryStocker;
+             }  else if( self.controllerType == PurchaseOrderManageVCTypeLibrary){
+                 orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryApply;
+             } else {
+                 orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryOrder;
+            }
+            
+            
+            [self.navigationController pushViewController:orderDetailVC animated:YES];
         }
     }
 }
@@ -616,7 +673,7 @@
                 if ([parserObject.code isEqualToString:@"200"]) {
                     self.isShowEmptyData = NO;
                     self.orderRemarks = self.dataModel.orderRemarks;
-                    if(![self.dataModel.orderType isEqualToString:@"task"]){
+                    if([self.dataModel.orderType isEqualToString:@"task"]){
                         if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]||
                            [self.dataModel.orderApplyProgress isEqualToString:@"partDeliver"]){
                             self.btn2.hidden = NO;
@@ -895,8 +952,9 @@
             XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
             tmModel.title = dict[@"sendOrderID"];
             tmModel.value = dict[@"sendOrderTime"];;
+            tmModel.deliverID =dict[@"sendOrderID"];
             tmModel.showArrow = YES;
-            
+            tmModel.type = @"skip";
             CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
             delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
             delivereModel.cellHeight = 30;
@@ -910,7 +968,6 @@
         XwSystemTCellModel* model = [XwSystemTCellModel new];
         model.title = @"暂无发货信息";
         model.showArrow = NO;
-
         CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
         delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
         delivereModel.cellHeight = 30;
@@ -968,12 +1025,13 @@
     
     [self.floorsAarr addObject:sectionArr];
 }
-//期望收货日期
+//期望收货时间
 -(void)handleTabWishReceivekData{
     XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
-    tmModel.title =@"期望收货日期";
+    tmModel.title =@"期望收货时间";
     tmModel.value =self.dataModel.wishReceiveDate;
     tmModel.showArrow = NO;
+    tmModel.type = @"select";
     NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
     delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
@@ -1169,11 +1227,10 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:self.orderID forKey:@"orderID"];
     [parameters setValue:operate forKey:@"operate"];
-//    [parameters setValue:@"" forKey:@"checkRemarks"];
-//    [parameters setValue:@"" forKey:@"expressID"];
-//    [parameters setValue:@"" forKey:@"expressIMG"];
-//    [parameters setValue:@"" forKey:@"remarks"];
-//    [parameters setValue:array forKey:@"goodsList"];
+    [parameters setValue:@"" forKey:@"expressID"];
+    [parameters setValue:@"" forKey:@"expressIMG"];
+    [parameters setValue:@"" forKey:@"remarks"];
+    [parameters setValue:array forKey:@"goodsList"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;

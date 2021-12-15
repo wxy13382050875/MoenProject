@@ -230,7 +230,7 @@
     CommonTVDataModel *model = self.floorsAarr[indexPath.section][indexPath.row];
     if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
         XwSystemTCellModel* tm = model.Data;
-        if([tm.title isEqualToString:@"期望收货日期"]){
+        if([tm.type isEqualToString:@"select"]){
             Dialog()
                 .wEventOKFinishSet(^(id anyID, id otherData) {
                     NSLog(@"选中 %@ %@",anyID,otherData);
@@ -400,11 +400,12 @@
     
     
 }
-//期望收货日期
+//期望收货时间
 -(void)handleTabWishReceivekData{
     XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
-    tmModel.title =@"期望收货日期";
+    tmModel.title =@"期望收货时间";
     tmModel.value =@"请填写";
+    tmModel.type =@"select";
     tmModel.showArrow = YES;
     NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];

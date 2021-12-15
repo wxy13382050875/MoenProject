@@ -170,8 +170,9 @@
     self.goods_Code.text = model.goodsSKU;
     self.goods_Name.text = model.goodsName;
     [self.goods_Price setHidden:YES];
+    [self.goods_Count setHidden:YES];
 //    self.goods_Price.text = [NSString stringWithFormat:@"¥%@",model.refundAmount];
-    self.goods_Count.text = [NSString stringWithFormat:@"x%@", model.goodsCount];
+//    self.goods_Count.text = [NSString stringWithFormat:@"x%@", model.goodsCount];
 }
 -(void)setOrderModel:(OrderlistModel *)orderModel{
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:orderModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];

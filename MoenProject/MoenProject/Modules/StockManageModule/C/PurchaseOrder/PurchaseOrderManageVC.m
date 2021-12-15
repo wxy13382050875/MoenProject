@@ -18,6 +18,7 @@
 #import "XwOrderDetailVC.h"
 
 #import "XwScreenModel.h"
+#import "StockSearchGoodsVC.h"
 @interface PurchaseOrderManageVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) CommonSearchView *searchView;
@@ -301,10 +302,8 @@
     infoLab.sd_layout.leftSpaceToView(footerView, 15).topEqualToView(footerView).rightSpaceToView(footerView, 15).heightIs(40);
     
     UIButton *againBtn =[UIButton buttonWithTitie:@"" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
-        if([model.orderStatus isEqualToString:@"waitGoods"]){
-            [self httpPath_delivery_confirmReceipt:model];
-        } else {
-        }
+        
+        [self buttonOperate:model];
     }];
     againBtn.layer.cornerRadius = 5;
     againBtn.frame = CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30);
@@ -372,10 +371,99 @@
     
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     orderDetailVC.orderID = model.orderID;
+    orderDetailVC.isDeliver = false;
     orderDetailVC.controllerType = self.controllerType;
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
 
+-(void)buttonOperate:(Orderlist*)model{
+    if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
+        if([model.orderStatus isEqualToString:@"wait"]){
+            NSLog(@"审批")
+        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+            NSLog(@"发货")
+           
+            
+            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+            orderDetailVC.orderID = model.orderID;
+            orderDetailVC.controllerType = self.controllerType;
+            orderDetailVC.isDeliver = true;
+            [self.navigationController pushViewController:orderDetailVC animated:YES];
+        }
+    } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
+        
+        NSMutableArray* selectArr = [NSMutableArray new];
+        if([model.orderStatus isEqualToString:@"waitSub"]){
+            NSLog(@"编辑")
+            
+            for (Goodslist* tm in model.goodsList) {
+                CommonGoodsModel* coModel = [CommonGoodsModel new];
+                coModel.id = tm.goodsID;
+                coModel.isSetMeal = tm.goodsPackage!=nil?true:false;
+                coModel.code = [tm.goodsSKU mutableCopy];
+                coModel.price = [tm.goodsPrice mutableCopy];
+                coModel.name = [tm.goodsName mutableCopy];
+                coModel.photo = [tm.goodsIMG mutableCopy];
+                coModel.kGoodsCount = [tm.goodsCount integerValue];
+                if(tm.goodsPackage != nil){
+                    NSMutableArray* productList =[NSMutableArray new];
+                    for (Goodslist* packs  in tm.goodsPackage.goodsList) {
+                        CommonProdutcModel* prModel = [CommonProdutcModel new];
+                        prModel.sku = [packs.goodsSKU mutableCopy];
+                        prModel.price = [packs.goodsPrice mutableCopy];
+                        prModel.count = [packs.goodsCount integerValue];
+                        prModel.photo = [packs.goodsIMG mutableCopy];
+                        prModel.name = [packs.goodsName mutableCopy];
+                        [productList addObject:prModel];
+                    }
+                    coModel.productList = productList;
+                }
+                
+                [selectArr addObject:coModel];
+            }
+        }  else {
+            NSLog(@"再来一单")
+            
+        }
+        StockSearchGoodsVC *sellGoodsScanVC = [[StockSearchGoodsVC alloc] init];
+        sellGoodsScanVC.goodsType = model.orderType;
+        sellGoodsScanVC.controllerType = SearchGoodsVCType_Stock;
+        sellGoodsScanVC.selectedDataArr = selectArr;
+        sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+  
+        if([model.orderStatus isEqualToString:@"waitGoods"]){
+            NSLog(@"确认收货")
+            FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否确认收货？" block:^(NSInteger buttonIndex, NSString *inputStr) {
+                if(buttonIndex == 1){
+                    [self httpPath_delivery_confirmReceipt:model];
+                }
+            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
+            [alert show];
+//            [self httpPath_delivery_confirmReceipt:model];
+        }
+    } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+        if([model.orderStatus isEqualToString:@"wait"]){
+            NSLog(@"审核")
+            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+            orderDetailVC.orderID = model.orderID;
+            orderDetailVC.controllerType = self.controllerType;
+            orderDetailVC.isDeliver = false;
+            [self.navigationController pushViewController:orderDetailVC animated:YES];
+        } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+            NSLog(@"确认发货")
+            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+            orderDetailVC.orderID = model.orderID;
+            orderDetailVC.controllerType = self.controllerType;
+            orderDetailVC.isDeliver = false;
+            [self.navigationController pushViewController:orderDetailVC animated:YES];
+        }
+    }
+}
 #pragma mark -- SearchViewCompleteDelete
 - (void)completeInputAction:(NSString *)keyStr
 {

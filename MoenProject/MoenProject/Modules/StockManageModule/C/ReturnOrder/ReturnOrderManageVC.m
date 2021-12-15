@@ -251,6 +251,7 @@
     Orderlist *model = self.dataList[indexPath.section];
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     orderDetailVC.orderID = model.orderID;
+    orderDetailVC.isDeliver = false;
     orderDetailVC.controllerType = PurchaseOrderManageVCTypeReturn;
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }

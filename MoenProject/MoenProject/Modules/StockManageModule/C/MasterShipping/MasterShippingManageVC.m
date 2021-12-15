@@ -115,7 +115,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 85;
+    return 45;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -175,6 +175,8 @@
         orderStatus = @"AD已拒绝";
     } else if([model.orderStatus isEqualToString:@"waitAD"]){
         orderStatus = @"待AD审核";
+    } else if([model.orderStatus isEqualToString:@"stop"]){
+        orderStatus = @"已终止";
     }
     UIView *headerView = [[UIView alloc] init];
     headerView.backgroundColor = AppBgWhiteColor;
@@ -214,58 +216,33 @@
     infoLab.textAlignment = NSTextAlignmentRight;
     
     
- //   NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%ld",(long)model.giftNum];
-    //NSString *productNumCountStr = [NSString stringWithFormat:@"%ld",(long)model.productNum];
-//    if (model.giftNum > 0) {
-//        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品, %@件赠品  实付款:￥%@",(long)model.productNum,giftGoodsCountStr, model.payAmount]];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//
-//
-//        infoLab.attributedText = str;
-//    }
-//    else
-    {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品",model.goodsCount]];
-        
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//
-//           [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//           [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-           infoLab.attributedText = str;
-    }
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品",model.goodsCount]];
+
+    infoLab.attributedText = str;
 
     
     [footerView addSubview:infoLab];
     
     
-    UIButton *againBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30)];
-    //UIButton *againBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    //againBtn.frame = CGRectMake(0, 40, 60, 20);
-    //againBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    againBtn.titleLabel.font = FONTSYS(14);
-    //againBtn.clipsToBounds = YES;
-    againBtn.layer.cornerRadius = 5;
-    [againBtn setTitleColor:AppTitleWhiteColor forState:UIControlStateNormal];
-    [againBtn setBackgroundColor:AppTitleBlueColor];
-    [againBtn setTitle:@"再来一单" forState:UIControlStateNormal];
-    //[againBtn addTarget:self action:@selector(confirmAction:) forControlEvents:UIControlEventTouchDown];
-    [footerView addSubview:againBtn];
+//    UIButton *againBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30)];
+//    //UIButton *againBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    //againBtn.frame = CGRectMake(0, 40, 60, 20);
+//    //againBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+//    againBtn.titleLabel.font = FONTSYS(14);
+//    //againBtn.clipsToBounds = YES;
+//    againBtn.layer.cornerRadius = 5;
+//    [againBtn setTitleColor:AppTitleWhiteColor forState:UIControlStateNormal];
+//    [againBtn setBackgroundColor:AppTitleBlueColor];
+//    [againBtn setTitle:@"再来一单" forState:UIControlStateNormal];
+//    //[againBtn addTarget:self action:@selector(confirmAction:) forControlEvents:UIControlEventTouchDown];
+//    [footerView addSubview:againBtn];
     
     
 //    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 50, SCREEN_WIDTH, 5)];
 //    lineView2.backgroundColor = AppBgBlueGrayColor;
 //    [footerView addSubview:lineView2];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 80, SCREEN_WIDTH, 5)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 40, SCREEN_WIDTH, 5)];
     lineView.backgroundColor = AppBgBlueGrayColor;
     [footerView addSubview:lineView];
     
@@ -282,6 +259,7 @@
     Orderlist *model = self.dataList[indexPath.section];
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     orderDetailVC.orderID = model.orderID;
+    orderDetailVC.isDeliver = false;
     orderDetailVC.controllerType = PurchaseOrderManageVCTypeInventoryStocker;
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }

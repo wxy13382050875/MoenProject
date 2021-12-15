@@ -13,6 +13,8 @@ typedef void(^GoodsShowDetailBlock)(BOOL isShow);
 
 @interface XwOrderDetailGoodCell : UITableViewCell
 @property (nonatomic, copy) Goodslist* model;
+@property (nonatomic, copy) Goodslist* delModel;
+
 
 @property (nonatomic, copy) GoodsShowDetailBlock goodsShowDetailBlock;
 @end

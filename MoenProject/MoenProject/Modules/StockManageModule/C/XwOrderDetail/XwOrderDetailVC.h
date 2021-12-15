@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface XwOrderDetailVC : BaseViewController
 @property (nonatomic, copy) NSString *orderID;
+@property (nonatomic, assign) BOOL isDeliver;
 @property (nonatomic, assign) PurchaseOrderManageVCType controllerType;
 @end
 
