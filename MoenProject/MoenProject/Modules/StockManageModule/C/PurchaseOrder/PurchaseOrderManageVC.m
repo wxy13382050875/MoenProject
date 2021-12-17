@@ -379,9 +379,9 @@
 -(void)buttonOperate:(Orderlist*)model{
     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
         if([model.orderStatus isEqualToString:@"wait"]){
-            NSLog(@"审批")
+            NSLog(@"审批");
         }  else if([model.orderStatus isEqualToString:@"waitDeliver"]){
-            NSLog(@"发货")
+            NSLog(@"发货");
            
             
             XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
@@ -394,7 +394,7 @@
         
         NSMutableArray* selectArr = [NSMutableArray new];
         if([model.orderStatus isEqualToString:@"waitSub"]){
-            NSLog(@"编辑")
+            NSLog(@"编辑");
             
             for (Goodslist* tm in model.goodsList) {
                 CommonGoodsModel* coModel = [CommonGoodsModel new];
@@ -422,7 +422,7 @@
                 [selectArr addObject:coModel];
             }
         }  else {
-            NSLog(@"再来一单")
+            NSLog(@"再来一单");
             
         }
         StockSearchGoodsVC *sellGoodsScanVC = [[StockSearchGoodsVC alloc] init];
@@ -437,7 +437,7 @@
         self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
   
         if([model.orderStatus isEqualToString:@"waitGoods"]){
-            NSLog(@"确认收货")
+            NSLog(@"确认收货");
             FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否确认收货？" block:^(NSInteger buttonIndex, NSString *inputStr) {
                 if(buttonIndex == 1){
                     [self httpPath_delivery_confirmReceipt:model];
@@ -448,14 +448,14 @@
         }
     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
         if([model.orderStatus isEqualToString:@"wait"]){
-            NSLog(@"审核")
+            NSLog(@"审核");
             XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
             orderDetailVC.orderID = model.orderID;
             orderDetailVC.controllerType = self.controllerType;
             orderDetailVC.isDeliver = false;
             [self.navigationController pushViewController:orderDetailVC animated:YES];
         } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
-            NSLog(@"确认发货")
+            NSLog(@"确认发货");
             XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
             orderDetailVC.orderID = model.orderID;
             orderDetailVC.controllerType = self.controllerType;

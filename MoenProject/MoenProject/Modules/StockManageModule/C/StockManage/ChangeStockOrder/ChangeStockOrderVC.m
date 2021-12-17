@@ -15,6 +15,7 @@
 #import "CommonCategoryModel.h"
 #import "OrderScreenSideslipView.h"
 #import "ChangeStockAdjustVC.h"
+#import "StartCountStockVC.h"
 @interface ChangeStockOrderVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) CommonSearchView *searchView;
@@ -140,7 +141,10 @@
     else
     {
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
-        cell.model = model.goodsList[0];
+        if(model.goodsList.count == 1){
+            cell.model = model.goodsList[0];
+        }
+        
         return cell;
     }
     
@@ -192,80 +196,50 @@
     UIView *footerView = [[UIView alloc] init];
     footerView.backgroundColor = AppBgWhiteColor;
     
-    UILabel *infoLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, SCREEN_WIDTH - 30, 20)];
-    infoLab.font = FONTLanTingR(14);
-    infoLab.textColor = AppTitleBlackColor;
-    infoLab.textAlignment = NSTextAlignmentRight;
-    
-    
- //   NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%ld",(long)model.giftNum];
-    //NSString *productNumCountStr = [NSString stringWithFormat:@"%ld",(long)model.productNum];
-//    if (model.giftNum > 0) {
-//        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品, %@件赠品  实付款:￥%@",(long)model.productNum,giftGoodsCountStr, model.payAmount]];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6 + productNumCountStr.length, giftGoodsCountStr.length)];
-//
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//
-//
-//        infoLab.attributedText = str;
-//    }
-//    else
-    {
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"调库商品数量：%@件",model.goodsCount]];
-        
-//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//        [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productNum].length)];
-//
-//           [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-//           [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(str.length - model.payAmount.length - 1, model.payAmount.length + 1)];
-           infoLab.attributedText = str;
-    }
-
-    
+    UILabel *infoLab = [UILabel labelWithText:[NSString stringWithFormat:@"盘库商品数量：%@件",model.goodsCount] WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentRight WithFont:14];
     [footerView addSubview:infoLab];
+    infoLab.sd_layout.topEqualToView(footerView).leftSpaceToView(footerView, 15).rightSpaceToView(footerView, 15).heightIs(40);
     
+    UIButton *againBtn = [UIButton buttonWithTitie:@"" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+        if([model.orderStatus isEqualToString:@"ing"]){
+        
+            StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
+            startCountStockVC.hidesBottomBarWhenPushed = YES;
+            startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockAdjust;
+            
+            [self.navigationController pushViewController:startCountStockVC animated:YES];
+        } else {
+            NSLog(@"调整");
+            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+            orderDetailVC.orderID = model.orderID;
+            orderDetailVC.isDeliver = false;
+            orderDetailVC.controllerType = PurchaseOrderManageVCTypePlateStorage;
+            [self.navigationController pushViewController:orderDetailVC animated:YES];
+        }
+                    
+    }];
+    ViewRadius(againBtn, 5)
     
-    
-    UIButton *againBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30)];
-    //UIButton *againBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    //againBtn.frame = CGRectMake(0, 40, 60, 20);
-    //againBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    againBtn.titleLabel.font = FONTSYS(14);
-    //againBtn.clipsToBounds = YES;
-    againBtn.layer.cornerRadius = 5;
-    [againBtn setTitleColor:AppTitleWhiteColor forState:UIControlStateNormal];
-    [againBtn setBackgroundColor:AppTitleBlueColor];
-    [againBtn addTarget:self action:@selector(confirmAction) forControlEvents:UIControlEventTouchDown];
-    if(![model.orderStatus isEqualToString:@"pass"]){
-        [againBtn setTitle:@"调整" forState:UIControlStateNormal];
-    }
-    else {
-        //[againBtn setTitle:@"继续盘库" forState:UIControlStateNormal];
-    }
-    
-    
-    int lineTop = 40;
-    if (![model.orderStatus isEqualToString:@"pass"]) {
-        [footerView addSubview:againBtn];
-        lineTop = 80;
-    }
-    
-    
-//    UIView *lineView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 50, SCREEN_WIDTH, 5)];
-//    lineView2.backgroundColor = AppBgBlueGrayColor;
-//    [footerView addSubview:lineView2];
-    
+    [footerView addSubview:againBtn];
+    againBtn.sd_layout.topSpaceToView(infoLab, 5).rightSpaceToView(footerView, 15).heightIs(30).widthIs(90);
 
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, lineTop, SCREEN_WIDTH, 5)];
+    
+    NSInteger height = 85;
+    if([model.orderStatus isEqualToString:@"ing"]){
+        [againBtn setTitle:@"继续盘库" forState:UIControlStateNormal];
+    } else if([model.orderStatus isEqualToString:@"pass"]){
+        [againBtn setTitle:@"调整" forState:UIControlStateNormal];
+    } else {
+        againBtn.hidden = YES;
+        height = 45;
+    }
+    footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, height);
+
+    UIView *lineView = [UIView new];
     lineView.backgroundColor = AppBgBlueGrayColor;
     [footerView addSubview:lineView];
+    lineView.sd_layout.bottomEqualToView(footerView).leftEqualToView(footerView).rightEqualToView(footerView).heightIs(5);
     
     return footerView;
 }

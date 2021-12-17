@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, PurchaseOrderManageVCType)
     /**样品库存*/
     PurchaseOrderManageVCTypeInventoryStockSample,
     
+    
     /**盘库商品库存*/
     PurchaseOrderManageVCTypeStocktakingStockGoods ,
     
@@ -51,11 +52,18 @@ typedef NS_ENUM(NSInteger, PurchaseOrderManageVCType)
     /**样品库存调整*/
     PurchaseOrderManageVCTypeStockSampleAdjustment,
     
+    /**日常盘点*/
+    PurchaseOrderManageVCTypeStockDaily,
+    
+    /**库存调整*/
+    PurchaseOrderManageVCTypeStockAdjust,
+    
     /**盘库单*/
     PurchaseOrderManageVCTypePlateStorage ,
     
     /**调库单*/
     PurchaseOrderManageVCTypeLibrary ,
+    
 };
 NS_ASSUME_NONNULL_BEGIN
 

@@ -54,7 +54,7 @@
 -(void)setModel:(XwOrderDetailModel *)model{
     self.dateLabel.text = model.orderTime;
     self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",model.progressName,model.orderID];
-    self.nameLabel.text =[NSString stringWithFormat:@"制单人:%@",model.operator];
+    self.nameLabel.text =[NSString stringWithFormat:@"操作人:%@",model.operator];
     self.statusLabel.text = model.orderStatusText;
 }
 -(UILabel*)dateLabel{

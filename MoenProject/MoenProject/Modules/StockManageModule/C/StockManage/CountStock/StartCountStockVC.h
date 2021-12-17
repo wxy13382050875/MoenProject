@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface StartCountStockVC : BaseViewController
 @property (nonatomic, assign) PurchaseOrderManageVCType controllerType;
+@property(nonatomic,strong)NSString* goodsType;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -159,9 +159,8 @@
     orderLab.font = FONTLanTingR(14);
     orderLab.textColor = AppTitleBlackColor;
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"订单编号: %@",model.businessID]];
-    [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6, str.length - 6)];
-    orderLab.attributedText = str;
+  
+    orderLab.text = model.businessID;
     [headerView addSubview:orderLab];
     return headerView;
 }

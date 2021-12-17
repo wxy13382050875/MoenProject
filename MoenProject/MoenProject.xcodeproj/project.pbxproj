@@ -85,6 +85,7 @@
 		2E384D2B26E0D86F0021EA4A /* xw_DeliveryInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E384D2A26E0D86F0021EA4A /* xw_DeliveryInfoVC.m */; };
 		2E384D3226E0D95B0021EA4A /* xwDeliveryInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E384D3026E0D95B0021EA4A /* xwDeliveryInfoCell.m */; };
 		2E384D3326E0D95B0021EA4A /* xwDeliveryInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E384D3126E0D95B0021EA4A /* xwDeliveryInfoCell.xib */; };
+		2E6E5345276B5F2D00C95A6D /* XwProblemInventoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6E5344276B5F2D00C95A6D /* XwProblemInventoryVC.m */; };
 		2E6F966A2761D56A00660B4D /* XwOrderDetailStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F96692761D56A00660B4D /* XwOrderDetailStockCell.m */; };
 		2E6F966D2761E41600660B4D /* XwSystemTCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F966C2761E41600660B4D /* XwSystemTCellModel.m */; };
 		2E6F96702761E94A00660B4D /* XwOrderDetailDeliveryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F966F2761E94A00660B4D /* XwOrderDetailDeliveryCell.m */; };
@@ -702,6 +703,8 @@
 		2E384D2F26E0D95B0021EA4A /* xwDeliveryInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xwDeliveryInfoCell.h; sourceTree = "<group>"; };
 		2E384D3026E0D95B0021EA4A /* xwDeliveryInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = xwDeliveryInfoCell.m; sourceTree = "<group>"; };
 		2E384D3126E0D95B0021EA4A /* xwDeliveryInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = xwDeliveryInfoCell.xib; sourceTree = "<group>"; };
+		2E6E5343276B5F2D00C95A6D /* XwProblemInventoryVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwProblemInventoryVC.h; sourceTree = "<group>"; };
+		2E6E5344276B5F2D00C95A6D /* XwProblemInventoryVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwProblemInventoryVC.m; sourceTree = "<group>"; };
 		2E6F96682761D56A00660B4D /* XwOrderDetailStockCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailStockCell.h; sourceTree = "<group>"; };
 		2E6F96692761D56A00660B4D /* XwOrderDetailStockCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailStockCell.m; sourceTree = "<group>"; };
 		2E6F966B2761E41600660B4D /* XwSystemTCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwSystemTCellModel.h; sourceTree = "<group>"; };
@@ -1979,6 +1982,15 @@
 			path = resource;
 			sourceTree = "<group>";
 		};
+		2E6E5342276B5EFC00C95A6D /* problemInventory */ = {
+			isa = PBXGroup;
+			children = (
+				2E6E5343276B5F2D00C95A6D /* XwProblemInventoryVC.h */,
+				2E6E5344276B5F2D00C95A6D /* XwProblemInventoryVC.m */,
+			);
+			path = problemInventory;
+			sourceTree = "<group>";
+		};
 		2E6F96672761D50E00660B4D /* XwOrderDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -2188,6 +2200,7 @@
 		36A5087726B5D94000C536DE /* StockManage */ = {
 			isa = PBXGroup;
 			children = (
+				2E6E5342276B5EFC00C95A6D /* problemInventory */,
 				36A508AB26B6DB9500C536DE /* CountStock */,
 				36A508A426B6D98D00C536DE /* ChangeStockOrder */,
 				36A5089D26B6C59C00C536DE /* CheckStockOrder */,
@@ -4797,6 +4810,7 @@
 				72684BEC21B8E44200380622 /* KWPhotoAuthHelper.m in Sources */,
 				72C4C91E21DA041F00CB861F /* StoreSalesPersonalVC.m in Sources */,
 				7240A4CC21CBA03D0058E279 /* CounterAddressTCell.m in Sources */,
+				2E6E5345276B5F2D00C95A6D /* XwProblemInventoryVC.m in Sources */,
 				724D1075223F42BE000B4262 /* VideoTestVC.m in Sources */,
 				725DD14B21B530DB0060C0BD /* OrderPromotionTCell.m in Sources */,
 				72C4C94F21DF578A00CB861F /* OrderManageModel.m in Sources */,
@@ -5040,7 +5054,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5070,7 +5084,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

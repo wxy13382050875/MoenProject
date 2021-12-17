@@ -41,6 +41,7 @@
 #import "XwOrderDetailGoodsInventory.h"
 #import "PurchaseTypeChooseVC.h"
 #import "XwOrderDetailGoodCell.h"
+#import "XwProblemInventoryVC.h"
 @interface XwOrderDetailVC ()<UITableViewDelegate, UITableViewDataSource ,FDAlertViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -51,6 +52,7 @@
 
 @property (nonatomic, strong) UIButton *btn4;
 @property (nonatomic, strong) UIButton *btn5;
+@property (nonatomic, strong) UIButton *btn6;
 
 @property (nonatomic, strong) XwOrderDetailModel *dataModel;
 
@@ -193,6 +195,24 @@
     }];
     [self.view addSubview:self.btn5];
     
+    self.btn6 = [UIButton buttonWithTitie:@"调整" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor grayColor]  WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+        XwProblemInventoryVC* VC = [XwProblemInventoryVC new];
+        VC.goodsType = self.dataModel.orderType;
+        /**日常盘点*/
+        
+        if( self.controllerType == PurchaseOrderManageVCTypePlateStorage){
+            VC.controllerType = PurchaseOrderManageVCTypeStockDaily;
+        }  else if( self.controllerType == PurchaseOrderManageVCTypeLibrary){
+            VC.controllerType = PurchaseOrderManageVCTypeStockAdjust;
+        }
+        
+        VC.model = self.dataModel;
+        VC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:VC animated:YES];
+        
+    }];
+    [self.view addSubview:self.btn6];
+    
     
     self.btn.sd_layout.leftEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
     self.btn1.sd_layout.rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
@@ -204,12 +224,15 @@
     self.btn4.sd_layout.leftEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
     self.btn5.sd_layout.rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
     
+    self.btn6.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
+    
     self.btn.hidden = YES;
     self.btn1.hidden = YES;
     self.btn2.hidden = YES;
     self.btn3.hidden = YES;
     self.btn4.hidden = YES;
     self.btn5.hidden = YES;
+    self.btn6.hidden = YES;
 }
 - (void)alertView:(FDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex WithInputStr:(NSString *)inputStr {
     NSLog(@"%ld", (long)buttonIndex);
@@ -562,7 +585,7 @@
     } else if([status isEqualToString:@"wait"]){
         orderStatus = @"待审核";
     } else if([status isEqualToString:@"pass"]){
-        orderStatus = @"审核通过";
+        orderStatus = @"审核不通过";
     } else if([status isEqualToString:@"finish"]){
         orderStatus = @"已完成";
     }
@@ -786,6 +809,10 @@
                 self.dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
                        
                        if ([parserObject.code isEqualToString:@"200"]) {
+                           
+                           if([self.dataModel.orderStatus isEqualToString:@"pass"]){
+                               self.btn6.hidden = NO;
+                           }
                            self.isShowEmptyData = NO;
                            self.dataModel.orderStatusText = [self getInventoryStatus:self.dataModel.orderStatus];
                            self.dataModel.progressName = @"盘库单";
@@ -804,6 +831,9 @@
                 self.dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
                        
                        if ([parserObject.code isEqualToString:@"200"]) {
+                           if([self.dataModel.orderStatus isEqualToString:@"pass"]){
+                               self.btn6.hidden = NO;
+                           }
                            self.isShowEmptyData = NO;
                            self.dataModel.orderStatusText = [self getInventoryStatus:self.dataModel.orderStatus];
                            self.dataModel.progressName = @"调库单";

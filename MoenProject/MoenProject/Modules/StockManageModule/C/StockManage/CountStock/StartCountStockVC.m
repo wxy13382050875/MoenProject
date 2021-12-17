@@ -10,9 +10,7 @@
 #import "StockSearchGoodsVC.h"
 #import "FDAlertView.h"
 #import "StoreStockVC.h"
-@interface StartCountStockVC()<FDAlertViewDelegate>
-
-
+@interface StartCountStockVC()
 @end
 
 @implementation StartCountStockVC
@@ -23,9 +21,8 @@
     
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
     
-    if(self.controllerType == PurchaseOrderManageVCTypeStockSampleAdjustment ||
-       self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment){
-        self.title = @"调整库存";
+    if(self.controllerType == PurchaseOrderManageVCTypeStockAdjust){
+        self.title = @"开始调库";
     } else {
         self.title = @"开始盘库";
     }
@@ -46,6 +43,12 @@
     int optLabelStartTop =  280;
     int optButtonStartTop =  400;
     
+    NSString* name = @"";
+    if(self.controllerType == PurchaseOrderManageVCTypeStockAdjust){
+        name = @"调库";
+    } else {
+        name = @"盘库";
+    }
     
     CGSize tipSize = [@"冻结后，不允许门店做出入库操作。" sizeWithFont:FontBinB(14) constrainedToSize:CGSizeMake(MAXFLOAT, 30)];
     
@@ -55,7 +58,7 @@
     UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelLeftMargin, tipLabelStartTop, SCREEN_WIDTH - leftMargin * 2, labelHeight)];
     tipLabel.font = FontBinB(14);
     tipLabel.textColor = AppTitleBlackColor;
-    tipLabel.text = @"是否要开始本次盘库？\n\n开始盘库后，将冻结门店库存。\n\n冻结后，不允许门店做出入库操作。";
+    tipLabel.text = [NSString stringWithFormat:@"是否要开始本次%@？\n\n开始%@后，将冻结门店库存。\n\n冻结后，不允许门店做出入库操作。",name,name];
     tipLabel.numberOfLines = 0;
     tipLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:tipLabel];
@@ -76,8 +79,7 @@
     optTimeLabel.numberOfLines = 0;
     optTimeLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:optTimeLabel];
-    if(self.controllerType == PurchaseOrderManageVCTypeStockSampleAdjustment ||
-       self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment){
+    if(self.controllerType == PurchaseOrderManageVCTypeStockAdjust){
         UIButton *goodsStockBtn = [[UIButton alloc] initWithFrame:CGRectMake(leftMargin, optButtonStartTop, (SCREEN_WIDTH - leftMargin * 2 - btnSpace), btnHeight)];
         [goodsStockBtn setTitle:@"开始调库" forState:(UIControlStateNormal)];
         goodsStockBtn.backgroundColor = AppTitleBlueColor;
@@ -110,7 +112,7 @@
     sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
     
     sellGoodsScanVC.controllerType = self.controllerType;
-    
+    sellGoodsScanVC.goodsType = self.goodsType;
     [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
 }
 -(void)printAction{
@@ -124,7 +126,6 @@
 }
 - (void)actionFetchRequest:(NSURLSessionDataTask *)operation result:(MoenBaseModel *)parserObject error:(NSError *)requestErr
 {
-    WEAKSELF
     
     [[NSToastManager manager] hideprogress];
     if (requestErr) {
@@ -137,8 +138,15 @@
         if (parserObject.success) {
             if ([operation.urlTag isEqualToString:Path_inventory_haveCallInventory]||
                 [operation.urlTag isEqualToString:Path_inventory_haveInventoryCheckChoice]) {
-                if(parserObject.datas[@"info"]){
-                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否继续上次的盘点" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                BOOL isShow = [parserObject.datas[@"info"] boolValue];
+                if(isShow){
+                    
+                    FDAlertView * alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否继续上次的盘点" block:^(NSInteger buttonIndex, NSString *inputStr) {
+                        if(buttonIndex == 1){
+                            [self returnAction];
+                        }
+                        
+                    } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
                     [alert show];
                 }
 
@@ -148,39 +156,22 @@
     }
 }
 
-- (void)alertView:(FDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex WithInputStr:(NSString *)inputStr {
-    NSLog(@"%ld", (long)buttonIndex);
-    if (buttonIndex == 1) {
-//        [self httpPath_addPersonal];
-        [self returnAction];
-    }
-}
 /**订单列表Api*/
 - (void)httpPath_orderList
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
-    if (self.controllerType == PurchaseOrderManageVCTypeInventoryStockGoods||
-        self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment) {
-        [parameters setValue:@"product" forKey:@"goodsType"];
-    }
-    else
-    {
-        [parameters setValue:@"sample" forKey:@"goodsType"];
-    }
+    [parameters setValue:self.goodsType forKey:@"goodsType"];
     
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;
     
-    if(self.controllerType == PurchaseOrderManageVCTypeStockGoodsAdjustment||
-       self.controllerType == PurchaseOrderManageVCTypeStockSampleAdjustment){
+    if(self.controllerType == PurchaseOrderManageVCTypeStockAdjust){
         self.requestURL = Path_inventory_haveCallInventory;
     } else {
         self.requestURL = Path_inventory_haveInventoryCheckChoice;
     }
-    
-    
     
 }
 @end

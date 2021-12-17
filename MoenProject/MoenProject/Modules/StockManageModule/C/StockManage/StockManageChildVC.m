@@ -175,11 +175,12 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
     RoleProfileModel * model = self.roleProfileArr[indexPath.row];
     switch (model.skipid) {
-        case 0:
+        case 0://商品库存
         {
             StoreStockVC *storeStockVC = [[StoreStockVC alloc] init];
             storeStockVC.hidesBottomBarWhenPushed = YES;
             storeStockVC.controllerType = PurchaseOrderManageVCTypeInventoryStockGoods;
+            storeStockVC.goodsType = @"product";
             [self.navigationController pushViewController:storeStockVC animated:YES];
         }
             break;
@@ -223,6 +224,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
             StoreStockVC *storeStockVC = [[StoreStockVC alloc] init];
             storeStockVC.hidesBottomBarWhenPushed = YES;
             storeStockVC.controllerType = PurchaseOrderManageVCTypeInventoryStockSample;
+            storeStockVC.goodsType = @"sample";
             [self.navigationController pushViewController:storeStockVC animated:YES];
             break;
         }
