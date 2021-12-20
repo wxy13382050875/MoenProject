@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *storeID;
 @property (nonatomic, copy) NSString *orderID;
 @property (nonatomic, copy) NSArray *dataSource;
-
+@property (nonatomic, copy) NSString *storeName;
 @property (nonatomic, assign) SearchGoodsVCType controllerType;
 
 @end

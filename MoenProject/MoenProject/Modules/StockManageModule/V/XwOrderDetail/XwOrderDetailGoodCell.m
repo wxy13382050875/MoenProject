@@ -77,9 +77,11 @@
     
     self.packView.sd_layout.leftSpaceToView(self.contentView, 15).rightSpaceToView(self.contentView, 15).bottomEqualToView(self.contentView).heightIs(40);
     
-    self.goodsPackageDes.sd_layout.leftSpaceToView(self.packView, 15).topEqualToView(self.packView).bottomEqualToView(self.packView).widthIs((SCREEN_WIDTH -30)/2);
     
-    self.showDetailImage.sd_layout.rightEqualToView(self.packView).centerYEqualToView(self.packView).widthIs(25).heightIs(15);
+    
+    self.showDetailImage.sd_layout.rightEqualToView(self.packView).centerYEqualToView(self.packView).widthIs(15).heightIs(10);
+    
+    self.goodsPackageDes.sd_layout.leftSpaceToView(self.packView, 15).topEqualToView(self.packView).bottomEqualToView(self.packView).rightSpaceToView(self.showDetailImage, 5);
 }
 -(void)setModel:(Goodslist *)model{
     self.deliverCount.hidden = YES;
@@ -93,11 +95,11 @@
 //    self.goodsStatus.text = model.goodsStatus;
     if (model.goodsPackage.goodsList.count > 0) {
         [self.packView setHidden:NO];
-        NSString* strPackageDes=@"";
-        for (Goodslist* tmModel in model.goodsPackage.goodsList) {
-            strPackageDes = [NSString stringWithFormat:@"%@ %@",strPackageDes,tmModel.goodsSKU];
-        }
-        self.goodsPackageDes.text = strPackageDes;
+//        NSString* strPackageDes=@"";
+//        for (Goodslist* tmModel in model.goodsPackage.goodsList) {
+//            strPackageDes = [NSString stringWithFormat:@"%@+%@",strPackageDes,tmModel.goodsSKU];
+//        }
+        self.goodsPackageDes.text = model.goodsPackage.packageID;
     }
     else
     {

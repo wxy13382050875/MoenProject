@@ -64,6 +64,8 @@
     [super awakeFromNib];
     self.count_Txt.delegate = self;
     
+    
+    
     self.goodsCode.font = FontBinB(17);
     self.goodsPrice.font = FontBinB(14);
     self.goodsCount.font = FontBinB(14);
@@ -155,10 +157,21 @@
     
     self.goodsCode.text = self.dataModel .code;
     self.goodsName.text = self.dataModel .name;
-    self.goodsPrice.text = [NSString stringWithFormat:@"%ld",self.dataModel.kGoodsCount];;
-//    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel .price];
-    self.goodsPackageDes.text = self.dataModel.comboDescribe;
-    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
+//    self.goodsPrice.text = [NSString stringWithFormat:@"X%ld",self.dataModel.kGoodsCount];;
+    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel.price];
+//    self.goodsPackageDes.text = self.dataModel.comboDescribe;
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:self.dataModel.photo] placeholderImage:ImageNamed(@"defaultImage")];
+    
+    if (self.dataModel.productList.count > 0) {
+        [self.goodsPackageDes setHidden:NO];
+        [self.goodsPackageDetailBtn setHidden:NO];
+        NSString* strPackageDes=@"";
+        for (CommonProdutcModel* tmModel in self.dataModel.productList) {
+            strPackageDes = [NSString stringWithFormat:@"%@ %@",strPackageDes,tmModel.sku];
+        }
+        self.goodsPackageDes.text = strPackageDes;
+    }
+    [self.goodsPrice setHidden:NO];
     
     if (controllerType == 1) {
         [self.goodsSelectBtn setHidden:YES];
@@ -169,6 +182,9 @@
     }
     else
     {
+//        if(controllerType == 3){
+//            [self.goodsPrice setHidden:YES];
+//        }
         [self.goodsSelectBtn setHidden:NO];
     }
     

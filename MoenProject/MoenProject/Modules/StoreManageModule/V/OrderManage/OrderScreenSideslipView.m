@@ -29,6 +29,8 @@
 
 @property (nonatomic, strong) XwScreenModel *model;//选中筛选条件
 
+@property (nonatomic, strong) ZLTimeView *timeView;
+
 @end
 
 @implementation OrderScreenSideslipView
@@ -88,6 +90,7 @@
 
 - (void)showWithArray:(NSMutableArray *)dataArr WithActionBlock:(KWOrderScreenSideslipViewActionBlock)actionBlock
 {
+//    self.model = nil
     self.actionBlock = actionBlock;
     self.dataArr = dataArr;
 //    [self upDatePopSheetView];
@@ -219,10 +222,10 @@
             .heightIs(30);
             titleLabel.text = @"时间段";
             
-            ZLTimeView *timeView = [ZLTimeView new];
-            timeView.delegate = self;
-            [footer addSubview: timeView];
-            timeView.sd_layout.topSpaceToView(titleLabel, 5)
+//            ZLTimeView *timeView = [ZLTimeView new];
+//            timeView.delegate = self;
+            [footer addSubview: self.timeView];
+            self.timeView.sd_layout.topSpaceToView(titleLabel, 5)
             .leftSpaceToView(footer, 10)
             .rightSpaceToView(footer, 10)
             .heightIs(30);
@@ -353,5 +356,12 @@
     }
     return _model;
 }
-
+-(ZLTimeView*)timeView{
+    if(!_timeView){
+        _timeView = [ZLTimeView new];
+        _timeView.delegate = self;
+        
+    }
+    return _timeView;
+}
 @end

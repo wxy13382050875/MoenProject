@@ -25,6 +25,8 @@
 
 @property (nonatomic, copy) NSString *orderType;
 
+@property (nonatomic, copy) NSString *goodsType;
+
 @end
 
 @interface Goodslist : NSObject
@@ -57,6 +59,8 @@
 @property (nonatomic, assign) BOOL isShowDetail;
 
 @property (nonatomic, copy)NSIndexPath* indexPath;
+
+
 
 @end
 

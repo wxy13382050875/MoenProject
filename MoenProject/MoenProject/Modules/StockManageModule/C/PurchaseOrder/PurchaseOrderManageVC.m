@@ -65,9 +65,11 @@
     
     
     [self.view addSubview:self.searchView];
-    self.searchView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).topEqualToView(self.view).heightIs(56);
     [self.view addSubview:self.tableview];
+    self.searchView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).topEqualToView(self.view).heightIs(56);
+    
     self.tableview.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).topSpaceToView(self.searchView, 0);
+
 }
 
 - (void)configBaseData
@@ -107,6 +109,7 @@
 #pragma mark -- UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSLog(@"numberOfSectionsInTableView %ld" ,self.dataList.count);
         return self.dataList.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -137,7 +140,8 @@
         }
     } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
        
-    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+    } else if(
+        self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
@@ -196,8 +200,7 @@
         orderStatus = @"待提交";
     } else if([model.orderStatus isEqualToString:@"wait"]){
         orderStatus = @"待审核";
-        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
             orderStatus = @"待门店审核";
         }
     } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
@@ -219,14 +222,14 @@
         if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
            self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
            self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
-           self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+           self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker||
+           self.controllerType == PurchaseOrderManageVCTypeReturn){
             orderStatus = @"已收货";
         }
         
     }else if([model.orderStatus isEqualToString:@"refuse"]){
         orderStatus = @"已拒绝";
-        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
             orderStatus = @"门店已拒绝";
         }
     }else if([model.orderStatus isEqualToString:@"waitGoods"]){
@@ -378,18 +381,19 @@
 
 -(void)buttonOperate:(Orderlist*)model{
     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
-        if([model.orderStatus isEqualToString:@"wait"]){
-            NSLog(@"审批");
-        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]){
-            NSLog(@"发货");
-           
-            
-            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
-            orderDetailVC.orderID = model.orderID;
-            orderDetailVC.controllerType = self.controllerType;
-            orderDetailVC.isDeliver = true;
-            [self.navigationController pushViewController:orderDetailVC animated:YES];
-        }
+//        if([model.orderStatus isEqualToString:@"wait"]){
+//            NSLog(@"审批");
+//        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+//            NSLog(@"发货");
+//
+//
+//
+//        }
+        XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+        orderDetailVC.orderID = model.orderID;
+        orderDetailVC.controllerType = self.controllerType;
+        orderDetailVC.isDeliver = true;
+        [self.navigationController pushViewController:orderDetailVC animated:YES];
     } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
         
         NSMutableArray* selectArr = [NSMutableArray new];
@@ -546,7 +550,13 @@
                         [weakSelf.dataList removeAllObjects];
                     }
                     [weakSelf.dataList addObjectsFromArray:listModel.orderList];
-                    [weakSelf.tableview reloadData];
+                    
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            /// 下拉时候一定要停止当前播放，不然有新数据，播放位置会错位。
+                        [weakSelf.tableview reloadData];
+                    //
+                        });
+                    
                 }
                 else
                 {
@@ -703,7 +713,7 @@
 {
     if (!_searchView) {
         _searchView = [[[NSBundle mainBundle] loadNibNamed:@"CommonSearchView" owner:self options:nil] lastObject];
-        _searchView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 56);
+//        _searchView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 56);
         _searchView.delegate = self;
         if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
            self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
@@ -715,9 +725,9 @@
                  self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
                  self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
             _searchView.viewType = CommonSearchViewTypeChangeDeliver;
-        } else if(self.controllerType == CommonSearchViewTypeChangeReturn){
+        } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
               _searchView.viewType = CommonSearchViewTypeChangeReturn;
-          }else{
+        } else{
             _searchView.viewType = CommonSearchViewTypeOrder;
         }
         
@@ -731,7 +741,7 @@
 - (UITableView *)tableview
 {
     if (!_tableview) {
-        _tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 61, SCREEN_WIDTH, SCREEN_HEIGHT - 125) style:UITableViewStyleGrouped];
+        _tableview = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableview.backgroundColor = AppBgBlueGrayColor;
         _tableview.delegate = self;
         _tableview.dataSource = self;

@@ -148,6 +148,7 @@
         StockSearchGoodsVC *sellGoodsScanVC = [[StockSearchGoodsVC alloc] init];
         sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
         sellGoodsScanVC.storeID = self.selectedModel.storeID;
+        sellGoodsScanVC.storeName = self.selectedModel.storeName;
         sellGoodsScanVC.controllerType = SearchGoodsVCType_Transfers;
         [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
     }

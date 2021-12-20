@@ -206,7 +206,7 @@
             StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
             startCountStockVC.hidesBottomBarWhenPushed = YES;
             startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockAdjust;
-            
+            startCountStockVC.goodsType = model.goodsType;
             [self.navigationController pushViewController:startCountStockVC animated:YES];
         } else {
             NSLog(@"调整");

@@ -11,6 +11,7 @@
 #import "ReturnOrderCounterModel.h"
 #import "ReturnOrderDetailModel.h"
 #import "ReturnOrderInfoModel.h"
+#import "XwSystemTCellModel.h"
 
 typedef void(^OrderMarkBlock)(NSString* text);
 
@@ -33,6 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong)NSString* orderRemarks;
 
 @property (nonatomic, copy) OrderMarkBlock orderMarkBlock;
+
+@property (nonatomic, copy) XwSystemTCellModel* defModel;
+
 
 - (void)showDataWithSalesCounterConfigModel:(SalesCounterConfigModel *)model;
 

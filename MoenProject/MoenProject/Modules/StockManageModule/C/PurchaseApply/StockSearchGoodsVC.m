@@ -90,7 +90,7 @@
     
 //    [self configPagingData];
     
-    [self reconnectNetworkRefresh];
+//    [self reconnectNetworkRefresh];
     
     WEAKSELF
     [self.tableview addDropDownRefreshWithActionHandler:^{
@@ -102,11 +102,15 @@
         }
         else if (self.controllerType == SearchGoodsVCType_Stock) {
             //对应接口
-            [weakSelf httpPath_stock_getGoods:weakSelf.inputStr];
+//            [weakSelf httpPath_stock_getGoods:weakSelf.inputStr];
+            [weakSelf.tableview cancelRefreshAction];
+            [[NSToastManager manager] hideprogress];
         }
         else if (self.controllerType == SearchGoodsVCType_Transfers) {
             //调拔
-            [weakSelf httpPath_dallot_getGoodsByTransfer:weakSelf.inputStr];
+//            [weakSelf httpPath_dallot_getGoodsByTransfer:weakSelf.inputStr];
+            [weakSelf.tableview cancelRefreshAction];
+            [[NSToastManager manager] hideprogress];
         }
         else
         {
@@ -124,11 +128,15 @@
             [weakSelf httpPath_selectPromoComboWithSKUCode:weakSelf.inputStr];
         } else if (self.controllerType == SearchGoodsVCType_Stock) {
             //对应接口
-            [weakSelf httpPath_stock_getGoods:weakSelf.inputStr];
+//            [weakSelf httpPath_stock_getGoods:weakSelf.inputStr];
+            [weakSelf.tableview cancelRefreshAction];
+            [[NSToastManager manager] hideprogress];
         }
         else if (self.controllerType == SearchGoodsVCType_Transfers) {
             //调拔
-            [weakSelf httpPath_dallot_getGoodsByTransfer:weakSelf.inputStr];
+//            [weakSelf httpPath_dallot_getGoodsByTransfer:weakSelf.inputStr];
+            [weakSelf.tableview cancelRefreshAction];
+            [[NSToastManager manager] hideprogress];
         }
         else
         {
@@ -203,6 +211,10 @@
     
     if ([model.cellIdentify isEqualToString:KCommonSingleGoodsTCell]) {
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
+        
+//        if(self.controllerType == SearchGoodsVCType_Stock){
+//
+//        }
         [cell showDataWithCommonGoodsModel:self.dataList[indexPath.section] AtIndex:indexPath.section WihtControllerType:self.controllerType];
         cell.goodsSelectedBlock = ^(CommonGoodsModel *model) {
             
@@ -418,6 +430,7 @@
         purchaseCounterVC.dataSource = [self.shoppingCarDataList copy];
         purchaseCounterVC.controllerType = self.controllerType;
         purchaseCounterVC.storeID = self.storeID;
+        purchaseCounterVC.storeName = self.storeName;
         purchaseCounterVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:purchaseCounterVC animated:YES];
     }

@@ -1375,7 +1375,7 @@
     {
         goodsModel.isShowDetail = NO;
 
-        [sectionArr removeObjectsInRange:NSMakeRange(indexPath.row + 1, goodsModel.productList.count)];
+        [sectionArr removeObjectsInRange:NSMakeRange(sectionArr.count - goodsModel.productList.count, goodsModel.productList.count)];
     }
     
     

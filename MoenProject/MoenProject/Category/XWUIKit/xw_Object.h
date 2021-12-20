@@ -22,6 +22,6 @@
 #import "NSAttributedString+XWAdd.h"
 #import "UILabel+XWAdd.h"
 #import "UITextField+XWAdd.h"
-
+#import "UITextView+XWAdd.h"
 #import "UITableView+XWAdd.h"
 #endif /* xw_Object_h */

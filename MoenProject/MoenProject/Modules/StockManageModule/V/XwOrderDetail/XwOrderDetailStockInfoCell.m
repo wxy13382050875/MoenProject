@@ -11,6 +11,7 @@
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *numberLabel;
 @property (strong, nonatomic) UILabel *dateLabel;
+@property (strong, nonatomic) UIImageView *arrowImg;
 @end
 @implementation XwOrderDetailStockInfoCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -38,12 +39,13 @@
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.numberLabel];
     [self.contentView addSubview:self.dateLabel];
+    [self.contentView addSubview:self.arrowImg];
 }
 -(void)xw_updateConstraints{
     self.titleLabel.sd_layout.leftSpaceToView(self.contentView, 15).topEqualToView(self.contentView).rightSpaceToView(self.contentView, 15).heightIs(30);
     self.numberLabel.sd_layout.topSpaceToView(self.titleLabel, 5).rightSpaceToView(self.contentView, 15).leftSpaceToView(self.contentView, 15).heightIs(30);
     self.dateLabel.sd_layout.leftSpaceToView(self.contentView, 15).topSpaceToView(self.numberLabel, 5).rightSpaceToView(self.contentView, 15).heightIs(30);
-    
+    self.arrowImg.sd_layout.rightSpaceToView(self.contentView, 5).centerYEqualToView(self.contentView).widthIs(10).heightIs(15);
     
 }
 -(void)setModel:(XwOrderDetailModel *)model{
@@ -52,6 +54,12 @@
     } else {
         self.titleLabel.text = [NSString stringWithFormat:@"%@信息",model.progressName];;
     }
+    if([model.progressName isEqualToString:@"订单"]){
+        self.arrowImg.hidden = NO;
+    } else {
+        self.arrowImg.hidden = YES;
+    }
+        
     self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",model.progressName,model.ordeID];
     self.dateLabel.text =[NSString stringWithFormat:@"下单时间:%@",model.orderTime];
     
@@ -78,5 +86,11 @@
     return _dateLabel;
 }
 
-
+-(UIImageView*)arrowImg{
+    if (!_arrowImg) {
+        _arrowImg = [UIImageView new];
+        _arrowImg.image =[UIImage imageNamed:@"c_detail_right_icon"];
+    }
+    return _arrowImg;
+}
 @end

@@ -173,8 +173,8 @@ static NSHttpClient *client;
                  }else{
                      /**3.2 鉴于接口无返回码 临时添加*/
                      model.success = YES;
-//                     [[NSToastManager manager] showtoast:model.message];
-                     [[NSToastManager manager] showtoast:[self MessageCodeHandler:model.code]];
+                     [[NSToastManager manager] showtoast:model.message];
+//                     [[NSToastManager manager] showtoast:[self MessageCodeHandler:model.code]];
                      success(task,model);
                  }
              }
@@ -259,8 +259,8 @@ static NSHttpClient *client;
                                    
                                    /**3.2 鉴于接口无返回码 临时添加*/
                                    model.success = YES;
-//                                   [[NSToastManager manager] showtoast:model.message];
-                                   [[NSToastManager manager] showtoast:[self MessageCodeHandler:model.code]];
+                                   [[NSToastManager manager] showtoast:model.message];
+//                                   [[NSToastManager manager] showtoast:[self MessageCodeHandler:model.code]];
                                    success(task,model);
                                }
                                

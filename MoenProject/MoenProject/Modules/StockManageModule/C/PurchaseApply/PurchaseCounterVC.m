@@ -112,9 +112,15 @@
 
     self.wishReceiveDate = @"";
     self.orderRemarks = @"";
+    
+    [self.floorsAarr removeAllObjects];
+    if(self.controllerType == SearchGoodsVCType_Transfers){
+        [self handleTableAallotInfoData];
+    }
     [self handleTableViewFloorsData];
-    [self handleTabWishReceivekData];
+    
     [self handleTabStatisticsData];
+    [self handleTabWishReceivekData];
     [self handleTabMarkData];
     [self.myTableView reloadData];
 }
@@ -195,13 +201,13 @@
         if(self.controllerType == SearchGoodsVCType_Stock||
            self.controllerType ==SearchGoodsVCType_Transfers){//进货柜台需要添写备注
             cell.orderRemarks = self.orderRemarks;
-            cell.orderMarkBlock = ^(NSString *text) {
-                self.orderRemarks = text;
-            };
+            
         } else {
             [cell showDataWithString: model.Data];
         }
-        
+            cell.orderMarkBlock = ^(NSString *text) {
+                self.orderRemarks = text;
+            };
         return cell;
     }else if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
         XWOrderDetailDefaultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XWOrderDetailDefaultCell" forIndexPath:indexPath];
@@ -265,7 +271,7 @@
     else
     {
         goodsModel.isShowDetail = NO;
-        [sectionArr removeObjectsInRange:NSMakeRange(indexPath.row + 1, goodsModel.productList.count)];
+        [sectionArr removeObjectsInRange:NSMakeRange(sectionArr.count - goodsModel.productList.count, goodsModel.productList.count)];
     }
     
     [UIView performWithoutAnimation:^{
@@ -360,10 +366,35 @@
 
 
 #pragma  mark -- 配置楼层信息
-
+- (void)handleTableAallotInfoData{
+    XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
+    tmModel.title = @"调拨信息";
+    tmModel.showArrow = NO;
+    NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
+    CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+    delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+    delivereModel.cellHeight = 30;
+    delivereModel.cellHeaderHeight = 0.01;
+    delivereModel.cellFooterHeight =  5;
+    delivereModel.Data = tmModel;
+    [section4Arr addObject:delivereModel];
+    
+    XwSystemTCellModel* tm1 = [XwSystemTCellModel new];
+    tm1.title = [NSString stringWithFormat:@"调拨对象:%@",self.storeName];
+    tm1.showArrow = NO;
+    CommonTVDataModel *model = [[CommonTVDataModel alloc] init];
+    model.cellIdentify = @"XWOrderDetailDefaultCell";
+    model.cellHeight = 30;
+    model.cellHeaderHeight = 0.01;
+    model.cellFooterHeight =  5;
+    model.Data = tm1;
+    [section4Arr addObject:model];
+    
+    [self.floorsAarr addObject:section4Arr];
+}
 - (void)handleTableViewFloorsData
 {
-    [self.floorsAarr removeAllObjects];
+    
     self.detailModel = [[OrderDetailModel alloc] init];
     
     for (CommonGoodsModel *model in self.dataSource) {
@@ -440,7 +471,7 @@
     markCellModel.cellHeight = KSellGoodsOrderMarkTCellH;
     markCellModel.cellHeaderHeight = 0.01;
     markCellModel.cellFooterHeight = 5;
-    markCellModel.Data = self.detailModel.comment;
+    markCellModel.Data = @"";
     [section6Arr addObject:markCellModel];
     [self.floorsAarr addObject:section6Arr];
 }

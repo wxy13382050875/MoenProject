@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *value;
 @property (nonatomic, copy) NSString *deliverID;
 @property (nonatomic, assign) BOOL showArrow;
+@property (nonatomic, assign) BOOL isEdit;
 @property (nonatomic, copy) NSString *type;//select 时间弹框 skip 跳转页面
 @end
 

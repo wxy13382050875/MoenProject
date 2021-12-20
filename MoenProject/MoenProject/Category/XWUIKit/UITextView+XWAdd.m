@@ -9,7 +9,60 @@
 #import "UITextView+XWAdd.h"
 
 
+static const char *xw_phTextView = "xw_placeHolderTextView";
 
+static const void *UtilityKey = &UtilityKey;
 @implementation UITextView (XWAdd)
+
+@dynamic block;
+
+- (changeBlock)block {
+    return objc_getAssociatedObject(self, UtilityKey);
+}
+
+- (void)setBlock:(changeBlock)block{
+    objc_setAssociatedObject(self, UtilityKey, block, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(UITextView *)xw_placeHolderTextView{
+    
+    return objc_getAssociatedObject(self, xw_phTextView);
+}
+
+- (void)setXw_placeHolderTextView:(UITextView *)jk_placeHolderTextView{
+    
+    objc_setAssociatedObject(self, xw_phTextView, jk_placeHolderTextView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)xw_addPlaceHolder:(NSString *)placeHolder {
+    if (![self xw_placeHolderTextView]) {
+        self.delegate = self;
+        UITextView *textView = [[UITextView alloc] initWithFrame:self.bounds];
+        textView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        textView.font = self.font;
+        textView.backgroundColor = [UIColor clearColor];
+        textView.textColor = [UIColor grayColor];
+        textView.userInteractionEnabled = NO;
+        textView.text = placeHolder;
+        [self addSubview:textView];
+        [self setXw_placeHolderTextView:textView];
+    }
+}
+
+# pragma mark - UITextViewDelegate
+
+-(void)textViewDidChange:(UITextView *)textView{
+    
+    if([textView.text length] > 0)
+    {
+        self.xw_placeHolderTextView.hidden = YES;
+    }else{
+        self.xw_placeHolderTextView.hidden = NO;
+    }
+    
+    if(self.block){
+        self.block(textView.text);
+    }
+}
 
 @end

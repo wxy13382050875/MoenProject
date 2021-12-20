@@ -52,7 +52,14 @@
 }
 -(void)setModel:(XwOrderDetailModel *)model{
     self.dateLabel.text = model.orderTime;
-    self.stateLabel.text = [NSString stringWithFormat:@"%@申请",model.orderType];;
+    
+    NSString* typeName =@"";
+    if([model.orderType isEqualToString:@"sample"]){
+        typeName = @"样品";
+    } else if([model.orderType isEqualToString:@"sample"]){
+        typeName = @"商品";
+    }
+    self.stateLabel.text = [NSString stringWithFormat:@"%@申请",typeName];;
     self.numberLabel.text =[NSString stringWithFormat:@"进货单编号:%@",model.orderID];
     self.nameLabel.text =[NSString stringWithFormat:@"制单人:%@",model.orderCreater];
     

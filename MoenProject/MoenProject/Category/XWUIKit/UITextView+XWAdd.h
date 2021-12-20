@@ -8,10 +8,29 @@
 
 
 #import <UIKit/UIKit.h>
-
+#import <objc/runtime.h>
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UITextView (XWAdd)
+typedef void(^changeBlock)(NSString* text);
+
+@interface UITextView (XWAdd)<UITextViewDelegate>
+
+/**
+ *  点击完成按钮的回调
+ */
+@property (nonatomic,copy) changeBlock block;
+
+/**  可限制输入的字符个数 依赖于：JKLimitInput
+ 
+ [UITextField的对象 setValue:@10 forKey:@"limit"];
+ 
+ */
+
+@property (nonatomic, strong) UITextView *xw_placeHolderTextView;
+
+- (void)xw_addPlaceHolder:(NSString *)placeHolder;
+
+
 
 @end
 

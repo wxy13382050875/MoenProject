@@ -207,7 +207,7 @@
     
     NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%@",model.giftNum];
     NSString *productNumCountStr = [NSString stringWithFormat:@"%@",model.productNum];
-    if (model.giftNum > 0) {
+    if ([giftGoodsCountStr integerValue] > 0) {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件商品, %@件赠品  实付款:￥%@",model.productNum,giftGoodsCountStr, model.payAmount]];
         
         [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%@",model.productNum].length)];

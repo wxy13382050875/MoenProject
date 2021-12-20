@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *storeID;
 
-
+@property (nonatomic, copy) NSString *storeName;
 //@property (nonatomic, strong) NSMutableArray *dataArr;
 
 @property (nonatomic, copy) NSString *searchSKUCode;

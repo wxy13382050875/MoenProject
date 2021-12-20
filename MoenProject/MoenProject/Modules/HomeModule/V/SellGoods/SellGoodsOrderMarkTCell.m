@@ -30,8 +30,29 @@
     [super awakeFromNib];
     self.mark_Txt.delegate = self;
     self.mark_Txt.font = FONTLanTingR(14);
+    
+    self.mark_Txt.block = ^(NSString * _Nonnull text) {
+        NSLog(@"%@",text);
+        if (self.orderMarkBlock) {
+            self.orderMarkBlock(text);
+        }
+    };
+//    self.mark_Txt.placeholder = @"添加备注";
     // Initialization code
+//    [self.mark_Txt addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
+//
 }
+-(void)textViewDidChange:(UITextView *)textView{
+    NSLog(@"textViewDidChange");
+}
+//-(void)textFieldTextChange:(UITextView *)textView{
+//    NSLog(@"textField1 - 输入框内容改变,当前内容为: %@",textView.text);
+//    if(self.orderMarkBlock){
+//        if (self.orderMarkBlock) {
+//            self.orderMarkBlock(textView.text);
+//        }
+//    }
+//}
 
 - (void)showDataWithSalesCounterConfigModel:(SalesCounterConfigModel *)model
 {
@@ -61,15 +82,21 @@
 
 -(void)setOrderRemarks:(NSString *)orderRemarks{
     _orderRemarks = orderRemarks;
-    
-    if (_orderRemarks.length == 0) {
-        self.mark_Txt.text = @"备注：无";
-    }
-    else
-    {
-        self.mark_Txt.text = _orderRemarks;
+    if([orderRemarks isEqualToString:@""]||orderRemarks == nil){
         
     }
+    
+    
+    self.mark_Txt.text = _orderRemarks;
+    
+}
+-(void)setDefModel:(XwSystemTCellModel *)defModel{
+    if(defModel.isEdit && [defModel.value isEqualToString:@""]){
+        [self.mark_Txt xw_addPlaceHolder:@"添加备注"];
+        self.mark_Txt.xw_placeHolderTextView.textColor = COLOR(@"#AAB3BA");
+    }
+    self.mark_Txt.text = defModel.value;
+    [self.mark_Txt setEditable:defModel.isEdit];
 }
 
 - (void)showDataWithReturnOrderCounterModel:(ReturnOrderCounterModel *)model
