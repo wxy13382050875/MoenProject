@@ -68,6 +68,7 @@
 
 @property (nonatomic, strong) NSString *orderRemarks;
  
+@property (nonatomic, assign) BOOL isDeliver;
 
 @end
 
@@ -434,7 +435,6 @@
                       self.controllerType ==PurchaseOrderManageVCTypeAllocteTask){
                 orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryApply;
             }  else if( self.controllerType == PurchaseOrderManageVCTypeInventoryStocker){
-                 self.title = @"总仓任务详情";
                  orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryStocker;
              }  else if( self.controllerType == PurchaseOrderManageVCTypeLibrary){
                  orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryApply;
@@ -448,12 +448,21 @@
     } else if([model.cellIdentify isEqualToString:@"XwOrderDetailStockInfoCell"]){
         
         XwOrderDetailModel* tm = model.Data;
-        if([tm.progressName isEqualToString:@"订单"]){
-            OrderDetailVC *orderDetailVC = [[OrderDetailVC alloc] init];
-            orderDetailVC.orderID = tm.ordeID;
-            [self.navigationController pushViewController:orderDetailVC animated:YES];
-
+        XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+        orderDetailVC.orderID = tm.orderCode;
+//        orderDetailVC.controllerType = self.controllerType;
+        if( self.controllerType == PurchaseOrderManageVCTypeInventoryStocker){
+            orderDetailVC.orderID = tm.taskID;
+            orderDetailVC.controllerType = PurchaseOrderManageVCTypeSTOCK;
         }
+        else if( self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder){
+            orderDetailVC.controllerType = PurchaseOrderManageVCTypeSTOCK;
+        }  else if( self.controllerType == PurchaseOrderManageVCTypeLibrary){
+            orderDetailVC.controllerType = PurchaseOrderManageVCTypeAllocteOrder;
+         } else {
+             orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryOrder;
+        }
+        [self.navigationController pushViewController:orderDetailVC animated:YES];
     }
 }
 - (void)handleGoodsShowOrHiddenDetailWith:(BOOL)isShow WithAtIndex:(NSIndexPath*)indexPath
@@ -548,8 +557,8 @@
         orderStatus = @"已完成";
     }else if([status isEqualToString:@"refuse"]){
         orderStatus = @"已拒绝";
-        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
-           self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+        orderStatus = @"已拒绝";
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
             orderStatus = @"门店已拒绝";
         }
     }else if([status isEqualToString:@"waitGoods"]){
@@ -660,7 +669,7 @@
                     
                     [self handleTabdDliverData];//发货单头部信息
                     [self handleTabdStockDliverData];//发货单进货信息
-                    [self handleTabSendInfoData];
+                    [self handleTabInvoicesData];
                     [self handleTableViewFloorsData];
                     [self handleTabStatisticsData];
                     [self handleTabMarkData:NO];
@@ -675,6 +684,9 @@
                 
                 if ([parserObject.code isEqualToString:@"200"]) {
                     [[NSToastManager manager] showtoast:@"确认收货成功"];
+                    if(self.refreshBlock){
+                        self.refreshBlock();
+                    }
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     [[NSToastManager manager] showtoast:parserObject.message];
@@ -689,6 +701,7 @@
                         if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]||
                            [self.dataModel.orderApplyProgress isEqualToString:@"partDeliver"]){
                             self.btn2.hidden = NO;
+                            self.isDeliver = YES;
                         } else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]&&
                                   self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
                             self.btn.hidden = NO;
@@ -707,12 +720,13 @@
                     
                     [self handleTabStatisticsData];
                     [self handleTabWishReceivekData];
-                    if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]&&
-                              self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
-                        [self handleTabMarkData:YES];
-                    } else {
-                        [self handleTabMarkData:NO];
-                    }
+                    [self handleTabMarkData:NO];
+//                    if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]&&
+//                              self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
+//                        [self handleTabMarkData:NO];
+//                    } else {
+//                        [self handleTabMarkData:NO];
+//                    }
                     
                     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask&&
                        [self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
@@ -729,6 +743,9 @@
             } else if([operation.urlTag isEqualToString:Path_dallot_transferOperate]){
                 if ([parserObject.code isEqualToString:@"200"]) {
                     [[NSToastManager manager] showtoast:@"调拨操作成功"];
+                    if(self.refreshBlock){
+                        self.refreshBlock();
+                    }
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     [[NSToastManager manager] showtoast:parserObject.message];
@@ -758,6 +775,11 @@
                     
                     if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
                         [self handleTabMarkData:YES];
+                    } else {
+                        if(![self.dataModel.checkRemarks isEqualToString:@""]){
+                            self.orderRemarks = self.dataModel.checkRemarks;
+                            [self handleTabMarkData:NO];
+                        }
                     }
                     
                     [self.tableView reloadData];
@@ -770,6 +792,9 @@
             }else if([operation.urlTag isEqualToString:Path_refund_returnOperate]){
                 if ([parserObject.code isEqualToString:@"200"]) {
                     [[NSToastManager manager] showtoast:@"退仓操作成功"];
+                    if(self.refreshBlock){
+                        self.refreshBlock();
+                    }
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     [[NSToastManager manager] showtoast:parserObject.message];
@@ -778,8 +803,8 @@
                 
             } else if (
                 [operation.urlTag isEqualToString:Path_inventory_generalOrderDetail]) {//总仓明细
+//                    self.dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
                     self.dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
-                
                 if ([parserObject.code isEqualToString:@"200"]) {
                     self.isShowEmptyData = NO;
                     self.dataModel.orderStatusText = [self getOrderStatus:self.dataModel.orderApplyProgress];
@@ -849,6 +874,9 @@
                 
             }else if([operation.urlTag isEqualToString:Path_delivery_confirmReceipt]) {
                 [[NSToastManager manager] showtoast:@"收货成功"];
+                if(self.refreshBlock){
+                    self.refreshBlock();
+                }
                 [self.navigationController popViewControllerAnimated:YES];;
                 
             }
@@ -959,14 +987,57 @@
     [section4Arr addObject:delivereModel];
     [self.floorsAarr addObject:section4Arr];
 }
+//发货商品信息
+-(void)handleTabInvoicesData{
+    XwSystemTCellModel* model = [XwSystemTCellModel new];
+    model.title = @"发货商品信息";
+    
+    model.showArrow = NO;
+    NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
+    CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+    delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+    delivereModel.cellHeight = 30;
+    delivereModel.cellHeaderHeight = 0.01;
+    delivereModel.cellFooterHeight =  5;
+    delivereModel.Data = model;
+    [section4Arr addObject:delivereModel];
+    
+//    if (self.dataModel.sendOrderInfo.count > 0) {
+//        for (NSDictionary* dict in self.dataModel.sendOrderInfo) {
+//            XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
+//            tmModel.title = dict[@"sendOrderTime"];;
+//            tmModel.value = dict[@"sendOrderID"];
+//            tmModel.deliverID =dict[@"sendOrderID"];
+//            tmModel.showArrow = YES;
+//            tmModel.type = @"skip";
+//            CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+//            delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+//            delivereModel.cellHeight = 30;
+//            delivereModel.cellHeaderHeight = 0.01;
+//            delivereModel.cellFooterHeight =  0.01;
+//            delivereModel.Data = tmModel;
+//            [section4Arr addObject:delivereModel];
+//        }
+//
+//    } else {
+//        XwSystemTCellModel* model = [XwSystemTCellModel new];
+//        model.title = @"暂无发货信息";
+//        model.showArrow = NO;
+//        CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+//        delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+//        delivereModel.cellHeight = 30;
+//        delivereModel.cellHeaderHeight = 0.01;
+//        delivereModel.cellFooterHeight =  0.01;
+//        delivereModel.Data = model;
+//        [section4Arr addObject:delivereModel];
+//    }
+    
+    [self.floorsAarr addObject:section4Arr];
+}
 //发货信息
 -(void)handleTabSendInfoData{
     XwSystemTCellModel* model = [XwSystemTCellModel new];
-    if(self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf){
-        model.title = @"发货商品信息";
-    } else {
-        model.title = @"发货信息";
-    }
+    model.title = @"发货信息";
     
     model.showArrow = NO;
     NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
@@ -1029,6 +1100,8 @@
 {
     
     for (Goodslist *model in self.dataModel.goodsList) {
+        model.orderStatus = self.dataModel.orderApplyProgress;
+        model.controllerType = self.controllerType;
         NSMutableArray *sectionArr = [[NSMutableArray alloc] init];
         //当前商品的Cell
         CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
@@ -1119,7 +1192,7 @@
     
     
     XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
-    tmModel.value =self.orderRemarks;
+    tmModel.value =[self.orderRemarks isEqualToString:@""]?@"备注：无":self.orderRemarks;
     tmModel.isEdit = isEdit;
     
     NSMutableArray *section6Arr = [[NSMutableArray alloc] init];
@@ -1146,10 +1219,15 @@
 //退仓原因
 -(void)handleTabRefundReasonData{
     
+    CGSize size = [self.dataModel.returnReason sizeWithFont:FONT(13) Size:CGSizeMake((SCREEN_WIDTH -30)- 90, 2000)];
+    CGFloat height = 40;
+    if(size.height  > 40){
+        height  = size.height + 20;
+    }
     NSMutableArray *section6Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *markCellModel = [[CommonTVDataModel alloc] init];
     markCellModel.cellIdentify = KReturnOrderDetailReasonTCell;
-    markCellModel.cellHeight = KReturnOrderDetailReasonTCellH;
+    markCellModel.cellHeight = height;
     markCellModel.cellHeaderHeight = 0.01;
     markCellModel.cellFooterHeight = 5;
     [section6Arr addObject:markCellModel];

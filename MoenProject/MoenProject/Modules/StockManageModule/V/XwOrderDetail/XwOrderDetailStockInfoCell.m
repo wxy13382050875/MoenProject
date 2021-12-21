@@ -51,17 +51,26 @@
 -(void)setModel:(XwOrderDetailModel *)model{
     if([model.progressName isEqualToString:@"总仓任务进度"]){
         self.titleLabel.text = @"订单信息";
+        self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",model.progressName,model.taskID];
     } else {
         self.titleLabel.text = [NSString stringWithFormat:@"%@信息",model.progressName];;
+        self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",model.progressName,model.orderCode];
     }
-    if([model.progressName isEqualToString:@"订单"]){
-        self.arrowImg.hidden = NO;
-    } else {
-        self.arrowImg.hidden = YES;
-    }
+//    if([model.progressName isEqualToString:@"订单"]||
+//       [model.progressName isEqualToString:@"总仓任务进度"]){
+//        self.arrowImg.hidden = NO;
+//    } else {
+//        self.arrowImg.hidden = YES;
+//    }
         
-    self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",model.progressName,model.ordeID];
-    self.dateLabel.text =[NSString stringWithFormat:@"下单时间:%@",model.orderTime];
+    
+  
+    if([model.progressName isEqualToString:@"进货单"]){
+        self.dateLabel.text =[NSString stringWithFormat:@"下单时间:%@",model.sendOrderTime];
+    } else {
+        self.dateLabel.text =[NSString stringWithFormat:@"下单时间:%@",model.orderTime];
+    }
+    
     
 }
 -(UILabel*)titleLabel{

@@ -200,7 +200,8 @@
         SellGoodsOrderMarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SellGoodsOrderMarkTCell" forIndexPath:indexPath];
         if(self.controllerType == SearchGoodsVCType_Stock||
            self.controllerType ==SearchGoodsVCType_Transfers){//进货柜台需要添写备注
-            cell.orderRemarks = self.orderRemarks;
+//            cell.orderRemarks = self.orderRemarks;
+            cell.defModel = model.Data;
             
         } else {
             [cell showDataWithString: model.Data];
@@ -465,13 +466,16 @@
 ////备注
 -(void)handleTabMarkData{
     //备注
+    XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
+    tmModel.value =self.orderRemarks;
+    tmModel.isEdit = YES;
     NSMutableArray *section6Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *markCellModel = [[CommonTVDataModel alloc] init];
     markCellModel.cellIdentify = KSellGoodsOrderMarkTCell;
     markCellModel.cellHeight = KSellGoodsOrderMarkTCellH;
     markCellModel.cellHeaderHeight = 0.01;
     markCellModel.cellFooterHeight = 5;
-    markCellModel.Data = @"";
+    markCellModel.Data = tmModel;
     [section6Arr addObject:markCellModel];
     [self.floorsAarr addObject:section6Arr];
 }

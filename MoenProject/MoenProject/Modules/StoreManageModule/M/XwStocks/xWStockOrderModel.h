@@ -61,7 +61,7 @@
 @property (nonatomic, copy)NSIndexPath* indexPath;
 
 
-
+@property (nonatomic, assign)NSInteger controllerType;
 @end
 
 @interface Goodspackage : NSObject

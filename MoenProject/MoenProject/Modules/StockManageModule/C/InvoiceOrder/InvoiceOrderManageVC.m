@@ -52,30 +52,30 @@
     
     
     PurchaseOrderManageVC *orderManageVC = [[PurchaseOrderManageVC alloc] init];
-    orderManageVC.title = [[self.titleArr objectAtIndex:0] objectForKey:@"titleName"];
-    orderManageVC.controllerType = [[[self.titleArr objectAtIndex:0] objectForKey:@"controllerType"] integerValue];
+    orderManageVC.title = NSLocalizedString(@"purchase_apply", nil);
+    orderManageVC.controllerType = PurchaseOrderManageVCTypeDeliveryOrder;
     [controllers addObject:orderManageVC];
-    [titles addObject:[[self.titleArr objectAtIndex:0] objectForKey:@"titleName"]];
+    [titles addObject:NSLocalizedString(@"purchase_apply", nil)];
     
     PurchaseOrderManageVC *orderManageVC1 = [[PurchaseOrderManageVC alloc] init];
-    orderManageVC1.title = [[self.titleArr objectAtIndex:1] objectForKey:@"titleName"];
-    orderManageVC1.controllerType = [[[self.titleArr objectAtIndex:1] objectForKey:@"controllerType"] integerValue];
+    orderManageVC1.title = NSLocalizedString(@"stocker_apply", nil);
+    orderManageVC1.controllerType = PurchaseOrderManageVCTypeDeliveryStocker;
     [controllers addObject:orderManageVC1];
-    [titles addObject:[[self.titleArr objectAtIndex:1] objectForKey:@"titleName"]];
+    [titles addObject:NSLocalizedString(@"stocker_apply", nil)];
     
     PurchaseOrderManageVC *orderManageVC2 = [[PurchaseOrderManageVC alloc] init];
-    orderManageVC2.title = [[self.titleArr objectAtIndex:2] objectForKey:@"titleName"];
-    orderManageVC2.controllerType = [[[self.titleArr objectAtIndex:2] objectForKey:@"controllerType"] integerValue];
+    orderManageVC2.title = NSLocalizedString(@"allocate_apply", nil);
+    orderManageVC2.controllerType = PurchaseOrderManageVCTypeDeliveryApply;
     [controllers addObject:orderManageVC2];
-    [titles addObject:[[self.titleArr objectAtIndex:2] objectForKey:@"titleName"]];
+    [titles addObject:NSLocalizedString(@"allocate_apply", nil)];
     
     PurchaseOrderManageVC *orderManageVC3 = [[PurchaseOrderManageVC alloc] init];
-    orderManageVC3.title = [[self.titleArr objectAtIndex:3] objectForKey:@"titleName"];
-    orderManageVC3.controllerType = [[[self.titleArr objectAtIndex:3] objectForKey:@"controllerType"] integerValue];
+    orderManageVC3.title = NSLocalizedString(@"store_self_apply", nil);
+    orderManageVC3.controllerType = PurchaseOrderManageVCTypeDeliveryShopSelf;
     [controllers addObject:orderManageVC3];
-    [titles addObject:[[self.titleArr objectAtIndex:3] objectForKey:@"titleName"]];
+    [titles addObject:NSLocalizedString(@"store_self_apply", nil)];
     
-    KSegmentScrollViewController *controller = [[KSegmentScrollViewController alloc] initWithControllers:controllers frame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) menuHeight:45 titles:titles titleFont:[UIFont systemFontOfSize:15] selectedColor:AppTitleBlackColor normalColor:AppTitleBlackColor lineColor:AppTitleBlackColor selectedIndex:self.initIndex];
+    KSegmentScrollViewController *controller = [[KSegmentScrollViewController alloc] initWithControllers:controllers frame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) menuHeight:45 titles:titles titleFont:[UIFont systemFontOfSize:15] selectedColor:AppTitleBlackColor normalColor:AppTitleBlackColor lineColor:AppTitleBlackColor selectedIndex:self.initIndex];
     
     controller.selectedActionBlock = ^(NSInteger selectedIndex){
     };

@@ -167,14 +167,16 @@
         [self.goodsPackageDetailBtn setHidden:NO];
         NSString* strPackageDes=@"";
         for (CommonProdutcModel* tmModel in self.dataModel.productList) {
-            strPackageDes = [NSString stringWithFormat:@"%@ %@",strPackageDes,tmModel.sku];
+            strPackageDes = [NSString stringWithFormat:@"%@+%@",strPackageDes,tmModel.sku];
         }
-        self.goodsPackageDes.text = strPackageDes;
+        self.goodsPackageDes.text = [strPackageDes substringFromIndex:1];
     }
-    [self.goodsPrice setHidden:NO];
+    
     
     if (controllerType == 1) {
         [self.goodsSelectBtn setHidden:YES];
+//        [self.goodsPrice setHidden:YES];
+        self.goodsPrice.text =[NSString stringWithFormat:@"X%ld",self.dataModel.kGoodsCount];;
     }
     else if (controllerType == 2) {
         [self.goodsPrice setHidden:YES];
@@ -182,9 +184,9 @@
     }
     else
     {
-//        if(controllerType == 3){
-//            [self.goodsPrice setHidden:YES];
-//        }
+        if(controllerType == 3){
+            [self.goodsPrice setHidden:YES];
+        }
         [self.goodsSelectBtn setHidden:NO];
     }
     
@@ -206,7 +208,10 @@
     [self handleCellLayoutWithModel:self.dataModel];
     self.goodsCode.text = self.dataModel .gcode;
     self.goodsName.text = self.dataModel .name;
-    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel .price];
+    if(self.dataModel.price == nil){
+        self.goodsPrice.hidden = YES;
+    }
+    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel.price];
     self.goodsPackageDes.text = self.dataModel.comboDescribe;
     [self.editCountView setHidden:!isEditNumber];
     if (self.dataModel.isSpecial) {

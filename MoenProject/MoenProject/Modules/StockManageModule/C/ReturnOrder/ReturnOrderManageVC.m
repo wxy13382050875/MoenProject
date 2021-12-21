@@ -188,7 +188,7 @@
     orderLab.font = FONTLanTingR(14);
     orderLab.textColor = AppTitleBlackColor;
     NSMutableAttributedString *str ;
-    str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"退仓单编号: %@",model.orderID]];
+    str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"退货单编号: %@",model.orderID]];
     
     [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6, str.length - 6)];
     orderLab.attributedText = str;
@@ -251,7 +251,6 @@
     Orderlist *model = self.dataList[indexPath.section];
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     orderDetailVC.orderID = model.orderID;
-    orderDetailVC.isDeliver = false;
     orderDetailVC.controllerType = PurchaseOrderManageVCTypeReturn;
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }

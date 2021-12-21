@@ -56,7 +56,7 @@
     NSString* typeName =@"";
     if([model.orderType isEqualToString:@"sample"]){
         typeName = @"样品";
-    } else if([model.orderType isEqualToString:@"sample"]){
+    } else if([model.orderType isEqualToString:@"product"]){
         typeName = @"商品";
     }
     self.stateLabel.text = [NSString stringWithFormat:@"%@申请",typeName];;

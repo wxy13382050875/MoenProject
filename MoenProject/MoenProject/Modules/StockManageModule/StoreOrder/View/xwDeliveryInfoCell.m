@@ -60,7 +60,7 @@
     [self.goodsImage sd_setImageWithURL:[NSURL URLWithString:model.goodsImg] placeholderImage:ImageNamed(@"defaultImage")];
     self.skuLabel.text = model.goodsSKU;
     self.goodsNameLabel.text = model.goodsName;
-    self.goodsPriceLabel.text = model.num;
+    self.goodsPriceLabel.text = [NSString stringWithFormat:@"X%@",model.num];
     
     if(_controllerType == DeliveryWayTypeShopSelf){
         self.titleLab.text = @"当场自提数量";
@@ -89,6 +89,9 @@
 
 -(void)textFieldTextChange:(UITextField *)textField{
     NSLog(@"textField1 - 输入框内容改变,当前内容为: %@",textField.text);
+    if([textField.text integerValue] > [self.model.shopNum integerValue]){
+        textField.text = self.model.shopNum;
+    }
     self.model.inputCount =textField.text;
 }
 @end

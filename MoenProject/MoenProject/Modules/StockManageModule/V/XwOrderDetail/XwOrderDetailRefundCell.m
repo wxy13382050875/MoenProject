@@ -49,7 +49,7 @@
 }
 -(void)setModel:(XwOrderDetailModel *)model{
     self.dateLabel.text = model.orderTime;
-    self.numberLabel.text =[NSString stringWithFormat:@"退仓单编号:%@",model.orderID];
+    self.numberLabel.text =[NSString stringWithFormat:@"退货单编号:%@",model.orderID];
     self.nameLabel.text =[NSString stringWithFormat:@"制单人:%@",model.orderCreater];
     
 }

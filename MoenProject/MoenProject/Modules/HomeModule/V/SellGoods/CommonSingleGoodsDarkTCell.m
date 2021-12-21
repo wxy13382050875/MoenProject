@@ -171,12 +171,12 @@
     self.goods_Name.text = model.goodsName;
 //    [self.goods_Price setHidden:YES];
     [self.goods_Count setHidden:YES];
-    self.goods_Price.text = [NSString stringWithFormat:@"%@",model.goodsCount];
+//    self.goods_Price.text = [NSString stringWithFormat:@"%@",model.goodsCount];
 //    self.goods_Count.text = [NSString stringWithFormat:@"x%@", model.goodsCount];
 }
 -(void)setOrderModel:(OrderlistModel *)orderModel{
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:orderModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
-    self.goods_Code.text = orderModel.goodsID;
+    self.goods_Code.text = orderModel.goodsName;
     self.goods_Name.text = orderModel.goodsSKU;
     [self.goods_Price setHidden:YES];
 //    self.goods_Price.text = [NSString stringWithFormat:@"¥%@",model.refundAmount];

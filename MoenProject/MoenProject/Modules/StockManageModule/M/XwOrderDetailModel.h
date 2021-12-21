@@ -40,6 +40,9 @@
 
 @property (nonatomic, strong) NSArray *sendOrderInfo;
 
+@property (nonatomic, copy) NSString *checkRemarks;
+
+@property (nonatomic, copy) NSString *taskID;
 //发货单详情
 @property (nonatomic, copy) NSString *sendOrderStatus;
 
@@ -53,6 +56,7 @@
 
 @property (nonatomic, copy) NSString *ordeID;
 
+@property (nonatomic, copy) NSString *orderCode;
 @end
 
 

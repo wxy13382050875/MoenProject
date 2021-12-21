@@ -259,8 +259,10 @@
     Orderlist *model = self.dataList[indexPath.section];
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     orderDetailVC.orderID = model.orderID;
-    orderDetailVC.isDeliver = false;
     orderDetailVC.controllerType = PurchaseOrderManageVCTypeInventoryStocker;
+    orderDetailVC.refreshBlock = ^{
+        [self reconnectNetworkRefresh];
+    };
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
 

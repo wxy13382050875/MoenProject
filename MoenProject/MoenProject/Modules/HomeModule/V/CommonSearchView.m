@@ -139,7 +139,7 @@
         [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
     }
     if (_viewType == CommonSearchViewTypeChangeReturn) {
-        self.input_Txt.placeholder = @"搜索退仓单编号";
+        self.input_Txt.placeholder = @"搜索退货单编号";
         self.container_view_Right.constant = 55;
         [self.time_Select_View setHidden:NO];
         self.time_Select_View.userInteractionEnabled = YES;

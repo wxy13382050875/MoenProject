@@ -51,12 +51,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+    [self configBaseUI];
     
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self configBaseUI];
+    
     [self configBaseData];
 }
 - (void)configBaseUI
@@ -68,8 +68,9 @@
     [self.view addSubview:self.tableview];
     self.searchView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).topEqualToView(self.view).heightIs(56);
     
-    self.tableview.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).topSpaceToView(self.searchView, 0);
+//    self.tableview.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).topSpaceToView(self.searchView, 0);
 
+//    NSLog(@"12345675432345%@",NSStringFromCGRect(self.tableview.frame))
 }
 
 - (void)configBaseData
@@ -274,7 +275,7 @@
               self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
         str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"发货单编号: %@",model.orderID]];
     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
-        str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"退仓单编号: %@",model.orderID]];
+        str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"退货单编号: %@",model.orderID]];
     } else {
         str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"订单编号: %@",model.orderID]];
     }
@@ -374,8 +375,10 @@
     
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     orderDetailVC.orderID = model.orderID;
-    orderDetailVC.isDeliver = false;
     orderDetailVC.controllerType = self.controllerType;
+    orderDetailVC.refreshBlock = ^{
+        [self reconnectNetworkRefresh];
+    };
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
 
@@ -392,7 +395,9 @@
         XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
         orderDetailVC.orderID = model.orderID;
         orderDetailVC.controllerType = self.controllerType;
-        orderDetailVC.isDeliver = true;
+        orderDetailVC.refreshBlock = ^{
+            [self reconnectNetworkRefresh];
+        };
         [self.navigationController pushViewController:orderDetailVC animated:YES];
     } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
         
@@ -451,21 +456,16 @@
 //            [self httpPath_delivery_confirmReceipt:model];
         }
     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
-        if([model.orderStatus isEqualToString:@"wait"]){
+        if([model.orderStatus isEqualToString:@"wait"]||[model.orderStatus isEqualToString:@"waitDeliver"]){
             NSLog(@"审核");
             XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
             orderDetailVC.orderID = model.orderID;
             orderDetailVC.controllerType = self.controllerType;
-            orderDetailVC.isDeliver = false;
+            orderDetailVC.refreshBlock = ^{
+                [self reconnectNetworkRefresh];
+            };
             [self.navigationController pushViewController:orderDetailVC animated:YES];
-        } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
-            NSLog(@"确认发货");
-            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
-            orderDetailVC.orderID = model.orderID;
-            orderDetailVC.controllerType = self.controllerType;
-            orderDetailVC.isDeliver = false;
-            [self.navigationController pushViewController:orderDetailVC animated:YES];
-        }
+        } 
     }
 }
 #pragma mark -- SearchViewCompleteDelete
@@ -551,11 +551,12 @@
                     }
                     [weakSelf.dataList addObjectsFromArray:listModel.orderList];
                     
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                            /// 下拉时候一定要停止当前播放，不然有新数据，播放位置会错位。
-                        [weakSelf.tableview reloadData];
-                    //
-                        });
+                    [weakSelf.tableview reloadData];
+//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                            /// 下拉时候一定要停止当前播放，不然有新数据，播放位置会错位。
+//
+//                    //
+//                        });
                     
                 }
                 else
@@ -741,7 +742,7 @@
 - (UITableView *)tableview
 {
     if (!_tableview) {
-        _tableview = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 56, SCREEN_WIDTH, SCREEN_HEIGHT-56 -45-KWNavBarAndStatusBarHeight) style:UITableViewStyleGrouped];
         _tableview.backgroundColor = AppBgBlueGrayColor;
         _tableview.delegate = self;
         _tableview.dataSource = self;

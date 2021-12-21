@@ -363,7 +363,6 @@ static CGFloat kMagin = 1.f;
         {
             XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
             orderDetailVC.orderID = self.orderID;
-            orderDetailVC.isDeliver = false;
             orderDetailVC.controllerType = PurchaseOrderManageVCTypeSTOCK;
             [self.navigationController pushViewController:orderDetailVC animated:YES];
         }
@@ -372,7 +371,6 @@ static CGFloat kMagin = 1.f;
         {
             XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
             orderDetailVC.orderID = self.orderID;
-            orderDetailVC.isDeliver = false;
             orderDetailVC.controllerType = PurchaseOrderManageVCTypeAllocteOrder;
             [self.navigationController pushViewController:orderDetailVC animated:YES];
         }

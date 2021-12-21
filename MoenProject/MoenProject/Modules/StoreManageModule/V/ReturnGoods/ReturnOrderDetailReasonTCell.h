@@ -11,7 +11,7 @@ static  NSString *KReturnOrderDetailReasonTCell = @"ReturnOrderDetailReasonTCell
 static  NSString *KReturnOrderDetailReasonTCellForPickup = @"ReturnOrderDetailReasonTCellForPickup";
 static  NSString *KReturnOrderDetailReasonTCellForRefund = @"ReturnOrderDetailReasonTCellForRefund";
 
-static CGFloat KReturnOrderDetailReasonTCellH = 40;
+static CGFloat KReturnOrderDetailReasonTCellH = 80;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ReturnOrderDetailReasonTCell : UITableViewCell

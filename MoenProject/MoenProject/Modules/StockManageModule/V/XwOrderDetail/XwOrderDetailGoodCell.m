@@ -92,7 +92,14 @@
     self.isShowDetail = model.isShowDetail;
     self.goodsCount.text = [NSString stringWithFormat:@"x%@",model.goodsCount];
 //    if(model.orderStatus)
-//    self.goodsStatus.text = model.goodsStatus;
+//
+    if (model.controllerType == 3||
+        model.controllerType == 6) {
+        if([model.orderStatus isEqualToString: @"partDeliver"]||[model.orderStatus isEqualToString: @"allDeliver"]){
+            self.goodsStatus.text = model.goodsStatus;
+        }
+    }
+    
     if (model.goodsPackage.goodsList.count > 0) {
         [self.packView setHidden:NO];
 //        NSString* strPackageDes=@"";
