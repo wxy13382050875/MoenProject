@@ -89,9 +89,17 @@
 
 -(void)textFieldTextChange:(UITextField *)textField{
     NSLog(@"textField1 - 输入框内容改变,当前内容为: %@",textField.text);
-    if([textField.text integerValue] > [self.model.shopNum integerValue]){
-        textField.text = self.model.shopNum;
+    
+    if(_controllerType == DeliveryWayTypeShopSelf){
+        if([textField.text integerValue] > [self.model.shopNum integerValue]){
+            textField.text = self.model.shopNum;
+        }
+    } else {
+        if([textField.text integerValue] > [self.model.dealerNum integerValue]){
+            textField.text = self.model.dealerNum;
+        }
     }
+    
     self.model.inputCount =textField.text;
 }
 @end

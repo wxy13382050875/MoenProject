@@ -97,6 +97,8 @@
 		2E6F968527624FF000660B4D /* XwOrderDetailTotalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F968427624FF000660B4D /* XwOrderDetailTotalCell.m */; };
 		2E6F9688276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F9687276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m */; };
 		2E6F968B276258D100660B4D /* XwOrderDetailGoodsInventory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */; };
+		2E823A1F277232D70083AF02 /* XwExpressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E823A1E277232D70083AF02 /* XwExpressCell.m */; };
+		2E823A22277233060083AF02 /* XwDeliveMarkrCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E823A21277233050083AF02 /* XwDeliveMarkrCell.m */; };
 		2E835F2327639C0700C31E2D /* XwScreenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E835F2227639C0700C31E2D /* XwScreenModel.m */; };
 		2E835FA82763BE1300C31E2D /* NSDate+ZLDateTimeStr.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E835F9B2763BE1300C31E2D /* NSDate+ZLDateTimeStr.m */; };
 		2E835FA92763BE1300C31E2D /* UIView+ZLExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E835F9C2763BE1300C31E2D /* UIView+ZLExtension.m */; };
@@ -727,6 +729,10 @@
 		2E6F9687276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailAdjustInventoryCell.m; sourceTree = "<group>"; };
 		2E6F9689276258D100660B4D /* XwOrderDetailGoodsInventory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailGoodsInventory.h; sourceTree = "<group>"; };
 		2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailGoodsInventory.m; sourceTree = "<group>"; };
+		2E823A1D277232D60083AF02 /* XwExpressCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwExpressCell.h; sourceTree = "<group>"; };
+		2E823A1E277232D70083AF02 /* XwExpressCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwExpressCell.m; sourceTree = "<group>"; };
+		2E823A20277233050083AF02 /* XwDeliveMarkrCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwDeliveMarkrCell.h; sourceTree = "<group>"; };
+		2E823A21277233050083AF02 /* XwDeliveMarkrCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwDeliveMarkrCell.m; sourceTree = "<group>"; };
 		2E835F2127639C0600C31E2D /* XwScreenModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwScreenModel.h; sourceTree = "<group>"; };
 		2E835F2227639C0700C31E2D /* XwScreenModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwScreenModel.m; sourceTree = "<group>"; };
 		2E835F9A2763BE1300C31E2D /* UIView+ZLExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZLExtension.h"; sourceTree = "<group>"; };
@@ -2016,6 +2022,10 @@
 				2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */,
 				2E835FAF27649D3900C31E2D /* XwOrderDetailGoodCell.h */,
 				2E835FB027649D3900C31E2D /* XwOrderDetailGoodCell.m */,
+				2E823A1D277232D60083AF02 /* XwExpressCell.h */,
+				2E823A1E277232D70083AF02 /* XwExpressCell.m */,
+				2E823A20277233050083AF02 /* XwDeliveMarkrCell.h */,
+				2E823A21277233050083AF02 /* XwDeliveMarkrCell.m */,
 			);
 			path = XwOrderDetail;
 			sourceTree = "<group>";
@@ -4487,6 +4497,7 @@
 				2E384CC826DF74990021EA4A /* xw_NavBar.m in Sources */,
 				2E2A69D427677C62004FC164 /* WMZDialog+CardPresent.m in Sources */,
 				72FFB10B21AC0F0600614F14 /* ViewController.m in Sources */,
+				2E823A1F277232D70083AF02 /* XwExpressCell.m in Sources */,
 				725DD16321B54E4D0060C0BD /* AddressListItemTCell.m in Sources */,
 				2E2A69D327677C62004FC164 /* WMZDialog+MenusSelect.m in Sources */,
 				2E835FB42765092100C31E2D /* XwStockInfoModel.m in Sources */,
@@ -4581,6 +4592,7 @@
 				72FFB21421AC134E00614F14 /* JHScatterChart.m in Sources */,
 				722D86FE21D71AC9002593EF /* CouponRecordModel.m in Sources */,
 				72FFB21321AC134E00614F14 /* JHTableChart.m in Sources */,
+				2E823A22277233060083AF02 /* XwDeliveMarkrCell.m in Sources */,
 				72FFB1F321AC134E00614F14 /* NSTool.m in Sources */,
 				2E384CF226DF77940021EA4A /* UIImage+XWAdd.m in Sources */,
 				722D86F321D64FB7002593EF /* SamplingSingleModel.m in Sources */,
@@ -5054,7 +5066,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5084,7 +5096,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

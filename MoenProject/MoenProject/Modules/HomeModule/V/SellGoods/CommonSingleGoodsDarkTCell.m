@@ -64,7 +64,14 @@
     [self.returnCount_Lab setHidden:YES];
     
 }
-
+- (void)showDataWithStockTransfersForCommonSearch:(CommonProdutcModel *)model
+{
+    [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
+    self.goods_Code.text = model.sku;
+    self.goods_Name.text = model.name;
+    self.goods_Price.text = [NSString stringWithFormat:@"x%ld",(long)model.count];
+    [self.goods_Count setHidden:YES];
+}
 - (void)showDataWithCommonProdutcModelForCommonSearch:(CommonProdutcModel *)model
 {
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
@@ -169,10 +176,22 @@
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:model.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
     self.goods_Code.text = model.goodsSKU;
     self.goods_Name.text = model.goodsName;
-//    [self.goods_Price setHidden:YES];
+//
     [self.goods_Count setHidden:YES];
-//    self.goods_Price.text = [NSString stringWithFormat:@"%@",model.goodsCount];
+    self.goods_Price.text = [NSString stringWithFormat:@"X%@",model.goodsCount];
+    
 //    self.goods_Count.text = [NSString stringWithFormat:@"x%@", model.goodsCount];
+    if (model.controllerType == 3||
+        model.controllerType == 5||
+        model.controllerType == 6) {
+        if([model.orderStatus isEqualToString: @"partDeliver"]||[model.orderStatus isEqualToString: @"allDeliver"]){
+            [self.goods_Count setHidden:NO];
+            self.goods_Count.text = model.goodsStatus;
+        }
+    } else {
+        [self.goods_Price setHidden:YES];
+    }
+    
 }
 -(void)setOrderModel:(OrderlistModel *)orderModel{
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:orderModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];

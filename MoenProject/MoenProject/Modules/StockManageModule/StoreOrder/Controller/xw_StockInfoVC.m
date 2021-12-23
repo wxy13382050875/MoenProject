@@ -69,13 +69,23 @@
 //库存参考信息
 -(void)httpPath_stores_getShopDealerStock{
     NSMutableArray* arr= [NSMutableArray array];
-    
+//    NSLog(@"%@",[NSString DataTOjsonString:self.array]);
     for (CommonGoodsModel* model in self.array) {
         NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-        [dict setObject:model.code forKey:@"goodsSKU"];
-        [dict setObject:@(model.kGoodsCount) forKey:@"num"];
+        if(model.isSetMeal){
+            for (CommonProdutcModel* tm in model.productList) {
+                [dict setObject:tm.sku forKey:@"goodsSKU"];
+                [dict setObject:@(tm.count) forKey:@"num"];
+                [arr addObject:dict];
+            }
+        } else {
+            [dict setObject:model.code forKey:@"goodsSKU"];
+            [dict setObject:@(model.kGoodsCount) forKey:@"num"];
+            [arr addObject:dict];
+        }
         
-        [arr addObject:dict];
+        
+        
     }
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:arr forKey:@"goodsSkuInfos"];
@@ -177,6 +187,7 @@
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.estimatedSectionHeaderHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
         _tableView.tableHeaderView = [UIView new];
         kRegistCell(_tableView,@"CommonSingleGoodsDarkTCell",@"CommonSingleGoodsDarkTCell")
     }

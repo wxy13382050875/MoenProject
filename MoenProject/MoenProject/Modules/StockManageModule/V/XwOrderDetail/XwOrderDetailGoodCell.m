@@ -94,6 +94,7 @@
 //    if(model.orderStatus)
 //
     if (model.controllerType == 3||
+        model.controllerType == 5||
         model.controllerType == 6) {
         if([model.orderStatus isEqualToString: @"partDeliver"]||[model.orderStatus isEqualToString: @"allDeliver"]){
             self.goodsStatus.text = model.goodsStatus;
@@ -181,7 +182,8 @@
 }
 -(UILabel*)goodsStatus{
     if(!_goodsStatus){
-        _goodsStatus = [UILabel labelWithText:@"" WithTextColor:[UIColor blueColor] WithNumOfLine:1 WithBackColor:[UIColor clearColor] WithTextAlignment:NSTextAlignmentRight WithFont:14];
+        _goodsStatus = [UILabel labelWithText:@"" WithTextColor:COLOR(@"#646464") WithNumOfLine:1 WithBackColor:[UIColor clearColor] WithTextAlignment:NSTextAlignmentRight WithFont:14];
+        _goodsStatus.font = [UIFont boldSystemFontOfSize:14];
     }
     return _goodsStatus;
 }
@@ -235,13 +237,13 @@
         if (textField.text.length == 0) {
             textField.text = @"0";
         }
-        if ([textField.text integerValue] > [self.model.goodsCount integerValue]) {
-            textField.text = [NSString stringWithFormat:@"%@",self.model.goodsCount];
+        if ([textField.text integerValue] > [self.delModel.goodsCount integerValue]) {
+            textField.text = [NSString stringWithFormat:@"%@",self.delModel.goodsCount];
             [[NSToastManager manager] showtoast:@"商品数量不能超过可发货商品数量"];
         }
         else
         {
-            self.model.goodsCount = textField.text;
+            self.delModel.goodsCount = textField.text;
         }
     
     }

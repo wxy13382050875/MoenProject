@@ -197,7 +197,7 @@
     orderLab.font = FONTLanTingR(14);
     orderLab.textColor = AppTitleBlackColor;
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"订单编号: %@",model.orderID]];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"任务编号: %@",model.orderID]];
     [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6, str.length - 6)];
     orderLab.attributedText = str;
     [headerView addSubview:orderLab];
@@ -375,9 +375,9 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@(self.pageNumber) forKey:@"page"];
     [parameters setValue:@(self.pageSize) forKey:@"size"];
-    [parameters setValue:@"" forKey:@"orderKey"];
-    [parameters setValue:@"" forKey:@"orderDateStart"];
-    [parameters setValue:@"" forKey:@"orderDateEnd"];
+    [parameters setValue:self.orderCode forKey:@"orderKey"];
+    [parameters setValue:self.dataStart forKey:@"orderDateStart"];
+    [parameters setValue:self.dataEnd forKey:@"orderDateEnd"];
     [parameters setValue:@"" forKey:@"orderStatus"];
 //    if (self.isIdentifion) {
 //        [parameters setValue:[NSNumber numberWithBool:YES] forKey:@"identifion"];
@@ -425,7 +425,7 @@
         _searchView = [[[NSBundle mainBundle] loadNibNamed:@"CommonSearchView" owner:self options:nil] lastObject];
         _searchView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 56);
         _searchView.delegate = self;
-        _searchView.viewType = CommonSearchViewTypeOrder;
+        _searchView.viewType = CommonSearchViewTypeChangeWarehouse;
         
     }
     return _searchView;

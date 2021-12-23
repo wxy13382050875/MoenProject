@@ -6,7 +6,7 @@
 //  Copyright © 2021 Kevin Jin. All rights reserved.
 //
 
-#import "xw_BaseViewController.h"
+#import "BaseViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

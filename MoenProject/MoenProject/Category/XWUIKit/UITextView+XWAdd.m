@@ -8,6 +8,7 @@
 
 #import "UITextView+XWAdd.h"
 
+#define MAX_LENGTH 100
 
 static const char *xw_phTextView = "xw_placeHolderTextView";
 
@@ -64,5 +65,17 @@ static const void *UtilityKey = &UtilityKey;
         self.block(textView.text);
     }
 }
-
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@""] && range.length > 0) {
+        // 删除字符肯定是安全的
+        return YES;
+    }
+    
+    if (textView.text.length - range.length + text.length > MAX_LENGTH) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"超出最大长度" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        return NO;
+    }
+    return YES;
+}
 @end

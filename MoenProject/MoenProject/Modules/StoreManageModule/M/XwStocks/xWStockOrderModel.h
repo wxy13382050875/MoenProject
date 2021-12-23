@@ -74,6 +74,8 @@
 
 @property (nonatomic, copy) NSString *packageStatus;
 
+@property (nonatomic, copy) NSString *goodsID;
+
 @end
 
 

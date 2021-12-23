@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^RefreshBlock)();
 @interface XwOrderDetailVC : BaseViewController
 @property (nonatomic, copy) NSString *orderID;
-
+@property (nonatomic, assign) BOOL isHide;
 @property (nonatomic, assign) PurchaseOrderManageVCType controllerType;
 @property (nonatomic, copy) RefreshBlock refreshBlock;
 @end

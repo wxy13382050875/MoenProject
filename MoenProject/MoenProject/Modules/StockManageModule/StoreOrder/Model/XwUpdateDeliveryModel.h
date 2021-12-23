@@ -42,6 +42,9 @@
 
 @property (nonatomic, copy) NSString *inputCount;
 
+@property (nonatomic, copy) NSString *type;
+
+@property (nonatomic, copy) NSString *setMealId;
 
 @end
 

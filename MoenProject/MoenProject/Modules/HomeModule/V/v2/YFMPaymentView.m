@@ -33,6 +33,8 @@
 
 @property (nonatomic, assign) NSInteger alertType;
 
+@property (nonatomic, assign) BOOL isShow;
+
 @end
 
 @implementation YFMPaymentView
@@ -40,6 +42,14 @@
     if (self = [super init]) {
         self.dataList = dataSource;
         self.floorsAarr = floorArr;
+    }
+    return self;
+}
+- (instancetype)initDataSource:(NSMutableArray *)dataSource FloorArr:(NSMutableArray *)floorArr isShowPrice:(BOOL)isShow{
+    if (self = [super init]) {
+        self.dataList = dataSource;
+        self.floorsAarr = floorArr;
+        self.isShow = isShow;
     }
     return self;
 }
@@ -124,7 +134,12 @@
     
     if ([model.cellIdentify isEqualToString:KCommonSingleGoodsTCell]) {
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonGoodsModelForSell:self.dataList[indexPath.section] AtIndex:indexPath.section WithIsEditNumberType:YES];
+        
+        if(self.isShow){
+            [cell showDataWithCommonGoodsModelForSell:self.dataList[indexPath.section] AtIndex:indexPath.section WithIsEditNumberType:YES];
+        } else {
+            [cell showDataWithStockTransfersForSell:self.dataList[indexPath.section] AtIndex:indexPath.section];
+        }
         cell.goodsShowDetailBlock = ^(BOOL isShow, NSInteger atIndex) {
             [weakSelf handleGoodsShowOrHiddenDetailWith:isShow WithAtIndex:atIndex];
         };
@@ -144,7 +159,13 @@
     {
         CommonGoodsModel *goodsModel = self.dataList[indexPath.section];
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonProdutcModelForCommonSearch:goodsModel.productList[indexPath.row - 1]];
+        
+        if(self.isShow){
+            [cell showDataWithCommonProdutcModelForCommonSearch:goodsModel.productList[indexPath.row - 1]];
+        } else {
+            [cell showDataWithStockTransfersForCommonSearch:goodsModel.productList[indexPath.row - 1]];
+        }
+        
         return cell;
     }
     return [[UITableViewCell alloc] init];

@@ -351,7 +351,7 @@
 //        [[NSToastManager manager] showtoast:@"购物车为空"];
         return;
     }
-    YFMPaymentView *pop = [[YFMPaymentView alloc]initDataSource:self.shoppingCarDataList FloorArr:self.shoppingCarfloorsAarr];
+    YFMPaymentView *pop = [[YFMPaymentView alloc]initDataSource:self.shoppingCarDataList FloorArr:self.shoppingCarfloorsAarr isShowPrice:YES];
     pop.dateChangeActionBlock = ^() {
         [weakSelf updateShoppingCarStatus];
         if ([weakSelf.delegate respondsToSelector:@selector(SearchGoodsVCSelectedDelegate:)]) {

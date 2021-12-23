@@ -408,6 +408,7 @@
             for (Goodslist* tm in model.goodsList) {
                 CommonGoodsModel* coModel = [CommonGoodsModel new];
                 coModel.id = tm.goodsID;
+                coModel.isShowDetail = NO;
                 coModel.isSetMeal = tm.goodsPackage!=nil?true:false;
                 coModel.code = [tm.goodsSKU mutableCopy];
                 coModel.price = [tm.goodsPrice mutableCopy];

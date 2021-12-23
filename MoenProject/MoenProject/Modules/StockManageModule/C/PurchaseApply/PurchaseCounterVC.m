@@ -185,7 +185,8 @@
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsDarkTCell])
     {
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonProdutcModelForSearch:model.Data];
+//        [cell showDataWithCommonProdutcModelForSearch:model.Data];
+        [cell showDataWithStockTransfersForCommonSearch:model.Data];
         return cell;
     }
     else if ([model.cellIdentify isEqualToString:KSellGoodsOrderStatisticsTCell])
@@ -399,6 +400,8 @@
     self.detailModel = [[OrderDetailModel alloc] init];
     
     for (CommonGoodsModel *model in self.dataSource) {
+        
+        model.isShowDetail = NO;
         NSMutableArray *sectionArr = [[NSMutableArray alloc] init];
         //当前商品的Cell
         CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
@@ -413,6 +416,7 @@
 //            cellModel.isShow = YES;
             cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
         }
+        
         cellModel.cellHeaderHeight = 0.01;
         cellModel.cellFooterHeight =  0.01;
         cellModel.Data = model;
@@ -498,6 +502,7 @@
     
     if(self.controllerType == SearchGoodsVCType_Stock ){
         [parameters setValue:commitType forKey:@"commitType"];
+        [parameters setValue:self.goodsType forKey:@"goodsType"];
         
     } else if(self.controllerType == SearchGoodsVCType_Transfers){
         [parameters setValue:self.storeID forKey:@"allotBy"];

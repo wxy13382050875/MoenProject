@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, CommonSearchViewType)
     /**退仓单*/
     CommonSearchViewTypeChangeReturn,
     
+    /**总仓发货*/
+    CommonSearchViewTypeChangeWarehouse,
 };
 
 

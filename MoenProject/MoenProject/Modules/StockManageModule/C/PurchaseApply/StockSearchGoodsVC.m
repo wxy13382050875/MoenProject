@@ -392,7 +392,7 @@
 //        [[NSToastManager manager] showtoast:@"购物车为空"];
         return;
     }
-    YFMPaymentView *pop = [[YFMPaymentView alloc]initDataSource:self.shoppingCarDataList FloorArr:self.shoppingCarfloorsAarr];
+    YFMPaymentView *pop = [[YFMPaymentView alloc]initDataSource:self.shoppingCarDataList FloorArr:self.shoppingCarfloorsAarr isShowPrice:NO];
     pop.dateChangeActionBlock = ^() {
         [weakSelf updateShoppingCarStatus];
         if ([weakSelf.delegate respondsToSelector:@selector(StockSearchGoodsVCSelectedDelegate:)]) {
@@ -426,11 +426,13 @@
         //[self.navigationController popViewControllerAnimated:YES];
 //        NSLog(@"self.shoppingCarDataList"%@)
         
+       
         PurchaseCounterVC *purchaseCounterVC = [[PurchaseCounterVC alloc] init];
         purchaseCounterVC.dataSource = [self.shoppingCarDataList copy];
         purchaseCounterVC.controllerType = self.controllerType;
         purchaseCounterVC.storeID = self.storeID;
         purchaseCounterVC.storeName = self.storeName;
+        purchaseCounterVC.goodsType = self.goodsType;
         purchaseCounterVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:purchaseCounterVC animated:YES];
     }

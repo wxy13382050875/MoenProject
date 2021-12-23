@@ -55,7 +55,13 @@
 }
 -(void)setModel:(XwOrderDetailModel *)model{
     self.dateLabel.text = model.orderTime;
-    self.numberLabel.text =[NSString stringWithFormat:@"任务编号:%@",model.orderID];
+    if([model.progressName isEqualToString:@"总仓任务进度"]){
+        self.numberLabel.text =[NSString stringWithFormat:@"任务编号:%@",model.taskID];
+        self.customLabel.hidden = YES;
+    } else {
+        self.numberLabel.text =[NSString stringWithFormat:@"任务编号:%@",model.orderID];
+    }
+//    self.numberLabel.text =[NSString stringWithFormat:@"任务编号:%@",model.orderID];
     self.nameLabel.text =[NSString stringWithFormat:@"制单人:%@",model.orderCreater];
     self.customLabel.text =[NSString stringWithFormat:@"客户:%@",model.orderCreater];
 }

@@ -119,7 +119,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     Orderlist *model =self.dataList[section];
-    if (![model.orderStatus isEqualToString:@"pass"]) {
+    if (![model.orderStatus isEqualToString:@"stop"]) {
         return 85;
     }
     else {
@@ -162,6 +162,10 @@
         orderStatus = @"审核不通过";
     } else if([model.orderStatus isEqualToString:@"finish"]){
         orderStatus = @"已完成";
+    } else if([model.orderStatus isEqualToString:@"stop"]){
+        orderStatus = @"已终止";
+    } else if([model.orderStatus isEqualToString:@"problem"]){
+        orderStatus = @"问题商品";
     }
     UIView *headerView = [[UIView alloc] init];
     headerView.backgroundColor = AppBgWhiteColor;
@@ -227,8 +231,8 @@
     NSInteger height = 85;
     if([model.orderStatus isEqualToString:@"ing"]){
         [againBtn setTitle:@"继续盘库" forState:UIControlStateNormal];
-    } else if([model.orderStatus isEqualToString:@"pass"]){
-        [againBtn setTitle:@"调整" forState:UIControlStateNormal];
+    } else if([model.orderStatus isEqualToString:@"stop"]){
+        [againBtn setTitle:@"修正" forState:UIControlStateNormal];
     } else {
         againBtn.hidden = YES;
         height = 45;

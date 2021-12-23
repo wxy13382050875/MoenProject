@@ -361,9 +361,9 @@
 - (void)httpPath_refund_returnOrderList
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"" forKey:@"orderKey"];
-    [parameters setValue:@"" forKey:@"orderDateStart"];
-    [parameters setValue:@"" forKey:@"orderDateEnd"];
+    [parameters setValue:self.orderCode forKey:@"orderKey"];
+    [parameters setValue:self.dataStart forKey:@"orderDateStart"];
+    [parameters setValue:self.dataEnd forKey:@"orderDateEnd"];
     [parameters setValue:@"" forKey:@"orderStatus"];
     [parameters setValue:@(self.pageNumber) forKey:@"page"];
     [parameters setValue:@(self.pageSize) forKey:@"size"];

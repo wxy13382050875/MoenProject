@@ -115,7 +115,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)showDataWitReturnOrderDetailGoodsModel:(ReturnOrderDetailGoodsModel *)model;
 
-
+//进货调拨
+- (void)showDataWithStockTransfersForSell:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex ;
 @end
 
 NS_ASSUME_NONNULL_END

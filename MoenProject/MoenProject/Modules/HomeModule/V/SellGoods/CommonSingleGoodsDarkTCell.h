@@ -50,7 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showDataWithReturnOrderSingleGoodsModelForReturnSelected:(ReturnOrderSingleGoodsModel *)model;
 
 - (void)showDataWithReturnOrderSingleGoodsModelForReturnAllGoodsCounter:(ReturnOrderSingleGoodsModel *)model;
-
+//进货单 调拨单套餐
+- (void)showDataWithStockTransfersForCommonSearch:(CommonProdutcModel *)model;
 
 @end
 

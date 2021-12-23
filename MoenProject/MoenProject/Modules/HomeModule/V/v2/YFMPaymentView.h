@@ -17,6 +17,9 @@ typedef void(^DateConfirmActionBlock)(void);
 @interface YFMPaymentView : UIViewController
 
 - (instancetype)initDataSource:(NSMutableArray *)dataSource FloorArr:(NSMutableArray *)floorArr;
+
+//是否显示价格
+- (instancetype)initDataSource:(NSMutableArray *)dataSource FloorArr:(NSMutableArray *)floorArr isShowPrice:(BOOL)isShow;
 //支付方式
 @property (nonatomic, copy) void(^payType)(NSString *type ,NSString *balance);
 

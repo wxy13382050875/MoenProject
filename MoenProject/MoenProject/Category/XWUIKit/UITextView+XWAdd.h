@@ -31,7 +31,6 @@ typedef void(^changeBlock)(NSString* text);
 - (void)xw_addPlaceHolder:(NSString *)placeHolder;
 
 
-
 @end
 
 NS_ASSUME_NONNULL_END

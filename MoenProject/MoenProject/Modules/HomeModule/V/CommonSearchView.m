@@ -59,6 +59,29 @@
         if (_viewType == CommonSearchViewTypeCheckStockOrder) {
             [[NSToastManager manager] showtoast:@"请输入盘库单编号"];
         }
+        if (_viewType == CommonSearchViewTypeChangeStockOrder) {
+            [[NSToastManager manager] showtoast:@"请输入调库单编号"];
+        }
+        if (_viewType == CommonSearchViewTypeChangeDllot) {
+            [[NSToastManager manager] showtoast:@"请输入调拨单编号"];
+            
+        }
+        if (_viewType == CommonSearchViewTypeChangeSTOCK) {
+            [[NSToastManager manager] showtoast:@"请输入进货单编号"];
+            
+        }
+        if (_viewType == CommonSearchViewTypeChangeDeliver) {
+            [[NSToastManager manager] showtoast:@"请输入发货单编号"];
+            
+        }
+        if (_viewType == CommonSearchViewTypeChangeReturn) {
+            [[NSToastManager manager] showtoast:@"请输入退货单编号"];
+            
+        }
+        if (_viewType == CommonSearchViewTypeChangeWarehouse) {
+            [[NSToastManager manager] showtoast:@"搜索任务编号/客户手机号"];
+            
+        }
         return;
     }
     [self endEditing:YES];
@@ -140,6 +163,13 @@
     }
     if (_viewType == CommonSearchViewTypeChangeReturn) {
         self.input_Txt.placeholder = @"搜索退货单编号";
+        self.container_view_Right.constant = 55;
+        [self.time_Select_View setHidden:NO];
+        self.time_Select_View.userInteractionEnabled = YES;
+        [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
+    }
+    if (_viewType == CommonSearchViewTypeChangeWarehouse) {
+        self.input_Txt.placeholder = @"搜索任务编号/客户手机号";
         self.container_view_Right.constant = 55;
         [self.time_Select_View setHidden:NO];
         self.time_Select_View.userInteractionEnabled = YES;

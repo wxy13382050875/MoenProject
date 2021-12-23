@@ -45,28 +45,30 @@
         _textView = [UITextView new];
         _textView.textColor = COLOR(@"#646464");//设置textview里面的字体颜色
         _textView.font = [UIFont fontWithName:@"Arial" size:14.0];//设置字体名字和字体大小
-        _textView.delegate = self;//设置它的委托方法
+//        _textView.delegate = self;//设置它的委托方法
         _textView.backgroundColor = [UIColor whiteColor];//设置它的背景颜色
         _textView.returnKeyType = UIReturnKeyDefault;//返回键的类型
         _textView.keyboardType = UIKeyboardTypeDefault;//键盘类型
         _textView.scrollEnabled = YES;//是否可以拖动
         _textView.autoresizingMask = UIViewAutoresizingFlexibleHeight;//自适应高度
-        _textView.text =@"审核备注";
+        _textView.text =@"";
+        [_textView xw_addPlaceHolder:@"添加备注"];
+        _textView.xw_placeHolderTextView.textColor = COLOR(@"#AAB3BA");
         ViewBorderRadius(_textView, 5, 1, [UIColor groupTableViewBackgroundColor])
     }
     return _textView;
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
- 
- 
-}
--(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    if ([text isEqualToString:@"\n"]) {
-        [textView resignFirstResponder];
-        return NO;
-    }
-    return YES;
-}
+//- (void)textViewDidEndEditing:(UITextView *)textView {
+// 
+// 
+//}
+//-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+//{
+//    if ([text isEqualToString:@"\n"]) {
+//        [textView resignFirstResponder];
+//        return NO;
+//    }
+//    return YES;
+//}
 @end

@@ -692,6 +692,7 @@ static NSString * const Path_stores_returnAddress = @"/v1/app/second/returnAddre
 //预约自提确认保存
 static NSString * const Path_stores_selfSave = @"/v1/app/second/selfSave";
 
-
+//上传图片
+static NSString * const Path_publishImage = @"/v1/app/second/publishImage";
 
 #endif /* HttpURLConfig_h */

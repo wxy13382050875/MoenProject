@@ -198,7 +198,32 @@
         [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_show_detail_icon") forState:UIControlStateNormal];
     }
 }
-
+- (void)showDataWithStockTransfersForSell:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex {
+    self.dataModel = model;
+    self.isShowDetail = model.isShowDetail;
+    self.atIndex = atIndex;
+    //设置是否是套餐商品的特殊显示元素
+    [self handleCellLayoutWithModel:self.dataModel];
+    self.goodsCode.text = self.dataModel .gcode;
+    self.goodsName.text = self.dataModel .name;
+    self.goodsPrice.hidden = YES;
+//    if(self.dataModel.price == nil){
+//        self.goodsPrice.hidden = YES;
+//    }
+//    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel.price];
+    self.goodsPackageDes.text = self.dataModel.comboDescribe;
+    [self.editCountView setHidden:NO];
+    if (self.dataModel.isSpecial) {
+        self.count_Txt.keyboardType = UIKeyboardTypeDecimalPad;
+        self.count_Txt.text = [NSString stringWithFormat:@"%.3f",self.dataModel.kGoodsArea];
+    }
+    else
+    {
+        self.count_Txt.keyboardType = UIKeyboardTypeNumberPad;
+        self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.dataModel.kGoodsCount];
+    }
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
+}
 - (void)showDataWithCommonGoodsModelForSell:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex WithIsEditNumberType:(BOOL)isEditNumber
 {
     self.dataModel = model;

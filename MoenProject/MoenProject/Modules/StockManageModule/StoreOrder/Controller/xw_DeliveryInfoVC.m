@@ -10,6 +10,8 @@
 #import "xw_StoreOrderViewModel.h"
 #import "XwUpdateDeliveryModel.h"
 #import "OrderManageVC.h"
+#import "XwSystemTCellModel.h"
+#import "XWOrderDetailDefaultCell.h"
 @interface xw_DeliveryInfoVC ()<UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIButton *confirmBth;
@@ -23,6 +25,10 @@
 @property (nonatomic, strong)  UITextField *startTime;
 
 @property (nonatomic, strong)  UITextField *endTime;
+
+@property (nonatomic, strong) NSMutableArray *floorsAarr;
+
+@property (nonatomic, strong) NSString *sendGoodsDate;
 
 @end
 
@@ -38,11 +44,26 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+//    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+//    if (marr.count > 1) {
+//        UIViewController *vc = [marr objectAtIndex:marr.count - 2];
+//        if ([vc isKindOfClass:[OrderManageVC class]]) {
+//            [marr removeObject:vc];
+//        }
+//        self.navigationController.viewControllers = marr;
+//    }
     [self xw_layoutNavigation];
     [self xw_loadDataSource];
 }
 -(void)xw_layoutNavigation{
-    self.title = @"选择发货信息";
+    if(self.controllerType == DeliveryWayTypeStocker){
+        self.title = @"选择总仓商品";
+    } else {
+        self.title = @"选择发货商品";
+        
+    }
+    self.sendGoodsDate =@"";
+    
 }
 -(void)xw_setupUI{
     [self.view addSubview:self.tableView];
@@ -110,75 +131,69 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.floorsAarr.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.model.orderProductInfoDataList.count;
+    return 1;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CommonTVDataModel *model = self.floorsAarr[indexPath.section][indexPath.row];
     
-    xwDeliveryInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([xwDeliveryInfoCell class])];
-//    [cell showDataWithOrderManageModel:model];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    if(indexPath.row % 2 == 0){
-//        cell.deliveryType = DeliveryActionTypeFirst;
-//    } else {
-//        cell.deliveryType = DeliveryActionTypeOther;
-//    }
-    cell.controllerType = self.controllerType;
-    cell.model = self.model.orderProductInfoDataList[indexPath.row];
-    return cell;
+    
+    if ([model.cellIdentify isEqualToString:@"xwDeliveryInfoCell"]){
+        xwDeliveryInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([xwDeliveryInfoCell class])];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.controllerType = self.controllerType;
+        cell.model = model.Data;
+        return cell;
+    } else if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
+        
+        
+        XWOrderDetailDefaultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XWOrderDetailDefaultCell" forIndexPath:indexPath];
+//        XwSystemTCellModel* tmModel = model.Data;
+        XwSystemTCellModel* tmModel = model.Data;
+        tmModel.value = self.sendGoodsDate;
+        cell.model = tmModel;
+        return cell;
+    }
+    return nil;
     
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return KXwDeliveryInfoCellH;
+    
+    CommonTVDataModel *model = self.floorsAarr[indexPath.section][indexPath.row];
+    return model.cellHeight;
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 0.1f;
 }
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 130;
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CommonTVDataModel *model = self.floorsAarr[indexPath.section][indexPath.row];
+    if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
+        XwSystemTCellModel* tm = model.Data;
+        if([tm.type isEqualToString:@"select"]){
+            Dialog()
+                .wEventOKFinishSet(^(id anyID, id otherData) {
+                    NSLog(@"选中 %@ %@",anyID,otherData);
+                    self.sendGoodsDate =[NSString stringWithFormat:@"%@-%@-%@",anyID[0],anyID[1],anyID[2]];
+                    [self.tableView reloadData];
+                })
+                .wDateTimeTypeSet(@"yyyy年MM月dd日")
+                .wDefaultDateSet([NSDate date])
+                .wTypeSet(DialogTypeDatePicker)
+                .wStart();
+            
+        }
+    }
 }
-//-(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-//    UIView* footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 90)];
-//    footer.backgroundColor = [UIColor whiteColor];
-//    UILabel* appointmentlab = [UILabel labelWithText:@"预约发货时间" WithTextColor:AppTitleGoldenColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentRight WithFont:15];
-//    UILabel* warehouselab = [UILabel labelWithText:@"总仓发货时间" WithTextColor:AppTitleGoldenColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentRight WithFont:15];
-//    [footer addSubview:appointmentlab];
-//    appointmentlab.sd_layout.leftSpaceToView(footer, 10).topSpaceToView(footer, 5).widthIs(100).heightIs(30);
-//    [footer addSubview:self.startTime];
-//    self.startTime.sd_layout.leftSpaceToView(appointmentlab, 10).topSpaceToView(footer, 5).rightSpaceToView(footer, 10).heightIs(30);
-//
-//    [footer addSubview:warehouselab];
-//    warehouselab.sd_layout.leftSpaceToView(footer, 10).topSpaceToView(appointmentlab, 5).widthIs(100).heightIs(30);
-//    [footer addSubview:self.endTime];
-//    self.endTime.sd_layout.leftSpaceToView(warehouselab, 10).topSpaceToView(appointmentlab, 5).rightSpaceToView(footer, 10).heightIs(30);
-//
-//    UITextView *textview = [UITextView new];
-//    textview.backgroundColor=[UIColor whiteColor]; //设置背景色
-//        textview.scrollEnabled = NO;    //设置当文字超过视图的边框时是否允许滑动，默认为“YES”
-//        textview.editable = YES;        //设置是否允许编辑内容，默认为“YES”
-////        textview.delegate = self;       //设置代理方法的实现类
-//        textview.font=[UIFont fontWithName:@"Arial" size:12.0]; //设置字体名字和字体大小;
-//        textview.returnKeyType = UIReturnKeyDefault;//设置return键的类型
-//        textview.keyboardType = UIKeyboardTypeDefault;//设置键盘类型一般为默认
-//        textview.textAlignment = NSTextAlignmentLeft; //文本显示的位置默认为居左
-//        textview.dataDetectorTypes = UIDataDetectorTypeAll; //显示数据类型的连接模式（如电话号码、网址、地址等）
-//        textview.textColor = [UIColor blackColor];// 设置显示文字颜色
-//        textview.text = @"UITextView详解";//设置显示的文本内容
-//
-//    [footer addSubview:textview];
-//    ViewBorderRadius(textview, 3, 1, AppBgBlueGrayColor)
-//    textview.sd_layout.leftSpaceToView(footer, 10).topSpaceToView(warehouselab, 5).rightSpaceToView(footer, 10).heightIs(45);
-//    return footer;
-//}
+
 -(UITableView*)tableView{
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -188,6 +203,8 @@
         _tableView.estimatedSectionFooterHeight = 0;
         _tableView.tableHeaderView = [UIView new];
         kRegistCell(_tableView,@"xwDeliveryInfoCell",@"xwDeliveryInfoCell")
+//        kRegistCell(_tableView,@"XWOrderDetailDefaultCell",@"XWOrderDetailDefaultCell")
+        [_tableView registerClass:[XWOrderDetailDefaultCell class] forCellReuseIdentifier:@"XWOrderDetailDefaultCell"];
     }
     return _tableView;
 }
@@ -311,10 +328,15 @@
         _confirmBth = [UIButton buttonWithTitie:@"确认" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnDeepBlueColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
             NSLog(@"确认");
             
-          
+            NSString* message ;
+            if(self.controllerType == DeliveryWayTypeStocker){
+                message = @"确认要提交总仓任务吗?确认后，任务提交至AD进行后续发货";
+            } else {
+                message = @"确认要提交自提商品吗？确认后，商品自动门店出库";
+                
+            }
             
-            
-            FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:@"确认要提交自提商品吗？确认后，商品自动门店出库" block:^(NSInteger buttonIndex, NSString *inputStr) {
+            FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:message block:^(NSInteger buttonIndex, NSString *inputStr) {
                 if(buttonIndex == 1){
                     [self httpPath_stores_confirmSend];
                 }
@@ -348,6 +370,9 @@
             } else {
                 [dict setObject:model.inputCount forKey:@"selfNum"];
             }
+            [dict setObject:model.setMealId!=nil ? model.setMealId:@"" forKey:@"setMealId"];
+            [dict setObject:model.type forKey:@"type"];
+            
             [array addObject:dict];
         }
         
@@ -357,6 +382,7 @@
     
     if(array.count > 0) {
         [parameters setValue:array forKey:@"confirmSendProductList"];
+        [parameters setObject:self.sendGoodsDate forKey:@"sendGoodsDate"];
     } else {
         [[NSToastManager manager] showtoast:@"请输入数量"];
         return;
@@ -387,11 +413,12 @@
             if ([parserObject.code isEqualToString:@"200"]) {
                 if ([operation.urlTag isEqualToString:Path_stores_getOrderProductInfo]) {
                     self.model = [XwUpdateDeliveryModel mj_objectWithKeyValues:parserObject.datas[@"orderProductData"]];
+                    [self.floorsAarr removeAllObjects];
+                    [self handleTableViewFloorsData];
+                    [self handleTabWishReceivekData];
                     [self.tableView reloadData];
                 } else if ([operation.urlTag isEqualToString:Path_stores_confirmSend]) {
                     OrderManageVC *orderManageVC = [[OrderManageVC alloc] init];
-                    orderManageVC.isIdentifion = YES;
-                    orderManageVC.customerId = [QZLUserConfig sharedInstance].customerId;
                     orderManageVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:orderManageVC animated:YES];
                 }
@@ -405,5 +432,57 @@
             
         }
     }
+}
+
+- (void)handleTableViewFloorsData
+{
+    
+    
+    for (XwUpdateDeliveryModel *model in self.model.orderProductInfoDataList) {
+        NSMutableArray *sectionArr = [[NSMutableArray alloc] init];
+        //当前商品的Cell
+        CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
+        cellModel.cellIdentify = @"xwDeliveryInfoCell";
+        cellModel.cellHeight = KXwDeliveryInfoCellH;
+        cellModel.cellHeaderHeight = 0.01;
+        cellModel.cellFooterHeight =  0.01;
+        cellModel.Data = model;
+        [sectionArr addObject:cellModel];
+        
+        [self.floorsAarr addObject:sectionArr];
+    }
+    
+    
+   
+    
+    
+    
+    
+    
+}
+//期望收货时间
+-(void)handleTabWishReceivekData{
+    XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
+    tmModel.title =@"期望收货时间";
+    tmModel.value =@"请填写";
+    tmModel.type =@"select";
+    tmModel.showArrow = YES;
+    NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
+    CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+    delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+    delivereModel.cellHeight = 30;
+    delivereModel.cellHeaderHeight = 0.01;
+    delivereModel.cellFooterHeight =  5;
+    delivereModel.Data = tmModel;
+    [section4Arr addObject:delivereModel];
+    [self.floorsAarr addObject:section4Arr];
+}
+#pragma mark -- Getter&Setter
+- (NSMutableArray *)floorsAarr
+{
+    if (!_floorsAarr) {
+        _floorsAarr = [[NSMutableArray alloc] init];
+    }
+    return _floorsAarr;
 }
 @end
