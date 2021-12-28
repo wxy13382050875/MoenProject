@@ -97,6 +97,7 @@
     }
     self.mark_Txt.text = defModel.value;
     [self.mark_Txt setEditable:defModel.isEdit];
+//    CGFloat height = [self.mark_Txt heightForString:defModel.value andWidth:SCREEN_WIDTH-20];
 }
 
 - (void)showDataWithReturnOrderCounterModel:(ReturnOrderCounterModel *)model

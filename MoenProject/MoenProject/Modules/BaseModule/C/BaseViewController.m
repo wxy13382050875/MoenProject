@@ -70,17 +70,20 @@
                                           nrlImage:backNormalImg
                                           hltImage:backHighImg
                                             action:^{
-                                                if (!weakSelf) {
-                                                    return ;
-                                                }
-                                                if (weakSelf.navigationController.presentingViewController && [weakSelf isEqual:weakSelf.navigationController.viewControllers.firstObject]) {
-                                                    [weakSelf.navigationController dismissViewControllerAnimated:YES completion:NULL];
-                                                } else {
-                                                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                                                }
+        [weakSelf backBthOperate];
                                             }];
 }
 
+-(void)backBthOperate{
+    if (!self) {
+        return ;
+    }
+    if (self.navigationController.presentingViewController && [self isEqual:self.navigationController.viewControllers.firstObject]) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
 #pragma mark - settter & getter
 -(void)setRequestType:(BOOL)requestType
 {

@@ -17,6 +17,8 @@
 
 @property (nonatomic, copy) NSString *page;
 
+@property (nonatomic, copy) NSString *inventoryNo;
+
 @end
 @interface Lastgoodslist : NSObject
 

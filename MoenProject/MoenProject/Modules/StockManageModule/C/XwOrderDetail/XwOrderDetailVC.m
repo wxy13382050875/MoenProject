@@ -50,6 +50,7 @@
 #import "TZImagePickerController.h"
 #import "NSHttpClient.h"
 #import "BaseModelFactory.h"
+#import "StartCountStockVC.h"
 @interface XwOrderDetailVC ()<UITableViewDelegate, UITableViewDataSource ,FDAlertViewDelegate,TZImagePickerControllerDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -62,6 +63,8 @@
 @property (nonatomic, strong) UIButton *btn5;
 @property (nonatomic, strong) UIButton *btn6;
 
+@property (nonatomic, strong) UIButton *btn7;//继续盘库
+@property (nonatomic, strong) UIButton *btn8;//盘库终止
 @property (nonatomic, strong) XwOrderDetailModel *dataModel;
 
 @property (nonatomic, strong) NSMutableArray *floorsAarr;
@@ -101,16 +104,37 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+//    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+//    if (marr.count > 1) {
+//        UIViewController *vc = [marr objectAtIndex:marr.count - 2];
+//        if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
+//            [marr removeObject:vc];
+//        }
+//        self.navigationController.viewControllers = marr;
+//    }
+    
+}
+-(void)backBthOperate{
     NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
-    if (marr.count > 1) {
-        UIViewController *vc = [marr objectAtIndex:marr.count - 2];
+    BOOL isStock = NO;
+    UIViewController* stVC = nil;
+    for (UIViewController* vc in marr) {
         if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
-            [marr removeObject:vc];
+//            [marr removeObject:vc];
+            isStock = YES;
+            
         }
-        self.navigationController.viewControllers = marr;
+        if([vc isKindOfClass:[PurchaseOrderManageVC class]]){
+            stVC = vc;
+        }
+    }
+    if (isStock&&stVC !=nil ) {
+        
+        [self.navigationController popToViewController:stVC animated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
-
 - (void)configBaseUI
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
@@ -123,21 +147,48 @@
 //    审核（同意/拒绝/发货） approve/refuse/deliver
     self.btn = [UIButton buttonWithTitie:@"同意" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
         NSLog(@"同意");
+        NSString* msg = @"";
         if(self.controllerType ==PurchaseOrderManageVCTypeReturn){
-            [self httpPath_refund_returnOperate:@"approve"];
+            msg = @"是否确认同意退仓单？";
         } else{
-            [self httpPath_dallot_transferOperate:@"agree"];
+            msg = @"是否确认同意调拨申请？";
         }
+        
+        FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:msg block:^(NSInteger buttonIndex, NSString *inputStr) {
+            if(buttonIndex == 1){
+                if(self.controllerType ==PurchaseOrderManageVCTypeReturn){
+                    [self httpPath_refund_returnOperate:@"approve"];
+                } else{
+                    [self httpPath_dallot_transferOperate:@"agree"];
+                }
+            }
+        } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
+        [alert show];
+        
         
     }];
     [self.view addSubview:self.btn];
     self.btn1 = [UIButton buttonWithTitie:@"拒绝" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor grayColor] WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
         NSLog(@"拒绝");
+        
+        NSString* msg = @"";
         if(self.controllerType ==PurchaseOrderManageVCTypeReturn){
-            [self httpPath_refund_returnOperate:@"refuse"];
+            msg = @"是否确认拒绝退仓单？";
         } else{
-            [self httpPath_dallot_transferOperate:@"refuse"];
+            msg = @"是否确认拒绝调拨申请？";
         }
+        
+        FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:msg block:^(NSInteger buttonIndex, NSString *inputStr) {
+            if(buttonIndex == 1){
+                if(self.controllerType ==PurchaseOrderManageVCTypeReturn){
+                    [self httpPath_refund_returnOperate:@"refuse"];
+                } else{
+                    [self httpPath_dallot_transferOperate:@"refuse"];
+                }
+            }
+        } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
+        [alert show];
+        
     }];
     [self.view addSubview:self.btn1];
     
@@ -215,9 +266,10 @@
     }];
     [self.view addSubview:self.btn5];
     
-    self.btn6 = [UIButton buttonWithTitie:@"调整" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor grayColor]  WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+   
+    self.btn6 = [UIButton buttonWithTitie:@"修正" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor grayColor]  WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
         XwProblemInventoryVC* VC = [XwProblemInventoryVC new];
-        VC.goodsType = self.dataModel.orderType;
+        VC.goodsType = self.dataModel.goodsType;
         /**日常盘点*/
         
         if( self.controllerType == PurchaseOrderManageVCTypePlateStorage){
@@ -226,13 +278,58 @@
             VC.controllerType = PurchaseOrderManageVCTypeStockAdjust;
         }
         
-        VC.model = self.dataModel;
+//        VC.model = self.dataModel;
+        VC.inventoryNo = self.dataModel.orderID;
         VC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:VC animated:YES];
         
     }];
     [self.view addSubview:self.btn6];
     
+    self.btn7 = [UIButton buttonWithTitie:@"继续盘库" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor grayColor]  WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+        
+        PurchaseOrderManageVCType type;
+        if(self.controllerType == PurchaseOrderManageVCTypePlateStorage){
+            type = PurchaseOrderManageVCTypeStockDaily;
+        } else {
+            type = PurchaseOrderManageVCTypeStockAdjust;
+            
+        }
+        StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
+        startCountStockVC.hidesBottomBarWhenPushed = YES;
+        startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockAdjust;
+        startCountStockVC.goodsType = self.dataModel.goodsType;
+        [self.navigationController pushViewController:startCountStockVC animated:YES];
+        
+        
+        
+    }];
+    [self.view addSubview:self.btn7];
+    
+    self.btn8 = [UIButton buttonWithTitie:@"终止盘库" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor  WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+       
+        NSString* message =@"";
+        if(self.controllerType == PurchaseOrderManageVCTypePlateStorage){
+            message = @"是否确认终止本次盘库？";
+        } else {
+            message = @"是否确认终止本次调库？";
+            
+        }
+        
+        FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:message block:^(NSInteger buttonIndex, NSString *inputStr) {
+            if(buttonIndex == 1){
+                if(self.controllerType == PurchaseOrderManageVCTypePlateStorage){
+                    [self httpPath_Path_inventory_inventoryCheckOperate:@"stop"];
+                } else {
+                    [self httpPath_inventory_stopCallInventory];
+                    
+                }
+                
+            }
+        } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
+        [alert show];
+    }];
+    [self.view addSubview:self.btn8];
     
     self.btn1.sd_layout.leftEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
     self.btn.sd_layout.rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
@@ -246,6 +343,10 @@
     
     self.btn6.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
     
+    self.btn7.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
+    
+    self.btn8.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
+    
     self.btn.hidden = YES;
     self.btn1.hidden = YES;
     self.btn2.hidden = YES;
@@ -253,6 +354,8 @@
     self.btn4.hidden = YES;
     self.btn5.hidden = YES;
     self.btn6.hidden = YES;
+    self.btn7.hidden = YES;
+    self.btn8.hidden = YES;
 }
 - (void)alertView:(FDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex WithInputStr:(NSString *)inputStr {
     NSLog(@"%ld", (long)buttonIndex);
@@ -493,16 +596,17 @@
             XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     //        orderDetailVC.orderID = tm.ordeID;
             if( self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder){//发货-进货申请
-                orderDetailVC.orderID = tm.sendOrderID;
+//                orderDetailVC.orderID = tm.orderCode;
                 orderDetailVC.controllerType = PurchaseOrderManageVCTypeSTOCK;
             }
             else if( self.controllerType == PurchaseOrderManageVCTypeDeliveryApply){//发货-调拨申请
-                orderDetailVC.orderID = tm.orderCode;
+                
                 orderDetailVC.controllerType = PurchaseOrderManageVCTypeAllocteOrder;
             }  else if( self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){//发货-总仓发货
-                 orderDetailVC.orderID = tm.orderCode;
+//                 orderDetailVC.orderID = tm.orderCode;
                  orderDetailVC.controllerType = PurchaseOrderManageVCTypeInventoryStocker;
               }
+             orderDetailVC.orderID = tm.orderCode;
             [self.navigationController pushViewController:orderDetailVC animated:YES];
          }
         
@@ -600,8 +704,14 @@
         orderStatus = @"全部发货";
     }else if([status isEqualToString:@"finish"]){
         orderStatus = @"已完成";
+        if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+           self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
+           self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
+           self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker||
+           self.controllerType == PurchaseOrderManageVCTypeReturn){
+            orderStatus = @"已收货";
+        }
     }else if([status isEqualToString:@"refuse"]){
-        orderStatus = @"已拒绝";
         orderStatus = @"已拒绝";
         if(self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
             orderStatus = @"门店已拒绝";
@@ -631,6 +741,10 @@
         orderStatus = @"审核不通过";
     } else if([status isEqualToString:@"finish"]){
         orderStatus = @"已完成";
+    } else if([status isEqualToString:@"problem"]){
+        orderStatus = @"问题商品修正";
+    } else if([status isEqualToString:@"stop"]){
+        orderStatus = @"已终止";
     }
     return orderStatus;
 }
@@ -670,7 +784,7 @@
                     [self handleTabStatisticsData];
                     [self handleTabWishReceivekData];
                     
-                    [self handleTabMarkData:YES];
+                    [self handleTabMarkData:NO];
                     [self.tableView reloadData];
                 }
                 else
@@ -694,7 +808,7 @@
                 
                 if ([parserObject.code isEqualToString:@"200"]) {
                     self.isShowEmptyData = NO;
-                    if([self.dataModel.sendOrderStatus isEqualToString:@"waitGoods"]&& !self.isHide){
+                    if([self.dataModel.sendOrderStatus isEqualToString:@"waitGoods"]/*&& !self.isHide*/){
                         self.btn3.hidden = NO;
                     }
                     
@@ -717,7 +831,7 @@
                     [self handleTabInvoicesData];
                     [self handleTableViewFloorsData];
                     [self handleTabStatisticsData];
-                    [self handleTabMarkData:NO];
+//                    [self handleTabMarkData:NO];
                     [self.tableView reloadData];
                 }
                 else
@@ -821,10 +935,11 @@
                     if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
                         [self handleTabMarkData:YES];
                     } else {
-                        if(![self.dataModel.checkRemarks isEqualToString:@""]){
-                            self.orderRemarks = self.dataModel.checkRemarks;
-                            [self handleTabMarkData:NO];
-                        }
+//                        if(![self.dataModel.checkRemarks isEqualToString:@""]){
+//
+//                        }
+                        self.orderRemarks = self.dataModel.checkRemarks;
+                        [self handleTabMarkData:NO];
                     }
                     
                     [self.tableView reloadData];
@@ -876,9 +991,15 @@
                        
                        if ([parserObject.code isEqualToString:@"200"]) {
                            
-                           if([self.dataModel.orderStatus isEqualToString:@"stop"]){
+                           
+                           if([self.dataModel.orderStatus isEqualToString:@"ing"]){
+                               self.btn7.hidden = NO;
+                           } else if([self.dataModel.orderStatus isEqualToString:@"wait"]){
+                               self.btn8.hidden = NO;
+                           } else if([self.dataModel.orderStatus isEqualToString:@"problem"]){
                                self.btn6.hidden = NO;
                            }
+                           
                            self.isShowEmptyData = NO;
                            self.dataModel.orderStatusText = [self getInventoryStatus:self.dataModel.orderStatus];
                            self.dataModel.progressName = @"盘库单";
@@ -893,11 +1014,29 @@
                            [[NSToastManager manager] showtoast:parserObject.message];
                        }
                        
+            } else if([operation.urlTag isEqualToString:Path_inventory_inventoryCheckOperate]){
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    [[NSToastManager manager] showtoast:@"盘库操作成功"];
+                    if(self.refreshBlock){
+                        self.refreshBlock();
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+                
+                
             } else if ([operation.urlTag isEqualToString:Path_inventory_callInventoryOrderDetail]) {//调库单详情
                 self.dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
                        
                        if ([parserObject.code isEqualToString:@"200"]) {
-                           if([self.dataModel.orderStatus isEqualToString:@"stop"]){
+                           if([self.dataModel.orderStatus isEqualToString:@"ing"]){
+                               self.btn7.hidden = NO;
+                               [self.btn7 setTitle:@"继续调库" forState:UIControlStateNormal];
+                           } else if([self.dataModel.orderStatus isEqualToString:@"wait"]){
+                               self.btn8.hidden = NO;
+                               [self.btn8 setTitle:@"终止调库" forState:UIControlStateNormal];
+                           } else if([self.dataModel.orderStatus isEqualToString:@"problem"]){
                                self.btn6.hidden = NO;
                            }
                            self.isShowEmptyData = NO;
@@ -919,6 +1058,13 @@
                 
             }else if([operation.urlTag isEqualToString:Path_delivery_confirmReceipt]) {
                 [[NSToastManager manager] showtoast:@"收货成功"];
+                if(self.refreshBlock){
+                    self.refreshBlock();
+                }
+                [self.navigationController popViewControllerAnimated:YES];;
+                
+            }else if([operation.urlTag isEqualToString:Path_inventory_stopCallInventory]) {
+                [[NSToastManager manager] showtoast:@"终止调库成功"];
                 if(self.refreshBlock){
                     self.refreshBlock();
                 }
@@ -1191,19 +1337,19 @@
 //期望收货时间
 -(void)handleTabWishReceivekData{
     
-    NSString *string = self.dataModel.wishReceiveDate;
-        NSDateFormatter *inputFormatter= [[NSDateFormatter alloc] init];
-        [inputFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
-        [inputFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        NSDate *inputDate = [inputFormatter dateFromString:string];
-    
-    NSDateFormatter *dateFormtter=[[NSDateFormatter alloc] init];
-    [dateFormtter setDateFormat:@"yyyy-MM-dd"];
-    NSString *dateString=[dateFormtter stringFromDate:inputDate];
+//    NSString *string = self.dataModel.wishReceiveDate;
+//        NSDateFormatter *inputFormatter= [[NSDateFormatter alloc] init];
+//        [inputFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+//        [inputFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//        NSDate *inputDate = [inputFormatter dateFromString:string];
+//
+//    NSDateFormatter *dateFormtter=[[NSDateFormatter alloc] init];
+//    [dateFormtter setDateFormat:@"yyyy-MM-dd"];
+//    NSString *dateString=[dateFormtter stringFromDate:inputDate];
     
     XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
     tmModel.title =@"期望收货时间";
-    tmModel.value =dateString;
+    tmModel.value =self.dataModel.wishReceiveDate;
     tmModel.showArrow = NO;
     tmModel.type = @"select";
     NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
@@ -1235,6 +1381,9 @@
 //备注
 -(void)handleTabMarkData:(BOOL)isEdit{
     
+//    if(self.orderRemarks.length > 0){
+//        CGFloat height = [UITextView hig]
+//    }
     
     XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
     tmModel.value =[self.orderRemarks isEqualToString:@""]?@"备注：无":self.orderRemarks;
@@ -1468,7 +1617,42 @@
     self.requestParams = parameters;
     self.requestURL = Path_delivery_confirmReceipt;
 }
+/**盘库操作（保存或确认）Api*/
+- (void)httpPath_Path_inventory_inventoryCheckOperate:(NSString*)type
+{
+    NSMutableArray* array = [NSMutableArray array];
+    for(Goodslist* tm in self.dataModel.goodsList){
+        NSMutableDictionary* dict =[NSMutableDictionary dictionary];
+        [dict setObject:tm.goodsID forKey:@"goodsID"];
+        [dict setObject:tm.goodsCount==nil?@"":tm.goodsCount forKey:@"goodsCount"];
+        [dict setObject:tm.reason==nil?@"":tm.reason forKey:@"reason"];
+        [array addObject:dict];
+    }
+    if (array.count > 0) {
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+        [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+        [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
+        [parameters setValue:type forKey:@"operateType"];
+        [parameters setValue:self.dataModel.orderID forKey:@"inventoryNo"];
+        [parameters setValue:self.dataModel.goodsType forKey:@"goodsType"];
+        [parameters setValue:array forKey:@"goodsList"];
+        self.requestType = NO;
+        self.requestParams = parameters;
+        self.requestURL = Path_inventory_inventoryCheckOperate;
+    } else {
+        [[NSToastManager manager] showtoast:@"请输入库存数"];
+    }
+    
+}
 
+-(void)httpPath_inventory_stopCallInventory{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    [parameters setValue: self.dataModel.orderID forKey:@"inventoryNo"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_inventory_stopCallInventory;
+}
 #pragma mark -- Getter&Setter
 - (NSMutableArray *)floorsAarr
 {

@@ -129,6 +129,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否套餐*/
 @property (nonatomic, assign) BOOL isShowDetail;
 
+/** 是否套餐*/
+@property (nonatomic, copy) NSString * waitDeliverCount;
+/** 是否套餐*/
+@property (nonatomic, copy) NSString * deliverCount;
 
 
 @property (nonatomic, strong) NSArray<ReturnOrderSingleGoodsModel *> *productList;

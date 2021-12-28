@@ -19,4 +19,10 @@
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{@"listData" : [CommonTypeModel class], @"MealMainData" : [CommonTypeModel class]};
 }
++ (NSDictionary *)mj_objectClassInArray{
+    return @{
+             @"listData" : @"CommonTypeModel",
+             @"MealMainData" : @"CommonTypeModel"
+             };
+}
 @end

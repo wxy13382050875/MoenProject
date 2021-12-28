@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E0C93672774B69C00750126 /* XwStoreListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E0C93662774B69B00750126 /* XwStoreListModel.m */; };
 		2E13BEC6275BDD6D00287371 /* xWStockOrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E13BEC5275BDD6D00287371 /* xWStockOrderModel.m */; };
 		2E13BED1275BFFF600287371 /* XwOrderDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E13BECF275BFFF500287371 /* XwOrderDetailVC.m */; };
 		2E13BED4275C055900287371 /* XwOrderDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E13BED2275C055800287371 /* XwOrderDetailModel.m */; };
@@ -553,6 +554,8 @@
 
 /* Begin PBXFileReference section */
 		03736006FA880CD841050CC3 /* Pods-MoenProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoenProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoenProject/Pods-MoenProject.release.xcconfig"; sourceTree = "<group>"; };
+		2E0C93652774B69B00750126 /* XwStoreListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XwStoreListModel.h; sourceTree = "<group>"; };
+		2E0C93662774B69B00750126 /* XwStoreListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XwStoreListModel.m; sourceTree = "<group>"; };
 		2E13BEC4275BDD6D00287371 /* xWStockOrderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xWStockOrderModel.h; sourceTree = "<group>"; };
 		2E13BEC5275BDD6D00287371 /* xWStockOrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xWStockOrderModel.m; sourceTree = "<group>"; };
 		2E13BECF275BFFF500287371 /* XwOrderDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailVC.m; sourceTree = "<group>"; };
@@ -770,7 +773,7 @@
 		368F980D26B08D5B003B8F37 /* StockManageVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StockManageVC.xib; sourceTree = "<group>"; };
 		368F982F26B0F9FA003B8F37 /* PurchaseTypeChooseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PurchaseTypeChooseVC.m; sourceTree = "<group>"; };
 		368F983726B0FA24003B8F37 /* PurchaseTypeChooseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurchaseTypeChooseVC.h; sourceTree = "<group>"; };
-		36A5082F26B5944300C536DE /* StockSearchGoodsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StockSearchGoodsVC.h; sourceTree = "<group>"; };
+		36A5082F26B5944300C536DE /* StockSearchGoodsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StockSearchGoodsVC.h; sourceTree = "<group>"; tabWidth = 5; };
 		36A5083026B5944300C536DE /* StockSearchGoodsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StockSearchGoodsVC.m; sourceTree = "<group>"; };
 		36A5083826B5967500C536DE /* PurchaseCounterVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PurchaseCounterVC.h; sourceTree = "<group>"; };
 		36A5083926B5967500C536DE /* PurchaseCounterVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PurchaseCounterVC.m; sourceTree = "<group>"; };
@@ -2082,6 +2085,8 @@
 		368F982926B0F528003B8F37 /* M */ = {
 			isa = PBXGroup;
 			children = (
+				2E0C93652774B69B00750126 /* XwStoreListModel.h */,
+				2E0C93662774B69B00750126 /* XwStoreListModel.m */,
 				2EB5B280275E423B00787E05 /* XwLastGoodsListModel.h */,
 				2EB5B27F275E423B00787E05 /* XwLastGoodsListModel.m */,
 				2EB5B27C275E042800787E05 /* XwInOrOutWaterModel.h */,
@@ -4492,6 +4497,7 @@
 				725DD14621B528FF0060C0BD /* StoreActivityHeaderTCell.m in Sources */,
 				72FFB23221AC134E00614F14 /* VerificatHelper.m in Sources */,
 				2EA2C1282765A54B00D81C47 /* xw_SelectDeliveryWayVC.m in Sources */,
+				2E0C93672774B69C00750126 /* XwStoreListModel.m in Sources */,
 				725DD12421B50DB60060C0BD /* PackageRankVC.m in Sources */,
 				721D61B221FBEDF700C4987E /* KWConditionSelectView.m in Sources */,
 				2E384CC826DF74990021EA4A /* xw_NavBar.m in Sources */,
@@ -5066,7 +5072,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5096,7 +5102,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

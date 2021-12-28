@@ -35,6 +35,7 @@
 
 @property (nonatomic, assign) BOOL isShow;
 
+@property (nonatomic, assign) BOOL isEditNumber;
 @end
 
 @implementation YFMPaymentView
@@ -45,11 +46,12 @@
     }
     return self;
 }
-- (instancetype)initDataSource:(NSMutableArray *)dataSource FloorArr:(NSMutableArray *)floorArr isShowPrice:(BOOL)isShow{
+- (instancetype)initDataSource:(NSMutableArray *)dataSource FloorArr:(NSMutableArray *)floorArr isShowPrice:(BOOL)isShow IsEditNumberType:(BOOL)isEditNumber{
     if (self = [super init]) {
         self.dataList = dataSource;
         self.floorsAarr = floorArr;
         self.isShow = isShow;
+        self.isEditNumber = isEditNumber;
     }
     return self;
 }
@@ -138,7 +140,13 @@
         if(self.isShow){
             [cell showDataWithCommonGoodsModelForSell:self.dataList[indexPath.section] AtIndex:indexPath.section WithIsEditNumberType:YES];
         } else {
-            [cell showDataWithStockTransfersForSell:self.dataList[indexPath.section] AtIndex:indexPath.section];
+            if(self.isEditNumber){//带输入框购物车
+                [cell showDataWithStockTransfersForSell:self.dataList[indexPath.section] AtIndex:indexPath.section];
+            }else {
+                
+                [cell showDataWithStockLibraryForSell:self.dataList[indexPath.section] AtIndex:indexPath.section];
+            }
+            
         }
         cell.goodsShowDetailBlock = ^(BOOL isShow, NSInteger atIndex) {
             [weakSelf handleGoodsShowOrHiddenDetailWith:isShow WithAtIndex:atIndex];

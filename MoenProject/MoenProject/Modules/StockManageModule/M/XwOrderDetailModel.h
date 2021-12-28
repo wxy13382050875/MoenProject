@@ -57,6 +57,10 @@
 @property (nonatomic, copy) NSString *ordeID;
 
 @property (nonatomic, copy) NSString *orderCode;
+
+@property (nonatomic, copy) NSString *goodsType;
+
+
 @end
 
 

@@ -19,6 +19,7 @@
 #import "HomePageItemCCell.h"
 #import "xw_SelectDeliveryWayVC.h"
 #import "XwSubscribeTakeVC.h"
+#import "XwOrderDetailVC.h"
 static CGFloat kMagin = 1.f;
 @interface OrderOperationSuccessVC ()<UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -58,7 +59,8 @@ static CGFloat kMagin = 1.f;
         if ([vc isKindOfClass:[SalesCounterVC class]] ||
             [vc isKindOfClass:[ReturnAllGoodsCounterVC class]] ||
             [vc isKindOfClass:[ReturnGoodsCounterVC class]]||
-            [vc isKindOfClass:[PurchaseCounterVC class]]) {
+            [vc isKindOfClass:[PurchaseCounterVC class]]||
+            [vc isKindOfClass:[XwOrderDetailVC class]]) {
             [marr removeObject:vc];
             
             UIViewController *vc = [marr objectAtIndex:marr.count - 2];
@@ -73,7 +75,24 @@ static CGFloat kMagin = 1.f;
         self.navigationController.viewControllers = marr;
     }
 }
-
+//-(void)backBthOperate{
+//    NSLog(@"返回");
+//
+//    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+//    if (marr.count > 1) {
+//        for (UIViewController* vc in marr) {
+//            if ([vc isKindOfClass:[StockManageChildVC class]]) {
+//    //            [marr removeObject:vc];
+//                [self.navigationController popToViewController:vc animated:YES];
+//            }
+//        }
+//
+//    } else {
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+//    }
+//
+//
+//}
 
 - (void)configBaseUI
 {

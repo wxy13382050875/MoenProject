@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setShowBackBtn:(BOOL)showBackBtn type:(NavBackBtnImageType)type;
 
+- (void)backBthOperate;
 
 
 //1、GET请求 0、POST请求

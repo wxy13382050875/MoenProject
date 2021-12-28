@@ -41,6 +41,9 @@
 
 @property (nonatomic, copy) NSString *dataEnd;
 
+@property (nonatomic, copy) NSString *orderStatus;
+
+
 @end
 
 @implementation CheckStockOrderVC
@@ -117,7 +120,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     Orderlist *model =self.dataList[section];
-    if ([model.orderStatus isEqualToString:@"ing"]||[model.orderStatus isEqualToString:@"stop"]) {
+    if ([model.orderStatus isEqualToString:@"ing"]||[model.orderStatus isEqualToString:@"problem"]||[model.orderStatus isEqualToString:@"wait"]) {
         return 85;
     }
     else {
@@ -208,13 +211,31 @@
             StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
             startCountStockVC.hidesBottomBarWhenPushed = YES;
             startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockDaily;
-            
+            startCountStockVC.goodsType = model.goodsType;
             [self.navigationController pushViewController:startCountStockVC animated:YES];
-        } else {
-            NSLog(@"调整");
+        } else if([model.orderStatus isEqualToString:@"wait"]){
+            NSLog(@"终止盘库");
             XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
             orderDetailVC.orderID = model.orderID;
             orderDetailVC.controllerType = PurchaseOrderManageVCTypePlateStorage;
+            orderDetailVC.refreshBlock = ^{
+                [self reconnectNetworkRefresh];
+            };
+            [self.navigationController pushViewController:orderDetailVC animated:YES];
+//            FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否确认终止本次盘库？" block:^(NSInteger buttonIndex, NSString *inputStr) {
+//                if(buttonIndex == 1){
+//                    [self httpPath_Path_inventory_inventoryCheckOperate:@"stop" model:model];
+//                }
+//            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
+//            [alert show];
+        } else if([model.orderStatus isEqualToString:@"problem"]){
+            NSLog(@"修正");
+            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+            orderDetailVC.orderID = model.orderID;
+            orderDetailVC.controllerType = PurchaseOrderManageVCTypePlateStorage;
+            orderDetailVC.refreshBlock = ^{
+                [self reconnectNetworkRefresh];
+            };
             [self.navigationController pushViewController:orderDetailVC animated:YES];
         }
                     
@@ -227,7 +248,9 @@
     NSInteger height = 85;
     if([model.orderStatus isEqualToString:@"ing"]){
         [againBtn setTitle:@"继续盘库" forState:UIControlStateNormal];
-    } else if([model.orderStatus isEqualToString:@"stop"]){
+    } else if([model.orderStatus isEqualToString:@"wait"]){
+        [againBtn setTitle:@"终止盘库" forState:UIControlStateNormal];
+    } else if([model.orderStatus isEqualToString:@"problem"]){
         [againBtn setTitle:@"修正" forState:UIControlStateNormal];
     } else {
         againBtn.hidden = YES;
@@ -253,6 +276,9 @@
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     orderDetailVC.orderID = model.orderID;
     orderDetailVC.controllerType = PurchaseOrderManageVCTypePlateStorage;
+    orderDetailVC.refreshBlock = ^{
+        [self reconnectNetworkRefresh];
+    };
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
 
@@ -279,6 +305,9 @@
                 for (XWSelectModel* tm in model.selectList) {
                     if([tm.module isEqualToString:@"TimeQuantum"]){
                         weakSelf.selectedTimeType = tm.selectID;
+                    }
+                    if([tm.module isEqualToString:@"State"]){
+                        weakSelf.orderStatus = tm.selectID;
                     }
                 }
         [[NSToastManager manager] showprogress];
@@ -328,6 +357,14 @@
                     [weakSelf.tableview hidenRefreshFooter];
                 }
             }
+            if ([operation.urlTag isEqualToString:Path_inventory_inventoryCheckOperate]) {
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    [[NSToastManager manager] showtoast:@"盘库终止成功"];
+                    [self httpPath_orderList];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+            }
             if ([operation.urlTag isEqualToString:Path_load]) {
                 CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
                
@@ -354,6 +391,7 @@
                     
                     }
                 }
+                [self.selectDataArr addObject:[self getFiltrState]];
             }
         }
     }
@@ -369,9 +407,10 @@
 
   
     [parameters setValue:self.orderCode forKey:@"orderKey"];
-    [parameters setValue:@"" forKey:@"dateStart"];
-    [parameters setValue:@"" forKey:@"dateEnd"];
-    [parameters setValue:@"" forKey:@"orderStatus"];
+    [parameters setValue:self.dataStart forKey:@"dateStart"];
+    [parameters setValue:self.dataEnd forKey:@"dateEnd"];
+    [parameters setValue:self.orderStatus forKey:@"orderStatus"];
+    [parameters setValue:self.selectedTimeType forKey:@"timeQuantum"];
    
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
@@ -389,7 +428,33 @@
     self.requestURL = Path_load;
 }
 
-
+/**盘库操作（保存或确认）Api*/
+- (void)httpPath_Path_inventory_inventoryCheckOperate:(NSString*)type model:(Orderlist*)model
+{
+    NSMutableArray* array = [NSMutableArray array];
+    for(Goodslist* tm in model.goodsList){
+        NSMutableDictionary* dict =[NSMutableDictionary dictionary];
+        [dict setObject:tm.goodsID forKey:@"goodsID"];
+        [dict setObject:tm.goodsCount==nil?@"":tm.goodsCount forKey:@"goodsCount"];
+        [dict setObject:tm.reason==nil?@"":tm.reason forKey:@"reason"];
+        [array addObject:dict];
+    }
+    if (array.count > 0) {
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+        [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+        [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
+        [parameters setValue:type forKey:@"operateType"];
+        [parameters setValue:model.orderID forKey:@"inventoryNo"];
+        [parameters setValue:model.goodsType forKey:@"goodsType"];
+        [parameters setValue:array forKey:@"goodsList"];
+        self.requestType = NO;
+        self.requestParams = parameters;
+        self.requestURL = Path_inventory_inventoryCheckOperate;
+    } else {
+        [[NSToastManager manager] showtoast:@"请输入库存数"];
+    }
+    
+}
 
 #pragma mark -- Getter&Setter
 
@@ -477,5 +542,23 @@
 {
     NSLog(@"d订单列表页面释放");
 }
-
+-(XwScreenModel* )getFiltrState{
+    XwScreenModel* tmModel = [XwScreenModel new];
+    tmModel.className = @"State";
+    NSArray* array;
+    NSString* title;
+    
+//    else {
+    title = @"盘库单状态";
+    array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"盘库中",@"itemId":@"ing"},
+                           @{@"isSelected":@(NO),@"title":@"待审核",@"itemId":@"wait"},
+                           @{@"isSelected":@(NO),@"title":@"已终止",@"itemId":@"stop"},
+                           @{@"isSelected":@(NO),@"title":@"已完成",@"itemId":@"finish"},
+                           @{@"isSelected":@(NO),@"title":@"问题商品修正",@"itemId":@"problem"}];
+//    }
+    tmModel.title = title;
+    tmModel.list = [KWOSSVDataModel mj_objectArrayWithKeyValuesArray:array];
+    return tmModel;
+}
 @end

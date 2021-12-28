@@ -185,7 +185,7 @@
 }
 -(UIButton*)startBtn{
     if(!_startBtn){
-        _startBtn = [UIButton buttonWithTitie:@"开始调库" WithtextColor:AppBgWhiteColor WithBackColor:COLOR(@"#338CCE") WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+        _startBtn = [UIButton buttonWithTitie:@"开始" WithtextColor:AppBgWhiteColor WithBackColor:COLOR(@"#338CCE") WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
             
             StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
             startCountStockVC.hidesBottomBarWhenPushed = YES;

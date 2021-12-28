@@ -28,7 +28,10 @@ typedef NS_ENUM(NSInteger, SearchGoodsVCType)
     /**商品库存*/
     SearchGoodsVCType_StockGoods ,
     /**样品库存*/
-    SearchGoodsVCType_StockSample
+    SearchGoodsVCType_StockSample,
+    
+    /**调库*/
+    SearchGoodsVCType_StockAdjust
 };
 
 
@@ -52,6 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (nonatomic, strong) NSMutableArray *dataArr;
 
 @property (nonatomic, copy) NSString *searchSKUCode;
+
+@property (nonatomic, copy) NSString *inventoryNo;
 
 //购物车中的数据
 @property (nonatomic, strong) NSMutableArray *selectedDataArr;

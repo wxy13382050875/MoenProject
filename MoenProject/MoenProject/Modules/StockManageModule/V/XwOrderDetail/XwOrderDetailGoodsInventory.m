@@ -17,6 +17,8 @@
 @property (strong, nonatomic)  UILabel *goodsCountBefor;
 
 @property (strong, nonatomic)  UILabel *goodsCountAfter;
+
+@property (strong, nonatomic)  UILabel *problemLabel;
 @end
 @implementation XwOrderDetailGoodsInventory
 
@@ -47,6 +49,8 @@
     [self.contentView addSubview:self.goodsName];
     [self.contentView addSubview:self.goodsCountBefor];
     [self.contentView addSubview:self.goodsCountAfter];
+    [self.contentView addSubview:self.problemLabel];
+    
 }
 -(void)xw_updateConstraints{
     self.goodsImg.sd_layout.leftSpaceToView(self.contentView, 15).topSpaceToView(self.contentView, 15).widthIs(90).heightIs(90);
@@ -56,6 +60,8 @@
     self.goodsCountBefor.sd_layout.topSpaceToView(self.goodsName, 0).leftSpaceToView(self.goodsImg, 15).rightSpaceToView(self.contentView, 15).heightIs(30);
     self.goodsCountAfter.sd_layout.topSpaceToView(self.goodsCountBefor, 0).leftSpaceToView(self.goodsImg, 15).rightSpaceToView(self.contentView, 15).heightIs(30);
     
+    self.problemLabel.sd_layout.topSpaceToView(self.goodsImg, 0).leftSpaceToView(self.contentView, 15).widthIs(100).heightIs(30);
+    
     
 }
 -(void)setModel:(Goodslist *)model{
@@ -64,6 +70,7 @@
     self.goodsName.text = model.goodsName;
     self.goodsCountBefor.text = [NSString stringWithFormat:@"原库存数量:%@",model.goodsCountBefor];
     self.goodsCountAfter.text = [NSString stringWithFormat:@"盘库后数量:%@",model.goodsCountAfter];
+    self.problemLabel.hidden = !model.isProblem;
 }
 -(UIImageView*)goodsImg{
     if (!_goodsImg) {
@@ -97,5 +104,11 @@
     }
     return _goodsCountAfter;
 }
-
+-(UILabel*)problemLabel{
+    if(!_problemLabel){
+        _problemLabel = [UILabel labelWithText:@"问题商品" WithTextColor:COLOR(@"#646464") WithNumOfLine:1 WithBackColor:[UIColor clearColor] WithTextAlignment:NSTextAlignmentLeft WithFont:14];
+        _problemLabel.font = [UIFont boldSystemFontOfSize:14];
+    }
+    return _problemLabel;
+}
 @end

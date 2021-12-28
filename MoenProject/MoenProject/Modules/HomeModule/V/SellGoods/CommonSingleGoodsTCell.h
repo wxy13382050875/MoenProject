@@ -17,6 +17,8 @@
 #import "ReturnOrderCounterModel.h"
 #import "ReturnOrderDetailModel.h"
 #import "XwOrderDetailModel.h"
+
+#import "XwInventoryModel.h"
 static NSString *KCommonSingleGoodsTCell = @"CommonSingleGoodsTCell";
 static NSString *KCommonSingleGoodsTCellForGift = @"CommonSingleGoodsTCellForGift";
 static CGFloat KCommonSingleGoodsTCellSingleH = 115;
@@ -70,6 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) Goodslist* model;
 
+@property (nonatomic, copy) Inventorylist* inventoryModel;
+
 /**查找商品/套餐*/
 - (void)showDataWithCommonGoodsModel:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex WihtControllerType:(NSInteger)controllerType;
 
@@ -117,6 +121,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 //进货调拨
 - (void)showDataWithStockTransfersForSell:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex ;
+
+//调库
+- (void)showDataWithStockLibraryForSell:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex;
 @end
 
 NS_ASSUME_NONNULL_END

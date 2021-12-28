@@ -15,7 +15,8 @@
 #import "YFMPaymentView.h"
 #import "STPopup.h"
 #import "PurchaseCounterVC.h"
-
+#import "ChangeStockAdjustVC.h"
+#import "StockManageChildVC.h"
 @interface StockSearchGoodsVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) CommonSearchView *searchView;
@@ -47,6 +48,7 @@
 
 @property (nonatomic, strong) NSMutableArray *shoppingCarfloorsAarr;
 
+@property (nonatomic, assign) BOOL IsEditNumberType;
 
 @end
 
@@ -59,7 +61,26 @@
     
     [self configBaseData];
 }
-
+-(void)backBthOperate{
+    NSLog(@"返回");
+    
+    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+    BOOL isStock = NO;
+    UIViewController* stVC;
+    for (UIViewController* vc in marr) {
+        if ([vc isKindOfClass:[StockManageChildVC class]]) {
+//            [marr removeObject:vc];
+            isStock = YES;
+            stVC = vc;
+        }
+    }
+    if (isStock) {
+        
+        [self.navigationController popToViewController:stVC animated:YES];
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -74,9 +95,13 @@
     
     [self.view addSubview:self.searchView];
     [self.view addSubview:self.tableview];
-    
+    self.IsEditNumberType = YES;
     if (self.controllerType == SearchGoodsVCTypePackage) {
         self.title = @"查找套餐";
+    } else if(self.controllerType == SearchGoodsVCType_StockAdjust){
+        self.title = @"添加商品";
+        [self.view addSubview:self.shoppingCarView];
+        self.IsEditNumberType = NO;
     }
     else
     {
@@ -89,9 +114,10 @@
 {
     
 //    [self configPagingData];
-    
-//    [self reconnectNetworkRefresh];
-    
+//    if(self.controllerType == SearchGoodsVCType_StockAdjust){
+//        
+//        [self reconnectNetworkRefresh];
+//    }
     WEAKSELF
     [self.tableview addDropDownRefreshWithActionHandler:^{
         [weakSelf handlePageNumber];
@@ -109,6 +135,13 @@
         else if (self.controllerType == SearchGoodsVCType_Transfers) {
             //调拔
 //            [weakSelf httpPath_dallot_getGoodsByTransfer:weakSelf.inputStr];
+            [weakSelf.tableview cancelRefreshAction];
+            [[NSToastManager manager] hideprogress];
+        }
+        else if (self.controllerType == SearchGoodsVCType_StockAdjust) {//wxy
+            //调库
+            [weakSelf httpPath_inventory_getCallInventoryGoods:weakSelf.inputStr];
+            
             [weakSelf.tableview cancelRefreshAction];
             [[NSToastManager manager] hideprogress];
         }
@@ -135,6 +168,11 @@
         else if (self.controllerType == SearchGoodsVCType_Transfers) {
             //调拔
 //            [weakSelf httpPath_dallot_getGoodsByTransfer:weakSelf.inputStr];
+            [weakSelf.tableview cancelRefreshAction];
+            [[NSToastManager manager] hideprogress];
+        } else if (self.controllerType == SearchGoodsVCType_StockAdjust) {//wxy
+            //调库
+            [weakSelf httpPath_inventory_getCallInventoryGoods:weakSelf.inputStr];
             [weakSelf.tableview cancelRefreshAction];
             [[NSToastManager manager] hideprogress];
         }
@@ -167,6 +205,10 @@
     else if (self.controllerType == SearchGoodsVCType_Transfers) {
         //调拔
         [self httpPath_dallot_getGoodsByTransfer:self.inputStr];
+    }
+    else if (self.controllerType == SearchGoodsVCType_StockAdjust) {//wxy
+        //调库
+            [weakSelf httpPath_inventory_getCallInventoryGoods:weakSelf.inputStr];
     }
     else
     {
@@ -298,11 +340,18 @@
         //调拔
         [self httpPath_dallot_getGoodsByTransfer:self.inputStr];
     }
+    else if (self.controllerType == SearchGoodsVCType_StockAdjust) {//wxy
+        //调库
+        [self httpPath_inventory_getCallInventoryGoods:self.inputStr];
+    }
     else
     {
         [self httpPath_selectProductWithSKUCode:keyStr];
     }
 }
+
+
+
 
 
 
@@ -319,7 +368,7 @@
     for (CommonGoodsModel *singleModel in self.shoppingCarDataList) {
         if ([singleModel.id isEqualToString:copyModel.id]) {
             if (singleModel.isSpecial) {
-//                卖货柜台多次扫描相同淋浴房时，初始化到最小销售单位，不加数量与平方
+                //                卖货柜台多次扫描相同淋浴房时，初始化到最小销售单位，不加数量与平方
                 singleModel.kGoodsArea = [copyModel.minNum floatValue];
             }
             else
@@ -360,7 +409,7 @@
             goodsCount += singleModel.kGoodsCount;
         }
         self.shoppingCarNumberLab.hidden = NO;
-//        self.shoppingCarNumberLab.text = [NSString stringWithFormat:@"%ld",(long)goodsCount];
+        //        self.shoppingCarNumberLab.text = [NSString stringWithFormat:@"%ld",(long)goodsCount];
         if (goodsCount > 99) {
             self.shoppingCarNumberLab.text = @"99+";
             self.shoppingCarNumberLab.sd_width = 30;
@@ -389,26 +438,26 @@
 {
     WEAKSELF
     if (!self.shoppingCarDataList.count) {
-//        [[NSToastManager manager] showtoast:@"购物车为空"];
+        //        [[NSToastManager manager] showtoast:@"购物车为空"];
         return;
     }
-    YFMPaymentView *pop = [[YFMPaymentView alloc]initDataSource:self.shoppingCarDataList FloorArr:self.shoppingCarfloorsAarr isShowPrice:NO];
+    YFMPaymentView *pop = [[YFMPaymentView alloc]initDataSource:self.shoppingCarDataList FloorArr:self.shoppingCarfloorsAarr isShowPrice:NO IsEditNumberType:self.IsEditNumberType];
     pop.dateChangeActionBlock = ^() {
         [weakSelf updateShoppingCarStatus];
         if ([weakSelf.delegate respondsToSelector:@selector(StockSearchGoodsVCSelectedDelegate:)]) {
-                   [weakSelf.delegate StockSearchGoodsVCSelectedDelegate:weakSelf.shoppingCarDataList];
-               }
+            [weakSelf.delegate StockSearchGoodsVCSelectedDelegate:weakSelf.shoppingCarDataList];
+        }
         
     };
     pop.dateConfirmActionBlock = ^() {
         [self shoppingCarConfirmAction];
         
-//        if (weakSelf.shoppingCarDataList.count) {
-//            if ([weakSelf.delegate respondsToSelector:@selector(StockSearchGoodsVCSelectedDelegate:)]) {
-//                [weakSelf.delegate StockSearchGoodsVCSelectedDelegate:weakSelf.shoppingCarDataList];
-//            }
-////             [weakSelf.navigationController popViewControllerAnimated:YES];
-//        }
+        //        if (weakSelf.shoppingCarDataList.count) {
+        //            if ([weakSelf.delegate respondsToSelector:@selector(StockSearchGoodsVCSelectedDelegate:)]) {
+        //                [weakSelf.delegate StockSearchGoodsVCSelectedDelegate:weakSelf.shoppingCarDataList];
+        //            }
+        ////             [weakSelf.navigationController popViewControllerAnimated:YES];
+        //        }
     };
     STPopupController *popVericodeController = [[STPopupController alloc] initWithRootViewController:pop];
     popVericodeController.style = STPopupStyleBottomSheet;
@@ -424,20 +473,29 @@
         }
         
         //[self.navigationController popViewControllerAnimated:YES];
-//        NSLog(@"self.shoppingCarDataList"%@)
+        //        NSLog(@"self.shoppingCarDataList"%@)
+        if(self.controllerType == SearchGoodsVCType_StockAdjust){
+//            Orderlist *model = self.dataList[self.currentIndex];
+//            ChangeStockAdjustVC *orderDetailVC = [[ChangeStockAdjustVC alloc] init];
+//            orderDetailVC.model = model;
+//            [self.navigationController pushViewController:orderDetailVC animated:YES];
+            
+            [self httpPath_inventory_callInventoryCheckChoice];
+        } else {
+            PurchaseCounterVC *purchaseCounterVC = [[PurchaseCounterVC alloc] init];
+            purchaseCounterVC.dataSource = [self.shoppingCarDataList copy];
+            purchaseCounterVC.controllerType = self.controllerType;
+            purchaseCounterVC.storeID = self.storeID;
+            purchaseCounterVC.storeName = self.storeName;
+            purchaseCounterVC.goodsType = self.goodsType;
+            purchaseCounterVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:purchaseCounterVC animated:YES];
+        }
         
-       
-        PurchaseCounterVC *purchaseCounterVC = [[PurchaseCounterVC alloc] init];
-        purchaseCounterVC.dataSource = [self.shoppingCarDataList copy];
-        purchaseCounterVC.controllerType = self.controllerType;
-        purchaseCounterVC.storeID = self.storeID;
-        purchaseCounterVC.storeName = self.storeName;
-        purchaseCounterVC.goodsType = self.goodsType;
-        purchaseCounterVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:purchaseCounterVC animated:YES];
+        
     }
 }
- 
+
 
 
 
@@ -446,7 +504,7 @@
 #pragma mark - 接口数据处理
 - (void)actionFetchRequest:(NSURLSessionDataTask *)operation result:(MoenBaseModel *)parserObject error:(NSError *)requestErr
 {
-//    WEAKSELF
+    //    WEAKSELF
     [self.tableview cancelRefreshAction];
     [[NSToastManager manager] hideprogress];
     if (requestErr) {
@@ -461,7 +519,8 @@
             if ([operation.urlTag isEqualToString:Path_selectProduct] ||
                 [operation.urlTag isEqualToString:Path_selectPromoCombo]||
                 [operation.urlTag isEqualToString:Path_stock_getGoods]||
-                [operation.urlTag isEqualToString:Path_dallot_getGoodsByTransfer]) {
+                [operation.urlTag isEqualToString:Path_dallot_getGoodsByTransfer]||
+                [operation.urlTag isEqualToString:Path_inventory_getCallInventoryGoods]) {
                 CommonGoodsListModel *listModel = [CommonGoodsListModel mj_objectWithKeyValues:parserObject.datas];;
                 if ([parserObject.code isEqualToString:@"200"]) {
                     if (listModel.selectProducts.count) {
@@ -490,25 +549,6 @@
                         [self.tableview hidenRefreshFooter];
                     }
                     
-                    
-                    
-//                    if (listModel.selectProducts.count) {
-//
-//                        self.isShowEmptyData = NO;
-//                        [self.dataList removeAllObjects];
-//                        [self.floorsAarr removeAllObjects];
-//                        [self.dataList addObjectsFromArray:listModel.selectProducts];
-//                        [self handleTableViewFloorsData:listModel.selectProducts];
-//                        [self.tableview reloadData];
-//                    }
-//                    else
-//                    {
-//                        [[NSToastManager manager] showtoast:@"暂无数据"];
-//                        [self.dataList removeAllObjects];
-//                        [self.floorsAarr removeAllObjects];
-//                        [self.tableview reloadData];
-//                        self.isShowEmptyData = YES;
-//                    }
                 }
                 else
                 {
@@ -520,6 +560,16 @@
                     
                     [self.tableview hidenRefreshFooter];
                     [[NSToastManager manager] showtoast:listModel.message];
+                }
+            } else if([operation.urlTag isEqualToString:Path_inventory_callInventoryCheckChoice]){//调库单确认商品
+                if ([parserObject.code isEqualToString:@"200"]) {
+//                    [[NSToastManager manager] showtoast:@"确认收货成功"];
+                    XwLastGoodsListModel *listModel = [XwLastGoodsListModel mj_objectWithKeyValues:parserObject.datas];
+                    ChangeStockAdjustVC *orderDetailVC = [[ChangeStockAdjustVC alloc] init];
+                     orderDetailVC.model = listModel;
+                    [self.navigationController pushViewController:orderDetailVC animated:YES];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
                 }
             }
         }
@@ -560,13 +610,13 @@
         CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
         if (!model.isSetMeal) {
             cellModel.cellIdentify = KCommonSingleGoodsTCell;
-//            cellModel.isShow = YES;
+            //            cellModel.isShow = YES;
             cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
         }
         else
         {
             cellModel.cellIdentify = KCommonSingleGoodsTCell;
-//            cellModel.isShow = YES;
+            //            cellModel.isShow = YES;
             cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
         }
         [sectionArr addObject:cellModel];
@@ -575,7 +625,7 @@
             CommonTVDataModel *activityCellModel = [[CommonTVDataModel alloc] init];
             activityCellModel.cellIdentify = KOrderPromotionTCell;
             activityCellModel.cellHeight = KOrderPromotionTCellH;
-//            activityCellModel.isShow = YES;
+            //            activityCellModel.isShow = YES;
             [sectionArr addObject:activityCellModel];
         }
         
@@ -663,7 +713,38 @@
     self.requestParams = parameters;
     self.requestURL = Path_selectPromoCombo;
 }
-
+//获取调库商品
+-(void)httpPath_inventory_getCallInventoryGoods:(NSString *)code{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:code forKey:@"code"];
+    [parameters setValue:self.goodsType forKey:@"goodsType"];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    [parameters setValue:@(self.pageNumber) forKey:@"pageNum"];
+    [parameters setValue:@(self.pageSize) forKey:@"pageSize"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_inventory_getCallInventoryGoods;
+}
+//调库确认商品
+-(void)httpPath_inventory_callInventoryCheckChoice{
+    NSMutableArray* array = [NSMutableArray array];
+    for (CommonGoodsModel *model in self.shoppingCarDataList) {
+        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+        [dict setObject:model.id forKey:@"goodsID"];
+        [array addObject:dict];
+    }
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
+    [parameters setValue:self.goodsType forKey:@"goodsType"];
+    [parameters setValue:self.inventoryNo forKey:@"inventoryNo"];
+    [parameters setValue:array forKey:@"goodsList"];
+    
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_inventory_callInventoryCheckChoice;
+}
 #pragma mark -- 刷新重置等设置
 - (void)configPagingData
 {

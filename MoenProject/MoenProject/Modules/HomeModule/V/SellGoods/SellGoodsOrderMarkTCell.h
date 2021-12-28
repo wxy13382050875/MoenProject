@@ -16,7 +16,7 @@
 typedef void(^OrderMarkBlock)(NSString* text);
 
 static NSString *KSellGoodsOrderMarkTCell = @"SellGoodsOrderMarkTCell";
-static CGFloat KSellGoodsOrderMarkTCellH = 80;
+static CGFloat KSellGoodsOrderMarkTCellH = 90;
 
 
 typedef NS_ENUM(NSInteger, SellGoodsOrderMarkTCellType)

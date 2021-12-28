@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,copy)Lastgoodslist* lastModel;
 @property(nonatomic,copy)Goodslist* goodsModel;
 
+@property(nonatomic,strong)Goodslist* problemModel;
 - (void)showDataWithGoodsDetailModel:(GoodsDetailModel *)model;
 
 @end

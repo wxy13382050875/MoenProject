@@ -66,6 +66,7 @@
     
     [self.view addSubview:self.tableview];
     [self.view addSubview:self.confirmBtn];
+    self.confirmBtn.enabled = self.wholeOtherReturn;
 }
 
 - (void)configBaseData
@@ -121,6 +122,7 @@
     if ([model.cellIdentify isEqualToString:KCommonSingleGoodsTCell])
     {
         ReturnOrderMealGoodsModel *goodsModel = self.goodsList[indexPath.section];
+//        goodsModel.waitDeliverCount = @"3";
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
         [cell showDataWithReturnOrderMealGoodsModelForReturnAllGoodsCounter:goodsModel AtIndex:indexPath.section];
         cell.goodsShowDetailBlock = ^(BOOL isShow, NSInteger atIndex) {
@@ -911,9 +913,11 @@
         CGFloat btnHeight = kIs_iPhoneX == true ? 55:45;
         _confirmBtn = [NSDampButton buttonWithType:UIButtonTypeCustom];
         [_confirmBtn setFrame:CGRectMake(0, SCREEN_HEIGHT - SCREEN_NavTop_Height - btnHeight, SCREEN_WIDTH, btnHeight)];
-        [_confirmBtn setBackgroundColor:AppBtnDeepBlueColor];
+//        [_confirmBtn setBackgroundColor:AppBtnDeepBlueColor];
         [_confirmBtn setTitle:NSLocalizedString(@"contirm_return", nil) forState:UIControlStateNormal];
         [_confirmBtn setTitleColor:AppTitleWhiteColor forState:UIControlStateNormal];
+        [_confirmBtn setBackgroundImage:[UIImage imageWithColor:AppBtnDeepBlueColor] forState:UIControlStateNormal];
+        [_confirmBtn setBackgroundImage:[UIImage imageWithColor:AppLineDeepGrayColor] forState:UIControlStateDisabled];
         _confirmBtn.titleLabel.font = FONTLanTingB(17);
         [_confirmBtn addTarget:self action:@selector(ConfirmBtnAction:) forControlEvents:UIControlEventTouchDown];
     }

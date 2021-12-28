@@ -7,11 +7,11 @@
 //
 
 #import "BaseViewController.h"
-#import "xWStockOrderModel.h"
+#import "XwLastGoodsListModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ChangeStockAdjustVC : BaseViewController
-@property (nonatomic, strong) Orderlist *model;
+@property (nonatomic, strong) XwLastGoodsListModel *model;
 
 @end
 

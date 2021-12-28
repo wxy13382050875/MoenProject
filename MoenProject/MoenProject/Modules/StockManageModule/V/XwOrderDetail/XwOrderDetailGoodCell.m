@@ -103,11 +103,11 @@
     
     if (model.goodsPackage.goodsList.count > 0) {
         [self.packView setHidden:NO];
-//        NSString* strPackageDes=@"";
-//        for (Goodslist* tmModel in model.goodsPackage.goodsList) {
-//            strPackageDes = [NSString stringWithFormat:@"%@+%@",strPackageDes,tmModel.goodsSKU];
-//        }
-        self.goodsPackageDes.text = model.goodsPackage.packageID;
+        NSString* strPackageDes=@"";
+        for (Goodslist* tmModel in model.goodsPackage.goodsList) {
+            strPackageDes = [NSString stringWithFormat:@"%@+%@",strPackageDes,tmModel.goodsSKU];
+        }
+        self.goodsPackageDes.text = [strPackageDes substringFromIndex:1];
     }
     else
     {

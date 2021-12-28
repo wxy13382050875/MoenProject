@@ -7,7 +7,7 @@
 //
 
 #import "StockOperationSuccessVC.h"
-
+#import "StockManageChildVC.h"
 @interface StockOperationSuccessVC ()
 @property (strong, nonatomic)  UILabel *tip_Lab;
 
@@ -24,7 +24,27 @@
     [self configBaseUI];
     [self configBaseData];
 }
-
+-(void)backBthOperate{
+    NSLog(@"返回");
+   
+    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+    BOOL isStock = NO;
+    UIViewController* stVC;
+    for (UIViewController* vc in marr) {
+        if ([vc isKindOfClass:[StockManageChildVC class]]) {
+//            [marr removeObject:vc];
+            isStock = YES;
+            stVC = vc;
+        }
+    }
+    if (isStock) {
+        
+        [self.navigationController popToViewController:stVC animated:YES];
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
 /*
 #pragma mark - Navigation
 
@@ -38,17 +58,21 @@
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
     
-    self.title = @"盘库提交";
+    
     [self.view addSubview:self.tip_Lab];
     [self.view addSubview:self.operation_Lab];
     [self.view addSubview:self.doneTime_Lab];
     self.tip_Lab.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).topSpaceToView(self.view, 80).heightIs(60);
     self.operation_Lab.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).topSpaceToView(self.tip_Lab, 10).heightIs(40);
     self.doneTime_Lab.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).topSpaceToView(self.operation_Lab, 5).heightIs(40);
-    if([self.dict[@"operateType"] isEqualToString:@"save"] ){
-        
+    if([self.dict[@"operateType"] isEqualToString:@"adjust"] ){
+        self.title = @"库存调整完成";
+        self.tip_Lab.text =@"本次调整结果已提交，待AD进行审核！";
+    } else if([self.dict[@"operateType"] isEqualToString:@"save"] ){
+        self.title = @"盘库提交";
         self.tip_Lab.text =@"本次盘库已保存！";
     } else {
+        self.title = @"盘库提交";
         self.tip_Lab.text =@"本次盘库结果已提交，待AD进行审核!";
     }
     self.operation_Lab.text = [NSString stringWithFormat:@"操作人:%@",self.dict[@"operator"]];

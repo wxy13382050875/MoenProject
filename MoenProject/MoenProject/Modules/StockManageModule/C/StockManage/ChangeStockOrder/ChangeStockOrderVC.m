@@ -43,6 +43,9 @@
 
 @property (nonatomic, copy) NSString *dataEnd;
 
+@property (nonatomic, copy) NSString *orderStatus;
+
+
 @end
 
 @implementation ChangeStockOrderVC
@@ -99,6 +102,7 @@
 
 
 #pragma mark -- UITableViewDataSource
+#pragma mark -- UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
         return self.dataList.count;
@@ -119,7 +123,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     Orderlist *model =self.dataList[section];
-    if (![model.orderStatus isEqualToString:@"stop"]) {
+    if ([model.orderStatus isEqualToString:@"ing"]||[model.orderStatus isEqualToString:@"problem"]||[model.orderStatus isEqualToString:@"wait"]) {
         return 85;
     }
     else {
@@ -132,7 +136,7 @@
         
     
     
-    if (model.goodsList.count > 1) {
+    if (model.goodsList.count != 1) {
         OrderListTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderListTCell" forIndexPath:indexPath];
         cell.model = model;
        
@@ -141,9 +145,7 @@
     else
     {
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
-        if(model.goodsList.count == 1){
-            cell.model = model.goodsList[0];
-        }
+        cell.model = model.goodsList[0];
         
         return cell;
     }
@@ -153,10 +155,12 @@
 {
     Orderlist *model = self.dataList[section];
     NSString* orderStatus;
-//    盘库单状态（盘库中/待审核等） all/ing/wait/pass/finish
+//    调库单状态（盘库中/待审核等） all/ing/wait/pass/finish
     if([model.orderStatus isEqualToString:@"all"]){
         orderStatus = @"待提交";
-    }  else if([model.orderStatus isEqualToString:@"wait"]){
+    } else if([model.orderStatus isEqualToString:@"ing"]){
+        orderStatus = @"调库中";
+    } else if([model.orderStatus isEqualToString:@"wait"]){
         orderStatus = @"待审核";
     } else if([model.orderStatus isEqualToString:@"pass"]){
         orderStatus = @"审核不通过";
@@ -186,25 +190,25 @@
     orderLab.font = FONTLanTingR(14);
     orderLab.textColor = AppTitleBlackColor;
     
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"盘库单编号: %@",model.orderID]];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"调库单编号: %@",model.orderID]];
     [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6, str.length - 6)];
     orderLab.attributedText = str;
     [headerView addSubview:orderLab];
     return headerView;
 }
-
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    self.currentIndex = section;
+    
     Orderlist *model = self.dataList[section];
     UIView *footerView = [[UIView alloc] init];
     footerView.backgroundColor = AppBgWhiteColor;
     
-    UILabel *infoLab = [UILabel labelWithText:[NSString stringWithFormat:@"盘库商品数量：%@件",model.goodsCount] WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentRight WithFont:14];
+    UILabel *infoLab = [UILabel labelWithText:[NSString stringWithFormat:@"调库商品数量：%@件",model.goodsCount] WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentRight WithFont:14];
     [footerView addSubview:infoLab];
     infoLab.sd_layout.topEqualToView(footerView).leftSpaceToView(footerView, 15).rightSpaceToView(footerView, 15).heightIs(40);
     
     UIButton *againBtn = [UIButton buttonWithTitie:@"" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+        
         if([model.orderStatus isEqualToString:@"ing"]){
         
             StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
@@ -212,11 +216,29 @@
             startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockAdjust;
             startCountStockVC.goodsType = model.goodsType;
             [self.navigationController pushViewController:startCountStockVC animated:YES];
-        } else {
-            NSLog(@"调整");
+        } else if([model.orderStatus isEqualToString:@"wait"]){
+            NSLog(@"终止调库");
+//            FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否确认终止本次调库？" block:^(NSInteger buttonIndex, NSString *inputStr) {
+//                if(buttonIndex == 1){
+//                    [self httpPath_inventory_stopCallInventory:model];
+//                }
+//            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
+//            [alert show];
             XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
             orderDetailVC.orderID = model.orderID;
-            orderDetailVC.controllerType = PurchaseOrderManageVCTypePlateStorage;
+            orderDetailVC.controllerType = PurchaseOrderManageVCTypeLibrary;
+            orderDetailVC.refreshBlock = ^{
+                [self httpPath_orderList];
+            };
+            [self.navigationController pushViewController:orderDetailVC animated:YES];
+        } else if([model.orderStatus isEqualToString:@"problem"]){
+            NSLog(@"修正");
+            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+            orderDetailVC.orderID = model.orderID;
+            orderDetailVC.controllerType = PurchaseOrderManageVCTypeLibrary;
+            orderDetailVC.refreshBlock = ^{
+                [self httpPath_orderList];
+            };
             [self.navigationController pushViewController:orderDetailVC animated:YES];
         }
                     
@@ -226,12 +248,12 @@
     [footerView addSubview:againBtn];
     againBtn.sd_layout.topSpaceToView(infoLab, 5).rightSpaceToView(footerView, 15).heightIs(30).widthIs(90);
 
-    
-    
     NSInteger height = 85;
     if([model.orderStatus isEqualToString:@"ing"]){
-        [againBtn setTitle:@"继续盘库" forState:UIControlStateNormal];
-    } else if([model.orderStatus isEqualToString:@"stop"]){
+        [againBtn setTitle:@"继续调库" forState:UIControlStateNormal];
+    } else if([model.orderStatus isEqualToString:@"wait"]){
+        [againBtn setTitle:@"终止调库" forState:UIControlStateNormal];
+    } else if([model.orderStatus isEqualToString:@"problem"]){
         [againBtn setTitle:@"修正" forState:UIControlStateNormal];
     } else {
         againBtn.hidden = YES;
@@ -244,6 +266,10 @@
     [footerView addSubview:lineView];
     lineView.sd_layout.bottomEqualToView(footerView).leftEqualToView(footerView).rightEqualToView(footerView).heightIs(5);
     
+    
+
+    
+    
     return footerView;
 }
 #pragma mark -- UITableViewDelegate
@@ -253,6 +279,9 @@
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     orderDetailVC.orderID = model.orderID;
     orderDetailVC.controllerType = PurchaseOrderManageVCTypeLibrary;
+    orderDetailVC.refreshBlock = ^{
+        [self httpPath_orderList];
+    };
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
 
@@ -279,6 +308,9 @@
                 for (XWSelectModel* tm in model.selectList) {
                     if([tm.module isEqualToString:@"TimeQuantum"]){
                         weakSelf.selectedTimeType = tm.selectID;
+                    }
+                    if([tm.module isEqualToString:@"State"]){
+                        weakSelf.orderStatus = tm.selectID;
                     }
                 }
                 [[NSToastManager manager] showprogress];
@@ -329,30 +361,43 @@
                 }
             }
             if ([operation.urlTag isEqualToString:Path_load]) {
-                CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
-               
-                [self.selectDataArr removeAllObjects];
-                for (CommonCategoryModel *itemModel in model.enums) {
-                    if ([itemModel.className isEqualToString:@"TimeQuantum"]) {
-                        XwScreenModel* tmModel = [XwScreenModel new];
-                        tmModel.title = @"下单时间";
-                        tmModel.className = itemModel.className;
-                        tmModel.showFooter =YES;
-                        NSMutableArray* array = [NSMutableArray array];
-                        
-                        for (CommonCategoryDataModel *model in itemModel.datas) {
-                            KWOSSVDataModel *itemModel = [[KWOSSVDataModel alloc] init];
-                            if ([model.ID isEqualToString:@"ALL"]) {
-                                itemModel.isSelected = YES;
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
+                   
+                    [self.selectDataArr removeAllObjects];
+                    for (CommonCategoryModel *itemModel in model.enums) {
+                        if ([itemModel.className isEqualToString:@"TimeQuantum"]) {
+                            XwScreenModel* tmModel = [XwScreenModel new];
+                            tmModel.title = @"下单时间";
+                            tmModel.className = itemModel.className;
+                            tmModel.showFooter =YES;
+                            NSMutableArray* array = [NSMutableArray array];
+                            
+                            for (CommonCategoryDataModel *model in itemModel.datas) {
+                                KWOSSVDataModel *itemModel = [[KWOSSVDataModel alloc] init];
+                                if ([model.ID isEqualToString:@"ALL"]) {
+                                    itemModel.isSelected = YES;
+                                }
+                                itemModel.title = model.des;
+                                itemModel.itemId = model.ID;
+                                [array addObject:itemModel];
                             }
-                            itemModel.title = model.des;
-                            itemModel.itemId = model.ID;
-                            [array addObject:itemModel];
+                            tmModel.list = array;
+                            [self.selectDataArr addObject:tmModel];
+                        
                         }
-                        tmModel.list = array;
-                        [self.selectDataArr addObject:tmModel];
-                    
                     }
+                    [self.selectDataArr addObject:[self getFiltrState]];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+                
+            } else if([operation.urlTag isEqualToString:Path_inventory_stopCallInventory]){
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    [[NSToastManager manager] showtoast:@"调库终止成功"];
+                    [self httpPath_orderList];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
                 }
             }
         }
@@ -365,11 +410,11 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@(self.pageNumber) forKey:@"page"];
     [parameters setValue:@(self.pageSize) forKey:@"size"];
-    [parameters setValue:@"" forKey:@"dateStart"];
-    [parameters setValue:@"" forKey:@"dateEnd"];
-    [parameters setValue:@"" forKey:@"orderStatus"];
+    [parameters setValue:self.dataStart forKey:@"dateStart"];
+    [parameters setValue:self.dataEnd forKey:@"dateEnd"];
+    [parameters setValue:self.orderStatus forKey:@"orderStatus"];
     [parameters setValue:self.orderCode forKey:@"callInventoryOrderKey"];
-   
+    [parameters setValue:self.selectedTimeType forKey:@"timeQuantum"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;
@@ -385,7 +430,14 @@
     self.requestParams = parameters;
     self.requestURL = Path_load;
 }
-
+-(void)httpPath_inventory_stopCallInventory:(Orderlist*)model{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    [parameters setValue: model.orderID forKey:@"inventoryNo"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_inventory_stopCallInventory;
+}
 
 
 #pragma mark -- Getter&Setter
@@ -479,5 +531,23 @@
 {
     NSLog(@"d订单列表页面释放");
 }
-
+-(XwScreenModel* )getFiltrState{
+    XwScreenModel* tmModel = [XwScreenModel new];
+    tmModel.className = @"State";
+    NSArray* array;
+    NSString* title;
+    
+//    else {
+    title = @"盘库单状态";
+    array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"调库中",@"itemId":@"ing"},
+                           @{@"isSelected":@(NO),@"title":@"待审核",@"itemId":@"wait"},
+                           @{@"isSelected":@(NO),@"title":@"已终止",@"itemId":@"stop"},
+                           @{@"isSelected":@(NO),@"title":@"已完成",@"itemId":@"finish"},
+                           @{@"isSelected":@(NO),@"title":@"问题商品修正",@"itemId":@"problem"}];
+//    }
+    tmModel.title = title;
+    tmModel.list = [KWOSSVDataModel mj_objectArrayWithKeyValuesArray:array];
+    return tmModel;
+}
 @end

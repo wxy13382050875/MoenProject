@@ -40,6 +40,8 @@
 
 @property (nonatomic, copy) NSString *dataEnd;
 
+@property (nonatomic, copy) NSString *orderStatus;
+
 @end
 
 @implementation MasterShippingManageVC
@@ -290,6 +292,9 @@
                     if([tm.module isEqualToString:@"TimeQuantum"]){
                         weakSelf.selectedTimeType = tm.selectID;
                     }
+                    if([tm.module isEqualToString:@"State"]){
+                        weakSelf.orderStatus = tm.selectID;
+                    }
                 }
                 [[NSToastManager manager] showprogress];
         [weakSelf httpPath_orderList];
@@ -364,6 +369,7 @@
                     
                     }
                 }
+                [self.selectDataArr addObject:[self getFiltrState]];
             }
         }
     }
@@ -378,7 +384,8 @@
     [parameters setValue:self.orderCode forKey:@"orderKey"];
     [parameters setValue:self.dataStart forKey:@"orderDateStart"];
     [parameters setValue:self.dataEnd forKey:@"orderDateEnd"];
-    [parameters setValue:@"" forKey:@"orderStatus"];
+    [parameters setValue:self.orderStatus forKey:@"orderStatus"];
+    [parameters setValue:self.selectedTimeType forKey:@"timeQuantum"];
 //    if (self.isIdentifion) {
 //        [parameters setValue:[NSNumber numberWithBool:YES] forKey:@"identifion"];
 //    }
@@ -502,5 +509,24 @@
 {
     NSLog(@"d订单列表页面释放");
 }
-
+-(XwScreenModel* )getFiltrState{
+    XwScreenModel* tmModel = [XwScreenModel new];
+    tmModel.className = @"State";
+    NSArray* array;
+    NSString* title;
+    
+//    else {
+    title = @"订单管理";
+    array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"待配货",@"itemId":@"waitAllocate"},
+                           @{@"isSelected":@(NO),@"title":@"部分配货",@"itemId":@"partAllocate"},
+                           @{@"isSelected":@(NO),@"title":@"全部配货",@"itemId":@"allAllocate"},
+                           @{@"isSelected":@(NO),@"title":@"部分发货",@"itemId":@"partDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"全部发货",@"itemId":@"allDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"已终止",@"itemId":@"stop"}];
+//    }
+    tmModel.title = title;
+    tmModel.list = [KWOSSVDataModel mj_objectArrayWithKeyValuesArray:array];
+    return tmModel;
+}
 @end

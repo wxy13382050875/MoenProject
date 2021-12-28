@@ -255,8 +255,13 @@
 
 - (void)timeView:(ZLTimeView *)timeView seletedDateBegin:(NSString *)beginTime end:(NSString *)endTime {
     // TODO: 进行上传时间段
-    self.model.dateStart = beginTime;
-    self.model.dateEnd = endTime;
+    if (![beginTime isEqualToString:@"请选择时间"]) {
+        self.model.dateStart = beginTime;
+    }
+    if (![endTime isEqualToString:@"请选择时间"]) {
+        self.model.dateEnd = endTime;
+    }
+    
 }
 
 
@@ -265,11 +270,14 @@
     for (XwScreenModel *model in self.dataArr) {
         for (KWOSSVDataModel *model1 in model.list) {
             model1.isSelected = NO;
+            if([model1.itemId isEqualToString:@"ALL"]){
+                model1.isSelected = YES;
+            }
         }
     }
-    XwScreenModel *tmodel = self.dataArr[0];
-    KWOSSVDataModel *model = tmodel.list[0];
-    model.isSelected = YES;
+//    XwScreenModel *tmodel = self.dataArr[0];
+//    KWOSSVDataModel *model = tmodel.list[0];
+//    model.isSelected = YES;
     [self.collectionView reloadData];
 }
 
@@ -351,8 +359,10 @@
 -(XwScreenModel*)model{
     if(!_model){
         _model = [XwScreenModel new];
-        _model.dateStart =[[NSDate date] timeFormat:@"yyyy-MM-dd"];
-        _model.dateEnd =[[NSDate date] timeFormat:@"yyyy-MM-dd"];
+//        _model.dateStart =[[NSDate date] timeFormat:@"yyyy-MM-dd"];
+//        _model.dateEnd =[[NSDate date] timeFormat:@"yyyy-MM-dd"];
+        _model.dateStart =@"";
+        _model.dateEnd =@"";
     }
     return _model;
 }

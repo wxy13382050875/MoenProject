@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,assign) ReturnGoodsSelectVCType controllerType;
 
+@property (nonatomic, assign) BOOL wholeOtherReturn;
 @end
 
 NS_ASSUME_NONNULL_END

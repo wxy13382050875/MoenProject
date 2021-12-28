@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *orderID;
 
+@property (nonatomic, assign) BOOL wholeOtherReturn;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -401,6 +401,18 @@
 
 - (void)ConfirmBtnAction:(UIButton *)sender
 {
+    BOOL isEmptyPrice = NO;
+    for (ReturnOrderCounterGoodsModel *model in self.dataModel.productList) {
+            
+            if ([model.actualRefundAmount isEqualToString:@"0"] ||
+                model.actualRefundAmount.length == 0) {
+                isEmptyPrice = YES;
+                return;
+            }
+        }
+    if(isEmptyPrice){
+        [[NSToastManager manager] showtoast:NSLocalizedString(@"please_input_refound_amount", nil)];
+    }
     if (self.dataModel.actualRefundAmount == 0) {
         [[NSToastManager manager] showtoast:NSLocalizedString(@"please_input_refound_amount", nil)];
         return;
@@ -430,6 +442,8 @@
         [[NSToastManager manager] showtoast:NSLocalizedString(@"return_info_check", nil)];
         return;
     }
+    
+    
     
     if ([QZLUserConfig sharedInstance].useInventory){
         Xw_SelectWarehouseVC *orderManageVC = [[Xw_SelectWarehouseVC alloc] init];

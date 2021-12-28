@@ -186,6 +186,7 @@
         model.controllerType == 6) {
         if([model.orderStatus isEqualToString: @"partDeliver"]||[model.orderStatus isEqualToString: @"allDeliver"]){
             [self.goods_Count setHidden:NO];
+            self.goods_Count.font = [UIFont boldSystemFontOfSize:14];
             self.goods_Count.text = model.goodsStatus;
         }
     } else {

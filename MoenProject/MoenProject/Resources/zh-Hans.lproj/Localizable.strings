@@ -34,11 +34,12 @@
 "c_remind" = "提醒";
 "c_update_remind" = "更新提示";
 "c_cancel" = "取消";
+"c_show_view" = "查看";
 "c_clear" = "清除";
 "c_confirm" = "确定";
 "c_update" = "更新";
 "c_edit" = "编辑";
-
+"c_return" = "继续退货";
 
 
 

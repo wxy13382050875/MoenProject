@@ -10,7 +10,12 @@
 #import "StockSearchGoodsVC.h"
 #import "FDAlertView.h"
 #import "StoreStockVC.h"
+#import "XwLastGoodsListModel.h"
+#import "CommonGoodsModel.h"
 @interface StartCountStockVC()
+@property(nonatomic,strong)NSString* inventoryNo;
+@property(nonatomic,assign)BOOL isContinueLast;
+@property(nonatomic,strong)NSMutableArray* selectedDataArr;
 @end
 
 @implementation StartCountStockVC
@@ -67,15 +72,20 @@
     UILabel *optNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, optLabelStartTop, SCREEN_WIDTH - 60 * 2, 20)];
     optNameLabel.font = FontBinR(14);
     optNameLabel.textColor = AppTitleBlackColor;
-    optNameLabel.text = @"操作人：李伟（导购）";
+    optNameLabel.text = [NSString stringWithFormat:@"操作人：%@(%@)",[QZLUserConfig sharedInstance].dealerName,[[QZLUserConfig sharedInstance].userRole isEqualToString: @"SHOP_LEADER"] ? @"店长":@"导购"];
     optNameLabel.numberOfLines = 0;
     optNameLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:optNameLabel];
     
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    //设置时间格式
+    formatter.dateFormat = @"yyyy/MM/dd";
+    NSString *dateStr = [formatter  stringFromDate:[NSDate date]];
+    
     UILabel *optTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, optLabelStartTop + 20, SCREEN_WIDTH - 60 * 2, 20)];
     optTimeLabel.font = FontBinR(14);
     optTimeLabel.textColor = AppTitleBlackColor;
-    optTimeLabel.text = @"操作时间：2020/10/3";
+    optTimeLabel.text = [NSString stringWithFormat:@"操作时间：%@",dateStr];
     optTimeLabel.numberOfLines = 0;
     optTimeLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:optTimeLabel];
@@ -108,18 +118,37 @@
     
 }
 -(void) returnAction{
-    StoreStockVC *sellGoodsScanVC = [[StoreStockVC alloc] init];
-    sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
     
-    sellGoodsScanVC.controllerType = self.controllerType;
-    sellGoodsScanVC.goodsType = self.goodsType;
-    [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
+    
+    
+    
+    if(self.controllerType == PurchaseOrderManageVCTypeStockAdjust){//开始调库
+        if(self.isContinueLast){
+            [self httpPath_inventory_callInventoryProducts];
+        } else {
+            [self skipStockSearchGoodsVC];
+        }
+        
+    } else {//开始盘库
+        StoreStockVC *sellGoodsScanVC = [[StoreStockVC alloc] init];
+        sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
+        
+        sellGoodsScanVC.controllerType = self.controllerType;
+        sellGoodsScanVC.goodsType = self.goodsType;
+        [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
+    }
+    
+    
+    
+    
 }
 -(void)printAction{
     
 }
 - (void)configBaseData
 {
+    self.inventoryNo = @"";
+    self.isContinueLast = NO;
     [[NSToastManager manager] showprogress];
     [self httpPath_orderList];
     
@@ -138,24 +167,78 @@
         if (parserObject.success) {
             if ([operation.urlTag isEqualToString:Path_inventory_haveCallInventory]||
                 [operation.urlTag isEqualToString:Path_inventory_haveInventoryCheckChoice]) {
-                BOOL isShow = [parserObject.datas[@"info"] boolValue];
-                if(isShow){
-                    
-                    FDAlertView * alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否继续上次的盘点" block:^(NSInteger buttonIndex, NSString *inputStr) {
-                        if(buttonIndex == 1){
-                            [self returnAction];
-                        }
+                if([parserObject.code integerValue]== 200){
+                    BOOL isShow = [parserObject.datas[@"info"] boolValue];
+                    if(isShow){
                         
-                    } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
-                    [alert show];
+                        FDAlertView * alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否继续上次的盘点" block:^(NSInteger buttonIndex, NSString *inputStr) {
+                            if(buttonIndex == 1){
+                                self.isContinueLast = YES;
+                                [self returnAction];
+                            } else {
+                                self.isContinueLast = NO;
+//                                [self.navigationController popViewControllerAnimated:YES];
+                            }
+                            
+                        } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                        [alert show];
+                    }
+                } else {
+                    NSLog(@"parserObject.code");
+                    [self.navigationController popToRootViewControllerAnimated:YES];
                 }
+                
 
+            } else if([operation.urlTag isEqualToString:Path_inventory_callInventoryProducts]){
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    self.inventoryNo = parserObject.datas[@"inventoryNo"];
+                    XwLastGoodsListModel *listModel = [XwLastGoodsListModel mj_objectWithKeyValues:parserObject.datas];
+                    self.inventoryNo = listModel.inventoryNo;
+                    for (Lastgoodslist* tm in listModel.LastGoodsList) {
+                        CommonGoodsModel* coModel = [CommonGoodsModel new];
+                        coModel.id = tm.goodsID;
+                        coModel.isShowDetail = NO;
+//                        coModel.isSetMeal = tm.goodsPackage!=nil?true:false;
+                        coModel.code = [tm.goodsSKU mutableCopy];
+//                        coModel.price = [tm.goodsPrice mutableCopy];
+                        coModel.name = [tm.goodsName mutableCopy];
+                        coModel.photo = [tm.goodsIMG mutableCopy];
+                        coModel.kGoodsCount = 1;
+//                        if(tm.isSetMeal){
+//                            NSMutableArray* productList =[NSMutableArray new];
+//                            for (Goodslist* packs  in tm.productList) {
+//                                CommonProdutcModel* prModel = [CommonProdutcModel new];
+//                                prModel.sku = [packs.goodsSKU mutableCopy];
+//                                prModel.price = [packs.goodsPrice mutableCopy];
+//                                prModel.count = [packs.goodsCount integerValue];
+//                                prModel.photo = [packs.goodsIMG mutableCopy];
+//                                prModel.name = [packs.goodsName mutableCopy];
+//                                [productList addObject:prModel];
+//                            }
+//                            coModel.productList = productList;
+//                        }
+                        
+                        [self.selectedDataArr addObject:coModel];
+                    }
+                    
+                    [self skipStockSearchGoodsVC];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
             }
 
         }
     }
 }
-
+-(void)skipStockSearchGoodsVC{
+    StockSearchGoodsVC *sellGoodsScanVC = [[StockSearchGoodsVC alloc] init];
+    sellGoodsScanVC.goodsType = self.goodsType;
+    sellGoodsScanVC.controllerType = SearchGoodsVCType_StockAdjust;
+    sellGoodsScanVC.inventoryNo = self.inventoryNo;
+    sellGoodsScanVC.selectedDataArr = self.selectedDataArr;
+    sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
+}
 /**订单列表Api*/
 - (void)httpPath_orderList
 {
@@ -173,5 +256,22 @@
         self.requestURL = Path_inventory_haveInventoryCheckChoice;
     }
     
+}
+-(void)httpPath_inventory_callInventoryProducts{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setValue:self.goodsType forKey:@"goodsType"];
+    
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    
+    self.requestURL = Path_inventory_callInventoryProducts;
+}
+-(NSMutableArray*)selectedDataArr{
+    if(!_selectedDataArr){
+        _selectedDataArr = [NSMutableArray array];
+    }
+    return _selectedDataArr;
 }
 @end

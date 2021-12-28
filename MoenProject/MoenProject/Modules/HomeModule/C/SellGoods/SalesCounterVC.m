@@ -1573,14 +1573,14 @@
     for (CommonGoodsModel *model in self.giftDataArr) {
         if (model.isSetMeal) {
             NSMutableDictionary *orderSetMealDic = [[NSMutableDictionary alloc] init];
-            [orderSetMealDic setObject:model.ID forKey:@"setMealId"];
+            [orderSetMealDic setObject:model.id forKey:@"setMealId"];
             [orderSetMealDic setObject:[NSString stringWithFormat:@"%ld",(long)model.kGoodsCount] forKey:@"num"];
             [orderSetMealGiftArr addObject:orderSetMealDic];
         }
         else
         {
             NSMutableDictionary *orderProductDic = [[NSMutableDictionary alloc] init];
-            [orderProductDic setObject:model.ID forKey:@"productId"];
+            [orderProductDic setObject:model.id   forKey:@"productId"];
             [orderProductDic setObject:[NSString stringWithFormat:@"%ld",(long)model.kGoodsCount] forKey:@"num"];
             if (model.isSpecial) {
                 [orderProductDic setObject:[NSString stringWithFormat:@"%.3f",model.kGoodsArea] forKey:@"square"];

@@ -409,9 +409,15 @@
             cellModel.cellIdentify = KCommonSingleGoodsTCell;
 //            cellModel.isShow = YES;
             cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
+            self.detailModel.productCount += model.kGoodsCount;
         }
         else
         {
+            NSInteger setMealCount = 0;
+            for (CommonProdutcModel* tm in model.productList) {
+                setMealCount += tm.count;
+            }
+            self.detailModel.productCount = setMealCount * model.kGoodsCount;
             cellModel.cellIdentify = KCommonSingleGoodsTCell;
 //            cellModel.isShow = YES;
             cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
@@ -424,7 +430,7 @@
         
 
         
-        self.detailModel.productCount += model.kGoodsCount;
+       
         [self.floorsAarr addObject:sectionArr];
     }
     

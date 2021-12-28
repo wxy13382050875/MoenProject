@@ -44,6 +44,8 @@
 
 @property (nonatomic, copy) NSString *dataEnd;
 
+@property (nonatomic, copy) NSString *orderStatus;
+
 @end
 
 @implementation PurchaseOrderManageVC
@@ -313,8 +315,19 @@
     againBtn.frame = CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30);
     [footerView addSubview:againBtn];
     
+    
+    UIButton *printBtn =[UIButton buttonWithTitie:@"打印" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+        
+//        [self buttonOperate:model];
+    }];
+    printBtn.layer.cornerRadius = 5;
+    printBtn.frame = CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30);
+    [footerView addSubview:printBtn];
     againBtn.sd_layout.rightSpaceToView(footerView, 15).topSpaceToView(infoLab, 5).widthIs(90).heightIs(30);
     
+    printBtn.sd_layout.rightSpaceToView(againBtn, 15).topSpaceToView(infoLab, 5).widthIs(90).heightIs(30);
+    
+    printBtn.hidden = YES;
     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
         if([model.orderStatus isEqualToString:@"wait"]){
             [againBtn setTitle:@"审核" forState:UIControlStateNormal];
@@ -336,6 +349,7 @@
   
         if([model.orderStatus isEqualToString:@"waitGoods"]){
             [againBtn setTitle:@"确认收货" forState:UIControlStateNormal];
+            
         } else {
             againBtn.hidden = YES;
         }
@@ -344,6 +358,7 @@
             [againBtn setTitle:@"审核" forState:UIControlStateNormal];
         } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
             [againBtn setTitle:@"确认发货" forState:UIControlStateNormal];
+            printBtn.hidden = NO;
         } else {
             againBtn.hidden = YES;
         }
@@ -402,7 +417,8 @@
     } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
         
         NSMutableArray* selectArr = [NSMutableArray new];
-        if([model.orderStatus isEqualToString:@"waitSub"]){
+        if([model.orderStatus isEqualToString:@"waitSub"]||
+           [model.orderStatus isEqualToString:@"wait"]){
             NSLog(@"编辑");
             
             for (Goodslist* tm in model.goodsList) {
@@ -492,6 +508,9 @@
         for (XWSelectModel* tm in model.selectList) {
             if([tm.module isEqualToString:@"TimeQuantum"]){
                 weakSelf.selectedTimeType = tm.selectID;
+            }
+            if([tm.module isEqualToString:@"State"]){
+                weakSelf.orderStatus = tm.selectID;
             }
         }
         [[NSToastManager manager] showprogress];
@@ -603,6 +622,7 @@
                     
                     } 
                 }
+                [self.selectDataArr addObject:[self getFiltrState]];
                 
             }
             if ([operation.urlTag isEqualToString:Path_delivery_confirmReceipt]){
@@ -635,7 +655,8 @@
     [parameters setValue:self.orderCode forKey:@"orderKey"];
     [parameters setValue:self.dataStart forKey:@"orderDateStart"];
     [parameters setValue:self.dataEnd forKey:@"orderDateEnd"];
-    [parameters setValue:@"" forKey:@"orderStatus"];
+    [parameters setValue:self.orderStatus forKey:@"orderStatus"];
+    [parameters setValue:self.selectedTimeType forKey:@"timeQuantum"];
     [parameters setValue:@(self.pageNumber) forKey:@"page"];
     [parameters setValue:@(self.pageSize) forKey:@"size"];
     
@@ -809,5 +830,71 @@
 {
     NSLog(@"d订单列表页面释放");
 }
+-(XwScreenModel* )getFiltrState{
+    XwScreenModel* tmModel = [XwScreenModel new];
+    tmModel.className = @"State";
+    NSArray* array;
+    NSString* title;
+    if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
+        title = @"进货单状态";
 
+
+        array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"待提交",@"itemId":@"waitSub"},
+                           @{@"isSelected":@(NO),@"title":@"待审核",@"itemId":@"wait"},
+                           @{@"isSelected":@(NO),@"title":@"待配货",@"itemId":@"waitAllocate"},
+                           @{@"isSelected":@(NO),@"title":@"部分配货",@"itemId":@"partAllocate"},
+                           @{@"isSelected":@(NO),@"title":@"全部配货",@"itemId":@"allAllocate"},
+                           @{@"isSelected":@(NO),@"title":@"部分发货",@"itemId":@"partDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"全部发货",@"itemId":@"allDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"已完成",@"itemId":@"finish"},
+                           @{@"isSelected":@(NO),@"title":@"已拒绝",@"itemId":@"refuse"}];
+        
+        
+        
+ 
+        
+    } else if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
+         self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+        title = @"调拨单状态";
+        array = @[@{@"isSelected":@(YES),@"title":@"全部",@"ID":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"待门店审核",@"itemId":@"wait"},
+                           @{@"isSelected":@(NO),@"title":@"门店已拒绝",@"itemId":@"refuse"},
+                           @{@"isSelected":@(NO),@"title":@"待AD审核",@"itemId":@"waitAD"},
+                           @{@"isSelected":@(NO),@"title":@"AD已拒绝",@"itemId":@"refuseAD"},
+                           @{@"isSelected":@(NO),@"title":@"待发货",@"itemId":@"waitDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"部分发货",@"itemId":@"partDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"全部发货",@"itemId":@"allDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"已完成",@"itemId":@"finish"}];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+              self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
+              self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
+              self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+        title = @"发货单状态";
+        array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"待收货",@"itemId":@"waitGoods"},
+                           @{@"isSelected":@(NO),@"title":@"已收货",@"itemId":@"finish"}];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+        title = @"退仓单状态";
+        array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"待审核",@"itemId":@"waitSub"},
+                           @{@"isSelected":@(NO),@"title":@"待发货",@"itemId":@"waitDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"已拒绝",@"itemId":@"refuse"},
+                           @{@"isSelected":@(NO),@"title":@"待收货",@"itemId":@"waitGoods"},
+                           @{@"isSelected":@(NO),@"title":@"已收货",@"itemId":@"finish"}];
+    }
+//    else {
+//        self.title = @"订单管理";
+//        NSArray* array = @[@{@"isSelected":@(NO),@"des":@"全部",@"ID":@"ALL"},
+//                           @{@"isSelected":@(NO),@"des":@"待配货",@"ID":@"waitAllocate"},
+//                           @{@"isSelected":@(NO),@"des":@"部分配货",@"ID":@"partAllocate"},
+//                           @{@"isSelected":@(NO),@"des":@"全部配货",@"ID":@"allAllocate"},
+//                           @{@"isSelected":@(NO),@"des":@"部分发货",@"ID":@"partDeliver"},
+//                           @{@"isSelected":@(NO),@"des":@"全部发货",@"ID":@"allDeliver"},
+//                           @{@"isSelected":@(NO),@"des":@"已终止",@"ID":@"stop"}];
+//    }
+    tmModel.title = title;
+    tmModel.list = [KWOSSVDataModel mj_objectArrayWithKeyValuesArray:array];
+    return tmModel;
+}
 @end

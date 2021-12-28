@@ -240,21 +240,58 @@
 {
     NSInteger atIndex = sender.tag - 10000;
     OrderManageModel *model = self.dataList[atIndex];
-    ReturnGoodsSelectVC *returnGoodsSelectVC = [[ReturnGoodsSelectVC alloc] init];
-    returnGoodsSelectVC.controllerType = ReturnGoodsSelectVCTypePart;
-    returnGoodsSelectVC.orderID = model.ID;
-    [self.navigationController pushViewController:returnGoodsSelectVC animated:YES];
+//    ReturnGoodsSelectVC *returnGoodsSelectVC = [[ReturnGoodsSelectVC alloc] init];
+//    returnGoodsSelectVC.controllerType = ReturnGoodsSelectVCTypePart;
+//    returnGoodsSelectVC.orderID = model.ID;
+//    [self.navigationController pushViewController:returnGoodsSelectVC animated:YES];
+//    model.wholeOtherReturn = NO;
+    if(!model.wholeOtherReturn){
+        FDAlertView * alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"本订单存在总仓预约商品，此类商品请终止后再进行退货" block:^(NSInteger buttonIndex, NSString *inputStr) {
+                                    if(buttonIndex == 1){
+                                        ReturnGoodsSelectVC *returnGoodsSelectVC = [[ReturnGoodsSelectVC alloc] init];
+                                        returnGoodsSelectVC.controllerType = ReturnGoodsSelectVCTypePart;
+                                        returnGoodsSelectVC.orderID = model.ID;
+                                        [self.navigationController pushViewController:returnGoodsSelectVC animated:YES];
+                                    }
+                                    
+                                } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_return", nil), nil];
+                                [alert show];
+        
+    } else {
+        ReturnGoodsSelectVC *returnGoodsSelectVC = [[ReturnGoodsSelectVC alloc] init];
+        returnGoodsSelectVC.controllerType = ReturnGoodsSelectVCTypePart;
+        returnGoodsSelectVC.orderID = model.ID;
+        [self.navigationController pushViewController:returnGoodsSelectVC animated:YES];
+    }
 }
 
 /**全部退货*/
 - (void)ReturnGoodsAction:(UIButton *)sender
 {
+    
     NSInteger atIndex = sender.tag - 9000;
     OrderManageModel *model = self.dataList[atIndex];
+//    model.wholeOtherReturn = NO;
+    if(!model.wholeOtherReturn){
+        FDAlertView * alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"本订单存在总仓预约商品，请终止后再进行退货" block:^(NSInteger buttonIndex, NSString *inputStr) {
+                                    if(buttonIndex == 1){
+                                        ReturnAllGoodsCounterVC *returnAllGoodsCounterVC = [[ReturnAllGoodsCounterVC alloc] init];
+                                        returnAllGoodsCounterVC.orderID = model.ID;
+                                        returnAllGoodsCounterVC.wholeOtherReturn = model.wholeOtherReturn;
+                                        [self.navigationController pushViewController:returnAllGoodsCounterVC animated:YES];
+                                    }
+                                    
+                                } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_show_view", nil), nil];
+                                [alert show];
+        
+    } else {
+        ReturnAllGoodsCounterVC *returnAllGoodsCounterVC = [[ReturnAllGoodsCounterVC alloc] init];
+        returnAllGoodsCounterVC.orderID = model.ID;
+        returnAllGoodsCounterVC.wholeOtherReturn = model.wholeOtherReturn;
+        [self.navigationController pushViewController:returnAllGoodsCounterVC animated:YES];
+    }
     
-    ReturnAllGoodsCounterVC *returnAllGoodsCounterVC = [[ReturnAllGoodsCounterVC alloc] init];
-    returnAllGoodsCounterVC.orderID = model.ID;
-    [self.navigationController pushViewController:returnAllGoodsCounterVC animated:YES];
+    
 }
 
 

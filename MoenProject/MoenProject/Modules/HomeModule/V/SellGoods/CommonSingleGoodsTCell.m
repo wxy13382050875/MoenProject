@@ -126,6 +126,16 @@
     }
     
 }
+-(void)setInventoryModel:(Inventorylist *)inventoryModel{
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:inventoryModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
+    self.goodsCode.text = inventoryModel.goodsSKU;
+    self.goodsName.text = inventoryModel.goodsName;
+    [self.goodsPrice setHidden:YES];
+    self.goodsCount.text = inventoryModel.inventoryCount;
+    [self.goodsCount setHidden:NO];
+    self.goodsCount.textColor = [UIColor redColor];
+
+}
 - (void)handleCellLayoutWithModel:(CommonGoodsModel *)model
 {
     if (model.isSetMeal) {
@@ -155,8 +165,8 @@
 
     
     
-    self.goodsCode.text = self.dataModel .code;
-    self.goodsName.text = self.dataModel .name;
+    self.goodsCode.text = self.dataModel.code;
+    self.goodsName.text = self.dataModel.name;
 //    self.goodsPrice.text = [NSString stringWithFormat:@"X%ld",self.dataModel.kGoodsCount];;
     self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel.price];
 //    self.goodsPackageDes.text = self.dataModel.comboDescribe;
@@ -198,14 +208,15 @@
         [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_show_detail_icon") forState:UIControlStateNormal];
     }
 }
+//无商品价格
 - (void)showDataWithStockTransfersForSell:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex {
     self.dataModel = model;
     self.isShowDetail = model.isShowDetail;
     self.atIndex = atIndex;
     //设置是否是套餐商品的特殊显示元素
     [self handleCellLayoutWithModel:self.dataModel];
-    self.goodsCode.text = self.dataModel .gcode;
-    self.goodsName.text = self.dataModel .name;
+    self.goodsCode.text = self.dataModel.code;
+    self.goodsName.text = self.dataModel.name;
     self.goodsPrice.hidden = YES;
 //    if(self.dataModel.price == nil){
 //        self.goodsPrice.hidden = YES;
@@ -224,6 +235,33 @@
     }
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
 }
+//调库单
+- (void)showDataWithStockLibraryForSell:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex {
+    self.dataModel = model;
+    self.isShowDetail = model.isShowDetail;
+    self.atIndex = atIndex;
+    //设置是否是套餐商品的特殊显示元素
+    [self handleCellLayoutWithModel:self.dataModel];
+    self.goodsCode.text = self.dataModel.code;
+    self.goodsName.text = self.dataModel.name;
+    self.goodsPrice.hidden = YES;
+//    if(self.dataModel.price == nil){
+//        self.goodsPrice.hidden = YES;
+//    }
+//    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel.price];
+    self.goodsPackageDes.text = self.dataModel.comboDescribe;
+    [self.editCountView setHidden:YES];
+    if (self.dataModel.isSpecial) {
+        self.count_Txt.keyboardType = UIKeyboardTypeDecimalPad;
+        self.count_Txt.text = [NSString stringWithFormat:@"%.3f",self.dataModel.kGoodsArea];
+    }
+    else
+    {
+        self.count_Txt.keyboardType = UIKeyboardTypeNumberPad;
+        self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.dataModel.kGoodsCount];
+    }
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
+}
 - (void)showDataWithCommonGoodsModelForSell:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex WithIsEditNumberType:(BOOL)isEditNumber
 {
     self.dataModel = model;
@@ -231,8 +269,8 @@
     self.atIndex = atIndex;
     //设置是否是套餐商品的特殊显示元素
     [self handleCellLayoutWithModel:self.dataModel];
-    self.goodsCode.text = self.dataModel .gcode;
-    self.goodsName.text = self.dataModel .name;
+    self.goodsCode.text = self.dataModel.code;
+    self.goodsName.text = self.dataModel.name;
     if(self.dataModel.price == nil){
         self.goodsPrice.hidden = YES;
     }
@@ -261,8 +299,8 @@
     
     //设置是否是套餐商品的特殊显示元素
     [self handleCellLayoutWithModel:self.dataModel];
-    self.goodsCode.text = self.dataModel .gcode;
-    self.goodsName.text = self.dataModel .name;
+    self.goodsCode.text = self.dataModel.gcode;
+    self.goodsName.text = self.dataModel.name;
     if (model.isSpecial) {
         [self.goodsSquare setHidden:NO];
         self.goodsSquare.text = [NSString stringWithFormat:@"%.3f平方",model.kGoodsArea];
@@ -302,8 +340,8 @@
     
     //设置是否是套餐商品的特殊显示元素
     [self handleCellLayoutWithModel:self.dataModel];
-    self.goodsCode.text = self.dataModel .gcode;
-    self.goodsName.text = self.dataModel .name;
+    self.goodsCode.text = self.dataModel.gcode;
+    self.goodsName.text = self.dataModel.name;
     if (model.isSpecial) {
         [self.goodsSquare setHidden:NO];
         self.goodsSquare.text = [NSString stringWithFormat:@"%.3f平方",model.kGoodsArea];
@@ -504,6 +542,7 @@
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:goodsModel.photo] placeholderImage:ImageNamed(@"defaultImage")];
     
     
+    
     if (goodsModel.isSetMeal) {
         self.goodsPackageDes.text = goodsModel.comboDescribe;
         [self.goodsPackageDes setHidden:NO];
@@ -542,6 +581,18 @@
         [self.goodsPackageDes setHidden:YES];
         [self.goodsPackageDetailBtn setHidden:YES];
     }
+    
+    
+    if([goodsModel.waitDeliverCount integerValue] != 0 && goodsModel.waitDeliverCount != nil){
+        [self.goodsSquare setHidden:NO];
+        self.goodsSquare.textColor = [UIColor redColor];
+        self.goodsSquare.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
+    }
+    if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+        [self.goodsSquare setHidden:NO];
+        self.goodsSquare.textColor = [UIColor redColor];
+        self.goodsSquare.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
+    }
 }
 
 
@@ -555,6 +606,7 @@
     [self.goodsPrice setHidden:YES];
 //    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",goodsModel.refundAmount];
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:goodsModel.photo] placeholderImage:ImageNamed(@"defaultImage")];
+    
     
     
     if (goodsModel.isSetMeal) {
@@ -584,6 +636,20 @@
         {
             [self.goodsSquare setHidden:YES];
         }
+    }
+    
+    
+//    self.goodsSquare.text = @"";
+    
+    if([goodsModel.waitDeliverCount integerValue] != 0 && goodsModel.waitDeliverCount != nil){
+        [self.goodsSquare setHidden:NO];
+        self.goodsSquare.textColor = [UIColor redColor];
+        self.goodsSquare.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
+    }
+    if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+        [self.goodsSquare setHidden:NO];
+        self.goodsSquare.textColor = [UIColor redColor];
+        self.goodsSquare.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
     }
 }
 

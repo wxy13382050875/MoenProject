@@ -653,8 +653,18 @@ static NSString * const Path_inventory_storeCheck = @"/v1/app/second/storeCheck"
 /**是否有调整单历史 接口*/
 static NSString * const Path_inventory_haveCallInventory = @"/v1/app/second/haveCallInventory";
 
-/**调库-选择调库 接口*/
+/**查询商品 接口*/
+static NSString * const Path_inventory_getCallInventoryGoods = @"/v1/app/second/getCallInventoryGoods";
+
+/**确认商品 接口*/
 static NSString * const Path_inventory_callInventoryCheckChoice = @"/v1/app/second/callInventoryCheckChoice";
+
+/**终止调库 接口*/
+static NSString * const Path_inventory_stopCallInventory = @"/v1/app/second/stopCallInventory";
+
+/**调库-（购物车界面） 接口*/
+static NSString * const Path_inventory_callInventoryProducts = @"/v1/app/second/callInventoryProducts";
+
 
 /**调库单列表 接口*/
 static NSString * const Path_inventory_callInventoryOrderList = @"/v1/app/second/callInventoryOrderList";
@@ -668,7 +678,8 @@ static NSString * const Path_inventory_callInventoryOrderOperate = @"/v1/app/sec
 /**门店库存调整（商品和样品）（直营和分销）接口*/
 static NSString * const Path_inventory_storeInventoryOperate = @"/v1/app/second/storeInventoryOperate";
 
-
+//问题商品调库
+static NSString * const Path_getProblemList = @"/v1/app/second/getProblemList";
 //////////////////////////门店下单，退货/////////////////////////////////////
 
 //库存参考信息
@@ -694,5 +705,11 @@ static NSString * const Path_stores_selfSave = @"/v1/app/second/selfSave";
 
 //上传图片
 static NSString * const Path_publishImage = @"/v1/app/second/publishImage";
+
+
+//问题商品盘库
+static NSString * const Path_getProblemProducts = @"/v1/app/second/getProblemProducts";
+
+
 
 #endif /* HttpURLConfig_h */

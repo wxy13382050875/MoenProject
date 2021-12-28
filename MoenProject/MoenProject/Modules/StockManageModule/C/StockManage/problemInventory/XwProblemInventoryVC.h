@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface XwProblemInventoryVC : BaseViewController
 @property (nonatomic, assign) PurchaseOrderManageVCType controllerType;
 @property (nonatomic, strong) NSString* goodsType;
+@property (nonatomic, strong) NSString* inventoryNo;
+
 @property (nonatomic, strong) XwOrderDetailModel* model;
 @end
 

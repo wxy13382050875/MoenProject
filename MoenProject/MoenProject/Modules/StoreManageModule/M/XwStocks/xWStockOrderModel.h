@@ -62,6 +62,10 @@
 
 
 @property (nonatomic, assign)NSInteger controllerType;
+
+
+@property (nonatomic, assign) BOOL isProblem;
+
 @end
 
 @interface Goodspackage : NSObject

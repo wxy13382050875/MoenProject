@@ -8,12 +8,13 @@
 
 #import "XwProblemInventoryVC.h"
 #import "ChangeStockTCell.h"
-
+#import "StockOperationSuccessVC.h"
+#import "StockManageChildVC.h"
 @interface XwProblemInventoryVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)UITableView* tableview;
 @property(nonatomic,strong)NSString* operateType;
 @property(nonatomic,strong)UIButton* AdjustBtn;
-
+@property(nonatomic,strong)NSArray* dataList;
 @end
 
 @implementation XwProblemInventoryVC
@@ -24,7 +25,29 @@
     [self configBaseUI];
     [self configBaseData];
 }
-
+-(void)backBthOperate{
+    NSLog(@"返回");
+    
+   
+    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+    BOOL isStock = NO;
+    UIViewController* stVC;
+    for (UIViewController* vc in marr) {
+        if ([vc isKindOfClass:[StockManageChildVC class]]) {
+//            [marr removeObject:vc];
+            isStock = YES;
+            stVC = vc;
+        }
+    }
+    if (isStock) {
+        
+        [self.navigationController popToViewController:stVC animated:YES];
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+    
+}
 - (void)configBaseUI
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
@@ -34,11 +57,11 @@
     
     
     if (self.controllerType == PurchaseOrderManageVCTypeStockAdjust) {
-        self.title = @"调库单调整";
+        self.title = @"调库问题商品修正";
     }
     else if (self.controllerType == PurchaseOrderManageVCTypeStockDaily)
     {
-        self.title = @"盘库单调整";
+        self.title = @"盘库问题商品修正";
     }
     [self.view addSubview:self.tableview];
     [self.view addSubview:self.AdjustBtn];
@@ -49,7 +72,7 @@
 
 - (void)configBaseData
 {
-
+    [self httpPath_getProblemProducts];
 }
 
 
@@ -57,7 +80,7 @@
 #pragma mark -- UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.model.goodsList.count;
+    return self.dataList.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -81,7 +104,7 @@
 {
     ChangeStockTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChangeStockTCell" forIndexPath:indexPath];
 
-    cell.lastModel =self.model.goodsList[indexPath.section];
+    cell.problemModel =self.dataList[indexPath.section];
     return cell;
     
 }
@@ -109,37 +132,77 @@
 #pragma mark - 接口数据处理
 - (void)actionFetchRequest:(NSURLSessionDataTask *)operation result:(MoenBaseModel *)parserObject error:(NSError *)requestErr
 {
-    
+    WEAKSELF
     if (requestErr) {
        
     }
     else
     {
         if (parserObject.success) {
-            if (
-                [operation.urlTag isEqualToString:Path_inventory_inventoryCheckOperate]
-                ) {
+            if ([operation.urlTag isEqualToString:Path_getProblemProducts]||
+                [operation.urlTag isEqualToString:Path_getProblemList]) {
                     if ([parserObject.code isEqualToString:@"200"]) {
                         
-                        [self.navigationController popViewControllerAnimated:YES];
+                        weakSelf.dataList = [Goodslist mj_objectArrayWithKeyValuesArray:parserObject.datas[@"goodsList"]];
+                        [weakSelf.tableview reloadData];
+
                     }
                     else
                     {
                         [[NSToastManager manager] showtoast:parserObject.message];
                     }
                 }
-            
+            if ([operation.urlTag isEqualToString:Path_inventory_callInventoryOrderOperate]||
+                [operation.urlTag isEqualToString:Path_inventory_inventoryCheckOperate]
+                ) {
+                    if ([parserObject.code isEqualToString:@"200"]) {
+                        
+                        if (self.controllerType == PurchaseOrderManageVCTypeStockAdjust) {
+                            [[NSToastManager manager] showtoast:@"调库问题商品修正成功"];
+                        }
+                        else if (self.controllerType == PurchaseOrderManageVCTypeStockDaily)
+                        {
+                            [[NSToastManager manager] showtoast:@"盘库问题商品修正成功"];
+                        }
+//                        [self.navigationController popViewControllerAnimated:YES];
+                        StockOperationSuccessVC *orderOperationSuccessVC = [[StockOperationSuccessVC alloc] init];
+                        NSMutableDictionary* dict = [parserObject.datas[@ "datas"] mutableCopy];
+                        [dict setValue:self.operateType forKey:@"operateType"];
+                        
+                        orderOperationSuccessVC.dict = [dict copy];
+                        orderOperationSuccessVC.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:orderOperationSuccessVC animated:YES];
+                    }
+                    else
+                    {
+                        [[NSToastManager manager] showtoast:parserObject.message];
+                    }
+                }
         }
     }
 }
 
-
+/**问题商品列表 Api*/
+- (void)httpPath_getProblemProducts
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    [parameters setValue:self.inventoryNo forKey:@"inventoryNo"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    if(self.controllerType ==PurchaseOrderManageVCTypeStockDaily){
+        self.requestURL = Path_getProblemProducts;
+    } else {
+        self.requestURL = Path_getProblemList;
+    }
+    
+}
 /**盘库操作（保存或确认）Api*/
 - (void)httpPath_Path_inventory_inventoryCheckOperate:(NSString*)type
 {
     self.operateType = type;
     NSMutableArray* array = [NSMutableArray array];
-    for(Lastgoodslist* model in self.model.goodsList){
+    for(Goodslist* model in self.dataList){
         NSMutableDictionary* dict =[NSMutableDictionary dictionary];
         if(![model.goodsCountAfter isEqualToString:@""]){
             [dict setObject:model.goodsID forKey:@"goodsID"];
@@ -153,7 +216,7 @@
         [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
         [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
         [parameters setValue:self.operateType forKey:@"operateType"];
-        [parameters setValue:@"" forKey:@"inventoryNo"];
+        [parameters setValue:self.inventoryNo forKey:@"inventoryNo"];
         [parameters setValue:self.goodsType forKey:@"goodsType"];
         [parameters setValue:array forKey:@"goodsList"];
         self.requestType = NO;
@@ -168,11 +231,11 @@
 - (void)httpPath_inventory_callInventoryOrderOperate
 {
     NSMutableArray* array = [NSMutableArray array];
-    for(Goodslist* model in self.model.goodsList){
+    for(Goodslist* model in self.dataList){
         NSMutableDictionary* dict =[NSMutableDictionary dictionary];
-        if(![model.goodsCount isEqualToString:@""]&&model.goodsCount !=nil){
+        if(![model.goodsCountAfter isEqualToString:@""]&&model.goodsCountAfter !=nil){
             [dict setObject:model.goodsID forKey:@"goodsID"];
-            [dict setObject:model.goodsCount forKey:@"goodsCount"];
+            [dict setObject:model.goodsCountAfter forKey:@"goodsCount"];
             [dict setObject:@"" forKey:@"reason"];
             [array addObject:dict];
         }
@@ -180,7 +243,7 @@
     if (array.count > 0) {
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
-//        [parameters setValue:self.inventoryNo forKey:@"callInventoryOrderID"];
+        [parameters setValue:self.inventoryNo forKey:@"callInventoryOrderID"];
         
         [parameters setValue:array forKey:@"goodsList"];
         self.requestType = NO;
@@ -221,9 +284,32 @@
 
 -(UIButton*)AdjustBtn{
     if(!_AdjustBtn){
-        _AdjustBtn = [UIButton buttonWithTitie:@"调整" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnGoldenColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
+        _AdjustBtn = [UIButton buttonWithTitie:@"修正" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnGoldenColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
             NSLog(@"保存");
-            [self httpPath_Path_inventory_inventoryCheckOperate:@"save"];
+            NSString * message= @"";
+            if (self.controllerType == PurchaseOrderManageVCTypeStockAdjust) {
+//                self.title = @"调库问题商品修正";
+                message= @"是否确认提交调库信息？";
+            }
+            else if (self.controllerType == PurchaseOrderManageVCTypeStockDaily)
+            {
+                message= @"是否确认提交修正商品信息？";
+            }
+            FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:message block:^(NSInteger buttonIndex, NSString *inputStr) {
+                if(buttonIndex == 1){
+                    if (self.controllerType == PurchaseOrderManageVCTypeStockAdjust) {
+        //                self.title = @"调库问题商品修正";
+                        [self httpPath_inventory_callInventoryOrderOperate];
+                    }
+                    else if (self.controllerType == PurchaseOrderManageVCTypeStockDaily)
+                    {
+                        [self httpPath_Path_inventory_inventoryCheckOperate:@"problem"];
+                    }
+                }
+            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+            [alert show];
+           
+            
         }];
     }
     return  _AdjustBtn;

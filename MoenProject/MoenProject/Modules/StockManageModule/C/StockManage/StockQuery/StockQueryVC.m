@@ -17,6 +17,7 @@
 #import "SegmentTypeModel.h"
 #import "KWTypeConditionSelectView.h"
 #import "XwInventoryModel.h"
+#import "XwStoreListModel.h"
 @interface StockQueryVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource, SegmentHeaderViewDelegate>
 
 
@@ -68,8 +69,8 @@
     self.mealTypeID = -1;
     
     [self configPagingData];
-    [[NSToastManager manager] showprogress];
-    [self httpPath_getProductList];
+//    [[NSToastManager manager] showprogress];
+//    [self httpPath_getProductList];
 //    [self httpPath_getProductCategory];
     WEAKSELF
     [self.tableview addDropDownRefreshWithActionHandler:^{
@@ -105,7 +106,8 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    Storelist* model = self.dataList[section];
+    return model.inventoryList.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -123,19 +125,21 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
-    [cell showDataWithGoodsDetailModel:self.dataList[indexPath.section] WithCellType:CommonSingleGoodsTCellTypeGoodsList];
-    
+//    [cell showDataWithGoodsDetailModel:self.dataList[indexPath.section][indexPath.row] WithCellType:CommonSingleGoodsTCellTypeGoodsList];
+    Storelist* model = self.dataList[indexPath.section];
+    cell.inventoryModel = model.inventoryList[indexPath.row];
     return cell;
     
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    Storelist* model = self.dataList[section];
     UIView *headerView = [[UIView alloc] init];
     
     UILabel *timeLab = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, SCREEN_WIDTH, 30)];
     timeLab.font = FontBinB(14);
     timeLab.textColor = AppTitleBlackColor;
-    timeLab.text = @"本店库存";
+    timeLab.text = model.storeName;
     [headerView addSubview:timeLab];
     
     return headerView;
@@ -148,10 +152,10 @@
 #pragma mark -- UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GoodsDetailModel *model = self.dataList[indexPath.section];
-    GoodsDetailVC *goodsDetailVC = [[GoodsDetailVC alloc] init];
-    goodsDetailVC.productID = model.ID;
-    [self.navigationController pushViewController:goodsDetailVC animated:YES];
+//    Inventorylist *model = self.dataList[indexPath.section][indexPath.row];
+//    GoodsDetailVC *goodsDetailVC = [[GoodsDetailVC alloc] init];
+//    goodsDetailVC.productID = model.goodsID;
+//    [self.navigationController pushViewController:goodsDetailVC animated:YES];
 }
 
 #pragma mark -- SearchViewCompleteDelete
@@ -181,30 +185,31 @@
     {
         if (parserObject.success) {
             if ([operation.urlTag isEqualToString:Path_inventory_inventorySearch]) {
-                XwInventoryModel *listModel = [XwInventoryModel mj_objectWithKeyValues:parserObject.datas];
-                if (listModel.inventoryList.count) {
+                XwStoreListModel *listModel = [XwStoreListModel mj_objectWithKeyValues:parserObject.datas];
+                if (listModel.storeList.count) {
                     self.isShowEmptyData = NO;
-                    if (weakSelf.pageNumber == 1) {
-                        [weakSelf.dataList removeAllObjects];
-                    }
-                    [weakSelf.dataList addObjectsFromArray:listModel.inventoryList];
+//                    if (weakSelf.pageNumber == 1) {
+//                        [weakSelf.dataList removeAllObjects];
+//                    }
+//                    [weakSelf.dataList addObjectsFromArray:listModel.inventoryList];
+                    weakSelf.dataList = [listModel.storeList copy];
                     [weakSelf.tableview reloadData];
                 }
-                else
-                {
-                    if (weakSelf.pageNumber == 1) {
-//                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_data", nil)];
-                        [weakSelf.dataList removeAllObjects];
-                        [weakSelf.tableview reloadData];
-                        self.isShowEmptyData = YES;
-                    }
-                    else
-                    {
-                        weakSelf.pageNumber -= 1;
-                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_more_data", nil)];
-                    }
-                    [weakSelf.tableview hidenRefreshFooter];
-                }
+//                else
+//                {
+//                    if (weakSelf.pageNumber == 1) {
+////                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_data", nil)];
+//                        [weakSelf.dataList removeAllObjects];
+//                        [weakSelf.tableview reloadData];
+//                        self.isShowEmptyData = YES;
+//                    }
+//                    else
+//                    {
+//                        weakSelf.pageNumber -= 1;
+//                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_more_data", nil)];
+//                    }
+//                    [weakSelf.tableview hidenRefreshFooter];
+//                }
             }
             
             if ([operation.urlTag isEqualToString:Path_getProductCategory]) {

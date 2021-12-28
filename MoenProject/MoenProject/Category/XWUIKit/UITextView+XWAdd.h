@@ -30,7 +30,7 @@ typedef void(^changeBlock)(NSString* text);
 
 - (void)xw_addPlaceHolder:(NSString *)placeHolder;
 
-
+- (float) heightForString:(NSString *)value andWidth:(float)width;
 @end
 
 NS_ASSUME_NONNULL_END

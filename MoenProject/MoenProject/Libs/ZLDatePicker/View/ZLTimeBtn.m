@@ -36,8 +36,9 @@
 }
 
 - (NSString *)timeStringDefault {
-    NSDate *date = [NSDate date];
-    return [date timeFormat:@"yyyy-MM-dd"];
+//    NSDate *date = [NSDate date];
+//    return [date timeFormat:@"yyyy-MM-dd"];
+    return @"请选择时间";
 }
 
 @end

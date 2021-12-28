@@ -8,6 +8,7 @@
 
 #import "ChangeStockAdjustVC.h"
 #import "ChangeStockTCell.h"
+#import "StockOperationSuccessVC.h"
 @interface ChangeStockAdjustVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)UITableView* tableview;
 @property(nonatomic,strong)UIButton* submitBtn;
@@ -51,7 +52,7 @@
     
 //    [[NSToastManager manager] showprogress];
 //    [self httpPath_getProductList];
-    self.dataList = self.model.goodsList;
+    self.dataList = self.model.LastGoodsList;
     [self.tableview reloadData];
 }
 
@@ -69,7 +70,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 115;
+    return 155;
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -85,7 +86,8 @@
     ChangeStockTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChangeStockTCell" forIndexPath:indexPath];
 //    [cell showDataWithGoodsDetailModel:self.dataList[indexPath.section]];
     
-    cell.goodsModel = self.dataList[indexPath.section];
+    cell.lastModel = self.dataList[indexPath.section];
+//    cell.goodsModel = self.dataList[indexPath.section];
 //    if (self.controllerType == PurchaseOrderManageVCTypeStocktakingStockGoods||
 //             self.controllerType == PurchaseOrderManageVCTypeStocktakingStockSample)
 //    {
@@ -139,33 +141,18 @@
     else
     {
         if (parserObject.success) {
-            if ([operation.urlTag isEqualToString:Path_inventory_callInventoryOrderOperate]
-                ) {
-                [self.navigationController popViewControllerAnimated:YES];
-//                XwInventoryModel *listModel = [XwInventoryModel mj_objectWithKeyValues:parserObject.datas];
-//                if (listModel.inventoryList.count) {
-//                    self.isShowEmptyData = NO;
-//                    if (weakSelf.pageNumber == 1) {
-//                        [weakSelf.dataList removeAllObjects];
-//                    }
-//                    [weakSelf.dataList addObjectsFromArray:listModel.inventoryList];
-//                    [weakSelf.tableview reloadData];
-//                }
-//                else
-//                {
-//                    if (weakSelf.pageNumber == 1) {
-////                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_data", nil)];
-//                        [weakSelf.dataList removeAllObjects];
-//                        [weakSelf.tableview reloadData];
-//                        self.isShowEmptyData = YES;
-//                    }
-//                    else
-//                    {
-//                        weakSelf.pageNumber -= 1;
-//                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_more_data", nil)];
-//                    }
-//                    [weakSelf.tableview hidenRefreshFooter];
-//                }
+            if ([operation.urlTag isEqualToString:Path_inventory_storeInventoryOperate]) {
+//                [self.navigationController popViewControllerAnimated:YES];
+                if ([parserObject.code isEqualToString:@"200"]) {
+                
+                    StockOperationSuccessVC *orderOperationSuccessVC = [[StockOperationSuccessVC alloc] init];
+                    NSMutableDictionary* dict = [parserObject.datas[@ "datas"] mutableCopy];
+                    [dict setValue:@"adjust" forKey:@"operateType"];
+                    
+                    orderOperationSuccessVC.dict = [dict copy];
+                    orderOperationSuccessVC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:orderOperationSuccessVC animated:YES];
+                }
             }
            
         }
@@ -187,28 +174,28 @@
 //
 //}
 
-/**盘库操作（保存或确认）Api*/
-- (void)httpPath_Path_inventory_inventoryCheckOperate
+/**调库单调整（保存或确认）Api*/
+- (void)httpPath_inventory_storeInventoryOperate
 {
     NSMutableArray* array = [NSMutableArray array];
-    for(Goodslist* model in self.dataList){
+    for(Lastgoodslist* model in self.dataList){
         NSMutableDictionary* dict =[NSMutableDictionary dictionary];
-        if(![model.goodsCount isEqualToString:@""]&&model.goodsCount !=nil){
+        if(![model.goodsCountAfter isEqualToString:@""]&&model.goodsCountAfter !=nil){
             [dict setObject:model.goodsID forKey:@"goodsID"];
-            [dict setObject:model.goodsCount forKey:@"goodsCount"];
-            [dict setObject:@"" forKey:@"reason"];
+            [dict setObject:model.goodsCountAfter forKey:@"goodsCount"];
+            [dict setObject:model.reason forKey:@"reason"];
             [array addObject:dict];
         }
     }
     if (array.count > 0) {
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
-        [parameters setValue:self.model.orderID forKey:@"callInventoryOrderID"];
+        [parameters setValue:self.model.inventoryNo forKey:@"inventoryNo"];
         
         [parameters setValue:array forKey:@"goodsList"];
         self.requestType = NO;
         self.requestParams = parameters;
-        self.requestURL = Path_inventory_callInventoryOrderOperate;
+        self.requestURL = Path_inventory_storeInventoryOperate;
     } else {
         [[NSToastManager manager] showtoast:@"请输入库存数"];
     }
@@ -259,8 +246,15 @@
 -(UIButton*)submitBtn{
     if(!_submitBtn){
         _submitBtn = [UIButton buttonWithTitie:@"确认" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnDeepBlueColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
-            NSLog(@"盘库确认");
-            [self httpPath_Path_inventory_inventoryCheckOperate];
+            NSLog(@"调库确认");
+            FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否确认提交调库信息？" block:^(NSInteger buttonIndex, NSString *inputStr) {
+                if(buttonIndex == 1){
+                    [self httpPath_inventory_storeInventoryOperate];
+                }
+            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
+            [alert show];
+            
+            
         }];
     }
     return  _submitBtn;

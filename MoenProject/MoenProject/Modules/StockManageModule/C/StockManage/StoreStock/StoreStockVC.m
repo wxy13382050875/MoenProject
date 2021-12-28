@@ -24,7 +24,8 @@
 
 #import "StockOperationSuccessVC.h"
 #import "StartCountStockVC.h"
-#import "ChangeStockAdjustVC.h"
+//#import "ChangeStockAdjustVC.h"
+#import "StockManageChildVC.h"
 @interface StoreStockVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource, SegmentHeaderViewDelegate>
 
 
@@ -67,7 +68,25 @@
     [self configBaseUI];
     [self configBaseData];
 }
-
+-(void)backBthOperate{
+    NSLog(@"返回");
+    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+    BOOL isStock = NO;
+    UIViewController* stVC;
+    for (UIViewController* vc in marr) {
+        if ([vc isKindOfClass:[StockManageChildVC class]]) {
+//            [marr removeObject:vc];
+            isStock = YES;
+            stVC = vc;
+        }
+    }
+    if (isStock) {
+        
+        [self.navigationController popToViewController:stVC animated:YES];
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
 - (void)configBaseUI
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
@@ -108,7 +127,7 @@
 - (void)configBaseData
 {
     self.skuCode = @"";
-    self.mealTypeID = -1;
+    self.mealTypeID = 0;
     
     [self configPagingData];
     [[NSToastManager manager] showprogress];
@@ -344,6 +363,7 @@
                      [operation.urlTag isEqualToString:Path_inventory_callInventoryCheckChoice]
                 ) {
                     XwLastGoodsListModel *listModel = [XwLastGoodsListModel mj_objectWithKeyValues:parserObject.datas];
+                self.inventoryNo = listModel.inventoryNo;
                 if (listModel.LastGoodsList.count) {
                     self.isShowEmptyData = NO;
                     if (weakSelf.pageNumber == 1) {
@@ -367,15 +387,16 @@
                     }
                     [weakSelf.tableview hidenRefreshFooter];
                 }
-            } else if ([operation.urlTag isEqualToString:Path_getProductCategory]) {
-                CommonTypeListModel *listModel = (CommonTypeListModel *)parserObject;
+            } else if ([operation.urlTag isEqualToString:Path_inventory_inventorySortByStore]) {
+//                CommonTypeListModel *listModel = (CommonTypeListModel *)parserObject;
+                CommonTypeListModel *listModel = [CommonTypeListModel mj_objectWithKeyValues:parserObject.datas];
                 [self.typeList removeAllObjects];
                 for (CommonTypeModel *itemModel in listModel.listData)
                 {
                     SegmentTypeModel *item = [[SegmentTypeModel alloc] init];
-                    item.ID = itemModel.ID;
+                    item.ID = [itemModel.id integerValue];
                     item.name = itemModel.name;
-                    if (itemModel.ID == 0) {
+                    if (itemModel.id == 0) {
                         item.isSelected = YES;
                     }
                     [self.typeList addObject:item];
@@ -443,7 +464,7 @@
         [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
         [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
         [parameters setValue:self.operateType forKey:@"operateType"];
-        [parameters setValue:@"" forKey:@"inventoryNo"];
+        [parameters setValue:self.inventoryNo forKey:@"inventoryNo"];
         [parameters setValue:self.goodsType forKey:@"goodsType"];
         [parameters setValue:array forKey:@"goodsList"];
         self.requestType = NO;
@@ -486,9 +507,12 @@
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    [parameters setValue: [QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
+    
     self.requestType = NO;
     self.requestParams = parameters;
-    self.requestURL = Path_getProductCategory;
+//    self.requestURL = Path_getProductCategory;
+    self.requestURL = Path_inventory_inventorySortByStore;
 }
 
 #pragma mark -- Getter&Setter
@@ -586,7 +610,13 @@
     if(!_saveBth){
         _saveBth = [UIButton buttonWithTitie:@"保存" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnGoldenColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
             NSLog(@"保存");
-            [self httpPath_Path_inventory_inventoryCheckOperate:@"save"];
+            FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:@"是否保存盘库信息？保存后,下次可继续盘库" block:^(NSInteger buttonIndex, NSString *inputStr) {
+                if(buttonIndex == 1){
+                    [self httpPath_Path_inventory_inventoryCheckOperate:@"save"];
+                }
+            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+            [alert show];
+            
         }];
     }
     return  _saveBth;
@@ -595,14 +625,14 @@
     if(!_submitBtn){
         _submitBtn = [UIButton buttonWithTitie:@"盘库确认" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnDeepBlueColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
             NSLog(@"盘库确认");
-            if (self.controllerType == PurchaseOrderManageVCTypeStockDaily)
-            {
-//                ChangeStockAdjustVC *startCountStockVC = [[ChangeStockAdjustVC alloc] init];
-//                startCountStockVC.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:startCountStockVC animated:YES];
-            } else {
-                [self httpPath_Path_inventory_inventoryCheckOperate:@"confirm"];
-            }
+            FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:@"是否提交保存盘库信息？" block:^(NSInteger buttonIndex, NSString *inputStr) {
+                if(buttonIndex == 1){
+                    [self httpPath_Path_inventory_inventoryCheckOperate:@"confirm"];
+                }
+            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+            [alert show];
+            
+            
             
         }];
     }

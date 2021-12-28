@@ -108,6 +108,7 @@
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsTCell])
     {
         ReturnOrderMealGoodsModel *goodsModel = self.goodsList[indexPath.section - 1];
+//        goodsModel.waitDeliverCount = @"3";
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
         [cell showDataWithReturnOrderMealGoodsModel:goodsModel AtIndex:indexPath.section];
         cell.goodsShowDetailBlock = ^(BOOL isShow, NSInteger atIndex) {
