@@ -66,6 +66,10 @@
 
 @property (nonatomic, assign) BOOL isProblem;
 
+@property (nonatomic, copy) NSString* deliverCount;
+
+@property (nonatomic, assign) NSInteger sendNum;
+
 @end
 
 @interface Goodspackage : NSObject

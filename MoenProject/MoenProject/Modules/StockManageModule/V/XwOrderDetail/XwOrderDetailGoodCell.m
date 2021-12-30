@@ -66,12 +66,12 @@
     
     self.goodsCode.sd_layout.leftSpaceToView(self.goodsImg, 15).topEqualToView(self.goodsImg).rightSpaceToView(self.contentView, 15).heightIs(30);
     self.goodsName.sd_layout.leftSpaceToView(self.goodsImg, 15).topSpaceToView(self.goodsCode, 0).rightSpaceToView(self.contentView, 15).heightIs(30);
-    self.goodsStatus.sd_layout.topSpaceToView(self.goodsName, 0).rightSpaceToView(self.contentView, 15).heightIs(30).widthIs(150);
+    self.goodsStatus.sd_layout.topSpaceToView(self.contentView, 0).rightSpaceToView(self.contentView, 15).heightIs(30).widthIs(150);
     
     
     self.goodsCount.sd_layout.topSpaceToView(self.goodsName, 0).leftSpaceToView(self.goodsImg, 15).widthIs(100).heightIs(30);
     
-    self.deliverCount.sd_layout.topSpaceToView(self.goodsName, 0).leftSpaceToView(self.goodsCount, 0).rightSpaceToView(self.contentView, 15).heightIs(30);
+    self.deliverCount.sd_layout.topSpaceToView(self.goodsName, 0).rightSpaceToView(self.contentView, 15).heightIs(30).widthIs(150);
     
     
     
@@ -96,7 +96,9 @@
     if (model.controllerType == 3||
         model.controllerType == 5||
         model.controllerType == 6) {
-        if([model.orderStatus isEqualToString: @"partDeliver"]||[model.orderStatus isEqualToString: @"allDeliver"]){
+        if([model.orderStatus isEqualToString: @"partDeliver"]||
+           [model.orderStatus isEqualToString: @"allDeliver"]||
+           [model.orderStatus isEqualToString: @"finish"]){
             self.goodsStatus.text = model.goodsStatus;
         }
     }
@@ -124,7 +126,9 @@
     
 }
 -(void)setDelModel:(Goodslist *)delModel{
-    self.deliverCount.hidden = NO;
+    
+    
+    
     _delModel = delModel;
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:delModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
     self.goodsCode.text = delModel.goodsSKU;
@@ -135,6 +139,7 @@
 //    self.goodsStatus.text = delModel.goodsStatus;
     if (delModel.goodsPackage.goodsList.count > 0) {
         [self.packView setHidden:NO];
+        self.deliverCount.hidden = YES;
         NSString* strPackageDes=@"";
         for (Goodslist* tmModel in delModel.goodsPackage.goodsList) {
             strPackageDes = [NSString stringWithFormat:@"%@ %@",strPackageDes,tmModel.goodsSKU];
@@ -144,6 +149,23 @@
     else
     {
         [self.packView setHidden:YES];
+//        self.deliverCount.hidden = NO;
+//        [self.deliverCount.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
+//            NSLog(@"4567 %@",x);
+//            lastModel.reason =x;
+//        }];
+        
+        if(delModel.sendNum == 0){
+            self.deliverCount.hidden = NO;
+        }  else {
+            if(delModel.sendNum == [delModel.goodsCount integerValue]){
+                self.deliverCount.hidden = YES;
+            } else {
+                self.deliverCount.hidden = NO;
+            }
+            [self.goodsStatus setHidden:NO];
+            self.goodsStatus.text = delModel.goodsStatus;
+        }
     }
 
     if (delModel.isShowDetail) {
@@ -240,11 +262,10 @@
         if ([textField.text integerValue] > [self.delModel.goodsCount integerValue]) {
             textField.text = [NSString stringWithFormat:@"%@",self.delModel.goodsCount];
             [[NSToastManager manager] showtoast:@"商品数量不能超过可发货商品数量"];
+            
         }
-        else
-        {
-            self.delModel.goodsCount = textField.text;
-        }
+        
+        self.delModel.deliverCount = textField.text;
     
     }
 }

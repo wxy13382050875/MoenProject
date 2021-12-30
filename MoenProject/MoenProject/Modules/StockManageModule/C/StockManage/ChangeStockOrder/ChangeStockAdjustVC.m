@@ -24,7 +24,14 @@
     [self configBaseUI];
     [self configBaseData];
 }
-
+-(void)backBthOperate{
+    FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:@"返回后，将不保存任何调库信息，确认返回吗？" block:^(NSInteger buttonIndex, NSString *inputStr) {
+        if(buttonIndex == 1){
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+    [alert show];
+}
 /*
 #pragma mark - Navigation
 

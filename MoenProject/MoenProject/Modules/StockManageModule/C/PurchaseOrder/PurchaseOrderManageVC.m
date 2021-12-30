@@ -135,7 +135,8 @@
     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
         if([model.orderStatus isEqualToString:@"wait"]){
             
-        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]||
+                   [model.orderStatus isEqualToString:@"partDeliver"]){
             
         } else {
 //            againBtn.hidden = YES;
@@ -331,7 +332,8 @@
     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
         if([model.orderStatus isEqualToString:@"wait"]){
             [againBtn setTitle:@"审核" forState:UIControlStateNormal];
-        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]||
+                   [model.orderStatus isEqualToString:@"partDeliver"]){
             [againBtn setTitle:@"发货" forState:UIControlStateNormal];
         } else {
             againBtn.hidden = YES;
@@ -455,6 +457,7 @@
         sellGoodsScanVC.goodsType = model.orderType;
         sellGoodsScanVC.controllerType = SearchGoodsVCType_Stock;
         sellGoodsScanVC.selectedDataArr = selectArr;
+        sellGoodsScanVC.orderID = model.orderID;
         sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
     } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
@@ -464,12 +467,19 @@
   
         if([model.orderStatus isEqualToString:@"waitGoods"]){
             NSLog(@"确认收货");
-            FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否确认收货？" block:^(NSInteger buttonIndex, NSString *inputStr) {
-                if(buttonIndex == 1){
-                    [self httpPath_delivery_confirmReceipt:model];
-                }
-            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
-            [alert show];
+            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+            orderDetailVC.orderID = model.orderID;
+            orderDetailVC.controllerType = self.controllerType;
+            orderDetailVC.refreshBlock = ^{
+                [self reconnectNetworkRefresh];
+            };
+            [self.navigationController pushViewController:orderDetailVC animated:YES];
+//            FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否确认收货？" block:^(NSInteger buttonIndex, NSString *inputStr) {
+//                if(buttonIndex == 1){
+//                    [self httpPath_delivery_confirmReceipt:model];
+//                }
+//            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
+//            [alert show];
 //            [self httpPath_delivery_confirmReceipt:model];
         }
     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
@@ -857,7 +867,7 @@
     } else if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
          self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
         title = @"调拨单状态";
-        array = @[@{@"isSelected":@(YES),@"title":@"全部",@"ID":@"all"},
+        array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
                            @{@"isSelected":@(NO),@"title":@"待门店审核",@"itemId":@"wait"},
                            @{@"isSelected":@(NO),@"title":@"门店已拒绝",@"itemId":@"refuse"},
                            @{@"isSelected":@(NO),@"title":@"待AD审核",@"itemId":@"waitAD"},

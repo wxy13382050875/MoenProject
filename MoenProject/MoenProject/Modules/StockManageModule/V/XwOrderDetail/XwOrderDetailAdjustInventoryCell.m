@@ -43,7 +43,7 @@
     [self.contentView addSubview:self.statusLabel];
 }
 -(void)xw_updateConstraints{
-    self.dateLabel.sd_layout.leftSpaceToView(self.contentView, 15).topEqualToView(self.contentView).widthIs(250).heightIs(30);
+    self.dateLabel.sd_layout.leftSpaceToView(self.contentView, 15).topEqualToView(self.contentView).rightSpaceToView(self.contentView, 15).heightIs(30);
     
     self.numberLabel.sd_layout.leftSpaceToView(self.contentView, 15).topSpaceToView(self.dateLabel, 5).rightSpaceToView(self.contentView, 15).heightIs(30);
     self.nameLabel.sd_layout.leftSpaceToView(self.contentView, 15).topSpaceToView(self.numberLabel, 5).widthIs((SCREEN_WIDTH-30)/2).heightIs(30);
@@ -52,7 +52,7 @@
     
 }
 -(void)setModel:(XwOrderDetailModel *)model{
-    self.dateLabel.text = model.orderTime;
+    self.dateLabel.text = [NSString stringWithFormat:@"%@ - %@",model.orderTimeStart,model.orderTimeEnd];
     self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",model.progressName,model.orderID];
     self.nameLabel.text =[NSString stringWithFormat:@"操作人:%@",model.operator];
     self.statusLabel.text = model.orderStatusText;

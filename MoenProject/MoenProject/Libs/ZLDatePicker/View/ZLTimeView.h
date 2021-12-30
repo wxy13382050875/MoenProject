@@ -26,4 +26,6 @@
 
 @property (nonatomic, weak) id<ZLTimeViewDelegate> delegate;
 
+
+-(void)resetZLTimeView;
 @end

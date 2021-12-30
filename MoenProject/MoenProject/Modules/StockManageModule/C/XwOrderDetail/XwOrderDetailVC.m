@@ -51,6 +51,7 @@
 #import "NSHttpClient.h"
 #import "BaseModelFactory.h"
 #import "StartCountStockVC.h"
+#import "StockManageChildVC.h"
 @interface XwOrderDetailVC ()<UITableViewDelegate, UITableViewDataSource ,FDAlertViewDelegate,TZImagePickerControllerDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -122,15 +123,16 @@
         if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
 //            [marr removeObject:vc];
             isStock = YES;
-            
+
         }
-        if([vc isKindOfClass:[PurchaseOrderManageVC class]]){
-            stVC = vc;
-        }
+//        if([vc isKindOfClass:[StockManageChildVC class]]){
+//
+//            stVC = vc;
+//        }
     }
-    if (isStock&&stVC !=nil ) {
+    if (isStock                                                                 ) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
         
-        [self.navigationController popToViewController:stVC animated:YES];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -373,7 +375,7 @@
     self.remarks= @"";
     self.expressIMG= @"";
     
-    
+    [self.floorsAarr removeAllObjects];
     [self httpPath_orderDetail];
 }
 
@@ -398,6 +400,7 @@
     NSMutableArray *dataArr = self.floorsAarr[indexPath.section];
     CommonTVDataModel *model = dataArr[indexPath.row];
     return model.cellHeight;
+    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -409,18 +412,15 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     NSMutableArray *dataArr = self.floorsAarr[section];
-    if(dataArr.count > 0){
-        CommonTVDataModel *model = dataArr[0];
-        return model.cellFooterHeight;
-    } else {
-        return 0.01;
-    }
+    CommonTVDataModel *model = dataArr[0];
+    return model.cellFooterHeight;
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WEAKSELF
     NSMutableArray *dataArr = self.floorsAarr[indexPath.section];
+    
     CommonTVDataModel *model = dataArr[indexPath.row];
     
     if ([model.cellIdentify isEqualToString:@"XwOrderDetailStockCell"]) {
@@ -455,7 +455,12 @@
 
     
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
-        cell.model = model.Data;
+        
+        if(self.isDeliver){
+            cell.delModel = model.Data;
+        } else {
+            cell.model = model.Data;
+        }
         return cell;
     } else if ([model.cellIdentify isEqualToString:KOrderPromotionTCell])
     {
@@ -764,7 +769,7 @@
     else
     {
         if (parserObject.success) {
-            [self.floorsAarr removeAllObjects];
+            
             if ([operation.urlTag isEqualToString:Path_stock_orderDetail]) {//进货单详情
                 self.dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
                 
@@ -882,14 +887,17 @@
                     [self handleTabMarkData:NO];
                     
                     
-                    if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]){
-                        [self handleTabExpressData];
-                        [self handleTabDeliveMarkData];
-                    }
                     
-                    if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask&&
-                       [self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
-                        [self handleTabAuditMarkData];
+                    
+                    if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
+                        if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]){
+                            [self handleTabExpressData];
+                            [self handleTabDeliveMarkData];
+                        }
+                        if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
+                            [self handleTabAuditMarkData];
+                        }
+                        
                     }
                     
                     [self.tableView reloadData];
@@ -1385,14 +1393,28 @@
 //        CGFloat height = [UITextView hig]
 //    }
     
+    CGSize size = [[NSString stringWithFormat:@"审核备注:%@",self.orderRemarks] sizeWithFont:FONT(14) Size:CGSizeMake((SCREEN_WIDTH -30), 2000)];
+    CGFloat height = 80;
+    if(size.height  > 80){
+        height  = size.height + 40;
+    }
+    NSString * msg = @"备注：无";
+    if(isEdit){
+        msg = @"";
+    } else {
+        if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+            msg = @"审核备注：无";
+        }
+    }
+    
     XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
-    tmModel.value =[self.orderRemarks isEqualToString:@""]?@"备注：无":self.orderRemarks;
+    tmModel.value =[self.orderRemarks isEqualToString:@""]?msg:[NSString stringWithFormat:@"审核备注:%@",self.orderRemarks];;
     tmModel.isEdit = isEdit;
     
     NSMutableArray *section6Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *markCellModel = [[CommonTVDataModel alloc] init];
     markCellModel.cellIdentify = KSellGoodsOrderMarkTCell;
-    markCellModel.cellHeight = KSellGoodsOrderMarkTCellH;
+    markCellModel.cellHeight = height;
     markCellModel.cellHeaderHeight = 0.01;
     markCellModel.cellFooterHeight = 5;
     markCellModel.Data =tmModel;
@@ -1435,19 +1457,26 @@
 //退仓原因
 -(void)handleTabRefundReasonData{
     
-    CGSize size = [self.dataModel.returnReason sizeWithFont:FONT(13) Size:CGSizeMake((SCREEN_WIDTH -30)- 90, 2000)];
-    CGFloat height = 40;
-    if(size.height  > 40){
-        height  = size.height + 20;
+    CGSize size = [self.dataModel.returnReason sizeWithFont:FONT(14) Size:CGSizeMake((SCREEN_WIDTH -30), 2000)];
+    CGFloat height = 80;
+    if(size.height  > 80){
+        height  = size.height + 40;
     }
+
+    XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
+    tmModel.value =[self.dataModel.returnReason isEqualToString:@""]?@"退仓原因:无":[NSString stringWithFormat:@"退仓原因:%@",self.dataModel.returnReason];
+    tmModel.isEdit = NO;
+    
     NSMutableArray *section6Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *markCellModel = [[CommonTVDataModel alloc] init];
-    markCellModel.cellIdentify = KReturnOrderDetailReasonTCell;
+    markCellModel.cellIdentify = KSellGoodsOrderMarkTCell;
     markCellModel.cellHeight = height;
     markCellModel.cellHeaderHeight = 0.01;
     markCellModel.cellFooterHeight = 5;
+    markCellModel.Data =tmModel;
     [section6Arr addObject:markCellModel];
     [self.floorsAarr addObject:section6Arr];
+    
 }
 //盘库调库数量统计
 -(void)handleTabInventoryStatisticsData{
@@ -1574,29 +1603,51 @@
     
     NSMutableArray* array = [NSMutableArray array];
     for (Goodslist* model in self.dataModel.goodsList) {
+        if(model.goodsPackage != nil){
+            for (Goodslist* tm in model.goodsPackage.goodsList) {
+                if(![tm.deliverCount isEqualToString:@""] && tm.deliverCount.integerValue != 0){
+                    NSDictionary* dict = @{
+                        @"goodsID":tm.goodsID,
+                        @"goodsCount":tm.deliverCount,
+                        @"setMealId":model.goodsID,
+                    };
+                    [array addObject:dict ];
+                }
+                
+            }
+        } else {
+            if(![model.deliverCount isEqualToString:@""] &&
+               model.deliverCount.integerValue != 0){
+            
+                NSDictionary* dict = @{
+                    @"goodsID":model.goodsID,
+                    @"goodsCount":model.deliverCount,
+                };
+                [array addObject:dict ];
+            }
+        }
         
-        NSDictionary* dict = @{
-            @"goodsID":model.goodsID,
-            @"goodsCount":model.goodsCount,
-            @"setMealId":model.goodsPackage!=nil?model.goodsID:@"",
-        };
-        [array addObject:dict ];
         
         
     }
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:self.orderID forKey:@"orderID"];
-    [parameters setValue:operate forKey:@"operate"];
-    [parameters setValue:self.expressID forKey:@"expressID"];
-    [parameters setValue:self.expressIMG forKey:@"expressIMG"];
-    [parameters setValue:self.remarks forKey:@"remarks"];
-    [parameters setValue:array forKey:@"goodsList"];
-    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
-    self.requestType = NO;
-    self.requestParams = parameters;
-    [[NSToastManager manager] showprogress];
-//
-    self.requestURL = Path_dallot_transferOperate;
+    if(array.count > 0){
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+        [parameters setValue:self.orderID forKey:@"orderID"];
+        [parameters setValue:operate forKey:@"operate"];
+        [parameters setValue:self.expressID forKey:@"expressID"];
+        [parameters setValue:self.expressIMG forKey:@"expressIMG"];
+        [parameters setValue:self.remarks forKey:@"remarks"];
+        [parameters setValue:array forKey:@"goodsList"];
+        [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+        self.requestType = NO;
+        self.requestParams = parameters;
+        [[NSToastManager manager] showprogress];
+    //
+        self.requestURL = Path_dallot_transferOperate;
+    } else {
+        [[NSToastManager manager] showtoast:@"请输入发货数"];
+    }
+    
     
 }
 /**确认收货Api*/

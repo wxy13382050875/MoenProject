@@ -63,22 +63,40 @@
 }
 -(void)backBthOperate{
     NSLog(@"返回");
+    if(self.shoppingCarDataList.count > 0){
+        FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:@"返回后，已添加商品则不再保留，确认返回吗？" block:^(NSInteger buttonIndex, NSString *inputStr) {
+            if(buttonIndex == 1){
+                [self popView];
+            }
+        } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+        [alert show];
+    } else {
+        [self popView];
+    }
     
+    
+}
+-(void)popView{
     NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
     BOOL isStock = NO;
     UIViewController* stVC;
     for (UIViewController* vc in marr) {
         if ([vc isKindOfClass:[StockManageChildVC class]]) {
-//            [marr removeObject:vc];
             isStock = YES;
             stVC = vc;
         }
     }
+    
     if (isStock) {
         
         [self.navigationController popToViewController:stVC animated:YES];
     } else {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        if(self.controllerType == SearchGoodsVCType_Transfers){
+            [self.navigationController popViewControllerAnimated:YES];
+        } else {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+        
     }
 }
 - (void)viewDidAppear:(BOOL)animated
@@ -488,6 +506,8 @@
             purchaseCounterVC.storeID = self.storeID;
             purchaseCounterVC.storeName = self.storeName;
             purchaseCounterVC.goodsType = self.goodsType;
+            purchaseCounterVC.orderID = self.orderID;
+            
             purchaseCounterVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:purchaseCounterVC animated:YES];
         }

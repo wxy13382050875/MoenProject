@@ -53,46 +53,50 @@ static CGFloat kMagin = 1.f;
 
     
         //清除上一个视图控制器
-    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
-    if (marr.count > 1) {
-        UIViewController *vc = [marr objectAtIndex:marr.count - 2];
-        if ([vc isKindOfClass:[SalesCounterVC class]] ||
-            [vc isKindOfClass:[ReturnAllGoodsCounterVC class]] ||
-            [vc isKindOfClass:[ReturnGoodsCounterVC class]]||
-            [vc isKindOfClass:[PurchaseCounterVC class]]||
-            [vc isKindOfClass:[XwOrderDetailVC class]]) {
-            [marr removeObject:vc];
-            
-            UIViewController *vc = [marr objectAtIndex:marr.count - 2];
-            if ([vc isKindOfClass:[ReturnGoodsSelectVC class]]) {
-                [marr removeObject:vc];
-            }
-//            if (self.controllerType == OrderOperationSuccessVCTypePlacing) {
-                UIViewController *scanView = [marr objectAtIndex:marr.count - 2];
-                [marr removeObject:scanView];
-//            }
-        }
-        self.navigationController.viewControllers = marr;
-    }
-}
-//-(void)backBthOperate{
-//    NSLog(@"返回");
-//
 //    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
 //    if (marr.count > 1) {
-//        for (UIViewController* vc in marr) {
-//            if ([vc isKindOfClass:[StockManageChildVC class]]) {
-//    //            [marr removeObject:vc];
-//                [self.navigationController popToViewController:vc animated:YES];
+//        UIViewController *vc = [marr objectAtIndex:marr.count - 2];
+//        if ([vc isKindOfClass:[SalesCounterVC class]] ||
+//            [vc isKindOfClass:[ReturnAllGoodsCounterVC class]] ||
+//            [vc isKindOfClass:[ReturnGoodsCounterVC class]]||
+//            [vc isKindOfClass:[PurchaseCounterVC class]]||
+//            [vc isKindOfClass:[XwOrderDetailVC class]]) {
+//            [marr removeObject:vc];
+//
+//            UIViewController *vc = [marr objectAtIndex:marr.count - 2];
+//            if ([vc isKindOfClass:[ReturnGoodsSelectVC class]]) {
+//                [marr removeObject:vc];
 //            }
+////            if (self.controllerType == OrderOperationSuccessVCTypePlacing) {
+//                UIViewController *scanView = [marr objectAtIndex:marr.count - 2];
+//                [marr removeObject:scanView];
+////            }
 //        }
-//
-//    } else {
-//        [self.navigationController popToRootViewControllerAnimated:YES];
+//        self.navigationController.viewControllers = marr;
 //    }
+}
+-(void)backBthOperate{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+//    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+//    BOOL isStock = NO;
+//    UIViewController* stVC = nil;
+//    for (UIViewController* vc in marr) {
+//        if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
+////            [marr removeObject:vc];
+//            isStock = YES;
 //
+//        }
+//        if([vc isKindOfClass:[PurchaseOrderManageVC class]]){
+//            stVC = vc;
+//        }
+//    }
+//    if (isStock&&stVC !=nil ) {
 //
-//}
+//        [self.navigationController popToViewController:stVC animated:YES];
+//    } else {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
+}
 
 - (void)configBaseUI
 {

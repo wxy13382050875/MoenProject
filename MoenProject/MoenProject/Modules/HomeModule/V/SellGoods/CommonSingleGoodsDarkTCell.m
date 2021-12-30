@@ -23,6 +23,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *sendInfo_lab;
 
+@property (weak, nonatomic) IBOutlet UILabel *goods_state;
+
 @property (weak, nonatomic) IBOutlet UIView *editCountView;
 @property (weak, nonatomic) IBOutlet UIButton *minus_Btn;
 @property (weak, nonatomic) IBOutlet UIButton *add_Btn;
@@ -31,7 +33,8 @@
 
 @property (nonatomic, strong) ReturnOrderSingleGoodsModel *singleGoodsModel;
 
-
+//发货数量
+@property(nonatomic,strong)UITextField* deliverCount;
 @end
 
 @implementation CommonSingleGoodsDarkTCell
@@ -47,7 +50,9 @@
     self.goods_Count.font = FontBinB(14);
     self.count_Txt.font = FontBinB(14);
     
-    
+    [self.contentView addSubview:self.deliverCount ];
+    self.deliverCount.sd_layout.bottomSpaceToView(self.contentView, 0).rightSpaceToView(self.contentView, 15).heightIs(30).widthIs(150);
+    self.deliverCount.hidden = YES;
     // Initialization code
 }
 
@@ -184,15 +189,57 @@
     if (model.controllerType == 3||
         model.controllerType == 5||
         model.controllerType == 6) {
-        if([model.orderStatus isEqualToString: @"partDeliver"]||[model.orderStatus isEqualToString: @"allDeliver"]){
-            [self.goods_Count setHidden:NO];
-            self.goods_Count.font = [UIFont boldSystemFontOfSize:14];
-            self.goods_Count.text = model.goodsStatus;
+        if([model.orderStatus isEqualToString: @"partDeliver"]||
+           [model.orderStatus isEqualToString: @"allDeliver"]||
+           [model.orderStatus isEqualToString: @"finish"]){
+            [self.goods_state setHidden:NO];
+            self.goods_state.font = [UIFont boldSystemFontOfSize:14];
+            self.goods_state.text = model.goodsStatus;
         }
     } else {
         [self.goods_Price setHidden:YES];
     }
     
+}
+-(void)setDelModel:(Goodslist *)delModel{
+    
+    _delModel = delModel;
+    [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:delModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
+    self.goods_Code.text = delModel.goodsSKU;
+    self.goods_Name.text = delModel.goodsName;
+//
+    [self.goods_Count setHidden:YES];
+    self.goods_Price.text = [NSString stringWithFormat:@"X%@",delModel.goodsCount];
+    
+    if(delModel.sendNum == 0){
+        self.deliverCount.hidden = NO;
+    }  else {
+        if(delModel.sendNum == [delModel.goodsCount integerValue]){
+            self.deliverCount.hidden = YES;
+        } else {
+            self.deliverCount.hidden = NO;
+        }
+        [self.goods_state setHidden:NO];
+        self.goods_state.font = [UIFont boldSystemFontOfSize:14];
+        self.goods_state.text = delModel.goodsStatus;
+    }
+//    self.goods_Count.text = [NSString stringWithFormat:@"x%@", model.goodsCount];
+    if (delModel.controllerType == 3||
+        delModel.controllerType == 5||
+        delModel.controllerType == 6) {
+//        if([delModel.orderStatus isEqualToString: @"partDeliver"]||[delModel.orderStatus isEqualToString: @"allDeliver"]){
+//
+//        }
+    } else {
+        [self.goods_Price setHidden:YES];
+    }
+//    if(delModel.goodsStatus != nil){
+//        [self.goods_Count setHidden:NO];
+//        self.goods_Count.font = [UIFont boldSystemFontOfSize:14];
+//        self.goods_Count.text = delModel.goodsStatus;
+//    } else {
+//        [self.goods_Count setHidden:YES];
+//    }
 }
 -(void)setOrderModel:(OrderlistModel *)orderModel{
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:orderModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
@@ -252,6 +299,37 @@
                 self.singleGoodsModel.returnCount = [textField.text integerValue];
             }
     
+    } else if (self.deliverCount == textField) {
+        
+        if (textField.text.length == 0) {
+            textField.text = @"0";
+        }
+        if ([textField.text integerValue] > [self.delModel.goodsCount integerValue]) {
+            textField.text = [NSString stringWithFormat:@"%@",self.delModel.goodsCount];
+            [[NSToastManager manager] showtoast:@"商品数量不能超过可发货商品数量"];
+            
+        }
+        
+        self.delModel.deliverCount = textField.text;
+    
     }
+}
+
+-(UITextField*)deliverCount{
+    if(!_deliverCount){
+        _deliverCount = [UITextField new];
+        UILabel* title = [UILabel labelWithText:@"发货数量" WithTextColor:COLOR(@"#646464") WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentLeft WithFont:14];
+        title.frame =CGRectMake(0, 0, 60, 30);
+        _deliverCount.leftView = title;
+        _deliverCount.leftViewMode = UITextFieldViewModeAlways;
+        _deliverCount.textColor = COLOR(@"#646464");
+        _deliverCount.font = FONT(14);
+        _deliverCount.delegate = self;
+        _deliverCount.textAlignment = NSTextAlignmentRight;
+        _deliverCount.placeholder=@"请输入数量";
+        _deliverCount.keyboardType = UIKeyboardTypeNumberPad;
+        
+    }
+    return _deliverCount;
 }
 @end

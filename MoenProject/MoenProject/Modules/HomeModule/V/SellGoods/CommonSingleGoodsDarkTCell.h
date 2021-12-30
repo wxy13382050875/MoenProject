@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CommonSingleGoodsDarkTCell : BaseTableViewCell
 @property(nonatomic,strong)Goodslist* model;
+@property (nonatomic, copy) Goodslist* delModel;
 @property(nonatomic,strong)OrderlistModel* orderModel;
 @property(nonatomic,strong)XwStockInfoModel* stockInfoModel;
 

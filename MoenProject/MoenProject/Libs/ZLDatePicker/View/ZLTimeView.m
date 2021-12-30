@@ -75,6 +75,8 @@
 //    line.backgroundColor = RGBA_COLOR(204, 204, 204,1);
 //    self.line = line;
 //    [self addSubview:line];
+    
+    [self resetZLTimeView];
 }
 
 - (void)layoutSubviews {
@@ -126,5 +128,9 @@
         [self.delegate timeView:self seletedDateBegin:self.beginTimeBtn.titleLabel.text end:self.endTimeBtn.titleLabel.text];
     }
 }
-
+-(void)resetZLTimeView{
+    
+    [self.beginTimeBtn setTitle:@"开始时间" forState:UIControlStateNormal];
+    [self.endTimeBtn setTitle:@"结束时间" forState:UIControlStateNormal];
+}
 @end

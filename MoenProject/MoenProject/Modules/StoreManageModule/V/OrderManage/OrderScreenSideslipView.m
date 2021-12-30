@@ -255,10 +255,10 @@
 
 - (void)timeView:(ZLTimeView *)timeView seletedDateBegin:(NSString *)beginTime end:(NSString *)endTime {
     // TODO: 进行上传时间段
-    if (![beginTime isEqualToString:@"请选择时间"]) {
+    if (![beginTime isEqualToString:@"开始时间"]) {
         self.model.dateStart = beginTime;
     }
-    if (![endTime isEqualToString:@"请选择时间"]) {
+    if (![endTime isEqualToString:@"结束时间"]) {
         self.model.dateEnd = endTime;
     }
     
@@ -270,7 +270,8 @@
     for (XwScreenModel *model in self.dataArr) {
         for (KWOSSVDataModel *model1 in model.list) {
             model1.isSelected = NO;
-            if([model1.itemId isEqualToString:@"ALL"]){
+            if([model1.itemId isEqualToString:@"ALL"]||
+               [model1.itemId isEqualToString:@"all"]){
                 model1.isSelected = YES;
             }
         }
@@ -278,6 +279,9 @@
 //    XwScreenModel *tmodel = self.dataArr[0];
 //    KWOSSVDataModel *model = tmodel.list[0];
 //    model.isSelected = YES;
+    self.model.dateStart = @"";
+    self.model.dateEnd = @"";
+    [self.timeView resetZLTimeView];
     [self.collectionView reloadData];
 }
 

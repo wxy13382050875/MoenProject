@@ -58,6 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *inventoryNo;
 
+@property (nonatomic, copy) NSString *orderID;
+
 //购物车中的数据
 @property (nonatomic, strong) NSMutableArray *selectedDataArr;
 

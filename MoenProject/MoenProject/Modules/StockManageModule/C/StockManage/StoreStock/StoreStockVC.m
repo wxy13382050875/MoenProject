@@ -70,6 +70,24 @@
 }
 -(void)backBthOperate{
     NSLog(@"返回");
+    NSString* msg = @"";
+    if(self.controllerType == PurchaseOrderManageVCTypeStockDaily){
+        msg = @"返回后，将不在保存任何盘库信息，确认返回吗？";
+    }
+    if(![msg isEqualToString:@""]){
+        FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:msg block:^(NSInteger buttonIndex, NSString *inputStr) {
+            if(buttonIndex == 1){
+                [self popView];
+            }
+        } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+        [alert show];
+    } else {
+        [self popView];
+    }
+    
+    
+}
+-(void)popView{
     NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
     BOOL isStock = NO;
     UIViewController* stVC;

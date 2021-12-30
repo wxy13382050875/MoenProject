@@ -80,7 +80,6 @@
     } if(self.controllerType == SearchGoodsVCType_Transfers){
         self.title = @"调拨柜台";
         self.btn1.titleLabel.text =@"继续添加";
-        self.btn2.titleLabel.text =@"确认订单";
     }
     
         
@@ -417,7 +416,7 @@
             for (CommonProdutcModel* tm in model.productList) {
                 setMealCount += tm.count;
             }
-            self.detailModel.productCount = setMealCount * model.kGoodsCount;
+            self.detailModel.productCount += setMealCount * model.kGoodsCount;
             cellModel.cellIdentify = KCommonSingleGoodsTCell;
 //            cellModel.isShow = YES;
             cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
@@ -509,6 +508,7 @@
     if(self.controllerType == SearchGoodsVCType_Stock ){
         [parameters setValue:commitType forKey:@"commitType"];
         [parameters setValue:self.goodsType forKey:@"goodsType"];
+        [parameters setValue:self.orderID forKey:@"orderID"];
         
     } else if(self.controllerType == SearchGoodsVCType_Transfers){
         [parameters setValue:self.storeID forKey:@"allotBy"];

@@ -92,11 +92,12 @@
 }
 -(void)setDefModel:(XwSystemTCellModel *)defModel{
     if(defModel.isEdit && [defModel.value isEqualToString:@""]){
-        [self.mark_Txt xw_addPlaceHolder:@"添加备注"];
+        [self.mark_Txt xw_addPlaceHolder:@"审核备注"];
         self.mark_Txt.xw_placeHolderTextView.textColor = COLOR(@"#AAB3BA");
     }
     self.mark_Txt.text = defModel.value;
     [self.mark_Txt setEditable:defModel.isEdit];
+    [self.mark_Txt setScrollEnabled:defModel.isEdit];
 //    CGFloat height = [self.mark_Txt heightForString:defModel.value andWidth:SCREEN_WIDTH-20];
 }
 

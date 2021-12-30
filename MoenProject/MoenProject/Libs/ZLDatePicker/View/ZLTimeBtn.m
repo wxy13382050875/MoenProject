@@ -32,7 +32,7 @@
     [self setImage:[UIImage imageNamed:@"xiangxiadianji"] forState:UIControlStateNormal];
     [self setTitle:[self timeStringDefault] forState:UIControlStateNormal];
     [self setTitleColor:RGBA_COLOR(102, 102, 102,1) forState:UIControlStateNormal];
-    self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont systemFontOfSize:13];
 }
 
 - (NSString *)timeStringDefault {

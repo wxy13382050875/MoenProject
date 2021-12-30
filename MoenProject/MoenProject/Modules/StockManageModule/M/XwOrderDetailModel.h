@@ -22,6 +22,10 @@
 
 @property (nonatomic, copy) NSString *orderTime;
 
+@property (nonatomic, copy) NSString *orderTimeStart;
+
+@property (nonatomic, copy) NSString *orderTimeEnd;
+
 @property (nonatomic, copy) NSString *operator;
 
 @property (nonatomic, copy) NSString *orderApplyProgress;
