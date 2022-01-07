@@ -21,7 +21,10 @@
 #import "OrderInstallationTCell.h"
 #import "GiftTitleTCell.h"
 #import "OrderOperationSuccessVC.h"
+#import "XWOrderDetailDefaultCell.h"
 
+#import "xw_DeliveryInfoVC.h"
+#import "XwOrderDetailVC.h"
 @interface OrderDetailVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
@@ -80,7 +83,7 @@
     [self.tableview registerNib:[UINib nibWithNibName:@"OrderInstallationTCell" bundle:nil] forCellReuseIdentifier:@"OrderInstallationTCell"];
     [self.tableview registerNib:[UINib nibWithNibName:@"GiftTitleTCell" bundle:nil] forCellReuseIdentifier:@"GiftTitleTCell"];
     
-    
+    [self.tableview registerClass:[XWOrderDetailDefaultCell class] forCellReuseIdentifier:@"XWOrderDetailDefaultCell"];
     
 }
 
@@ -128,7 +131,7 @@
     WEAKSELF
     NSMutableArray *dataArr = self.floorsAarr[indexPath.section];
     CommonTVDataModel *model = dataArr[indexPath.row];
-    
+    NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 5:4;
     if ([model.cellIdentify isEqualToString:KOrderHeaderTCell]) {
         OrderHeaderTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderHeaderTCell" forIndexPath:indexPath];
         [cell showDataWithOrderDetailModel:self.dataModel];
@@ -148,7 +151,7 @@
     }
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsTCell])
     {
-        NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 3:2;
+        
         CommonMealProdutcModel *goodsModel = self.goodsList[indexPath.section - goodsIndex];
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
         [cell showDataWithCommonMealProdutcModel:goodsModel AtIndex:indexPath.section];
@@ -159,7 +162,6 @@
     }
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsTCellForGift])
     {
-        NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 3:2;
         CommonMealProdutcModel *goodsModel = self.giftGoodsList[indexPath.section - goodsIndex -self.goodsList.count - 1];
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
         [cell showDataWithCommonMealProdutcModelForGift:goodsModel AtIndex:indexPath.section];
@@ -170,7 +172,6 @@
     }
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsDarkTCell])
     {
-        NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 3:2;
         CommonMealProdutcModel *goodsModel = self.goodsList[indexPath.section - goodsIndex];
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
         [cell showDataWithCommonProdutcModelForSearch:goodsModel.productList[model.dataIndex]];
@@ -178,7 +179,6 @@
     }
     else if ([model.cellIdentify isEqualToString:KCommonSingleGiftGoodsDarkTCell])
     {
-        NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 3:2;
         CommonMealProdutcModel *goodsModel = self.giftGoodsList[indexPath.section - goodsIndex - self.goodsList.count - 1];
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
         [cell showDataWithCommonProdutcModelForSearch:goodsModel.productList[model.dataIndex]];
@@ -187,7 +187,6 @@
     
     else if ([model.cellIdentify isEqualToString:KOrderReturnStatusTCell])
     {
-        NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 3:2;
         CommonMealProdutcModel *goodsModel = self.goodsList[indexPath.section - goodsIndex];
         OrderReturnStatusTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderReturnStatusTCell" forIndexPath:indexPath];
         [cell showDataWithCommonMealProdutcModel:goodsModel];
@@ -195,7 +194,6 @@
     }
     else if ([model.cellIdentify isEqualToString:KOrderReturnStatusTCellForGift])
     {
-        NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 3:2;
         CommonMealProdutcModel *goodsModel = self.giftGoodsList[indexPath.section - goodsIndex - self.goodsList.count - 1];
         OrderReturnStatusTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderReturnStatusTCell" forIndexPath:indexPath];
         [cell showDataWithCommonMealProdutcModel:goodsModel];
@@ -204,7 +202,6 @@
     
     else if ([model.cellIdentify isEqualToString:KOrderReturnStatusTCellForSingle])
     {
-        NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 3:2;
         CommonMealProdutcModel *goodsModel = self.goodsList[indexPath.section - goodsIndex];
         OrderReturnStatusTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderReturnStatusTCell" forIndexPath:indexPath];
         [cell showDataWithCommonProdutcModel:goodsModel.productList[model.dataIndex]];
@@ -251,6 +248,10 @@
         WEAKSELF
         GiftTitleTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GiftTitleTCell" forIndexPath:indexPath];
         return cell;
+    } else if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
+        XWOrderDetailDefaultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XWOrderDetailDefaultCell" forIndexPath:indexPath];
+        cell.model = model.Data;
+        return cell;
     }
     
     return nil;
@@ -275,40 +276,36 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView *footerView = [[UIView alloc] init];
-//    NSMutableArray *dataArr = self.floorsAarr[section];
-//    CommonTVDataModel *model = dataArr[0];
-//    if ([model.cellIdentify isEqualToString:KCounterAddressTCell]) {
-//        footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 45);
-//        footerView.backgroundColor = AppBgWhiteColor;
-//
-//        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 5)];
-//        lineView.backgroundColor = AppBgBlueGrayColor;
-//        [footerView addSubview:lineView];
-//
-//        UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 100, 40)];
-//        [titleLab setText:@"安装进度"];
-//        titleLab.font = FONTSYS(14);
-//        [titleLab setTextColor:AppTitleBlackColor];
-//        [footerView addSubview:titleLab];
-//
-//        UILabel *statusLab = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 100, 5, 85, 40)];
-//        [statusLab setText:self.dataModel.installStatus];
-//        statusLab.textAlignment = NSTextAlignmentRight;
-//        statusLab.font = FONTSYS(14);
-//        [statusLab setTextColor:AppTitleBlackColor];
-//        [footerView addSubview:statusLab];
-//
-//        UIView *blineView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, SCREEN_WIDTH, 1)];
-//        blineView.backgroundColor = AppBgBlueGrayColor;
-//        [footerView addSubview:blineView];
-//    }
+
     return footerView;
 }
-
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSMutableArray *dataArr = self.floorsAarr[indexPath.section];
+    CommonTVDataModel *model = dataArr[indexPath.row];
+    
+    
+    if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
+        XwSystemTCellModel* tm = model.Data;
+        XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+        orderDetailVC.orderID = tm.deliverID;
+        orderDetailVC.isHide = YES;
+        
+        
+        if([tm.type isEqualToString:@"stocker"]){
+            
+            orderDetailVC.controllerType = PurchaseOrderManageVCTypeInventoryStocker;
+        } else if([tm.type isEqualToString:@"shopSelf"]){
+            orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryShopSelf;
+        }
+            
+        [self.navigationController pushViewController:orderDetailVC animated:YES];
+    }
+}
 - (void)handleGoodsShowOrHiddenDetailWith:(BOOL)isShow WithAtIndex:(NSInteger)atIndex
 {
     NSMutableArray *sectionArr = self.floorsAarr[atIndex];
-    NSInteger intervalNumber = 2;
+    NSInteger intervalNumber = 4;
     if (self.dataModel.shipAddress.length > 0) {
         intervalNumber += 1;
     }
@@ -409,7 +406,13 @@
                 if ([dataModel.code isEqualToString:@"200"]) {
                     self.isShowEmptyData = NO;
                     self.dataModel = dataModel;
+                    [self handleTableViewOrderHeader];
+                    [self handleTableViewAddress];
+                    [self handleTableViewInstall];
+                    [self handleTabProgressData];
+                    [self handleTabSendInfoData];
                     [self handleTableViewFloorsData];
+                    [self handleTabAppointmentData];
                     [self.tableview reloadData];
                 }
                 else
@@ -423,12 +426,9 @@
 }
 
 
-
 #pragma  mark -- 配置楼层信息
-- (void)handleTableViewFloorsData
-{
-    [self.floorsAarr removeAllObjects];
-    
+//订单总览
+-(void)handleTableViewOrderHeader{
     //订单总览
     NSMutableArray *orderHeaderArr = [[NSMutableArray alloc] init];
     CommonTVDataModel *orderHeaderCellModel = [[CommonTVDataModel alloc] init];
@@ -438,9 +438,9 @@
     orderHeaderCellModel.cellFooterHeight = 5;
     [orderHeaderArr addObject:orderHeaderCellModel];
     [self.floorsAarr addObject:orderHeaderArr];
-    
-    
-    //地址
+}
+////地址
+-(void)handleTableViewAddress{
     if (self.dataModel.shipAddress.length > 0) {
         NSMutableArray *addressArr = [[NSMutableArray alloc] init];
         CommonTVDataModel *addressCellModel = [[CommonTVDataModel alloc] init];
@@ -451,8 +451,9 @@
         [addressArr addObject:addressCellModel];
         [self.floorsAarr addObject:addressArr];
     }
-    
-    //安装进度
+}
+//安装进度
+-(void)handleTableViewInstall{
     if (self.dataModel.installStatus.length) {
         NSMutableArray *installationArr = [[NSMutableArray alloc] init];
         CommonTVDataModel *installationCellModel = [[CommonTVDataModel alloc] init];
@@ -462,7 +463,84 @@
         installationCellModel.cellFooterHeight = 0.01;
         [installationArr addObject:installationCellModel];
         [self.floorsAarr addObject:installationArr];
-    }    
+    }
+}
+//发货进度
+-(void)handleTabProgressData{
+//    if([self.dataModel.orderStatus isEqualToString:@"waitDeliver"]){
+//        self.dataModel.orderStatusText = @"待发货";
+//    } else if([self.dataModel.orderStatus isEqualToString:@"partDeliver"]){
+//        self.dataModel.orderStatusText = @"部分发货";
+//    }else if([self.dataModel.orderStatus isEqualToString:@"allDeliver"]){
+//        self.dataModel.orderStatusText = @"全部发货";
+//    }
+    XwSystemTCellModel* model = [XwSystemTCellModel new];
+    model.title = @"发货进度";
+    model.value = [self getOrderStatus:self.dataModel.orderStatus];
+    model.showArrow = NO;
+    NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
+    CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+    delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+    delivereModel.cellHeight = 30;
+    delivereModel.cellHeaderHeight = 0.01;
+    delivereModel.cellFooterHeight =  5;
+    delivereModel.Data = model;
+    [section4Arr addObject:delivereModel];
+    [self.floorsAarr addObject:section4Arr];
+}
+
+//发货信息
+-(void)handleTabSendInfoData{
+    XwSystemTCellModel* model = [XwSystemTCellModel new];
+    model.title = @"发货信息";
+    
+    model.showArrow = NO;
+    NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
+    CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+    delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+    delivereModel.cellHeight = 30;
+    delivereModel.cellHeaderHeight = 0.01;
+    delivereModel.cellFooterHeight =  5;
+    delivereModel.Data = model;
+    [section4Arr addObject:delivereModel];
+    
+    if (self.dataModel.sendOrderInfoList.count > 0) {
+        for (NSDictionary* dict in self.dataModel.sendOrderInfoList) {
+            
+            XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
+            tmModel.title = dict[@"sendOrderTime"];;
+            tmModel.value = [NSString stringWithFormat:@"%@ %@",[self getOrderStatus:dict[@"orderStatus"]],[self getOrderTypeName:dict[@"orderType"]]];
+            tmModel.deliverID =dict[@"sendOrderID"];
+            tmModel.showArrow = YES;
+            tmModel.type = dict[@"orderType"];
+            CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+            delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+            delivereModel.cellHeight = 30;
+            delivereModel.cellHeaderHeight = 0.01;
+            delivereModel.cellFooterHeight =  0.01;
+            delivereModel.Data = tmModel;
+            [section4Arr addObject:delivereModel];
+        }
+
+    } else {
+        XwSystemTCellModel* model = [XwSystemTCellModel new];
+        model.title = @"暂无发货信息";
+        model.showArrow = NO;
+        CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+        delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+        delivereModel.cellHeight = 30;
+        delivereModel.cellHeaderHeight = 0.01;
+        delivereModel.cellFooterHeight =  0.01;
+        delivereModel.Data = model;
+        [section4Arr addObject:delivereModel];
+    }
+    
+    [self.floorsAarr addObject:section4Arr];
+}
+//订单单品
+- (void)handleTableViewFloorsData
+{
+//    [self.floorsAarr removeAllObjects];
     
     //订单单品
     for (CommonProdutcModel *model in self.dataModel.orderProductList) {
@@ -655,7 +733,24 @@
     [self.floorsAarr addObject:section6Arr];
     
 }
-
+//
+//自提预约时间
+-(void)handleTabAppointmentData{
+    
+    XwSystemTCellModel* model = [XwSystemTCellModel new];
+    model.title = @"自提预约时间：";
+    model.value = self.dataModel.appointmentDate;
+    model.showArrow = NO;
+    NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
+    CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+    delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+    delivereModel.cellHeight = 40;
+    delivereModel.cellHeaderHeight = 0.01;
+    delivereModel.cellFooterHeight =  5;
+    delivereModel.Data = model;
+    [section4Arr addObject:delivereModel];
+    [self.floorsAarr addObject:section4Arr];
+}
 
 
 /**订单详情Api*/
@@ -697,7 +792,75 @@
 }
 
 
+-(NSString*)getOrderTypeName:(NSString*)type {
+    NSString* name = @"";
+    if([type isEqualToString:@"shopSelf"]){
+        name = @"门店自提";
+    }else if([type isEqualToString:@"stocker"]){
+        name = @"总仓发货";
+    }
+    return name;
+    
+}
 
-
-
+-(NSString*)getOrderStatus:(NSString*)status{
+    NSString* orderStatus= @"";
+    if([status isEqualToString:@"all"]){
+        orderStatus = @"全部";
+    }
+    else if([status isEqualToString:@"waitSub"]){
+        orderStatus = @"待提交";
+    }
+    else if([status isEqualToString:@"wait"]){
+        orderStatus = @"待审核";
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+            orderStatus = @"待门店审核";
+        }
+    } else if([status isEqualToString:@"waitDeliver"]){
+        orderStatus = @"待发货";
+    } else if([status isEqualToString:@"waitAllocate"]){
+        orderStatus = @"待配货";
+    } else if([status isEqualToString:@"allocate"]){
+        orderStatus = @"配货中";
+    } else if([status isEqualToString:@"partAllocate"]){
+        orderStatus = @"部分配货";
+    } else if([status isEqualToString:@"allAllocate"]){
+        orderStatus = @"全部配货";
+    } else if([status isEqualToString:@"partDeliver"]){
+        orderStatus = @"部分发货";
+    }else if([status isEqualToString:@"allDeliver"]){
+        orderStatus = @"全部发货";
+    }else if([status isEqualToString:@"finish"]){
+        orderStatus = @"已完成";
+        if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
+           self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
+           self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
+           self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker||
+           self.controllerType == PurchaseOrderManageVCTypeReturn){
+            orderStatus = @"已收货";
+        }
+    }else if([status isEqualToString:@"refuse"]){
+        orderStatus = @"已拒绝";
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
+            orderStatus = @"门店已拒绝";
+        }
+    }else if([status isEqualToString:@"waitGoods"]){
+        orderStatus = @"待收货";
+    }else if([status isEqualToString:@"refuseAD"]){
+        orderStatus = @"AD已拒绝";
+    } else if([status isEqualToString:@"waitAD"]){
+        orderStatus = @"待AD审核";
+    } else if([status isEqualToString:@"stop"]){
+        orderStatus = @"已终止";
+    } else if([status isEqualToString:@"completed"]){
+        orderStatus = @"已完成";
+    } else if([status isEqualToString:@"alrea"]){
+        orderStatus = @"已发货";
+    }
+    
+    
+   
+    
+    return orderStatus;
+}
 @end

@@ -378,6 +378,7 @@ static CGFloat kMagin = 1.f;
             
             XwSubscribeTakeVC *orderDetailVC = [[XwSubscribeTakeVC alloc] init];
             orderDetailVC.orderID = self.orderID;
+            orderDetailVC.isIdentifion = YES;
             [self.navigationController pushViewController:orderDetailVC animated:YES];
            
         }

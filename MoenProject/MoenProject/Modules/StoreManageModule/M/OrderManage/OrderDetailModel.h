@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**订单创建时间*/
 @property (nonatomic, copy) NSString *createDate;
 
+/**预约时间*/
+@property (nonatomic, copy) NSString *appointmentDate;
+
 
 /**会员账户*/
 @property (nonatomic, copy) NSString *account;
@@ -132,6 +135,18 @@ NS_ASSUME_NONNULL_BEGIN
 /**订单套餐*/
 @property (nonatomic, strong) NSArray<CommonMealProdutcModel *> *orderGiftSetMealList;
 
+/**发货信息*/
+@property (nonatomic, strong) NSArray *sendOrderInfoList;
+
+/*订单状态*/
+@property (nonatomic, copy) NSString *orderStatus;
+
+/*订单状态名称*/
+@property (nonatomic, copy) NSString *orderStatusText;
+
+
+/*商品发货数量*/
+@property (nonatomic, copy) NSString *deliverCount;
 @end
 
 

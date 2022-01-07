@@ -235,6 +235,7 @@
     if (self.controllerType == PurchaseOrderManageVCTypeStockDaily||
              self.controllerType == PurchaseOrderManageVCTypeStockAdjust)
     {
+        cell.controllerType = self.controllerType;
         cell.lastModel =self.dataList[indexPath.section];
     } else {
         cell.model =self.dataList[indexPath.section];

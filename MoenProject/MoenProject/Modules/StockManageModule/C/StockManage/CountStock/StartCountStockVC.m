@@ -12,7 +12,7 @@
 #import "StoreStockVC.h"
 #import "XwLastGoodsListModel.h"
 #import "CommonGoodsModel.h"
-@interface StartCountStockVC()
+@interface StartCountStockVC()<UIPrintInteractionControllerDelegate>
 @property(nonatomic,strong)NSString* inventoryNo;
 @property(nonatomic,assign)BOOL isContinueLast;
 @property(nonatomic,strong)NSMutableArray* selectedDataArr;
@@ -102,7 +102,7 @@
         [goodsStockBtn setTitle:@"打印" forState:(UIControlStateNormal)];
         goodsStockBtn.backgroundColor = AppTitleBlueColor;
         goodsStockBtn.layer.cornerRadius = 20;
-        [goodsStockBtn addTarget:self action:@selector(printAction) forControlEvents:UIControlEventTouchDown];
+        [goodsStockBtn addTarget:self action:@selector(printAction:) forControlEvents:UIControlEventTouchDown];
         [self.view addSubview:goodsStockBtn];
         
         
@@ -142,9 +142,53 @@
     
     
 }
--(void)printAction{
-    
+-(void)printAction:(id)sender{
+    UIPrintInteractionController *printC = [UIPrintInteractionController sharedPrintController];//显示出打印的用户界面。
+    printC.delegate = self;
+    UIImage *img = [UIImage imageNamed:@"WelcomeImage2"];
+    NSData *data = [NSData dataWithData:UIImagePNGRepresentation(img)];
+ 
+    if (printC && [UIPrintInteractionController canPrintData:data]) {
+      
+      
+        UIPrintInfo *printInfo = [UIPrintInfo printInfo];//准备打印信息以预设值初始化的对象。
+        printInfo.outputType = UIPrintInfoOutputGeneral;//设置输出类型。
+        printC.showsPageRange = YES;//显示的页面范围
+          
+//        printInfo.jobName = @"willingseal";
+          
+//        printC.printInfo = printInfo;
+//        NSLog(@"printinfo-%@",printC.printInfo);
+        printC.printingItem = data;//single NSData, NSURL, UIImage, ALAsset
+//        NSLog(@"printingitem-%@",printC);
+          
+          
+        //    等待完成
+          
+        void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+        ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
+            if (!completed && error) {
+                NSLog(@"可能无法完成，因为印刷错误: %@", error);
+            }
+        };
+          
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+              
+         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:sender];//调用方法的时候，要注意参数的类型－下面presentFromBarButtonItem:的参数类型是 UIBarButtonItem..如果你是在系统的UIToolbar or UINavigationItem上放的一个打印button，就不需要转换了。
+         [printC presentFromBarButtonItem:item animated:YES completionHandler:completionHandler];//在ipad上弹出打印那个页面
+ 
+              
+        } else {
+            [printC presentAnimated:YES completionHandler:completionHandler];//在iPhone上弹出打印那个页面
+        }
+      
+ 
+    }
+          
+        
 }
+    
+
 - (void)configBaseData
 {
     self.inventoryNo = @"";

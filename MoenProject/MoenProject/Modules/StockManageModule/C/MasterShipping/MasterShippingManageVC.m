@@ -179,6 +179,12 @@
         orderStatus = @"待AD审核";
     } else if([model.orderStatus isEqualToString:@"stop"]){
         orderStatus = @"已终止";
+    } else if([model.orderStatus isEqualToString:@"stop"]){
+        orderStatus = @"已终止";
+    } else if([model.orderStatus isEqualToString:@"completed"]){
+        orderStatus = @"已完成";
+    } else if([model.orderStatus isEqualToString:@"alrea"]){
+        orderStatus = @"已发货";
     }
     UIView *headerView = [[UIView alloc] init];
     headerView.backgroundColor = AppBgWhiteColor;

@@ -192,9 +192,13 @@
         if([model.orderStatus isEqualToString: @"partDeliver"]||
            [model.orderStatus isEqualToString: @"allDeliver"]||
            [model.orderStatus isEqualToString: @"finish"]){
-            [self.goods_state setHidden:NO];
-            self.goods_state.font = [UIFont boldSystemFontOfSize:14];
-            self.goods_state.text = model.goodsStatus;
+            if(model.sendNum != 0){
+                [self.goods_state setHidden:NO];
+                
+                self.goods_state.font = [UIFont boldSystemFontOfSize:14];
+                self.goods_state.text = model.goodsStatus;
+            }
+            
         }
     } else {
         [self.goods_Price setHidden:YES];
@@ -214,7 +218,7 @@
     if(delModel.sendNum == 0){
         self.deliverCount.hidden = NO;
     }  else {
-        if(delModel.sendNum == [delModel.goodsCount integerValue]){
+        if(delModel.notSendNum == 0){
             self.deliverCount.hidden = YES;
         } else {
             self.deliverCount.hidden = NO;
@@ -304,8 +308,8 @@
         if (textField.text.length == 0) {
             textField.text = @"0";
         }
-        if ([textField.text integerValue] > [self.delModel.goodsCount integerValue]) {
-            textField.text = [NSString stringWithFormat:@"%@",self.delModel.goodsCount];
+        if ([textField.text integerValue] > self.delModel.notSendNum) {
+            textField.text = [NSString stringWithFormat:@"%ld",self.delModel.notSendNum];
             [[NSToastManager manager] showtoast:@"商品数量不能超过可发货商品数量"];
             
         }

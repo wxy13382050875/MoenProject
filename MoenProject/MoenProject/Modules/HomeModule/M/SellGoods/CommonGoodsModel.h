@@ -81,7 +81,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**最小平方数*/
 @property (nonatomic, copy) NSMutableString *minNum;
 
-
+/**商品数量*/
+@property (nonatomic, assign) NSInteger count;
 
 @end
 
@@ -161,8 +162,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL isSetMeal;
 /** 是否套餐*/
 @property (nonatomic, assign) BOOL isShowDetail;
-
-
+//：已发数量（新增）
+@property (nonatomic, assign) NSInteger deliverCount;
 @end
 
 

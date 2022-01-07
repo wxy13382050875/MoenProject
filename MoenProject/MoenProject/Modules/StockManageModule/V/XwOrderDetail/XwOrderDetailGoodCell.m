@@ -90,7 +90,7 @@
     self.goodsCode.text = model.goodsSKU;
     self.goodsName.text = model.goodsName;
     self.isShowDetail = model.isShowDetail;
-    self.goodsCount.text = [NSString stringWithFormat:@"x%@",model.goodsCount];
+    
 //    if(model.orderStatus)
 //
     if (model.controllerType == 3||
@@ -99,11 +99,15 @@
         if([model.orderStatus isEqualToString: @"partDeliver"]||
            [model.orderStatus isEqualToString: @"allDeliver"]||
            [model.orderStatus isEqualToString: @"finish"]){
-            self.goodsStatus.text = model.goodsStatus;
+            if(model.sendNum != 0){
+                self.goodsStatus.text = model.goodsStatus;
+            }
+            
         }
     }
-    
+    self.goodsCount.text = [NSString stringWithFormat:@"x%@",model.goodsCount];
     if (model.goodsPackage.goodsList.count > 0) {
+        
         [self.packView setHidden:NO];
         NSString* strPackageDes=@"";
         for (Goodslist* tmModel in model.goodsPackage.goodsList) {
@@ -113,6 +117,8 @@
     }
     else
     {
+//        self.goodsCount.text = [NSString stringWithFormat:@"x%ld",model.notSendNum];
+        
         [self.packView setHidden:YES];
     }
 
@@ -134,10 +140,11 @@
     self.goodsCode.text = delModel.goodsSKU;
     self.goodsName.text = delModel.goodsName;
     self.isShowDetail = delModel.isShowDetail;
-    self.goodsCount.text = [NSString stringWithFormat:@"x%@",delModel.goodsCount];
+    
     
 //    self.goodsStatus.text = delModel.goodsStatus;
     if (delModel.goodsPackage.goodsList.count > 0) {
+        self.goodsCount.text = [NSString stringWithFormat:@"x%@",delModel.goodsCount];
         [self.packView setHidden:NO];
         self.deliverCount.hidden = YES;
         NSString* strPackageDes=@"";
@@ -148,6 +155,7 @@
     }
     else
     {
+        self.goodsCount.text = [NSString stringWithFormat:@"x%ld",delModel.notSendNum];
         [self.packView setHidden:YES];
 //        self.deliverCount.hidden = NO;
 //        [self.deliverCount.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
@@ -158,7 +166,7 @@
         if(delModel.sendNum == 0){
             self.deliverCount.hidden = NO;
         }  else {
-            if(delModel.sendNum == [delModel.goodsCount integerValue]){
+            if(delModel.notSendNum == 0){
                 self.deliverCount.hidden = YES;
             } else {
                 self.deliverCount.hidden = NO;
@@ -259,8 +267,8 @@
         if (textField.text.length == 0) {
             textField.text = @"0";
         }
-        if ([textField.text integerValue] > [self.delModel.goodsCount integerValue]) {
-            textField.text = [NSString stringWithFormat:@"%@",self.delModel.goodsCount];
+        if ([textField.text integerValue] > self.delModel.notSendNum) {
+            textField.text = [NSString stringWithFormat:@"%ld",(long)self.delModel.notSendNum];
             [[NSToastManager manager] showtoast:@"商品数量不能超过可发货商品数量"];
             
         }

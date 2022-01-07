@@ -204,7 +204,9 @@
     NSMutableArray* array = [NSMutableArray array];
     for(Goodslist* model in self.dataList){
         NSMutableDictionary* dict =[NSMutableDictionary dictionary];
-        if(![model.goodsCountAfter isEqualToString:@""]){
+        if(![model.goodsCountAfter isEqualToString:@""]&&
+           ![model.goodsCountAfter isEqualToString:@"0"]&&
+           model.goodsCountAfter != nil){
             [dict setObject:model.goodsID forKey:@"goodsID"];
             [dict setObject:model.goodsCountAfter forKey:@"goodsCount"];
             [dict setObject:model.reason==nil?@"":model.reason forKey:@"reason"];

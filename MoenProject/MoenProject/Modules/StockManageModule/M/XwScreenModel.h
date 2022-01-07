@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *dateStart;//开始时间
 @property (nonatomic, copy) NSString *dateEnd;//开始时间
+
+@property (nonatomic, copy) NSString *type;//开始时间
 @end
 
 @interface KWOSSVDataModel:NSObject

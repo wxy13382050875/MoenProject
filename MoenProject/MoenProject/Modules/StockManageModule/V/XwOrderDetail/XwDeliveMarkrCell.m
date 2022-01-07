@@ -50,7 +50,7 @@
 }
 -(UILabel*)nameLabel{
     if(!_nameLabel){
-        _nameLabel = [UILabel labelWithText:@"录入快递单号" WithTextColor:COLOR(@"#646464") WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentLeft WithFont:14];
+        _nameLabel = [UILabel labelWithText:@"发货备注信息" WithTextColor:COLOR(@"#646464") WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentLeft WithFont:14];
         _nameLabel.font = [UIFont boldSystemFontOfSize:14];
     }
     return _nameLabel;

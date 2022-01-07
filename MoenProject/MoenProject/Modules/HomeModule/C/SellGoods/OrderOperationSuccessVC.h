@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) OrderOperationSuccessVCType controllerType;
 @property (nonatomic, copy) NSString *orderID;
+
+/**是否识别*/
+@property (nonatomic, assign) BOOL isIdentifion;
 @end
 
 NS_ASSUME_NONNULL_END

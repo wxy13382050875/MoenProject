@@ -52,7 +52,7 @@
         _textView.scrollEnabled = YES;//是否可以拖动
         _textView.autoresizingMask = UIViewAutoresizingFlexibleHeight;//自适应高度
         _textView.text =@"";
-        [_textView xw_addPlaceHolder:@"添加备注"];
+        [_textView xw_addPlaceHolder:@"审核备注"];
         _textView.xw_placeHolderTextView.textColor = COLOR(@"#AAB3BA");
         ViewBorderRadius(_textView, 5, 1, [UIColor groupTableViewBackgroundColor])
     }

@@ -250,6 +250,14 @@
     }
     KWOSSVDataModel *model = tmodel.list[indexPath.row];
     model.isSelected = YES;
+    
+    if([tmodel.className isEqualToString:@"TimeQuantum"]&&
+       ![model.itemId isEqual: @"ALL"]){
+        self.model.dateStart = @"";
+        self.model.dateEnd = @"";
+        [self.timeView resetZLTimeView];
+        
+    }
     [self.collectionView reloadData];
 }
 
@@ -261,6 +269,16 @@
     if (![endTime isEqualToString:@"结束时间"]) {
         self.model.dateEnd = endTime;
     }
+    for (XwScreenModel* model in self.dataArr) {
+        if([model.className isEqualToString:@"TimeQuantum"]){
+            for (KWOSSVDataModel *tmModel in model.list) {
+                tmModel.isSelected = NO;
+            }
+            KWOSSVDataModel *tm = model.list[0];
+            tm.isSelected = YES;
+        }
+    }
+    [self.collectionView reloadData];
     
 }
 

@@ -94,8 +94,8 @@
                 } else if ([operation.urlTag isEqualToString:Path_stores_selfSave]) {
 
                     OrderManageVC *orderManageVC = [[OrderManageVC alloc] init];
-                    orderManageVC.isIdentifion = YES;
-                    orderManageVC.customerId = [QZLUserConfig sharedInstance].customerId;
+                    orderManageVC.isIdentifion = self.isIdentifion;
+                    orderManageVC.customerId = self.customerId;
                     orderManageVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:orderManageVC animated:YES];
                 }

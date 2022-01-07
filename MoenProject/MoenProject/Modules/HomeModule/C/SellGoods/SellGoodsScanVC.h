@@ -25,6 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) SellGoodsScanVCType controllerType;
 
+//@property (nonatomic, assign)  controllerType;
+
+//购物车中的数据
+@property (nonatomic, strong) NSMutableArray *selectedDataArr;
 @end
 
 NS_ASSUME_NONNULL_END

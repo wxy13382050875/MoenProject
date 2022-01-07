@@ -242,7 +242,10 @@
                 .wEventOKFinishSet(^(id anyID, id otherData) {
                     NSLog(@"选中 %@ %@",anyID,otherData);
                     self.wishReceiveDate =[NSString stringWithFormat:@"%@-%@-%@",anyID[0],anyID[1],anyID[2]];
-                    [self.myTableView reloadData];
+                    [UIView performWithoutAnimation:^{
+                        NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:indexPath.section];
+                        [self.myTableView reloadSections:reloadSet withRowAnimation:UITableViewRowAnimationNone];
+                    }];
                 })
                 .wDateTimeTypeSet(@"yyyy年MM月dd日")
                 .wDefaultDateSet([NSDate date])

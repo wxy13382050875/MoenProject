@@ -169,7 +169,7 @@
     } else if([model.orderStatus isEqualToString:@"stop"]){
         orderStatus = @"已终止";
     } else if([model.orderStatus isEqualToString:@"problem"]){
-        orderStatus = @"问题商品";
+        orderStatus = @"问题商品修正";
     }
     UIView *headerView = [[UIView alloc] init];
     headerView.backgroundColor = AppBgWhiteColor;

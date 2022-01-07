@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface XwSubscribeTakeVC : BaseViewController
 @property(nonatomic,strong)NSString* orderID;
+@property(nonatomic,strong)NSString* customerId;
+
+/**是否识别*/
+@property (nonatomic, assign) BOOL isIdentifion;
 @end
 
 NS_ASSUME_NONNULL_END

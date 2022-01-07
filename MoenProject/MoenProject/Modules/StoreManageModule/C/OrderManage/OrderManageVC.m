@@ -16,6 +16,10 @@
 #import "OrderScreenSideslipView.h"
 #import "xw_SelectDeliveryWayVC.h"
 #import "XwSubscribeTakeVC.h"
+#import "SellGoodsScanVC.h"
+
+#import "xw_DeliveryInfoVC.h"
+#import "SearchGoodsVC.h"
 @interface OrderManageVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) CommonSearchView *searchView;
@@ -41,6 +45,12 @@
 
 @property (nonatomic, copy) NSString *dataEnd;
 
+@property (nonatomic, copy) NSString *isAppointment;
+
+@property (nonatomic, copy) NSString *orderStatus;
+ 
+
+
 @end
 
 @implementation OrderManageVC
@@ -52,7 +62,25 @@
     [self configBaseUI];
     [self configBaseData];
 }
+-(void)backBthOperate{
+    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+    BOOL isStock = NO;
+//    UIViewController* stVC = nil;
+    for (UIViewController* vc in marr) {
+        if ([vc isKindOfClass:[xw_DeliveryInfoVC class]]) {
+//            [marr removeObject:vc];
+            isStock = YES;
 
+        }
+        
+    }
+    if (isStock ) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
 - (void)configBaseUI
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
@@ -64,6 +92,9 @@
 
 - (void)configBaseData
 {
+    
+    self.orderStatus = @"";
+    self.isAppointment = @"";
     [self configPagingData];
     [[NSToastManager manager] showprogress];
     [self httpPath_orderList];
@@ -118,13 +149,14 @@
 {
     OrderManageModel *model = self.dataList[section];
     if([QZLUserConfig sharedInstance].useInventory){
-        if([model.orderStatus isEqualToString:@"waitDeliver"]||
-           [model.orderStatus isEqualToString:@"partDeliver"]||
-           [model.orderStatus isEqualToString:@"allDeliver"]){
-            return 85;
-        } else if([model.orderStatus isEqualToString:@"allDeliver"]){
-            return 45;
+        if(![self.customerId isEqualToString:@""]&&self.customerId != nil){
+            if([model.orderStatus isEqualToString:@"waitDeliver"]||
+               [model.orderStatus isEqualToString:@"partDeliver"]||
+               [model.orderStatus isEqualToString:@"allDeliver"]){
+                return 85;
+            }
         }
+        
     }
     
     return 45;
@@ -199,11 +231,14 @@
         [footerView addSubview:userLab];
     }
     
-    UILabel *infoLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, SCREEN_WIDTH - 30, 20)];
-    infoLab.font = FONTLanTingR(14);
-    infoLab.textColor = AppTitleBlackColor;
-    infoLab.textAlignment = NSTextAlignmentRight;
     
+    
+//    UILabel *infoLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, SCREEN_WIDTH - 30, 20)];
+//
+//    infoLab.textColor = AppTitleBlackColor;
+//    infoLab.textAlignment = NSTextAlignmentRight;
+    UILabel *infoLab = [UILabel labelWithText:@"" WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentRight WithFont:14];
+    infoLab.font = FONTLanTingR(14);
     
     NSString *giftGoodsCountStr = [NSString stringWithFormat:@"%@",model.giftNum];
     NSString *productNumCountStr = [NSString stringWithFormat:@"%@",model.productNum];
@@ -236,34 +271,53 @@
 
     
     [footerView addSubview:infoLab];
+    infoLab.sd_layout.rightSpaceToView(footerView, 15).topEqualToView(footerView).widthIs(250).heightIs(40);
     
     if([QZLUserConfig sharedInstance].useInventory){
+        if([model.isAppointment isEqualToString:@"true"]){
+            UILabel* AppointmentLab = [UILabel labelWithText:@"预约自提" WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentLeft WithFont:14];
+            AppointmentLab.font = FONTLanTingR(14);
+            [footerView addSubview:AppointmentLab];
+            AppointmentLab.sd_layout.leftSpaceToView(footerView, 15).topEqualToView(footerView).rightSpaceToView(infoLab, 10).heightIs(40);
+        }
+        
        
 //        waitDeliver partDeliver allDeliver
         UIButton *againBtn =[UIButton buttonWithTitie:@"再来一单" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
-            [self buttonClick:0 orderID:model.ID];
+            [self buttonClick:0 model:model];
         }];
         ViewRadius(againBtn, 5)
         UIButton *pickBtn =[UIButton buttonWithTitie:@"预约自提" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
-            [self buttonClick:2 orderID:model.ID];
+            [self buttonClick:2 model:model];
         }];
         ViewRadius(pickBtn, 5)
         UIButton *updateBtn =[UIButton buttonWithTitie:@"更新发货" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
-            [self buttonClick:1 orderID:model.ID];
+            [self buttonClick:1 model:model];
         }];
         ViewRadius(updateBtn, 5)
-        if([model.orderStatus isEqualToString:@"waitDeliver"]||
-           [model.orderStatus isEqualToString:@"partDeliver"]){
-            [footerView addSubview:againBtn];
-            [footerView addSubview:pickBtn];
-            [footerView addSubview:updateBtn];
-            updateBtn.sd_layout.rightSpaceToView(footerView, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
-            pickBtn.sd_layout.rightSpaceToView(updateBtn, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
-            againBtn.sd_layout.rightSpaceToView(pickBtn, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
-        } else if([model.orderStatus isEqualToString:@"allDeliver"]){
-            [footerView addSubview:againBtn];
-            againBtn.sd_layout.rightSpaceToView(footerView, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+        if(![self.customerId isEqualToString:@""]&&self.customerId != nil){
+            if([model.orderStatus isEqualToString:@"waitDeliver"]||
+               [model.orderStatus isEqualToString:@"partDeliver"]){
+                
+                [footerView addSubview:pickBtn];
+                [footerView addSubview:updateBtn];
+                updateBtn.sd_layout.rightSpaceToView(footerView, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+                pickBtn.sd_layout.rightSpaceToView(updateBtn, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+                if (![self.customerId isEqualToString:@""]&&self.customerId != nil) {
+                    [footerView addSubview:againBtn];
+                    againBtn.sd_layout.rightSpaceToView(pickBtn, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+                }
+                
+            } else if([model.orderStatus isEqualToString:@"allDeliver"]){
+                
+                if (![self.customerId isEqualToString:@""]&&self.customerId != nil) {
+                    [footerView addSubview:againBtn];
+                    againBtn.sd_layout.rightSpaceToView(footerView, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+                }
+                
+            }
         }
+        
     }
     
     UIView *lineView = [UIView new];
@@ -304,6 +358,12 @@
                 for (XWSelectModel* tm in model.selectList) {
                     if([tm.module isEqualToString:@"TimeQuantum"]){
                         weakSelf.selectedTimeType = tm.selectID;
+                    }
+                    if([tm.module isEqualToString:@"appointment"]){
+                        weakSelf.isAppointment = tm.selectID;
+                    }
+                    if([tm.module isEqualToString:@"State"]){
+                        weakSelf.orderStatus = tm.selectID;
                     }
                 }
                 [[NSToastManager manager] showprogress];
@@ -355,9 +415,15 @@
             }
             if ([operation.urlTag isEqualToString:Path_load]) {
                 CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
+               
+                [self.selectDataArr removeAllObjects];
                 for (CommonCategoryModel *itemModel in model.enums) {
                     if ([itemModel.className isEqualToString:@"TimeQuantum"]) {
-                        [self.selectDataArr removeAllObjects];
+                        XwScreenModel* tmModel = [XwScreenModel new];
+                        tmModel.title = @"下单时间";
+                        tmModel.className = itemModel.className;
+                        tmModel.showFooter =NO;
+                        NSMutableArray* array = [NSMutableArray array];
                         
                         for (CommonCategoryDataModel *model in itemModel.datas) {
                             KWOSSVDataModel *itemModel = [[KWOSSVDataModel alloc] init];
@@ -366,10 +432,15 @@
                             }
                             itemModel.title = model.des;
                             itemModel.itemId = model.ID;
-                            [self.selectDataArr addObject:itemModel];
+                            [array addObject:itemModel];
                         }
+                        tmModel.list = array;
+                        [self.selectDataArr addObject:tmModel];
+                    
                     }
                 }
+                [self.selectDataArr addObject:[self getAppointmentState]];
+                [self.selectDataArr addObject:[self getDeliverState]];
             }
         }
     }
@@ -407,6 +478,8 @@
     {
         [parameters setValue:@"ALL" forKey:@"type"];
     }
+    [parameters setValue:self.isAppointment forKey:@"isAppointment"];
+    [parameters setValue:self.orderStatus forKey:@"orderStatus"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     [parameters setValue:[NSNumber numberWithBool:NO] forKey:@"isReturn"];
     self.requestType = NO;
@@ -553,6 +626,12 @@
         orderStatus = @"AD已拒绝";
     } else if([status isEqualToString:@"waitAD"]){
         orderStatus = @"待AD审核";
+    } else if([status isEqualToString:@"stop"]){
+        orderStatus = @"已终止";
+    } else if([status isEqualToString:@"completed"]){
+        orderStatus = @"已完成";
+    } else if([status isEqualToString:@"alrea"]){
+        orderStatus = @"已发货";
     }
     
     
@@ -560,18 +639,71 @@
     
     return orderStatus;
 }
--(void)buttonClick:(NSInteger)type orderID:(NSString*)orderID{
+-(void)buttonClick:(NSInteger)type model:(OrderManageModel*)model{
     if(type == 1){//更新发货
         xw_SelectDeliveryWayVC *orderDetailVC = [[xw_SelectDeliveryWayVC alloc] init];
-        orderDetailVC.orderID = orderID;
+        orderDetailVC.orderID = model.ID;
         [self.navigationController pushViewController:orderDetailVC animated:YES];
     } else if(type == 2){//预约自提
         XwSubscribeTakeVC *orderDetailVC = [[XwSubscribeTakeVC alloc] init];
-        orderDetailVC.orderID = orderID;
+        orderDetailVC.orderID = model.ID;
+        orderDetailVC.customerId = self.customerId;
+        orderDetailVC.isIdentifion = self.isIdentifion;
         [self.navigationController pushViewController:orderDetailVC animated:YES];
     } else {
+        NSMutableArray* array = [NSMutableArray array];
+        if(model.orderSetMealList.count > 0){
+            
+            for (CommonGoodsModel* tm in model.orderSetMealList) {
+                tm.isSetMeal = YES;
+                tm.kGoodsCount = tm.count;
+                [array addObject:tm];
+            }
+        }
+        if(model.orderProductList.count > 0){
+            for (CommonGoodsModel* tm in model.orderProductList) {
+                tm.isSetMeal = NO;
+                tm.kGoodsCount = tm.count;
+                [array addObject:tm];
+            }
+        }
         NSLog(@"再来一单");
+        SellGoodsScanVC *sellGoodsScanVC = [[SellGoodsScanVC alloc] init];
+        sellGoodsScanVC.customerId = self.customerId;
+        sellGoodsScanVC.controllerType = SellGoodsScanVCSell;
+        sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
+        if (array.count) {
+            sellGoodsScanVC.selectedDataArr = [array mutableCopy];
+        }
+        [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
+//        SearchGoodsVC *searchGoodsVC = [[SearchGoodsVC alloc] init];
+
     }
 
+}
+-(XwScreenModel* )getDeliverState{
+    XwScreenModel* tmModel = [XwScreenModel new];
+    tmModel.className = @"State";
+    
+//    全部-all/待发货-waitDeliver/部分发货-partDeliver/全部发货-allDeliver
+    NSString* title = @"发货状态";
+    NSArray* array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"待发货",@"itemId":@"waitDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"部分发货",@"itemId":@"partDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"全部发货",@"itemId":@"allDeliver"}];
+    tmModel.title = title;
+    tmModel.list = [KWOSSVDataModel mj_objectArrayWithKeyValuesArray:array];
+    return tmModel;
+}
+-(XwScreenModel* )getAppointmentState{
+    XwScreenModel* tmModel = [XwScreenModel new];
+    tmModel.className = @"appointment";
+    
+    NSString* title = @"是否预约自提";
+    NSArray* array = @[@{@"isSelected":@(YES),@"title":@"是",@"itemId":@"true"},
+                           @{@"isSelected":@(NO),@"title":@"否",@"itemId":@"false"},];
+    tmModel.title = title;
+    tmModel.list = [KWOSSVDataModel mj_objectArrayWithKeyValuesArray:array];
+    return tmModel;
 }
 @end

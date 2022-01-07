@@ -51,7 +51,10 @@
 -(void)setModel:(XwOrderDetailModel *)model{
     if([model.progressName isEqualToString:@"总仓任务进度"]){
         self.titleLabel.text = @"订单信息";
-        self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",model.progressName,model.orderCode];
+        self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",@"订单",model.orderCode];
+    } else if([model.progressName isEqualToString:@"总仓发货"]){
+        self.titleLabel.text = @"总仓发货信息";
+        self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",@"任务",model.orderCode];
     } else {
         self.titleLabel.text = [NSString stringWithFormat:@"%@信息",model.progressName];;
         self.numberLabel.text =[NSString stringWithFormat:@"%@编号:%@",model.progressName,model.orderCode];

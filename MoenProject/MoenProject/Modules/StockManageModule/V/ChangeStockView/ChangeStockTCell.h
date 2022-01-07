@@ -11,9 +11,12 @@
 #import "XwInventoryModel.h"
 #import "XwLastGoodsListModel.h"
 #import "xWStockOrderModel.h"
+#import "PurchaseOrderManageVC.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ChangeStockTCell : BaseTableViewCell
+
+@property (nonatomic, assign) PurchaseOrderManageVCType controllerType;
 @property(nonatomic,copy)Inventorylist* model;
 @property(nonatomic,copy)Lastgoodslist* lastModel;
 @property(nonatomic,copy)Goodslist* goodsModel;

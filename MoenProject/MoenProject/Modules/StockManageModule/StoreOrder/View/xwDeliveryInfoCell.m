@@ -60,18 +60,17 @@
     [self.goodsImage sd_setImageWithURL:[NSURL URLWithString:model.goodsImg] placeholderImage:ImageNamed(@"defaultImage")];
     self.skuLabel.text = model.goodsSKU;
     self.goodsNameLabel.text = model.goodsName;
-    self.goodsPriceLabel.text = [NSString stringWithFormat:@"X%@",model.num];
+    self.goodsPriceLabel.text = [NSString stringWithFormat:@"X%@",model.notIssuedNum];
     
     if(_controllerType == DeliveryWayTypeShopSelf){
         self.titleLab.text = @"当场自提数量";
         self.ValueLabel.text = model.shopNum;
+        self.TextField.placeholder = @"请输入自提数量";
     } else {
         self.titleLab.text = @"总仓发货数量";
+        self.TextField.placeholder = @"请输入发货数量";
         self.ValueLabel.text = model.dealerNum;
     }
-    
-    self.ValueLabel.text = model.shopNum;
-    self.ValueLabel.text = model.dealerNum;
     self.statisticsLabel.text = [NSString stringWithFormat:@"未发%@个 已发%@个 总仓预约%@个",model.notIssuedNum,model.sendNum,model.appointmentNum];
     
     if (self.deliveryType == DeliveryActionTypeFirst) {
@@ -91,13 +90,33 @@
     NSLog(@"textField1 - 输入框内容改变,当前内容为: %@",textField.text);
     
     if(_controllerType == DeliveryWayTypeShopSelf){
-        if([textField.text integerValue] > [self.model.shopNum integerValue]){
-            textField.text = self.model.shopNum;
+        
+        if([self.model.notIssuedNum integerValue]> [self.model.shopNum integerValue]){
+            if([textField.text integerValue] > [self.model.shopNum integerValue]){
+                textField.text = self.model.shopNum;
+            }
+        } else {
+            if([self.model.notIssuedNum integerValue] <= 0){
+                textField.text = @"0";
+            } else if([textField.text integerValue] > [self.model.notIssuedNum integerValue]){
+                textField.text = self.model.notIssuedNum;
+            }
         }
+        
     } else {
-        if([textField.text integerValue] > [self.model.dealerNum integerValue]){
-            textField.text = self.model.dealerNum;
+       
+        if([self.model.notIssuedNum integerValue]> [self.model.dealerNum integerValue]){
+            if([textField.text integerValue] > [self.model.dealerNum integerValue]){
+                textField.text = self.model.dealerNum;
+            }
+        } else {
+            if([self.model.notIssuedNum integerValue] <= 0){
+                textField.text = @"0";
+            } else if([textField.text integerValue] > [self.model.notIssuedNum integerValue]){
+                textField.text = self.model.notIssuedNum;
+            }
         }
+        
     }
     
     self.model.inputCount =textField.text;

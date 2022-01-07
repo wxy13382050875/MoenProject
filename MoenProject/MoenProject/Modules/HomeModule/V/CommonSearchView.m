@@ -108,6 +108,10 @@
     }
     if (_viewType == CommonSearchViewTypeOrder) {
         self.input_Txt.placeholder = @"搜索订单编号";
+        self.container_view_Right.constant = 55;
+        [self.time_Select_View setHidden:NO];
+        self.time_Select_View.userInteractionEnabled = YES;
+        [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
         
     }
     if (_viewType == CommonSearchViewTypeIntention) {

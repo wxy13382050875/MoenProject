@@ -15,6 +15,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *rightTop_Lab;
 
+@property (weak, nonatomic) IBOutlet UILabel *rightBottmo_Lab;
+
 @end
 
 
@@ -63,6 +65,15 @@
         if (goodsModel.returnCount > 0) {
             [self.rightTop_Lab setHidden:NO];
             self.rightTop_Lab.text = [NSString stringWithFormat:@"已退%ld件",(long)goodsModel.returnCount];
+        }
+        else
+        {
+            [self.rightTop_Lab setHidden:YES];
+        }
+        
+        if (goodsModel.deliverCount > 0) {
+            [self.rightBottmo_Lab setHidden:NO];
+            self.rightBottmo_Lab.text = [NSString stringWithFormat:@"已发%ld件",(long)goodsModel.deliverCount];
         }
         else
         {

@@ -31,6 +31,34 @@
     
 //    [[[NSBundle mainBundle] loadNibNamed:@"ChangeStockTCell" owner:self options:nil] firstObject];
     // Initialization code
+    
+    [self.changeCountTxt.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
+        NSLog(@"4567 %@",x);
+        if(self.lastModel != nil){
+            self.lastModel.goodsCountAfter =x;
+        }
+        if(self.problemModel != nil){
+            self.problemModel.goodsCountAfter =x;
+        }
+        if(self.goodsModel != nil){
+            self.goodsModel.goodsCountAfter =x;
+        }
+       
+    }];
+    [self.ReasonTextField.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
+        NSLog(@"4567 %@",x);
+//        self.lastModel.reason =x;
+        if(self.lastModel != nil){
+            self.lastModel.reason =x;
+        }
+        if(self.problemModel != nil){
+            self.problemModel.reason =x;
+        }
+        if(self.goodsModel != nil){
+            self.goodsModel.reason =x;
+        }
+    }];
+   
 }
 
 - (void)showDataWithGoodsDetailModel:(GoodsDetailModel *)model
@@ -55,49 +83,38 @@
 }
 -(void)setLastModel:(Lastgoodslist *)lastModel{
     _lastModel = lastModel;
-//    [self.changeCountTxt addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
-    ViewBorderRadius(self.changeCountTxt, 10, 1, AppLineGrayColor)
     self.skuLabel.text = _lastModel.goodsSKU;
     self.goodsNameLabel.text = _lastModel.goodsName;
-    self.changeCountTxt.text = _lastModel.goodsCountAfter;
+    if(self.controllerType == PurchaseOrderManageVCTypeStockDaily){
+        self.changeCountTxt.text = _lastModel.goodsCountAfter;
+    } else{
+        _lastModel.goodsCountAfter = @"";
+    }
+//
     self.goodsCountLabel.text =[NSString stringWithFormat:@"x%@",_lastModel.goodsCountBefor];
     [self.goodsImage sd_setImageWithURL:[NSURL URLWithString:_lastModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
 //    self.differenceReasonLabel.text = _lastModel.reason;
     self.differenceReasonLabel.hidden = YES;
     self.ReasonTextField.text = _lastModel.reason;
-    [self.changeCountTxt.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"4567 %@",x);
-        lastModel.goodsCountAfter =x;
-    }];
-    [self.ReasonTextField.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"4567 %@",x);
-        lastModel.reason =x;
-    }];
+    
 }
 -(void)setProblemModel:(Goodslist *)problemModel{
     _problemModel = problemModel;
  
     self.skuLabel.text = _problemModel.goodsSKU;
     
-    self.changeCountTxt.text = _problemModel.goodsCountAfter;
+//    self.changeCountTxt.text = _problemModel.goodsCountAfter;
     self.goodsCountLabel.text =[NSString stringWithFormat:@"x%@",_problemModel.goodsCountBefor];
     [self.goodsImage sd_setImageWithURL:[NSURL URLWithString:_problemModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
 //    self.differenceReasonLabel.text = _lastModel.reason;
     self.differenceReasonLabel.hidden = YES;
     self.ReasonTextField.text = _problemModel.reason;
     
-    [self.changeCountTxt.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"4567 %@",x);
-        problemModel.goodsCountAfter =x;
-    }];
-    [self.ReasonTextField.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"4567 %@",x);
-        problemModel.reason =x;
-    }];
+    
 }
 -(void)setGoodsModel:(Goodslist *)goodsModel{
     _goodsModel = goodsModel;
-//    [self.changeCountTxt addTarget:self action:@selector(textFieldTextChange:) forControlEvents:UIControlEventEditingChanged];
+//
     self.skuLabel.text = _goodsModel.goodsSKU;
     
     self.changeCountTxt.text = _goodsModel.goodsCount;
@@ -106,14 +123,7 @@
     self.differenceReasonLabel.text = _goodsModel.reason;
     self.ReasonTextField.hidden = YES;
     
-    [self.changeCountTxt.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"4567 %@",x);
-        goodsModel.goodsCountAfter =x;
-    }];
-    [self.ReasonTextField.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"4567 %@",x);
-        goodsModel.reason =x;
-    }];
+    
 }
 -(void)textFieldTextChange:(UITextField *)textField{
     NSLog(@"textField1 - 输入框内容改变,当前内容为: %@",textField.text);

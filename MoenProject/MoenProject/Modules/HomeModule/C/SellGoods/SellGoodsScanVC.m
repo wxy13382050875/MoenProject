@@ -72,13 +72,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.scanViewHeight = SCREEN_WIDTH * 0.67;
-
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     [self capture];
     [self configBaseUI];
     [self configBaseData];
     
     // 键盘出现的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShown:) name:UIKeyboardWillShowNotification object:nil];
+    
     
 }
 
@@ -153,7 +155,9 @@
 
 - (void)configBaseData
 {
-    
+    if(self.selectedDataArr.count > 0){
+        [self SearchGoodsVCSelectedDelegate:_selectedDataArr];
+    }
 }
 
 - (void)navLeftBarButtonClick
@@ -744,6 +748,7 @@
 
 - (void)setIsScanViewHidden:(BOOL)isScanViewHidden
 {
+    _isScanViewHidden = isScanViewHidden;
     if (_isScanViewHidden) {
 //        [self.session startRunning];
         [UIView animateWithDuration:0.5 animations:^{
@@ -755,7 +760,7 @@
             [self.displayBtn setImage:ImageNamed(@"s_up_pull_btn_icon") forState:UIControlStateNormal];
             [self.displayBtn setTitle:NSLocalizedString(@"up_area", nil) forState:UIControlStateNormal];
         }];
-        _isScanViewHidden = isScanViewHidden;
+        
     }
     else
     {
@@ -770,9 +775,20 @@
             [self.displayBtn setImage:ImageNamed(@"c_detail_down_icon") forState:UIControlStateNormal];
             [self.displayBtn setTitle:NSLocalizedString(@"down_area", nil) forState:UIControlStateNormal];
         }];
-        _isScanViewHidden = isScanViewHidden;
+//        _isScanViewHidden = isScanViewHidden;
     }
 }
-
+//- (void)setSelectedDataArr:(NSMutableArray *)selectedDataArr
+//{
+//    _selectedDataArr = selectedDataArr;
+////    for (CommonGoodsModel *model in _selectedDataArr) {
+////        CommonGoodsModel *copyModel = [model copy];
+////        copyModel.isShowDetail = NO;
+////        [self.dataList addObject:copyModel];
+////
+////    }
+//    self.isScanViewHidden = NO;
+//    [self SearchGoodsVCSelectedDelegate:_selectedDataArr];
+//}
 
 @end

@@ -58,6 +58,8 @@
 
 @property (nonatomic, copy) NSString *sender;
 
+@property (nonatomic, copy) NSString *senderKey;
+
 @property (nonatomic, copy) NSString *ordeID;
 
 @property (nonatomic, copy) NSString *orderCode;

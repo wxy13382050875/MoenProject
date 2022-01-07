@@ -360,9 +360,10 @@
     self.requestURL = Path_stores_getOrderProductInfo;
 }
 -(void)httpPath_stores_confirmSend{
+    
     NSMutableArray* array = [NSMutableArray array];
     for (Orderproductinfodatalist* model in self.model.orderProductInfoDataList) {
-        if(model.inputCount > 0){
+        if([model.inputCount integerValue]> 0){
             NSMutableDictionary* dict = [NSMutableDictionary dictionary];
             [dict setObject:model.goodsSKU forKey:@"goodsSKU"];
             if(self.controllerType == DeliveryWayTypeStocker ){
@@ -381,21 +382,37 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
     if(array.count > 0) {
+        
+//        if(self.controllerType == DeliveryWayTypeStocker ){
+//            if([self.sendGoodsDate isEqualToString:@""]|| self.sendGoodsDate == nil){
+//                [[NSToastManager manager] showtoast:@"请选择期望收货时间"];
+//                return;
+//            }
+//
+//        }
         [parameters setValue:array forKey:@"confirmSendProductList"];
         [parameters setObject:self.sendGoodsDate forKey:@"sendGoodsDate"];
+        [parameters setValue:self.orderID forKey:@"orderID"];
+        
+        [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+        self.requestType = NO;
+        self.requestParams = parameters;
+        [[NSToastManager manager] showprogress];
+    //
+        self.requestURL = Path_stores_confirmSend;
     } else {
-        [[NSToastManager manager] showtoast:@"请输入数量"];
+        
+        
+        if(self.controllerType == DeliveryWayTypeStocker){
+            [[NSToastManager manager] showtoast:@"请输入总仓发货数量"];
+        } else {
+            [[NSToastManager manager] showtoast:@"请输入自提数量"];
+            
+        }
         return;
     }
     
-    [parameters setValue:self.orderID forKey:@"orderID"];
     
-    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
-    self.requestType = NO;
-    self.requestParams = parameters;
-    [[NSToastManager manager] showprogress];
-//
-    self.requestURL = Path_stores_confirmSend;
 }
 #pragma mark - 接口数据处理
 - (void)actionFetchRequest:(NSURLSessionDataTask *)operation result:(MoenBaseModel *)parserObject error:(NSError *)requestErr
@@ -415,7 +432,11 @@
                     self.model = [XwUpdateDeliveryModel mj_objectWithKeyValues:parserObject.datas[@"orderProductData"]];
                     [self.floorsAarr removeAllObjects];
                     [self handleTableViewFloorsData];
-                    [self handleTabWishReceivekData];
+                    
+                    if(self.controllerType != DeliveryWayTypeShopSelf){
+                        [self handleTabWishReceivekData];
+                    }
+                    
                     [self.tableView reloadData];
                 } else if ([operation.urlTag isEqualToString:Path_stores_confirmSend]) {
                     OrderManageVC *orderManageVC = [[OrderManageVC alloc] init];

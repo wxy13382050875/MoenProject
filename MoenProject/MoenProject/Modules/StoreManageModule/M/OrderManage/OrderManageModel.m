@@ -11,7 +11,7 @@
 @implementation OrderManageModel
 
 + (NSDictionary *)modelContainerPropertyGenericClass {
-    return @{@"orderItemInfos" : [OrderItemInfoModel class], @"productList" : [OrderItemInfoModel class]};
+    return @{@"orderItemInfos" : [OrderItemInfoModel class], @"productList" : [OrderItemInfoModel class], @"orderSetMealList" : [CommonGoodsModel class], @"orderProductList" : [CommonGoodsModel class]};
 }
 
 + (NSDictionary<NSString *,id> *)modelCustomPropertyMapper{

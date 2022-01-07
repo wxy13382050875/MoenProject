@@ -21,8 +21,8 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.left_Lab.font = FontBinR(14);
-    self.right_Lab.font = FontBinR(14);
+    self.left_Lab.font = [UIFont boldSystemFontOfSize:14];
+    self.right_Lab.font = [UIFont boldSystemFontOfSize:14];
     // Initialization code
 }
 

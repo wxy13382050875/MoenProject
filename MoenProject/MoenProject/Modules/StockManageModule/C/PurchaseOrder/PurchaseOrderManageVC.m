@@ -19,7 +19,7 @@
 
 #import "XwScreenModel.h"
 #import "StockSearchGoodsVC.h"
-@interface PurchaseOrderManageVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource>
+@interface PurchaseOrderManageVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource,UIPrintInteractionControllerDelegate>
 
 @property (nonatomic, strong) CommonSearchView *searchView;
 
@@ -151,7 +151,11 @@
         self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
   
         if([model.orderStatus isEqualToString:@"waitGoods"]){
-            
+            if (![model.senderKey isEqualToString:@"thisShop"]) {
+                
+            } else {
+                isShowBtn = NO;
+            }
         } else {
             isShowBtn = NO;
         }
@@ -246,25 +250,44 @@
         orderStatus = @"已发货";
     } else if([model.orderStatus isEqualToString:@"stop"]){
         orderStatus = @"已终止";
+    } else if([model.orderStatus isEqualToString:@"completed"]){
+        orderStatus = @"已完成";
+    } else if([model.orderStatus isEqualToString:@"alrea"]){
+        orderStatus = @"已发货";
     }
     UIView *headerView = [[UIView alloc] init];
     headerView.backgroundColor = AppBgWhiteColor;
-    UILabel *timeLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 200, 20)];
+    UILabel *timeLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, 30)];
     timeLab.font = FontBinB(14);
     timeLab.textColor = AppTitleBlackColor;
     timeLab.text = model.orderTime;
     [headerView addSubview:timeLab];
     
-    UILabel *orderStatusLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, SCREEN_WIDTH - 15, 20)];
+    
+    
+    
+    UILabel *orderStatusLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 15, 30)];
     orderStatusLab.font = FontBinB(14);
     orderStatusLab.textColor = AppTitleBlackColor;
     orderStatusLab.text = orderStatus;
     orderStatusLab.textAlignment = NSTextAlignmentRight;
     [headerView addSubview:orderStatusLab];
     
-    UILabel *orderLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 34, SCREEN_WIDTH - 30, 20)];
+    
+    
+    
+    UILabel *orderLab = [[UILabel alloc] initWithFrame:CGRectMake(15, 30, SCREEN_WIDTH - 30, 30)];
     orderLab.font = FONTLanTingR(14);
     orderLab.textColor = AppTitleBlackColor;
+    [headerView addSubview:orderLab];
+    
+    
+    UILabel* tagLab = [UILabel labelWithText:@"" WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:[UIColor clearColor] WithTextAlignment:NSTextAlignmentCenter WithFont:12];
+    [headerView addSubview:tagLab];
+    tagLab.sd_layout.rightSpaceToView(headerView, 15).bottomEqualToView(headerView).widthIs(30).heightIs(30);
+    ViewBorderRadius(tagLab, 15, 1, AppTitleBlackColor);
+    tagLab.hidden = YES;
+    NSString* tagText = @"";
     NSMutableAttributedString *str ;
     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask||
        self.controllerType == PurchaseOrderManageVCTypeAllocteOrder){
@@ -277,6 +300,15 @@
               self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
               self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
         str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"发货单编号: %@",model.orderID]];
+//        tagLab.hidden = NO;
+//        if([model.senderKey isEqualToString:@"thisShop"]){
+//            tagText = @"本店";
+//        } else if([model.senderKey isEqualToString:@"otherShop"]){
+//            tagText = @"他店";
+//        } else {
+//            tagText = model.senderKey;
+//        }
+//        tagLab.text = tagText;
     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
         str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"退货单编号: %@",model.orderID]];
     } else {
@@ -285,7 +317,9 @@
     
     [str addAttribute:NSFontAttributeName value:FontBinB(14) range:NSMakeRange(6, str.length - 6)];
     orderLab.attributedText = str;
-    [headerView addSubview:orderLab];
+    
+    
+    
     return headerView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -320,6 +354,7 @@
     UIButton *printBtn =[UIButton buttonWithTitie:@"打印" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
         
 //        [self buttonOperate:model];
+        [self printAction:printBtn];
     }];
     printBtn.layer.cornerRadius = 5;
     printBtn.frame = CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30);
@@ -350,7 +385,12 @@
         self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
   
         if([model.orderStatus isEqualToString:@"waitGoods"]){
-            [againBtn setTitle:@"确认收货" forState:UIControlStateNormal];
+            if (![model.senderKey isEqualToString:@"thisShop"]) {
+                [againBtn setTitle:@"确认收货" forState:UIControlStateNormal];
+            } else {
+                againBtn.hidden = YES;
+            }
+            
             
         } else {
             againBtn.hidden = YES;
@@ -398,7 +438,51 @@
     };
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
-
+-(void)printAction:(id)sender{
+    UIPrintInteractionController *printC = [UIPrintInteractionController sharedPrintController];//显示出打印的用户界面。
+    printC.delegate = self;
+    UIImage *img = [UIImage imageNamed:@"WelcomeImage2"];
+    NSData *data = [NSData dataWithData:UIImagePNGRepresentation(img)];
+ 
+    if (printC && [UIPrintInteractionController canPrintData:data]) {
+      
+      
+        UIPrintInfo *printInfo = [UIPrintInfo printInfo];//准备打印信息以预设值初始化的对象。
+        printInfo.outputType = UIPrintInfoOutputGeneral;//设置输出类型。
+        printC.showsPageRange = YES;//显示的页面范围
+          
+//        printInfo.jobName = @"willingseal";
+          
+//        printC.printInfo = printInfo;
+//        NSLog(@"printinfo-%@",printC.printInfo);
+        printC.printingItem = data;//single NSData, NSURL, UIImage, ALAsset
+//        NSLog(@"printingitem-%@",printC);
+          
+          
+        //    等待完成
+          
+        void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+        ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
+            if (!completed && error) {
+                NSLog(@"可能无法完成，因为印刷错误: %@", error);
+            }
+        };
+          
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+              
+         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:sender];//调用方法的时候，要注意参数的类型－下面presentFromBarButtonItem:的参数类型是 UIBarButtonItem..如果你是在系统的UIToolbar or UINavigationItem上放的一个打印button，就不需要转换了。
+         [printC presentFromBarButtonItem:item animated:YES completionHandler:completionHandler];//在ipad上弹出打印那个页面
+ 
+              
+        } else {
+            [printC presentAnimated:YES completionHandler:completionHandler];//在iPhone上弹出打印那个页面
+        }
+      
+ 
+    }
+          
+        
+}
 -(void)buttonOperate:(Orderlist*)model{
     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
 //        if([model.orderStatus isEqualToString:@"wait"]){
@@ -419,45 +503,47 @@
     } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
         
         NSMutableArray* selectArr = [NSMutableArray new];
+        NSString* orderID = @"";
         if([model.orderStatus isEqualToString:@"waitSub"]||
            [model.orderStatus isEqualToString:@"wait"]){
             NSLog(@"编辑");
+            orderID = model.orderID;
             
-            for (Goodslist* tm in model.goodsList) {
-                CommonGoodsModel* coModel = [CommonGoodsModel new];
-                coModel.id = tm.goodsID;
-                coModel.isShowDetail = NO;
-                coModel.isSetMeal = tm.goodsPackage!=nil?true:false;
-                coModel.code = [tm.goodsSKU mutableCopy];
-                coModel.price = [tm.goodsPrice mutableCopy];
-                coModel.name = [tm.goodsName mutableCopy];
-                coModel.photo = [tm.goodsIMG mutableCopy];
-                coModel.kGoodsCount = [tm.goodsCount integerValue];
-                if(tm.goodsPackage != nil){
-                    NSMutableArray* productList =[NSMutableArray new];
-                    for (Goodslist* packs  in tm.goodsPackage.goodsList) {
-                        CommonProdutcModel* prModel = [CommonProdutcModel new];
-                        prModel.sku = [packs.goodsSKU mutableCopy];
-                        prModel.price = [packs.goodsPrice mutableCopy];
-                        prModel.count = [packs.goodsCount integerValue];
-                        prModel.photo = [packs.goodsIMG mutableCopy];
-                        prModel.name = [packs.goodsName mutableCopy];
-                        [productList addObject:prModel];
-                    }
-                    coModel.productList = productList;
-                }
-                
-                [selectArr addObject:coModel];
-            }
         }  else {
             NSLog(@"再来一单");
+            orderID= @"";
+        }
+        for (Goodslist* tm in model.goodsList) {
+            CommonGoodsModel* coModel = [CommonGoodsModel new];
+            coModel.id = tm.goodsID;
+            coModel.isShowDetail = NO;
+            coModel.isSetMeal = tm.goodsPackage!=nil?true:false;
+            coModel.code = [tm.goodsSKU mutableCopy];
+            coModel.price = [tm.goodsPrice mutableCopy];
+            coModel.name = [tm.goodsName mutableCopy];
+            coModel.photo = [tm.goodsIMG mutableCopy];
+            coModel.kGoodsCount = [tm.goodsCount integerValue];
+            if(tm.goodsPackage != nil){
+                NSMutableArray* productList =[NSMutableArray new];
+                for (Goodslist* packs  in tm.goodsPackage.goodsList) {
+                    CommonProdutcModel* prModel = [CommonProdutcModel new];
+                    prModel.sku = [packs.goodsSKU mutableCopy];
+                    prModel.price = [packs.goodsPrice mutableCopy];
+                    prModel.count = [packs.goodsCount integerValue];
+                    prModel.photo = [packs.goodsIMG mutableCopy];
+                    prModel.name = [packs.goodsName mutableCopy];
+                    [productList addObject:prModel];
+                }
+                coModel.productList = productList;
+            }
             
+            [selectArr addObject:coModel];
         }
         StockSearchGoodsVC *sellGoodsScanVC = [[StockSearchGoodsVC alloc] init];
         sellGoodsScanVC.goodsType = model.orderType;
         sellGoodsScanVC.controllerType = SearchGoodsVCType_Stock;
         sellGoodsScanVC.selectedDataArr = selectArr;
-        sellGoodsScanVC.orderID = model.orderID;
+        sellGoodsScanVC.orderID = orderID;
         sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
     } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
@@ -877,17 +963,20 @@
                            @{@"isSelected":@(NO),@"title":@"全部发货",@"itemId":@"allDeliver"},
                            @{@"isSelected":@(NO),@"title":@"已完成",@"itemId":@"finish"}];
     } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
-              self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
-              self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
-              self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+              self.controllerType == PurchaseOrderManageVCTypeDeliveryApply){
         title = @"发货单状态";
         array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
                            @{@"isSelected":@(NO),@"title":@"待收货",@"itemId":@"waitGoods"},
                            @{@"isSelected":@(NO),@"title":@"已收货",@"itemId":@"finish"}];
-    } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+         title = @"发货单状态";
+         array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                            @{@"isSelected":@(NO),@"title":@"已发货",@"itemId":@"alrea"},
+                            @{@"isSelected":@(NO),@"title":@"已终止",@"itemId":@"stop"}];
+     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
         title = @"退仓单状态";
         array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
-                           @{@"isSelected":@(NO),@"title":@"待审核",@"itemId":@"waitSub"},
+                           @{@"isSelected":@(NO),@"title":@"待审核",@"itemId":@"wait"},
                            @{@"isSelected":@(NO),@"title":@"待发货",@"itemId":@"waitDeliver"},
                            @{@"isSelected":@(NO),@"title":@"已拒绝",@"itemId":@"refuse"},
                            @{@"isSelected":@(NO),@"title":@"待收货",@"itemId":@"waitGoods"},
