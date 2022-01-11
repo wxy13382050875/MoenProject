@@ -131,7 +131,13 @@
     WEAKSELF
     NSMutableArray *dataArr = self.floorsAarr[indexPath.section];
     CommonTVDataModel *model = dataArr[indexPath.row];
-    NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 5:4;
+    NSInteger goodsIndex;
+    if([self.dataModel.orderStatus isEqualToString:@"waitDeliver"]){
+        goodsIndex = self.dataModel.shipAddress.length > 0 ? 4:3;
+    } else {
+        goodsIndex = self.dataModel.shipAddress.length > 0 ? 5:4;
+    }
+//    NSInteger goodsIndex = self.dataModel.shipAddress.length > 0 ? 5:4;
     if ([model.cellIdentify isEqualToString:KOrderHeaderTCell]) {
         OrderHeaderTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderHeaderTCell" forIndexPath:indexPath];
         [cell showDataWithOrderDetailModel:self.dataModel];
@@ -245,7 +251,6 @@
     
     else if ([model.cellIdentify isEqualToString:KGiftTitleTCell])
     {
-        WEAKSELF
         GiftTitleTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GiftTitleTCell" forIndexPath:indexPath];
         return cell;
     } else if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
@@ -306,9 +311,16 @@
 {
     NSMutableArray *sectionArr = self.floorsAarr[atIndex];
     NSInteger intervalNumber = 4;
-    if (self.dataModel.shipAddress.length > 0) {
-        intervalNumber += 1;
+    
+    if([self.dataModel.orderStatus isEqualToString:@"waitDeliver"]){
+        intervalNumber = self.dataModel.shipAddress.length > 0 ? 4:3;
+    } else {
+        intervalNumber = self.dataModel.shipAddress.length > 0 ? 5:4;
     }
+    
+//    if (self.dataModel.shipAddress.length > 0) {
+//        intervalNumber += 1;
+//    }
     CommonMealProdutcModel *goodsModel = self.goodsList[atIndex - intervalNumber];
     if (isShow) {
         NSInteger cellDataIndex = 0;
@@ -348,9 +360,15 @@
 {
     NSMutableArray *sectionArr = self.floorsAarr[atIndex];
     NSInteger intervalNumber = 2;
-    if (self.dataModel.shipAddress.length > 0) {
-        intervalNumber += 1;
+//    if (self.dataModel.shipAddress.length > 0) {
+//        intervalNumber += 1;
+//    }
+    if([self.dataModel.orderStatus isEqualToString:@"waitDeliver"]){
+        intervalNumber = self.dataModel.shipAddress.length > 0 ? 4:3;
+    } else {
+        intervalNumber = self.dataModel.shipAddress.length > 0 ? 5:4;
     }
+    
     CommonMealProdutcModel *goodsModel = self.giftGoodsList[atIndex - intervalNumber - self.goodsList.count - 1];
     if (isShow) {
         NSInteger cellDataIndex = 0;
@@ -412,7 +430,7 @@
                     [self handleTabProgressData];
                     [self handleTabSendInfoData];
                     [self handleTableViewFloorsData];
-                    [self handleTabAppointmentData];
+//                    [self handleTabAppointmentData];
                     [self.tableview reloadData];
                 }
                 else
@@ -491,6 +509,9 @@
 
 //发货信息
 -(void)handleTabSendInfoData{
+    if([self.dataModel.orderStatus isEqualToString:@"waitDeliver"]){
+        return;
+    }
     XwSystemTCellModel* model = [XwSystemTCellModel new];
     model.title = @"发货信息";
     

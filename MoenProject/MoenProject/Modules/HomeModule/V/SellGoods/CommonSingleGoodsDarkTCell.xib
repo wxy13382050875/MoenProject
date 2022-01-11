@@ -152,6 +152,16 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWg-8d-VfM">
+                        <rect key="frame" x="16" y="113" width="176" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="CTe-nJ-8nm"/>
+                            <constraint firstAttribute="width" constant="176" id="ecs-vV-2Fv"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" systemColor="systemPinkColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" red="0.98431372549019602" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
@@ -161,11 +171,13 @@
                     <constraint firstItem="Fcb-Zb-x4q" firstAttribute="leading" secondItem="Wlw-n3-TsW" secondAttribute="trailing" constant="10" id="9Fm-7Q-IE9"/>
                     <constraint firstItem="Wlw-n3-TsW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="CfG-At-UrN"/>
                     <constraint firstAttribute="trailing" secondItem="iXz-dz-Z7M" secondAttribute="trailing" constant="15" id="GGF-sf-8X9"/>
+                    <constraint firstItem="NWg-8d-VfM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="HJi-rf-mwz"/>
                     <constraint firstItem="WeR-A3-VjL" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Nhx-uf-f3Z"/>
                     <constraint firstItem="Fcb-Zb-x4q" firstAttribute="bottom" secondItem="Wlw-n3-TsW" secondAttribute="bottom" id="NrX-J3-knZ"/>
                     <constraint firstItem="iXz-dz-Z7M" firstAttribute="leading" secondItem="Wlw-n3-TsW" secondAttribute="trailing" constant="10" id="OB9-Yb-bpY"/>
                     <constraint firstItem="WeR-A3-VjL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="R1l-5x-NFS"/>
                     <constraint firstItem="JmR-6i-ykg" firstAttribute="top" secondItem="WeR-A3-VjL" secondAttribute="bottom" constant="14" id="XI5-zQ-fgl"/>
+                    <constraint firstAttribute="bottom" secondItem="NWg-8d-VfM" secondAttribute="bottom" id="Xsl-tj-hk0"/>
                     <constraint firstItem="BVq-ik-Sfl" firstAttribute="centerY" secondItem="Fcb-Zb-x4q" secondAttribute="centerY" constant="-20" id="YcH-7U-wD4"/>
                     <constraint firstItem="ape-aF-VM6" firstAttribute="bottom" secondItem="Wlw-n3-TsW" secondAttribute="bottom" id="cNd-Tg-sSR"/>
                     <constraint firstItem="Wlw-n3-TsW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="cZ1-jx-WjV"/>
@@ -185,6 +197,7 @@
                 <outlet property="add_Btn" destination="fFA-g4-Cfc" id="m36-me-jcf"/>
                 <outlet property="count_Txt" destination="y4G-tH-xy3" id="lDq-Ix-Hk3"/>
                 <outlet property="editCountView" destination="ape-aF-VM6" id="Hnu-ak-fqV"/>
+                <outlet property="goodsPackageDes" destination="NWg-8d-VfM" id="Vaj-xB-B0u"/>
                 <outlet property="goods_Code" destination="X3a-Fg-M65" id="t38-02-lQy"/>
                 <outlet property="goods_Count" destination="BVq-ik-Sfl" id="2SI-K9-nKR"/>
                 <outlet property="goods_Img" destination="Wlw-n3-TsW" id="0iJ-u7-zVh"/>

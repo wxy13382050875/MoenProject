@@ -271,7 +271,7 @@
 
     
     [footerView addSubview:infoLab];
-    infoLab.sd_layout.rightSpaceToView(footerView, 15).topEqualToView(footerView).widthIs(250).heightIs(40);
+    infoLab.sd_layout.rightSpaceToView(footerView, 15).topEqualToView(footerView).widthIs(260).heightIs(40);
     
     if([QZLUserConfig sharedInstance].useInventory){
         if([model.isAppointment isEqualToString:@"true"]){

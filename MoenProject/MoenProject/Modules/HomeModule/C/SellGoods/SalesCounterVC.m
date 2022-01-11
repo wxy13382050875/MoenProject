@@ -1125,6 +1125,7 @@
                     [[NSToastManager manager] showtoast:NSLocalizedString(@"order_success", nil)];
                     OrderOperationSuccessVC *orderOperationSuccessVC = [[OrderOperationSuccessVC alloc] init];
                     orderOperationSuccessVC.orderID = model.ID;
+                    orderOperationSuccessVC.customerId = self.customerId;
                     orderOperationSuccessVC.controllerType = OrderOperationSuccessVCTypePlacing;
                     orderOperationSuccessVC.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:orderOperationSuccessVC animated:YES];
@@ -1157,21 +1158,23 @@
     [section1Arr addObject:addressCellModel];
     [self.floorsAarr addObject:section1Arr];
     
-    //库存参考信息
-    NSMutableArray *section2Arr = [[NSMutableArray alloc] init];
-    XwSystemTCellModel* model = [XwSystemTCellModel new];
-    model.title = @"库存参考信息";
-    model.showArrow = YES;
-
-    CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
-    delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
-    delivereModel.cellHeight = 40;
-    delivereModel.cellHeaderHeight = 0.01;
-    delivereModel.cellFooterHeight =  5;
-    delivereModel.Data = model;
-    [section2Arr addObject:delivereModel];
-    [self.floorsAarr addObject:section2Arr];
+    if ([QZLUserConfig sharedInstance].useInventory){
     
+        //库存参考信息
+        NSMutableArray *section2Arr = [[NSMutableArray alloc] init];
+        XwSystemTCellModel* model = [XwSystemTCellModel new];
+        model.title = @"库存参考信息";
+        model.showArrow = YES;
+
+        CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+        delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+        delivereModel.cellHeight = 40;
+        delivereModel.cellHeaderHeight = 0.01;
+        delivereModel.cellFooterHeight =  5;
+        delivereModel.Data = model;
+        [section2Arr addObject:delivereModel];
+        [self.floorsAarr addObject:section2Arr];
+    }
     //商品
     
     for (CommonGoodsModel *model in self.dataArr) {
@@ -1470,6 +1473,7 @@
         else
         {
             NSMutableDictionary *orderProductDic = [[NSMutableDictionary alloc] init];
+
             [orderProductDic setObject:model.id forKey:@"productId"];
             [orderProductDic setObject:[NSString stringWithFormat:@"%ld",(long)model.kGoodsCount] forKey:@"num"];
             if (model.isSpecial) {

@@ -66,6 +66,12 @@
 
 @property (nonatomic, copy) NSString *goodsType;
 
+//AD审核信息
+@property (nonatomic, copy) NSString *adRemarks;
+//门店审核信息
+@property (nonatomic, copy) NSString *shopRemarks;
+//快递单号
+@property (nonatomic, copy) NSString *expressID;
 
 @end
 

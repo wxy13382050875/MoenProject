@@ -288,6 +288,8 @@
         goodsModel.isSpecial = model.isSpecial;
         goodsModel.isSetMeal = NO;
         goodsModel.returnCount = 1;
+        goodsModel.deliverCount = model.deliverCount;
+        goodsModel.waitDeliverCount = model.waitDeliverCount;
         [self.goodsList addObject:goodsModel];
     }
     
@@ -370,6 +372,8 @@
             goodsModel.returnCount = model.returnCount;
             goodsModel.isSpecial = model.isSpecial;
             goodsModel.isSetMeal = NO;
+            goodsModel.deliverCount = model.deliverCount;
+            goodsModel.waitDeliverCount = model.deliverCount;
             [self.giftGoodsList addObject:goodsModel];
         }
         

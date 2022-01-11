@@ -120,6 +120,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL isSpecial;
 
 
+//：已发数量（新增）
+@property (nonatomic, copy) NSString *deliverCount;
+
+//：总仓预约（新增）
+@property (nonatomic, copy) NSString *waitDeliverCount;
+
 
 
 @end
@@ -163,7 +169,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否套餐*/
 @property (nonatomic, assign) BOOL isShowDetail;
 //：已发数量（新增）
-@property (nonatomic, assign) NSInteger deliverCount;
+@property (nonatomic, copy) NSString *deliverCount;
+
+//：总仓预约（新增）
+@property (nonatomic, copy) NSString *waitDeliverCount;
 @end
 
 

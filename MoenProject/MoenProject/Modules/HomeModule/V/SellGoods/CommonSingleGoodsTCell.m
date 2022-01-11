@@ -580,19 +580,35 @@
         
         [self.goodsPackageDes setHidden:YES];
         [self.goodsPackageDetailBtn setHidden:YES];
+        
+        
+        
+        if([goodsModel.waitDeliverCount integerValue] != 0 && goodsModel.waitDeliverCount != nil){
+            [self.goodsPackageDes setHidden:NO];
+            self.goodsPackageDes.textColor = [UIColor redColor];
+            self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
+            
+            if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+                [self.goodsSquare setHidden:NO];
+                self.goodsSquare.textColor = [UIColor redColor];
+                self.goodsSquare.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsSquare.text,goodsModel.deliverCount];
+            }
+            
+            NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件,可退%ld件",goodsModel.waitDeliverCount,(long)goodsModel.count]];
+            [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.count].length)];
+            self.returnCount_Lab.attributedText = tmStr;
+        } else {
+            if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+                [self.goodsSquare setHidden:NO];
+                self.goodsSquare.textColor = [UIColor redColor];
+                self.goodsSquare.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
+            }
+        }
     }
     
     
-    if([goodsModel.waitDeliverCount integerValue] != 0 && goodsModel.waitDeliverCount != nil){
-        [self.goodsSquare setHidden:NO];
-        self.goodsSquare.textColor = [UIColor redColor];
-        self.goodsSquare.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
-    }
-    if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
-        [self.goodsSquare setHidden:NO];
-        self.goodsSquare.textColor = [UIColor redColor];
-        self.goodsSquare.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
-    }
+    
+    
 }
 
 
@@ -645,12 +661,18 @@
         [self.goodsSquare setHidden:NO];
         self.goodsSquare.textColor = [UIColor redColor];
         self.goodsSquare.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
+        
+        if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+            self.goodsSquare.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsSquare.text,goodsModel.deliverCount];
+        }
+    } else {
+        if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+            [self.goodsSquare setHidden:NO];
+            self.goodsSquare.textColor = [UIColor redColor];
+            self.goodsSquare.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
+        }
     }
-    if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
-        [self.goodsSquare setHidden:NO];
-        self.goodsSquare.textColor = [UIColor redColor];
-        self.goodsSquare.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
-    }
+    
 }
 
 

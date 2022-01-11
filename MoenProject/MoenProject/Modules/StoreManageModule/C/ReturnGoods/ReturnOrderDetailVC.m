@@ -42,16 +42,36 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+//    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+//    if (marr.count > 1) {
+//        UIViewController *vc = [marr objectAtIndex:marr.count - 2];
+//        if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
+//            [marr removeObject:vc];
+//        }
+//        self.navigationController.viewControllers = marr;
+//    }
+}
+-(void)backBthOperate{
     NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
-    if (marr.count > 1) {
-        UIViewController *vc = [marr objectAtIndex:marr.count - 2];
+    BOOL isStock = NO;
+//    UIViewController* stVC = nil;
+    for (UIViewController* vc in marr) {
         if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
-            [marr removeObject:vc];
+//            [marr removeObject:vc];
+            isStock = YES;
+
         }
-        self.navigationController.viewControllers = marr;
+//        if([vc isKindOfClass:[PurchaseOrderManageVC class]]){
+//            stVC = vc;
+//        }
+    }
+    if (isStock ) {
+
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
-
 - (void)configBaseUI
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];

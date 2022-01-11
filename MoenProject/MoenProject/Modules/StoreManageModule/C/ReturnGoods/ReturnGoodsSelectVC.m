@@ -125,7 +125,6 @@
             [weakSelf handleGiftGoodsShowOrHiddenDetailWith:isShow WithAtIndex:atIndex];
         };
         return cell;
-        return cell;
     }
 
     else if ([model.cellIdentify isEqualToString:KCommonSingleGoodsDarkTCell])
@@ -208,6 +207,8 @@
         goodsModel.square = model.square;
         goodsModel.isSetMeal = NO;
         goodsModel.returnCount = 0;
+        goodsModel.deliverCount = model.deliverCount;
+        goodsModel.waitDeliverCount = model.waitDeliverCount;
         [self.goodsList addObject:goodsModel];
     }
     
@@ -273,6 +274,8 @@
         goodsModel.returnCount = model.returnCount;
         goodsModel.isSpecial = model.isSpecial;
         goodsModel.isSetMeal = NO;
+        goodsModel.deliverCount = model.deliverCount;
+        goodsModel.waitDeliverCount = model.waitDeliverCount;
         [self.giftGoodsList addObject:goodsModel];
     }
     

@@ -413,8 +413,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     NSMutableArray *dataArr = self.floorsAarr[section];
-    CommonTVDataModel *model = dataArr[0];
-    return model.cellFooterHeight;
+    if(dataArr.count > 0){
+        CommonTVDataModel *model = dataArr[0];
+        return model.cellFooterHeight;
+        
+    }
+    return 0.01;
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -805,7 +809,8 @@
                     [self handleTabMarkData:NO];
                     if(![self.dataModel.orderApplyProgress isEqualToString:@"wait"]&&
                        ![self.dataModel.orderApplyProgress isEqualToString:@"waitSub"]){
-                        [self handleTabDefInfoData:@"AD审核信息：通过"];
+                        [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+                        
                     }
                     [self.tableView reloadData];
                 }
@@ -856,7 +861,7 @@
                     [self handleTableViewFloorsData];
                     [self handleTabStatisticsData];
                     if(self.controllerType == PurchaseOrderManageVCTypeDeliveryApply){
-                        [self handleTabDefInfoData:@"快递单号：12342323425434"];
+                        [self handleTabDefInfoData:[NSString stringWithFormat:@"快递单号：%@",self.dataModel.expressID]];
                         [self handleTabMarkData:NO];
                     }
 //
@@ -915,26 +920,29 @@
                     
                     
                     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
-                        if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]){
+                        if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]||
+                           [self.dataModel.orderApplyProgress isEqualToString:@"partDeliver"]){
                             [self handleTabExpressData];
                             [self handleTabDeliveMarkData];
                         }
                         else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
                             [self handleTabAuditMarkData];
                         } else {
-                            [self handleTabDefInfoData:@"门店审核信息：xxxxxx"];
+                            [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",self.dataModel.shopRemarks]];
+                            
                             if(![self.dataModel.orderApplyProgress isEqualToString:@"waitAD"]){
-                                [self handleTabDefInfoData:@"AD审核信息：xxxxxx"];
-                                
+                                [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+
                             }
                         }
                         
                     } else {
                         if(![self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
-                            [self handleTabDefInfoData:@"门店审核信息：xxxxxx"];
+                            [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",self.dataModel.shopRemarks]];
+                            
                             if(![self.dataModel.orderApplyProgress isEqualToString:@"waitAD"]){
-                                [self handleTabDefInfoData:@"AD审核信息：xxxxxx"];
-                                
+                                [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+
                             }
                         }
                     }
@@ -987,7 +995,7 @@
 //                        }
 //                        self.orderRemarks = self.dataModel.checkRemarks;
 //                        [self handleTabMarkData:NO];
-                        [self handleTabDefInfoData:@"门店审核信息：xxxxxx"];
+                        [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",self.dataModel.shopRemarks]];
                     }
                     
                     [self.tableView reloadData];
@@ -1054,6 +1062,12 @@
                            [self handleTabAdjustInventoryData];
                            [self handleTableViewInventoryData];
                            [self handleTabInventoryStatisticsData];
+                           
+                           if(![self.dataModel.orderStatus isEqualToString:@"ing"]&&
+                              ![self.dataModel.orderStatus isEqualToString:@"wait"]){
+                               [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+                               
+                           }
                            [self.tableView reloadData];
                        }
                        else
@@ -1093,6 +1107,11 @@
                            [self handleTabAdjustInventoryData];
                            [self handleTableViewInventoryData];
                            [self handleTabInventoryStatisticsData];
+                           if(![self.dataModel.orderStatus isEqualToString:@"ing"]&&
+                              ![self.dataModel.orderStatus isEqualToString:@"wait"]){
+                               [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+                               
+                           }
                            [self.tableView reloadData];
                        }
                        else

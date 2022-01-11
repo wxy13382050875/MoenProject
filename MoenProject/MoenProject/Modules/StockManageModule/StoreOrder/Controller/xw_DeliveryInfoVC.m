@@ -12,6 +12,7 @@
 #import "OrderManageVC.h"
 #import "XwSystemTCellModel.h"
 #import "XWOrderDetailDefaultCell.h"
+#import "SellGoodsOrderMarkTCell.h"
 @interface xw_DeliveryInfoVC ()<UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIButton *confirmBth;
@@ -29,6 +30,8 @@
 @property (nonatomic, strong) NSMutableArray *floorsAarr;
 
 @property (nonatomic, strong) NSString *sendGoodsDate;
+
+@property (nonatomic, strong) NSString *orderRemarks;
 
 @end
 
@@ -160,6 +163,17 @@
         tmModel.value = self.sendGoodsDate;
         cell.model = tmModel;
         return cell;
+    } else if ([model.cellIdentify isEqualToString:KSellGoodsOrderMarkTCell])
+    {
+        SellGoodsOrderMarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SellGoodsOrderMarkTCell" forIndexPath:indexPath];
+        UITextView* textview = (UITextView*)[self.view viewWithTag:1001];
+        [textview xw_addPlaceHolder:@"添加备注"];
+//        cell.defModel = model.Data;
+        cell.orderMarkBlock = ^(NSString *text) {
+            self.orderRemarks = text;
+        };
+        
+        return cell;
     }
     return nil;
     
@@ -205,6 +219,9 @@
         kRegistCell(_tableView,@"xwDeliveryInfoCell",@"xwDeliveryInfoCell")
 //        kRegistCell(_tableView,@"XWOrderDetailDefaultCell",@"XWOrderDetailDefaultCell")
         [_tableView registerClass:[XWOrderDetailDefaultCell class] forCellReuseIdentifier:@"XWOrderDetailDefaultCell"];
+        
+        
+        [_tableView registerNib:[UINib nibWithNibName:@"SellGoodsOrderMarkTCell" bundle:nil] forCellReuseIdentifier:@"SellGoodsOrderMarkTCell"];
     }
     return _tableView;
 }
@@ -393,6 +410,7 @@
         [parameters setValue:array forKey:@"confirmSendProductList"];
         [parameters setObject:self.sendGoodsDate forKey:@"sendGoodsDate"];
         [parameters setValue:self.orderID forKey:@"orderID"];
+        [parameters setValue:self.orderRemarks forKey:@"remarks"];
         
         [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
         self.requestType = NO;
@@ -435,6 +453,7 @@
                     
                     if(self.controllerType != DeliveryWayTypeShopSelf){
                         [self handleTabWishReceivekData];
+                        [self handleTabMarkData];
                     }
                     
                     [self.tableView reloadData];
@@ -473,13 +492,6 @@
         [self.floorsAarr addObject:sectionArr];
     }
     
-    
-   
-    
-    
-    
-    
-    
 }
 //期望收货时间
 -(void)handleTabWishReceivekData{
@@ -497,6 +509,35 @@
     delivereModel.Data = tmModel;
     [section4Arr addObject:delivereModel];
     [self.floorsAarr addObject:section4Arr];
+}
+//备注
+-(void)handleTabMarkData{
+    
+//    if(self.orderRemarks.length > 0){
+//        CGFloat height = [UITextView hig]
+//    }
+    
+//    CGSize size = [[NSString stringWithFormat:@"审核备注:%@",self.orderRemarks] sizeWithFont:FONT(14) Size:CGSizeMake((SCREEN_WIDTH -30 -16), 2000)];
+//    CGFloat height = 80;
+//    if(size.height  > 80){
+//        height  = size.height + 40;
+//    }
+//    NSString * msg = @"备注：";
+    
+    
+    XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
+//    tmModel.value =[self.orderRemarks isEqualToString:@""]?[NSString stringWithFormat:@"%@无",msg]:[NSString stringWithFormat:@"%@:%@",msg,self.orderRemarks];;
+    tmModel.isEdit = YES;
+    
+    NSMutableArray *section6Arr = [[NSMutableArray alloc] init];
+    CommonTVDataModel *markCellModel = [[CommonTVDataModel alloc] init];
+    markCellModel.cellIdentify = KSellGoodsOrderMarkTCell;
+    markCellModel.cellHeight = 80;
+    markCellModel.cellHeaderHeight = 0.01;
+    markCellModel.cellFooterHeight = 5;
+    markCellModel.Data =tmModel;
+    [section6Arr addObject:markCellModel];
+    [self.floorsAarr addObject:section6Arr];
 }
 #pragma mark -- Getter&Setter
 - (NSMutableArray *)floorsAarr

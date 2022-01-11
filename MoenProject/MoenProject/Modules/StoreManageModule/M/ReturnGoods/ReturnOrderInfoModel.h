@@ -94,6 +94,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *sendInfo;
 
+@property (nonatomic, copy) NSString *deliverCount;
+
+@property (nonatomic, copy) NSString *waitDeliverCount;
+
 @end
 
 
@@ -129,9 +133,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否套餐*/
 @property (nonatomic, assign) BOOL isShowDetail;
 
-/** 是否套餐*/
+/** 总仓预约数量*/
 @property (nonatomic, copy) NSString * waitDeliverCount;
-/** 是否套餐*/
+/** deliverCount*/
 @property (nonatomic, copy) NSString * deliverCount;
 
 

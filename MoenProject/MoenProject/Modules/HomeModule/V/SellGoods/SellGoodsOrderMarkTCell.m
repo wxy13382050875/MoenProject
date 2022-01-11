@@ -30,7 +30,8 @@
     [super awakeFromNib];
     self.mark_Txt.delegate = self;
     self.mark_Txt.font = FONTLanTingR(14);
-    
+    self.mark_Txt.tag = 1001;
+//    [self.mark_Txt xw_addPlaceHolder:@"添加备注"];
     self.mark_Txt.block = ^(NSString * _Nonnull text) {
         NSLog(@"%@",text);
         if (self.orderMarkBlock) {

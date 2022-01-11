@@ -27,6 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**是否识别*/
 @property (nonatomic, assign) BOOL isIdentifion;
+
+/**客户ID*/
+@property (nonatomic, copy) NSString* customerId;
+
 @end
 
 NS_ASSUME_NONNULL_END

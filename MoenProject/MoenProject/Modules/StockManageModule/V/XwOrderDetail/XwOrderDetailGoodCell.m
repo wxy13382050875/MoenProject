@@ -143,8 +143,9 @@
     
     
 //    self.goodsStatus.text = delModel.goodsStatus;
+    self.goodsCount.text = [NSString stringWithFormat:@"x%@",delModel.goodsCount];
     if (delModel.goodsPackage.goodsList.count > 0) {
-        self.goodsCount.text = [NSString stringWithFormat:@"x%@",delModel.goodsCount];
+        
         [self.packView setHidden:NO];
         self.deliverCount.hidden = YES;
         NSString* strPackageDes=@"";
@@ -155,7 +156,7 @@
     }
     else
     {
-        self.goodsCount.text = [NSString stringWithFormat:@"x%ld",delModel.notSendNum];
+//        self.goodsCount.text = [NSString stringWithFormat:@"x%ld",delModel.notSendNum];
         [self.packView setHidden:YES];
 //        self.deliverCount.hidden = NO;
 //        [self.deliverCount.rac_textSignal subscribeNext:^(NSString * _Nullable x) {

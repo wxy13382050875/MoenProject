@@ -179,19 +179,28 @@
 -(UIButton*)submitBtn{
     if(!_submitBtn){
         _submitBtn = [UIButton buttonWithTitie:@"确定" WithtextColor:COLOR(@"#ffffff") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
-            NSString* stockeId = @"";
-            if([self.returnAddress isEqualToString:@"stocke"]){
-                if (self.selectedModel.id.length == 0) {
-                    [[NSToastManager manager] showtoast:@"请选择总仓"];
-                    return;
-                } else {
-                    stockeId = self.selectedModel.id;
+            
+            
+            FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:@"确认要提交退货吗？确认后，将直接进行仓库入库" block:^(NSInteger buttonIndex, NSString *inputStr) {
+                if(buttonIndex == 1){
+                    NSString* stockeId = @"";
+                    if([self.returnAddress isEqualToString:@"stocke"]){
+                        if (self.selectedModel.id.length == 0) {
+                            [[NSToastManager manager] showtoast:@"请选择总仓"];
+                            return;
+                        } else {
+                            stockeId = self.selectedModel.id;
+                        }
+                    }
+                    if(self.operaBlock){
+                        self.operaBlock(self.returnAddress, stockeId);
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
-            }
-            if(self.operaBlock){
-                self.operaBlock(self.returnAddress, stockeId);
-            }
-            [self.navigationController popViewControllerAnimated:YES];
+            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+            [alert show];
+            
+            
         }];
     }
     return _submitBtn;
