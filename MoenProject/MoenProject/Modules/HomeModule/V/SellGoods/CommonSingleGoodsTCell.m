@@ -421,6 +421,8 @@
 
 - (void)showDataWithCommonMealProdutcModelForGift:(CommonMealProdutcModel *)goodsModel AtIndex:(NSInteger)atIndex
 {
+    
+    [self.goodsSquare setHidden:YES];
     [self.editCountView setHidden:YES];
     [self.returnCount_Lab setHidden:YES];
     self.isShowDetail = goodsModel.isShowDetail;
@@ -440,6 +442,7 @@
     if (goodsModel.isSetMeal) {
         self.goodsPackageDes.text = goodsModel.comboDescribe;
         [self.goodsPackageDes setHidden:NO];
+        self.goodsPackageDes.textColor = AppTitleBlackColor;
         [self.goodsPackageDetailBtn setHidden:NO];
         
         if (goodsModel.isShowDetail) {
@@ -480,10 +483,11 @@
     [self.goodsPrice setHidden:NO];
     self.goodsCount.text = [NSString stringWithFormat:@"x%ld",(long)goodsModel.count];
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:goodsModel.photo] placeholderImage:ImageNamed(@"defaultImage")];
-    
+    self.goodsPackageDes.textColor = AppTitleBlackColor;
     if (goodsModel.isSetMeal) {
         self.goodsPackageDes.text = goodsModel.comboDescribe;
         [self.goodsPackageDes setHidden:NO];
+        
         [self.goodsPackageDetailBtn setHidden:NO];
         
         if (goodsModel.isShowDetail) {
@@ -546,6 +550,7 @@
     if (goodsModel.isSetMeal) {
         self.goodsPackageDes.text = goodsModel.comboDescribe;
         [self.goodsPackageDes setHidden:NO];
+        self.goodsPackageDes.textColor = AppTitleBlackColor;
         [self.goodsPackageDetailBtn setHidden:NO];
         if (goodsModel.isShowDetail) {
             [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_up_pull_btn_icon") forState:UIControlStateNormal];
@@ -628,6 +633,7 @@
     if (goodsModel.isSetMeal) {
         self.goodsPackageDes.text = goodsModel.comboDescribe;
         [self.goodsPackageDes setHidden:NO];
+        self.goodsPackageDes.textColor = AppTitleBlackColor;
         [self.goodsPackageDetailBtn setHidden:NO];
         if (goodsModel.isShowDetail) {
             [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_up_pull_btn_icon") forState:UIControlStateNormal];
@@ -652,26 +658,28 @@
         {
             [self.goodsSquare setHidden:YES];
         }
+        
+        if([goodsModel.waitDeliverCount integerValue] != 0 && goodsModel.waitDeliverCount != nil){
+            [self.goodsPackageDes setHidden:NO];
+            self.goodsPackageDes.textColor = [UIColor redColor];
+            self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
+            
+            if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+                self.goodsPackageDes.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsPackageDes.text,goodsModel.deliverCount];
+            }
+        } else {
+            if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+                [self.goodsPackageDes setHidden:NO];
+                self.goodsPackageDes.textColor = [UIColor redColor];
+                self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
+            }
+        }
     }
     
     
 //    self.goodsSquare.text = @"";
     
-    if([goodsModel.waitDeliverCount integerValue] != 0 && goodsModel.waitDeliverCount != nil){
-        [self.goodsSquare setHidden:NO];
-        self.goodsSquare.textColor = [UIColor redColor];
-        self.goodsSquare.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
-        
-        if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
-            self.goodsSquare.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsSquare.text,goodsModel.deliverCount];
-        }
-    } else {
-        if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
-            [self.goodsSquare setHidden:NO];
-            self.goodsSquare.textColor = [UIColor redColor];
-            self.goodsSquare.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
-        }
-    }
+    
     
 }
 

@@ -193,6 +193,7 @@
 }
 - (void)showDataWithReturnOrderSingleGoodsModelForReturnAllGoodsCounter:(ReturnOrderSingleGoodsModel *)model
 {
+    [self.goodsPackageDes setHidden:YES];
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
     self.goods_Code.text = model.sku;
     self.goods_Name.text = model.name;
@@ -203,21 +204,18 @@
     [self.goods_state setHidden:YES];
     self.goods_state.font = [UIFont boldSystemFontOfSize:14];
     if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
-            [self.goods_state setHidden:NO];
-            self.goods_state.textColor = [UIColor redColor];
-            self.goods_state.text = [NSString stringWithFormat:@"总仓预约%@件",model.waitDeliverCount];
+            [self.goodsPackageDes setHidden:NO];
+            self.goodsPackageDes.textColor = [UIColor redColor];
+            self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",model.waitDeliverCount];
             if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
-                self.goods_state.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goods_state.text,model.deliverCount];
+                self.goodsPackageDes.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsPackageDes.text,model.deliverCount];
             }
-//            NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件,可退%ld件",model.waitDeliverCount,(long)model.count]];
-//            [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.count].length)];
-//            self.returnCount_Lab.attributedText = tmStr;
         } else {
             if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
-                [self.goods_state setHidden:NO];
-                self.goods_state.textColor = [UIColor redColor];
-                self.goods_state.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
-            }
+                [self.goodsPackageDes setHidden:NO];
+                self.goodsPackageDes.textColor = [UIColor redColor];
+                self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
+            } 
         }
     
 }

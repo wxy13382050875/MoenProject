@@ -206,7 +206,7 @@
         goodsModel.isSpecial = model.isSpecial;
         goodsModel.square = model.square;
         goodsModel.isSetMeal = NO;
-        goodsModel.returnCount = 0;
+        goodsModel.returnCount = model.returnCount;
         goodsModel.deliverCount = model.deliverCount;
         goodsModel.waitDeliverCount = model.waitDeliverCount;
         [self.goodsList addObject:goodsModel];
@@ -227,7 +227,7 @@
             CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
             cellModel.cellIdentify = KCommonSingleGoodsDarkTCell;
             cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
-            singleModel.returnCount = 0;
+//            singleModel.returnCount = 0;
             [sectionArr addObject:cellModel];
         }
         model.isShowDetail = YES;
@@ -256,7 +256,16 @@
         //当前商品的Cell
         CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
         cellModel.cellIdentify = KCommonSingleGoodsTCellForGift;
-        cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
+        
+        if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
+            cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
+        } else {
+            if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+                cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
+            } else {
+                cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
+                }
+            }
         cellModel.cellHeaderHeight = 0.01;
         cellModel.cellFooterHeight = 5;
         [sectionArr addObject:cellModel];
@@ -340,7 +349,16 @@
         for (CommonProdutcModel *model in goodsModel.productList) {
             CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
             cellModel.cellIdentify = KCommonSingleGiftGoodsDarkTCell;
-            cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
+            if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
+                cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
+            } else {
+                if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+                    cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
+                } else {
+                    cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
+                }
+            }
+//            cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
             [sectionArr addObject:cellModel];
         }
         goodsModel.isShowDetail = YES;

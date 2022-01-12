@@ -263,7 +263,17 @@
         //当前商品的Cell
         CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
         cellModel.cellIdentify = KCommonSingleGoodsTCell;
-        cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
+        
+        if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
+            cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
+        } else {
+            if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+                cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
+            } else {
+                cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
+                }
+            }
+        
         cellModel.cellHeaderHeight = 0.01;
         cellModel.cellFooterHeight = 5;
         [sectionArr addObject:cellModel];
@@ -310,7 +320,18 @@
             itemModel.actualRefundAmount = itemModel.refundAmount;
             CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
             cellModel.cellIdentify = KCommonSingleGoodsDarkTCell;
-            cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
+            if([itemModel.waitDeliverCount integerValue] != 0 && itemModel.waitDeliverCount != nil)
+            {
+                cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
+            } else {
+                if([itemModel.deliverCount integerValue] != 0 && itemModel.deliverCount != nil){
+                    cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
+                } else {
+                    cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
+                }
+            }
+            
+//            cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
             [sectionArr addObject:cellModel];
             
             //当前填写实退金额的Cell
@@ -348,6 +369,15 @@
             CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
             cellModel.cellIdentify = KCommonSingleGoodsTCellForGift;
             cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
+            if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
+                cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
+            } else {
+                if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+                    cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
+                } else {
+                    cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
+                    }
+                }
             cellModel.cellHeaderHeight = 0.01;
             cellModel.cellFooterHeight = 5;
             [sectionArr addObject:cellModel];
@@ -454,7 +484,16 @@
 //            model.actualRefundAmount = model.refundAmount;
             CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
             cellModel.cellIdentify = KCommonSingleGoodsDarkTCell;
-            cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
+            
+            if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
+                cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
+            } else {
+                if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+                    cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
+                } else {
+                    cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
+                }
+            }
             [sectionArr addObject:cellModel];
             
             //当前填写实退金额的Cell
@@ -489,6 +528,16 @@
             CommonTVDataModel *cellModel = [[CommonTVDataModel alloc] init];
             cellModel.cellIdentify = KCommonSingleGiftGoodsDarkTCell;
             cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
+            
+            if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
+                            cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
+                        } else {
+                            if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+                                cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
+                            } else {
+                                cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
+                                }
+                            }
             [sectionArr addObject:cellModel];
             
 //            //当前填写实退金额的Cell

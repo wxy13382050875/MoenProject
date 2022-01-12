@@ -288,9 +288,9 @@
     
     NSMutableArray *dataArr = self.floorsAarr[indexPath.section];
     CommonTVDataModel *model = dataArr[indexPath.row];
+    XwSystemTCellModel* tm = model.Data;
     
-    
-    if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
+    if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]&& ![tm.title isEqualToString:@"发货进度"]){
         XwSystemTCellModel* tm = model.Data;
         XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
         orderDetailVC.orderID = tm.deliverID;
@@ -530,7 +530,7 @@
             
             XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
             tmModel.title = dict[@"sendOrderTime"];;
-            tmModel.value = [NSString stringWithFormat:@"%@ %@",[self getOrderStatus:dict[@"orderStatus"]],[self getOrderTypeName:dict[@"orderType"]]];
+            tmModel.value = [NSString stringWithFormat:@"%@ %@",[self getOrderTypeName:dict[@"orderType"]],[self getOrderStatus:dict[@"orderStatus"]]];
             tmModel.deliverID =dict[@"sendOrderID"];
             tmModel.showArrow = YES;
             tmModel.type = dict[@"orderType"];
@@ -580,7 +580,7 @@
             returnStatusCellModel.cellHeight = KOrderReturnStatusTCellDHeight;
             [sectionArr addObject:returnStatusCellModel];
         }
-        else if (model.codePu.length > 0 || model.addPrice.length > 0 || model.returnCount > 0)
+        else if (model.codePu.length > 0 || model.addPrice.length > 0 || model.returnCount > 0|| [model.deliverCount integerValue]> 0)
         {
             CommonTVDataModel *returnStatusCellModel = [[CommonTVDataModel alloc] init];
             returnStatusCellModel.cellIdentify = KOrderReturnStatusTCell;
@@ -600,6 +600,7 @@
         goodsModel.codePu = model.codePu;
         goodsModel.addPrice = model.addPrice;
         goodsModel.returnCount = model.returnCount;
+        goodsModel.deliverCount = model.deliverCount;
         goodsModel.isSpecial = model.isSpecial;
         goodsModel.isSetMeal = NO;
         [self.goodsList addObject:goodsModel];
@@ -673,6 +674,7 @@
         goodsModel.codePu = model.codePu;
         goodsModel.addPrice = model.addPrice;
         goodsModel.returnCount = model.returnCount;
+        goodsModel.deliverCount = model.deliverCount;
         goodsModel.isSpecial = model.isSpecial;
         goodsModel.isSetMeal = NO;
         [self.giftGoodsList addObject:goodsModel];

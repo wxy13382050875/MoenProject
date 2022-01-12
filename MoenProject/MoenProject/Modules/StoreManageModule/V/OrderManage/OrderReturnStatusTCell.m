@@ -71,9 +71,9 @@
             [self.rightTop_Lab setHidden:YES];
         }
         
-        if (goodsModel.deliverCount > 0) {
+        if ([goodsModel.deliverCount integerValue] > 0) {
             [self.rightBottmo_Lab setHidden:NO];
-            self.rightBottmo_Lab.text = [NSString stringWithFormat:@"已发%ld件",(long)goodsModel.deliverCount];
+            self.rightBottmo_Lab.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
         }
         else
         {
@@ -84,9 +84,17 @@
     {
         [self.leftTop_Lab setHidden:YES];
         [self.leftBottom_Lab setHidden:YES];
-        if (goodsModel.returnCount > 0) {
+        if (goodsModel.returnCount > 0||[goodsModel.deliverCount integerValue] > 0) {
             [self.rightTop_Lab setHidden:NO];
-            self.rightTop_Lab.text = [NSString stringWithFormat:@"已退%ld件",(long)goodsModel.returnCount];
+            if([goodsModel.deliverCount integerValue] > 0){
+                self.rightTop_Lab.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
+                if(goodsModel.returnCount > 0){
+                    self.rightTop_Lab.text = [NSString stringWithFormat:@"%@ 已退%ld件",self.rightTop_Lab.text,(long)goodsModel.returnCount];
+                }
+            } else {
+                self.rightTop_Lab.text = [NSString stringWithFormat:@" 已退%ld件",(long)goodsModel.returnCount];
+            }
+            
         }
         else
         {
