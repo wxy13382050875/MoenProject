@@ -63,6 +63,7 @@
 
 - (void)showDataWithCommonProdutcModelForSearch:(CommonProdutcModel *)model
 {
+    
     [self.editCountView setHidden:YES];
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
     self.goods_Code.text = model.sku;
@@ -71,6 +72,13 @@
     self.goods_Count.text = [NSString stringWithFormat:@"x%ld",(long)model.count];
     [self.goods_Count setHidden:NO];
     [self.returnCount_Lab setHidden:YES];
+    
+    if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+        [self.goods_state setHidden:NO];
+        self.goods_state.textColor = [UIColor redColor];
+        self.goods_state.font = [UIFont boldSystemFontOfSize:14];
+        self.goods_state.text = [NSString stringWithFormat:@" 已发%@件",model.deliverCount];
+    }
     
 }
 - (void)showDataWithStockTransfersForCommonSearch:(CommonProdutcModel *)model

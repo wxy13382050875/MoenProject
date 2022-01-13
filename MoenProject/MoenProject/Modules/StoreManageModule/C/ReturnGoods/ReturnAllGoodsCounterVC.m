@@ -403,7 +403,7 @@
             goodsModel.isSpecial = model.isSpecial;
             goodsModel.isSetMeal = NO;
             goodsModel.deliverCount = model.deliverCount;
-            goodsModel.waitDeliverCount = model.deliverCount;
+            goodsModel.waitDeliverCount = model.waitDeliverCount;
             [self.giftGoodsList addObject:goodsModel];
         }
         

@@ -55,6 +55,13 @@
         [_textView xw_addPlaceHolder:@"审核备注"];
         _textView.xw_placeHolderTextView.textColor = COLOR(@"#AAB3BA");
         ViewBorderRadius(_textView, 5, 1, [UIColor groupTableViewBackgroundColor])
+        WEAKSELF
+        _textView.block = ^(NSString * _Nonnull text) {
+            NSLog(@"%@",text);
+            if (weakSelf.inputBlock) {
+                weakSelf.inputBlock(text);
+            }
+        };
     }
     return _textView;
 }

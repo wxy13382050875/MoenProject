@@ -71,7 +71,9 @@
 //门店审核信息
 @property (nonatomic, copy) NSString *shopRemarks;
 //快递单号
-@property (nonatomic, copy) NSString *expressID;
+@property (nonatomic, copy) NSString *expressCode;
+//总仓任务详情备注
+@property (nonatomic, copy) NSString *remarks;
 
 @end
 

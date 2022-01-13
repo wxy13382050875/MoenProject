@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
+typedef void(^InputInfoBlock)(NSString* text);
 @interface XwOrderDetailAuditMarkCell : UITableViewCell
 
+@property (nonatomic, copy) InputInfoBlock inputBlock;
 @end
 
 NS_ASSUME_NONNULL_END

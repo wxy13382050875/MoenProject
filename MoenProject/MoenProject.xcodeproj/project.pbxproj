@@ -4279,7 +4279,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 72FFB0FE21AC0F0600614F14 /* Build configuration list for PBXProject "MoenProject" */;
+			buildConfigurationList = 72FFB0FE21AC0F0600614F14 /* Build configuration list for PBXProject "MoenProject9" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -5072,7 +5072,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5102,7 +5102,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5201,7 +5201,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		72FFB0FE21AC0F0600614F14 /* Build configuration list for PBXProject "MoenProject" */ = {
+		72FFB0FE21AC0F0600614F14 /* Build configuration list for PBXProject "MoenProject9" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				72FFB12D21AC0F0800614F14 /* Debug */,
