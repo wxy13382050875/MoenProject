@@ -710,6 +710,7 @@ static NSString * const Path_publishImage = @"/v1/app/second/publishImage";
 //问题商品盘库
 static NSString * const Path_getProblemProducts = @"/v1/app/second/getProblemProducts";
 
-
+//问题商品盘库
+static NSString * const Path_print = @"/v1/app/second/print";
 
 #endif /* HttpURLConfig_h */

@@ -49,6 +49,7 @@
     storeInfoVC.hidesBottomBarWhenPushed = YES;
     storeInfoVC.controllerType =  type;
     storeInfoVC.orderID = self.orderID;
+    storeInfoVC.customerId = self.customerId;
     [self.navigationController pushViewController:storeInfoVC animated:YES];
 }
 @end

@@ -71,21 +71,40 @@
     NSMutableArray* arr= [NSMutableArray array];
 //    NSLog(@"%@",[NSString DataTOjsonString:self.array]);
     for (CommonGoodsModel* model in self.array) {
-        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+        
         if(model.isSetMeal){
             for (CommonProdutcModel* tm in model.productList) {
+                NSMutableDictionary* dict = [NSMutableDictionary dictionary];
                 [dict setObject:tm.sku forKey:@"goodsSKU"];
-                [dict setObject:@(tm.count) forKey:@"num"];
+                [dict setObject:@(tm.count * model.kGoodsCount) forKey:@"num"];
                 [arr addObject:dict];
             }
         } else {
+            NSMutableDictionary* dict = [NSMutableDictionary dictionary];
             [dict setObject:model.code forKey:@"goodsSKU"];
             [dict setObject:@(model.kGoodsCount) forKey:@"num"];
             [arr addObject:dict];
         }
         
-        
-        
+    }
+    if(self.giftArray.count > 0){
+        for (CommonGoodsModel* model in self.giftArray) {
+            
+            if(model.isSetMeal){
+                for (CommonProdutcModel* tm in model.productList) {
+                    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+                    [dict setObject:tm.sku forKey:@"goodsSKU"];
+                    [dict setObject:@(tm.count * model.kGoodsCount) forKey:@"num"];
+                    [arr addObject:dict];
+                }
+            } else {
+                NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+                [dict setObject:model.code forKey:@"goodsSKU"];
+                [dict setObject:@(model.kGoodsCount) forKey:@"num"];
+                [arr addObject:dict];
+            }
+            
+        }
     }
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:arr forKey:@"goodsSkuInfos"];

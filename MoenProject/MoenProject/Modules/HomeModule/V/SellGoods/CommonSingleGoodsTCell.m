@@ -472,24 +472,91 @@
             self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
             
             if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
-                [self.goodsSquare setHidden:NO];
-                self.goodsSquare.textColor = [UIColor redColor];
-                self.goodsSquare.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsSquare.text,goodsModel.deliverCount];
+
+                self.goodsPackageDes.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsPackageDes.text,goodsModel.deliverCount];
             }
             
-            NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件,可退%ld件",goodsModel.waitDeliverCount,(long)goodsModel.count]];
-            [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.count].length)];
+            NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件,可退%ld件",(long)goodsModel.count,goodsModel.canReturnCount]];
+            [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.canReturnCount].length)];
             self.returnCount_Lab.attributedText = tmStr;
         } else {
             if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
-                [self.goodsSquare setHidden:NO];
-                self.goodsSquare.textColor = [UIColor redColor];
-                self.goodsSquare.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
+                [self.goodsPackageDes setHidden:NO];
+                self.goodsPackageDes.textColor = [UIColor redColor];
+                self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
             }
         }
     }
 }
-
+- (void)showDataWithOrderDetailForGift:(CommonMealProdutcModel *)goodsModel AtIndex:(NSInteger)atIndex
+{
+    
+    [self.goodsSquare setHidden:YES];
+    [self.editCountView setHidden:YES];
+    [self.returnCount_Lab setHidden:YES];
+    self.isShowDetail = goodsModel.isShowDetail;
+    self.atIndex = atIndex;
+    [self.goodsCount setHidden:NO];
+    self.goodsCode.text = goodsModel.code;
+    self.goodsName.text = goodsModel.comboName;
+    
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥0  ￥%@",goodsModel .price]];
+    [str addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(4, goodsModel .price.length + 1)];
+    self.goodsPrice.attributedText = str;
+//    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",goodsModel.price];
+    [self.goodsPrice setHidden:NO];
+    self.goodsCount.text = [NSString stringWithFormat:@"x%ld",(long)goodsModel.count];
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:goodsModel.photo] placeholderImage:ImageNamed(@"defaultImage")];
+    
+    if (goodsModel.isSetMeal) {
+        self.goodsPackageDes.text = goodsModel.comboDescribe;
+        [self.goodsPackageDes setHidden:NO];
+        self.goodsPackageDes.textColor = AppTitleBlackColor;
+        [self.goodsPackageDetailBtn setHidden:NO];
+        
+        if (goodsModel.isShowDetail) {
+            [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_up_pull_btn_icon") forState:UIControlStateNormal];
+        }
+        else
+        {
+            [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_show_detail_icon") forState:UIControlStateNormal];
+        }
+    }
+    else
+    {
+        if (goodsModel.isSpecial) {
+            [self.goodsSquare setHidden:NO];
+            self.goodsSquare.text = [NSString stringWithFormat:@"%@平方",goodsModel.square.length>0? goodsModel.square:@"0"];
+        }
+        else
+        {
+            [self.goodsSquare setHidden:YES];
+        }
+        [self.goodsPackageDes setHidden:YES];
+        [self.goodsPackageDetailBtn setHidden:YES];
+        
+//        if([goodsModel.waitDeliverCount integerValue] != 0 && goodsModel.waitDeliverCount != nil){
+//            [self.goodsPackageDes setHidden:NO];
+//            self.goodsPackageDes.textColor = [UIColor redColor];
+//            self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
+//
+//            if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+//
+//                self.goodsPackageDes.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsPackageDes.text,goodsModel.deliverCount];
+//            }
+//
+//            NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件,可退%ld件",(long)goodsModel.count,goodsModel.canReturnCount]];
+//            [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.canReturnCount].length)];
+//            self.returnCount_Lab.attributedText = tmStr;
+//        } else {
+//            if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
+//                [self.goodsPackageDes setHidden:NO];
+//                self.goodsPackageDes.textColor = [UIColor redColor];
+//                self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
+//            }
+//        }
+    }
+}
 
 - (void)showDataWithCommonMealProdutcModel:(CommonMealProdutcModel *)goodsModel AtIndex:(NSInteger)atIndex
 {
@@ -549,6 +616,7 @@
 
 - (void)showDataWithReturnOrderMealGoodsModel:(ReturnOrderMealGoodsModel *)goodsModel AtIndex:(NSInteger)atIndex
 {
+    
     self.cellType = CommonSingleGoodsTCellTypeReturnSelected;
     self.mealGoodsModel = goodsModel;
     
@@ -568,7 +636,8 @@
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:goodsModel.photo] placeholderImage:ImageNamed(@"defaultImage")];
     
     
-    
+    [self.editCountView setHidden:YES];
+    [self.returnCount_Lab setHidden:YES];
     if (goodsModel.isSetMeal) {
         self.goodsPackageDes.text = goodsModel.comboDescribe;
         [self.goodsPackageDes setHidden:NO];
@@ -597,8 +666,8 @@
         [self.returnCount_Lab setHidden:NO];
         
         
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"可退%ld件",(long)goodsModel.count]];
-        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.count].length)];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"可退%ld件",(long)goodsModel.canReturnCount]];
+        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.canReturnCount].length)];
         self.returnCount_Lab.attributedText = str;
         
 //        self.returnCount_Lab.text = [NSString stringWithFormat:@"可退%ld件",(long)goodsModel.count];
@@ -616,19 +685,18 @@
             self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",goodsModel.waitDeliverCount];
             
             if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
-                [self.goodsSquare setHidden:NO];
-                self.goodsSquare.textColor = [UIColor redColor];
-                self.goodsSquare.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsSquare.text,goodsModel.deliverCount];
+
+                self.goodsPackageDes.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsPackageDes.text,goodsModel.deliverCount];
             }
             
-            NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件,可退%ld件",goodsModel.waitDeliverCount,(long)goodsModel.count]];
+            NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件,可退%ld件",(long)goodsModel.count,goodsModel.canReturnCount]];
             [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.count].length)];
             self.returnCount_Lab.attributedText = tmStr;
         } else {
             if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
-                [self.goodsSquare setHidden:NO];
-                self.goodsSquare.textColor = [UIColor redColor];
-                self.goodsSquare.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
+                [self.goodsPackageDes setHidden:NO];
+                self.goodsPackageDes.textColor = [UIColor redColor];
+                self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",goodsModel.deliverCount];
             }
         }
     }
@@ -651,7 +719,7 @@
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:goodsModel.photo] placeholderImage:ImageNamed(@"defaultImage")];
     
     
-    
+    [self.goodsCount setHidden:YES];
     if (goodsModel.isSetMeal) {
         self.goodsPackageDes.text = goodsModel.comboDescribe;
         [self.goodsPackageDes setHidden:NO];
@@ -755,9 +823,9 @@
             if (textField.text.length == 0) {
                 textField.text = @"0";
             }
-            if ([textField.text integerValue] > self.mealGoodsModel.count) {
-                textField.text = [NSString stringWithFormat:@"%ld",(long)self.mealGoodsModel.count];
-                self.mealGoodsModel.returnCount = self.mealGoodsModel.count;
+            if ([textField.text integerValue] > self.mealGoodsModel.canReturnCount) {
+                textField.text = [NSString stringWithFormat:@"%ld",(long)self.mealGoodsModel.canReturnCount];
+                self.mealGoodsModel.returnCount = self.mealGoodsModel.canReturnCount;
                 [[NSToastManager manager] showtoast:@"商品数量不能超过可退商品数量"];
             }
             else
@@ -1004,7 +1072,7 @@
 - (IBAction)goodsAddAction:(UIButton *)sender {
     if (self.cellType == CommonSingleGoodsTCellTypeReturnSelected) {
         
-        if (self.mealGoodsModel.returnCount == self.mealGoodsModel.count) {
+        if (self.mealGoodsModel.returnCount == self.mealGoodsModel.canReturnCount) {
             return;
         }
         else

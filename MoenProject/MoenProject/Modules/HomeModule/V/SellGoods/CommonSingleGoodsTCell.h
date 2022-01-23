@@ -124,6 +124,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 //调库
 - (void)showDataWithStockLibraryForSell:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex;
+
+//订单详情赠品显示
+- (void)showDataWithOrderDetailForGift:(CommonMealProdutcModel *)goodsModel AtIndex:(NSInteger)atIndex;
 @end
 
 NS_ASSUME_NONNULL_END

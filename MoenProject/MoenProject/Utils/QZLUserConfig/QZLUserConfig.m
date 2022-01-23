@@ -29,7 +29,7 @@
 @dynamic customerId;
 @dynamic useInventory;
 
-
+@dynamic storeTypeKey;
 @dynamic userName;
 @dynamic isRealAuth;
 @dynamic invitaionCode;

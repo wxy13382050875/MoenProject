@@ -11,7 +11,8 @@
 }
 + (NSDictionary *)mj_objectClassInArray{
     return @{
-             @"storeList" : @"Storelist"
+             @"storeList" : @"Storelist",
+             @"productList":@"Inventorylist"
              };
 }
 

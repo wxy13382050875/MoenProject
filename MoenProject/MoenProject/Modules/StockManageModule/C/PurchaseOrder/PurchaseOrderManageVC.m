@@ -354,8 +354,9 @@
     UIButton *printBtn =[UIButton buttonWithTitie:@"打印" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
         
 //        [self buttonOperate:model];
-        [self printAction:printBtn];
+        [self printAction:model];
     }];
+    printBtn.tag = 10086;
     printBtn.layer.cornerRadius = 5;
     printBtn.frame = CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30);
     [footerView addSubview:printBtn];
@@ -370,6 +371,7 @@
         }  else if([model.orderStatus isEqualToString:@"waitDeliver"]||
                    [model.orderStatus isEqualToString:@"partDeliver"]){
             [againBtn setTitle:@"发货" forState:UIControlStateNormal];
+            printBtn.hidden = NO;
         } else {
             againBtn.hidden = YES;
         }
@@ -438,48 +440,9 @@
     };
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
--(void)printAction:(id)sender{
-    UIPrintInteractionController *printC = [UIPrintInteractionController sharedPrintController];//显示出打印的用户界面。
-    printC.delegate = self;
-    UIImage *img = [UIImage imageNamed:@"WelcomeImage2"];
-    NSData *data = [NSData dataWithData:UIImagePNGRepresentation(img)];
- 
-    if (printC && [UIPrintInteractionController canPrintData:data]) {
-      
-      
-        UIPrintInfo *printInfo = [UIPrintInfo printInfo];//准备打印信息以预设值初始化的对象。
-        printInfo.outputType = UIPrintInfoOutputGeneral;//设置输出类型。
-        printC.showsPageRange = YES;//显示的页面范围
-          
-//        printInfo.jobName = @"willingseal";
-          
-//        printC.printInfo = printInfo;
-//        NSLog(@"printinfo-%@",printC.printInfo);
-        printC.printingItem = data;//single NSData, NSURL, UIImage, ALAsset
-//        NSLog(@"printingitem-%@",printC);
-          
-          
-        //    等待完成
-          
-        void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
-        ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
-            if (!completed && error) {
-                NSLog(@"可能无法完成，因为印刷错误: %@", error);
-            }
-        };
-          
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-              
-         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:sender];//调用方法的时候，要注意参数的类型－下面presentFromBarButtonItem:的参数类型是 UIBarButtonItem..如果你是在系统的UIToolbar or UINavigationItem上放的一个打印button，就不需要转换了。
-         [printC presentFromBarButtonItem:item animated:YES completionHandler:completionHandler];//在ipad上弹出打印那个页面
- 
-              
-        } else {
-            [printC presentAnimated:YES completionHandler:completionHandler];//在iPhone上弹出打印那个页面
-        }
-      
- 
-    }
+-(void)printAction:(Orderlist*)model{
+    [[NSToastManager manager] showprogress];
+    [self httpPath_print:model];
           
         
 }
@@ -496,6 +459,14 @@
         XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
         orderDetailVC.orderID = model.orderID;
         orderDetailVC.controllerType = self.controllerType;
+        if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
+          
+            if(([model.orderStatus isEqualToString:@"waitDeliver"]||
+               [model.orderStatus isEqualToString:@"partDeliver"])){
+                orderDetailVC.isDeliver = YES;
+            }
+        }
+        
         orderDetailVC.refreshBlock = ^{
             [self reconnectNetworkRefresh];
         };
@@ -581,6 +552,51 @@
         } 
     }
 }
+
+-(void)tuneUpPrinter:(NSString*)url{
+    UIPrintInteractionController *printC = [UIPrintInteractionController sharedPrintController];//显示出打印的用户界面。
+    printC.delegate = self;
+//    UIImage *img = [UIImage imageNamed:@"WelcomeImage2"];
+//    NSData *data = [NSData dataWithData:UIImagePNGRepresentation(img)];
+ 
+    if (printC && url.length > 0) {
+      
+      
+        UIPrintInfo *printInfo = [UIPrintInfo printInfo];//准备打印信息以预设值初始化的对象。
+        printInfo.outputType = UIPrintInfoOutputGeneral;//设置输出类型。
+        printC.showsPageRange = YES;//显示的页面范围
+          
+//        printInfo.jobName = @"willingseal";
+          
+//        printC.printInfo = printInfo;
+//        NSLog(@"printinfo-%@",printC.printInfo);
+        printC.printingItem = [NSURL URLWithString:url];//single NSData, NSURL, UIImage, ALAsset
+//        NSLog(@"printingitem-%@",printC);
+          
+          
+        //    等待完成
+          
+        void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+        ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
+            if (!completed && error) {
+                NSLog(@"可能无法完成，因为印刷错误: %@", error);
+            }
+        };
+          
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
+            UIButton* sender = (UIButton*)[self.view viewWithTag:10086];
+         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:sender];//调用方法的时候，要注意参数的类型－下面presentFromBarButtonItem:的参数类型是 UIBarButtonItem..如果你是在系统的UIToolbar or UINavigationItem上放的一个打印button，就不需要转换了。
+         [printC presentFromBarButtonItem:item animated:YES completionHandler:completionHandler];//在ipad上弹出打印那个页面
+ 
+              
+        } else {
+            [printC presentAnimated:YES completionHandler:completionHandler];//在iPhone上弹出打印那个页面
+        }
+      
+ 
+    }
+}
 #pragma mark -- SearchViewCompleteDelete
 - (void)completeInputAction:(NSString *)keyStr
 {
@@ -654,8 +670,7 @@
                     }
                     [weakSelf.tableview hidenRefreshFooter];
                 }
-            }
-            if ([operation.urlTag isEqualToString:Path_stock_orderList]||
+            } else if ([operation.urlTag isEqualToString:Path_stock_orderList]||
                 [operation.urlTag isEqualToString:Path_dallot_transferOrderList]||
                 [operation.urlTag isEqualToString:Path_delivery_sendOrderList]||
                 [operation.urlTag isEqualToString:Path_refund_returnOrderList]) {
@@ -690,8 +705,7 @@
                     }
                     [weakSelf.tableview hidenRefreshFooter];
                 }
-            }
-            if ([operation.urlTag isEqualToString:Path_load]) {
+            } else if ([operation.urlTag isEqualToString:Path_load]) {
                 
                 CommonCategoryListModel *model = (CommonCategoryListModel *)parserObject;
                
@@ -721,8 +735,15 @@
                 [self.selectDataArr addObject:[self getFiltrState]];
                 
             }
-            if ([operation.urlTag isEqualToString:Path_delivery_confirmReceipt]){
+            else if ([operation.urlTag isEqualToString:Path_delivery_confirmReceipt]){
                 [self reconnectNetworkRefresh];
+            } else if([operation.urlTag isEqualToString:Path_print]){
+                if ([parserObject.code isEqualToString:@"200"]) {
+                    NSString* url = parserObject.datas[@"url"];
+                    [self tuneUpPrinter:url];
+                } else {
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
             }
         }
     }
@@ -823,8 +844,32 @@
     self.requestParams = parameters;
     self.requestURL = Path_load;
 }
-
-
+//打印
+-(void)httpPath_print:(Orderlist*)model{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    NSString* printType = @"";
+    NSString* orderCode = @"";
+    
+    if(self.controllerType ==PurchaseOrderManageVCTypeReturn){
+        printType = @"returnStocker";
+        orderCode = model.orderID;
+    } else if(self.controllerType ==PurchaseOrderManageVCTypeAllocteTask){
+        printType = @"apply";
+        orderCode = model.orderID;
+    }
+        
+        
+//    订单编号（打印调拨单 需要传调拨单号    打印退仓单需要传退仓单号）
+    [parameters setValue:orderCode forKey:@"orderCode"];
+//    returnStocker/退仓   apply/调拨   inventory/盘库
+    [parameters setValue:printType forKey:@"printType"];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    
+    self.requestURL = Path_print;
+}
 
 #pragma mark -- Getter&Setter
 
@@ -968,12 +1013,14 @@
         array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
                            @{@"isSelected":@(NO),@"title":@"待收货",@"itemId":@"waitGoods"},
                            @{@"isSelected":@(NO),@"title":@"已收货",@"itemId":@"finish"}];
-    } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-         title = @"发货单状态";
-         array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
-                            @{@"isSelected":@(NO),@"title":@"已发货",@"itemId":@"alrea"},
-                            @{@"isSelected":@(NO),@"title":@"已终止",@"itemId":@"stop"}];
-     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+    }
+//    else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
+//         title = @"发货单状态";
+//         array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+//                            @{@"isSelected":@(NO),@"title":@"已发货",@"itemId":@"alrea"},
+//                            @{@"isSelected":@(NO),@"title":@"已终止",@"itemId":@"stop"}];
+//     }
+    else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
         title = @"退仓单状态";
         array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
                            @{@"isSelected":@(NO),@"title":@"待审核",@"itemId":@"wait"},

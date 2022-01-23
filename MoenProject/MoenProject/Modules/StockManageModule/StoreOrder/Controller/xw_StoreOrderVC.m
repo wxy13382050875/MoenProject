@@ -230,6 +230,7 @@
         
         xw_DeliveryInfoVC *storeInfoVC = [xw_DeliveryInfoVC new];
         storeInfoVC.hidesBottomBarWhenPushed = YES;
+        
         [self.navigationController pushViewController:storeInfoVC animated:YES];
         
     }

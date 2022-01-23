@@ -170,7 +170,7 @@
     {
         CommonMealProdutcModel *goodsModel = self.giftGoodsList[indexPath.section - goodsIndex -self.goodsList.count - 1];
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonMealProdutcModelForGift:goodsModel AtIndex:indexPath.section];
+        [cell showDataWithOrderDetailForGift:goodsModel AtIndex:indexPath.section];
         cell.goodsShowDetailBlock = ^(BOOL isShow, NSInteger atIndex) {
             [weakSelf handleGiftGoodsShowOrHiddenDetailWith:isShow WithAtIndex:atIndex];
         };
@@ -198,14 +198,22 @@
         [cell showDataWithCommonMealProdutcModel:goodsModel];
         return cell;
     }
+    else if ([model.cellIdentify isEqualToString:KOrderReturnStatusTCellForPackageGift])
+    {
+        
+//        CommonMealProdutcModel *goodsModel = self.giftGoodsList[indexPath.section - goodsIndex - self.goodsList.count - 1];
+        OrderReturnStatusTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderReturnStatusTCell" forIndexPath:indexPath];
+        [cell showDataWithCommonProdutcModel:model.Data];
+        return cell;
+    }
     else if ([model.cellIdentify isEqualToString:KOrderReturnStatusTCellForGift])
     {
+        
         CommonMealProdutcModel *goodsModel = self.giftGoodsList[indexPath.section - goodsIndex - self.goodsList.count - 1];
         OrderReturnStatusTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderReturnStatusTCell" forIndexPath:indexPath];
         [cell showDataWithCommonMealProdutcModel:goodsModel];
         return cell;
     }
-    
     else if ([model.cellIdentify isEqualToString:KOrderReturnStatusTCellForSingle])
     {
         CommonMealProdutcModel *goodsModel = self.goodsList[indexPath.section - goodsIndex];
@@ -290,7 +298,9 @@
     CommonTVDataModel *model = dataArr[indexPath.row];
     XwSystemTCellModel* tm = model.Data;
     
-    if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]&& ![tm.title isEqualToString:@"发货进度"]){
+    if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]&&
+        ![tm.title isEqualToString:@"发货进度"]&&
+        ![tm.title isEqualToString:@"发货信息"]){
         XwSystemTCellModel* tm = model.Data;
         XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
         orderDetailVC.orderID = tm.deliverID;
@@ -331,7 +341,7 @@
             cellModel.dataIndex = cellDataIndex;
             [sectionArr addObject:cellModel];
             
-            if (model.returnCount > 0) {
+            if (model.returnCount > 0||model.deliverCount.integerValue > 0) {
                 CommonTVDataModel *returnGoodsCellModel = [[CommonTVDataModel alloc] init];
                 returnGoodsCellModel.cellIdentify = KOrderReturnStatusTCellForSingle;
                 returnGoodsCellModel.cellHeight = KOrderReturnStatusTCellHeight;
@@ -379,13 +389,14 @@
             cellModel.dataIndex = cellDataIndex;
             [sectionArr addObject:cellModel];
             
-//            if (model.returnCount > 0) {
-//                CommonTVDataModel *returnGoodsCellModel = [[CommonTVDataModel alloc] init];
-//                returnGoodsCellModel.cellIdentify = KOrderReturnStatusTCellForSingle;
-//                returnGoodsCellModel.cellHeight = KOrderReturnStatusTCellHeight;
-//                returnGoodsCellModel.dataIndex = cellDataIndex;
-//                [sectionArr addObject:returnGoodsCellModel];
-//            }
+            if (model.returnCount > 0||model.deliverCount.integerValue > 0) {
+                CommonTVDataModel *returnGoodsCellModel = [[CommonTVDataModel alloc] init];
+                returnGoodsCellModel.cellIdentify = KOrderReturnStatusTCellForPackageGift;
+                returnGoodsCellModel.cellHeight = KOrderReturnStatusTCellHeight;
+                returnGoodsCellModel.dataIndex = cellDataIndex;
+                returnGoodsCellModel.Data = model;
+                [sectionArr addObject:returnGoodsCellModel];
+            }
             cellDataIndex += 1;
         }
         goodsModel.isShowDetail = YES;
@@ -654,7 +665,7 @@
             returnStatusCellModel.cellHeight = KOrderReturnStatusTCellDHeight;
             [sectionArr addObject:returnStatusCellModel];
         }
-        else if (model.codePu.length > 0 || model.addPrice.length > 0 || model.returnCount > 0)
+        else if (model.codePu.length > 0 || model.addPrice.length > 0 || model.returnCount > 0|| [model.deliverCount integerValue]> 0)
         {
             CommonTVDataModel *returnStatusCellModel = [[CommonTVDataModel alloc] init];
             returnStatusCellModel.cellIdentify = KOrderReturnStatusTCellForGift;

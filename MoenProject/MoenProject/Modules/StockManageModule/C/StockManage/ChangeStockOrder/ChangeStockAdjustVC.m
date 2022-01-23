@@ -47,7 +47,7 @@
     
     [self.view addSubview:self.tableview];
     
-    self.title = @"调库单调整";
+    self.title = @"库存调整";
     
     [self.view addSubview:self.submitBtn];
     self.submitBtn.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
@@ -188,15 +188,14 @@
     for(Lastgoodslist* model in self.dataList){
         NSMutableDictionary* dict =[NSMutableDictionary dictionary];
         if(![model.goodsCountAfter isEqualToString:@""]&&
-           model.goodsCountAfter !=nil&&!
-           [model.goodsCountAfter isEqualToString:@"0"]){
+           model.goodsCountAfter !=nil){
             [dict setObject:model.goodsID forKey:@"goodsID"];
             [dict setObject:model.goodsCountAfter forKey:@"goodsCount"];
             [dict setObject:model.reason==nil?@"":model.reason forKey:@"reason"];
             [array addObject:dict];
         }
     }
-    if (array.count > 0) {
+    if (array.count == self.dataList.count) {
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
         [parameters setValue:self.model.inventoryNo forKey:@"inventoryNo"];

@@ -389,6 +389,7 @@
         if (parserObject.success) {
             if ([operation.urlTag isEqualToString:Path_orderList]) {
                 OrderManageListModel *listModel = (OrderManageListModel *)parserObject;
+
                 if (listModel.orderList.count) {
                     self.isShowEmptyData = NO;
                     if (weakSelf.pageNumber == 1) {
@@ -643,6 +644,7 @@
     if(type == 1){//更新发货
         xw_SelectDeliveryWayVC *orderDetailVC = [[xw_SelectDeliveryWayVC alloc] init];
         orderDetailVC.orderID = model.ID;
+        orderDetailVC.customerId = self.customerId;
         [self.navigationController pushViewController:orderDetailVC animated:YES];
     } else if(type == 2){//预约自提
         XwSubscribeTakeVC *orderDetailVC = [[XwSubscribeTakeVC alloc] init];
@@ -656,6 +658,7 @@
             
             for (CommonGoodsModel* tm in model.orderSetMealList) {
                 tm.isSetMeal = YES;
+                tm.productList = [CommonProdutcModel mj_objectArrayWithKeyValuesArray:tm.productList];
                 tm.kGoodsCount = tm.count;
                 [array addObject:tm];
             }

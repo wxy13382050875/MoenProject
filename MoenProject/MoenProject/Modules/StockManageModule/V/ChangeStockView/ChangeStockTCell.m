@@ -103,7 +103,7 @@
  
     self.skuLabel.text = _problemModel.goodsSKU;
     
-//    self.changeCountTxt.text = _problemModel.goodsCountAfter;
+    self.changeCountTxt.text = _problemModel.goodsCountAfter;
     self.goodsCountLabel.text =[NSString stringWithFormat:@"x%@",_problemModel.goodsCountBefor];
     [self.goodsImage sd_setImageWithURL:[NSURL URLWithString:_problemModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
 //    self.differenceReasonLabel.text = _lastModel.reason;

@@ -10,6 +10,8 @@
 #import "ChangeStockTCell.h"
 #import "StockOperationSuccessVC.h"
 #import "StockManageChildVC.h"
+#import "ChangeStockOrderVC.h"
+#import "CheckStockOrderVC.h"
 @interface XwProblemInventoryVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)UITableView* tableview;
 @property(nonatomic,strong)NSString* operateType;
@@ -28,23 +30,29 @@
 -(void)backBthOperate{
     NSLog(@"返回");
     
-   
-    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
-    BOOL isStock = NO;
-    UIViewController* stVC;
-    for (UIViewController* vc in marr) {
-        if ([vc isKindOfClass:[StockManageChildVC class]]) {
-//            [marr removeObject:vc];
-            isStock = YES;
-            stVC = vc;
+    FDAlertView* alert = [[FDAlertView alloc] initWithBlockTItle:@"" alterType:FDAltertViewTypeTips message:@"返回后，将不保存任何问题信息，确认返回吗？" block:^(NSInteger buttonIndex, NSString *inputStr) {
+        if(buttonIndex == 1){
+            NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+            BOOL isStock = NO;
+            UIViewController* stVC;
+            for (UIViewController* vc in marr) {
+                if ([vc isKindOfClass:[ChangeStockOrderVC class]]||
+                    [vc isKindOfClass:[CheckStockOrderVC class]]) {
+        //            [marr removeObject:vc];
+                    isStock = YES;
+                    stVC = vc;
+                }
+            }
+            if (isStock) {
+                
+                [self.navigationController popToViewController:stVC animated:YES];
+            } else {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }
         }
-    }
-    if (isStock) {
-        
-        [self.navigationController popToViewController:stVC animated:YES];
-    } else {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
+    } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+    [alert show];
+    
     
     
 }
@@ -286,7 +294,7 @@
 
 -(UIButton*)AdjustBtn{
     if(!_AdjustBtn){
-        _AdjustBtn = [UIButton buttonWithTitie:@"修正" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnGoldenColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
+        _AdjustBtn = [UIButton buttonWithTitie:@"确认修正" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
             NSLog(@"保存");
             NSString * message= @"";
             if (self.controllerType == PurchaseOrderManageVCTypeStockAdjust) {

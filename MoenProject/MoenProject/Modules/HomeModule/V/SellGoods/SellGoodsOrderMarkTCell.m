@@ -101,6 +101,15 @@
     [self.mark_Txt setScrollEnabled:defModel.isEdit];
 //    CGFloat height = [self.mark_Txt heightForString:defModel.value andWidth:SCREEN_WIDTH-20];
 }
+-(void)setCounterModel:(XwSystemTCellModel *)counterModel{
+    if(counterModel.isEdit && [counterModel.value isEqualToString:@""]){
+        [self.mark_Txt xw_addPlaceHolder:@"添加备注"];
+        self.mark_Txt.xw_placeHolderTextView.textColor = COLOR(@"#AAB3BA");
+    }
+    self.mark_Txt.text = counterModel.value;
+    [self.mark_Txt setEditable:counterModel.isEdit];
+    [self.mark_Txt setScrollEnabled:counterModel.isEdit];
+}
 
 - (void)showDataWithReturnOrderCounterModel:(ReturnOrderCounterModel *)model
 {

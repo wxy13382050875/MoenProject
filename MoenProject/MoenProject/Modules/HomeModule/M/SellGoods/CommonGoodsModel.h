@@ -116,6 +116,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**已退商品数量*/
 @property (nonatomic, assign) NSInteger returnCount;
 
+/**已退商品数量*/
+@property (nonatomic, assign) NSInteger canReturnCount;
+
 /**是否特殊单品，true:淋浴房，需要呈现增价、平方、pu单号*/
 @property (nonatomic, assign) BOOL isSpecial;
 
@@ -163,6 +166,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *square;
 
 @property (nonatomic, assign) NSInteger returnCount;
+@property (nonatomic, assign) NSInteger canReturnCount;
+
 @property (nonatomic, assign) BOOL isSpecial;
 /** 是否套餐*/
 @property (nonatomic, assign) BOOL isSetMeal;
@@ -173,6 +178,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 //：总仓预约（新增）
 @property (nonatomic, copy) NSString *waitDeliverCount;
+
+
 @end
 
 

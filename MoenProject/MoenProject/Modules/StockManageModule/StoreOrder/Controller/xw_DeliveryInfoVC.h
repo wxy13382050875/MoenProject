@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) DeliveryWayType controllerType;
 @property(nonatomic,strong)NSString* orderID;
+@property(nonatomic,strong)NSString* customerId;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -73,13 +73,23 @@
     [self.goods_Count setHidden:NO];
     [self.returnCount_Lab setHidden:YES];
     
-    if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
-        [self.goods_state setHidden:NO];
-        self.goods_state.textColor = [UIColor redColor];
-        self.goods_state.font = [UIFont boldSystemFontOfSize:14];
-        self.goods_state.text = [NSString stringWithFormat:@" 已发%@件",model.deliverCount];
+ 
+    if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
+        [self.goodsPackageDes setHidden:NO];
+        self.goodsPackageDes.textColor = [UIColor redColor];
+        self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",model.waitDeliverCount];
+        if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+
+            self.goodsPackageDes.text = [NSString stringWithFormat:@"%@  已发%@件",self.goodsPackageDes.text,model.deliverCount];
+        }
+        
+    } else {
+        if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+            [self.goodsPackageDes setHidden:NO];
+            self.goodsPackageDes.textColor = [UIColor redColor];
+            self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
+        }
     }
-    
 }
 - (void)showDataWithStockTransfersForCommonSearch:(CommonProdutcModel *)model
 {
@@ -171,8 +181,8 @@
     }
     [self.editCountView setHidden:NO];
     [self.returnCount_Lab setHidden:NO];
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"可退%ld件",(long)model.count]];
-    [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.count].length)];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"可退%ld件",(long)model.canReturnCount]];
+    [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.canReturnCount].length)];
     self.returnCount_Lab.attributedText = str;
     
     self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)model.returnCount];
@@ -182,18 +192,17 @@
         self.goodsPackageDes.textColor = [UIColor redColor];
         self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",model.waitDeliverCount];
         if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
-            [self.goods_state setHidden:NO];
-            self.goods_state.textColor = [UIColor redColor];
-            self.goods_state.text = [NSString stringWithFormat:@" 已发%@件",model.deliverCount];
+
+            self.goodsPackageDes.text = [NSString stringWithFormat:@"%@  已发%@件",self.goodsPackageDes.text,model.deliverCount];
         }
-        NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%@件,可退%ld件",model.waitDeliverCount,(long)model.count]];
-        [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.count].length)];
+        NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件,可退%ld件",(long)model.count,(long)model.canReturnCount]];
+        [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.canReturnCount].length)];
         self.returnCount_Lab.attributedText = tmStr;
     } else {
         if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
-            [self.goods_state setHidden:NO];
-            self.goods_state.textColor = [UIColor redColor];
-            self.goods_state.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
+            [self.goodsPackageDes setHidden:NO];
+            self.goodsPackageDes.textColor = [UIColor redColor];
+            self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
         }
     }
     
@@ -326,7 +335,7 @@
     }
 }
 - (IBAction)goodsAddAction:(UIButton *)sender {
-    if (self.singleGoodsModel.returnCount == self.singleGoodsModel.count) {
+    if (self.singleGoodsModel.returnCount == self.singleGoodsModel.canReturnCount) {
         return;
     }
     else
@@ -343,9 +352,9 @@
             if (textField.text.length == 0) {
                 textField.text = @"0";
             }
-            if ([textField.text integerValue] > self.singleGoodsModel.count) {
-                textField.text = [NSString stringWithFormat:@"%ld",self.singleGoodsModel.count];
-                self.singleGoodsModel.returnCount = self.singleGoodsModel.count;
+            if ([textField.text integerValue] > self.singleGoodsModel.canReturnCount) {
+                textField.text = [NSString stringWithFormat:@"%ld",self.singleGoodsModel.canReturnCount];
+                self.singleGoodsModel.returnCount = self.singleGoodsModel.canReturnCount;
                 [[NSToastManager manager] showtoast:@"商品数量不能超过可退商品数量"];
             }
             else

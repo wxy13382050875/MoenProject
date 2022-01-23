@@ -300,6 +300,7 @@
         goodsModel.returnCount = 1;
         goodsModel.deliverCount = model.deliverCount;
         goodsModel.waitDeliverCount = model.waitDeliverCount;
+        goodsModel.canReturnCount = model.canReturnCount;
         [self.goodsList addObject:goodsModel];
     }
     
@@ -404,6 +405,7 @@
             goodsModel.isSetMeal = NO;
             goodsModel.deliverCount = model.deliverCount;
             goodsModel.waitDeliverCount = model.waitDeliverCount;
+            goodsModel.canReturnCount = model.canReturnCount;
             [self.giftGoodsList addObject:goodsModel];
         }
         
@@ -896,7 +898,7 @@
         {
             NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
             [dic setValue:goodsModel.orderItemProductId forKey:@"orderItemProductId"];
-            [dic setValue:[NSString stringWithFormat:@"%ld", (long)goodsModel.count] forKey:@"count"];
+            [dic setValue:[NSString stringWithFormat:@"%ld", (long)goodsModel.canReturnCount] forKey:@"count"];
             [dic setValue:goodsModel.refundAmount forKey:@"refundAmount"];
             [dic setValue:[NSString stringWithFormat:@"%@",goodsModel.actualRefundAmount] forKey:@"actualRefundAmount"];
             if ([goodsModel.actualRefundAmount isEqualToString:@"0"] ||

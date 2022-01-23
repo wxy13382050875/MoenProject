@@ -67,13 +67,23 @@
     self.doneTime_Lab.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).topSpaceToView(self.operation_Lab, 5).heightIs(40);
     if([self.dict[@"operateType"] isEqualToString:@"adjust"] ){
         self.title = @"库存调整完成";
-        self.tip_Lab.text =@"本次调整结果已提交，待AD进行审核！";
+        if(![[QZLUserConfig sharedInstance].storeTypeKey isEqualToString:@"Showroom-Dealer"]){
+            self.tip_Lab.text =@"本次调整结果已提交，待AD进行审核！";
+        } else {
+            self.tip_Lab.text =@"本次调整结果已完成！";
+        }
+        
     } else if([self.dict[@"operateType"] isEqualToString:@"save"] ){
         self.title = @"盘库提交";
         self.tip_Lab.text =@"本次盘库已保存！";
     } else {
         self.title = @"盘库提交";
         self.tip_Lab.text =@"本次盘库结果已提交，待AD进行审核!";
+        if(![[QZLUserConfig sharedInstance].storeTypeKey isEqualToString:@"Showroom-Dealer"]){
+            self.tip_Lab.text =@"本次盘库结果已提交，待AD进行审核!";
+        } else {
+            self.tip_Lab.text =@"本次盘库结果已完成！";
+        }
     }
     self.operation_Lab.text = [NSString stringWithFormat:@"操作人:%@",self.dict[@"operator"]];
     self.doneTime_Lab.text = [NSString stringWithFormat:@"完成时间:%@",self.dict[@"operateTime"]];

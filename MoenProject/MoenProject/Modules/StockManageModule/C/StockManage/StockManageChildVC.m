@@ -188,6 +188,8 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
         {
             StockQueryVC *stockQueryVC = [[StockQueryVC alloc] init];
             stockQueryVC.hidesBottomBarWhenPushed = YES;
+//            stockQueryVC.queryVcType = StockQueryVCType_NONE;
+            stockQueryVC.goodsID = @"";
             [self.navigationController pushViewController:stockQueryVC animated:YES];
         }
             break;

@@ -8,6 +8,7 @@
 @interface XwStoreListModel : NSObject
 
 @property (nonatomic, strong) NSArray *storeList;
+@property (nonatomic, strong) NSArray *productList;
 
 @end
 @interface Storelist : NSObject

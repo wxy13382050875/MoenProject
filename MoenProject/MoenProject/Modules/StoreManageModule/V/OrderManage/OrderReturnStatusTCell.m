@@ -77,7 +77,7 @@
         }
         else
         {
-            [self.rightTop_Lab setHidden:YES];
+            [self.rightBottmo_Lab setHidden:YES];
         }
     }
     else
@@ -106,12 +106,39 @@
 - (void)showDataWithCommonProdutcModel:(CommonProdutcModel *)model
 {
     self.contentView.backgroundColor = UIColorFromRGB(0xFBFAFA);
-    [self.rightTop_Lab setHidden:NO];
-    self.rightTop_Lab.text = [NSString stringWithFormat:@"已退%ld件",(long)model.returnCount];
+//    [self.rightTop_Lab setHidden:NO];
+//    self.rightTop_Lab.text = [NSString stringWithFormat:@"已退%ld件",(long)model.returnCount];
+//    [self.leftTop_Lab setHidden:YES];
+//    [self.leftBottom_Lab setHidden:YES];
+    
+    
+    
     [self.leftTop_Lab setHidden:YES];
     [self.leftBottom_Lab setHidden:YES];
+    if (model.returnCount > 0||[model.deliverCount integerValue] > 0) {
+        [self.rightTop_Lab setHidden:NO];
+        if([model.deliverCount integerValue] > 0){
+            self.rightTop_Lab.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
+            if(model.returnCount > 0){
+                self.rightTop_Lab.text = [NSString stringWithFormat:@"%@ 已退%ld件",self.rightTop_Lab.text,(long)model.returnCount];
+            }
+        } else {
+            self.rightTop_Lab.text = [NSString stringWithFormat:@" 已退%ld件",(long)model.returnCount];
+        }
+        
+    }
+    else
+    {
+        [self.rightTop_Lab setHidden:YES];
+    }
 }
-
+//- (void)showDataWithDeliverModel:(CommonProdutcModel *)model{
+//    self.contentView.backgroundColor = UIColorFromRGB(0xFBFAFA);
+//    [self.rightTop_Lab setHidden:NO];
+//    self.rightTop_Lab.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
+//    [self.leftTop_Lab setHidden:YES];
+//    [self.leftBottom_Lab setHidden:YES];
+//}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

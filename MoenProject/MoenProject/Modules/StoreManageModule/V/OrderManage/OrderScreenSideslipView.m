@@ -251,8 +251,7 @@
     KWOSSVDataModel *model = tmodel.list[indexPath.row];
     model.isSelected = YES;
     
-    if([tmodel.className isEqualToString:@"TimeQuantum"]&&
-       ![model.itemId isEqual: @"ALL"]){
+    if([tmodel.className isEqualToString:@"TimeQuantum"]){
         self.model.dateStart = @"";
         self.model.dateEnd = @"";
         [self.timeView resetZLTimeView];
@@ -274,8 +273,8 @@
             for (KWOSSVDataModel *tmModel in model.list) {
                 tmModel.isSelected = NO;
             }
-            KWOSSVDataModel *tm = model.list[0];
-            tm.isSelected = YES;
+//            KWOSSVDataModel *tm = model.list[0];
+//            tm.isSelected = YES;
         }
     }
     [self.collectionView reloadData];

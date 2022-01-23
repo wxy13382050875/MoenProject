@@ -81,7 +81,7 @@
 @property (nonatomic, strong) NSString *remarks;//发货备注信息
 @property (nonatomic, strong) NSString *expressIMG;//快递图片
  
-@property (nonatomic, assign) BOOL isDeliver;
+
 
 
 @property (nonatomic, strong) UIImagePickerController *imagePickerVc;
@@ -118,7 +118,6 @@
 -(void)backBthOperate{
     NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
     BOOL isStock = NO;
-    UIViewController* stVC = nil;
     for (UIViewController* vc in marr) {
         if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
 //            [marr removeObject:vc];
@@ -144,7 +143,7 @@
     
     [self.view addSubview:self.tableView];
     self.tableView.sd_layout
-    .spaceToSuperView(UIEdgeInsetsMake(0, 0, 40, 0)) ;
+    .spaceToSuperView(UIEdgeInsetsMake(0, 0, KWBottomSafeHeight+40, 0)) ;
     
 //    审核（同意/拒绝/发货） approve/refuse/deliver
     self.btn = [UIButton buttonWithTitie:@"同意" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
@@ -270,7 +269,7 @@
     [self.view addSubview:self.btn5];
     
    
-    self.btn6 = [UIButton buttonWithTitie:@"修正" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:[UIColor grayColor]  WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+    self.btn6 = [UIButton buttonWithTitie:@"修正" WithtextColor:COLOR(@"#FFFFFF") WithBackColor:AppTitleBlueColor  WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
         XwProblemInventoryVC* VC = [XwProblemInventoryVC new];
         VC.goodsType = self.dataModel.goodsType;
         /**日常盘点*/
@@ -895,10 +894,10 @@
                     if([self.dataModel.orderType isEqualToString:@"task"]){
                         if(([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]||
                            [self.dataModel.orderApplyProgress isEqualToString:@"partDeliver"])&&
-                           !self.isHide
+                           !self.isHide&&self.isDeliver
                            ){
                             self.btn2.hidden = NO;
-                            self.isDeliver = YES;
+//                            self.isDeliver = YES;
                         } else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]&&
                                   self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
                             self.btn.hidden = NO;
@@ -923,8 +922,9 @@
                     
                     
                     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
-                        if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]||
-                           [self.dataModel.orderApplyProgress isEqualToString:@"partDeliver"]){
+                        if(([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]||
+                           [self.dataModel.orderApplyProgress isEqualToString:@"partDeliver"])&&
+                           self.isDeliver){
                             [self handleTabExpressData];
                             [self handleTabDeliveMarkData];
                         }
@@ -1000,7 +1000,7 @@
 //                        }
 //                        self.orderRemarks = self.dataModel.checkRemarks;
 //                        [self handleTabMarkData:NO];
-                        [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",self.dataModel.shopRemarks]];
+                        [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",[self.dataModel.checkRemarks isEqualToString:@""]?@"无":self.dataModel.checkRemarks]];
                     }
                     
                     [self.tableView reloadData];
@@ -1115,7 +1115,9 @@
                            [self handleTableViewInventoryData];
                            [self handleTabInventoryStatisticsData];
                            if(![self.dataModel.orderStatus isEqualToString:@"ing"]&&
-                              ![self.dataModel.orderStatus isEqualToString:@"wait"]){
+                              ![self.dataModel.orderStatus isEqualToString:@"wait"]&&
+                              ![[QZLUserConfig sharedInstance].storeTypeKey isEqualToString:@"Showroom-Dealer"]
+                              ){
                                [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
                                
                            }
@@ -1478,8 +1480,14 @@
     }
     
     XwSystemTCellModel* tmModel = [XwSystemTCellModel new];
-    tmModel.value =[self.orderRemarks isEqualToString:@""]?[NSString stringWithFormat:@"%@无",msg]:[NSString stringWithFormat:@"%@%@",msg,self.orderRemarks];;
     tmModel.isEdit = isEdit;
+    if(!isEdit){
+        tmModel.value =[self.orderRemarks isEqualToString:@""]||self.orderRemarks==nil?[NSString stringWithFormat:@"%@无",msg]:[NSString stringWithFormat:@"%@%@",msg,self.orderRemarks];;
+    } else {
+        tmModel.value = @"";
+    }
+    
+    
     
     NSMutableArray *section6Arr = [[NSMutableArray alloc] init];
     CommonTVDataModel *markCellModel = [[CommonTVDataModel alloc] init];

@@ -12,6 +12,8 @@
 static NSString *KOrderReturnStatusTCell = @"OrderReturnStatusTCell";
 static NSString *KOrderReturnStatusTCellForGift = @"OrderReturnStatusTCellForGift";
 static NSString *KOrderReturnStatusTCellForSingle = @"OrderReturnStatusTCellForSingle";
+static NSString *KOrderReturnStatusTCellForPackageGift = @"OrderReturnStatusTCellForPackageGift";
+
 static CGFloat KOrderReturnStatusTCellHeight = 30;
 static CGFloat KOrderReturnStatusTCellDHeight = 57;
 NS_ASSUME_NONNULL_BEGIN
@@ -23,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)showDataWithCommonProdutcModel:(CommonProdutcModel *)model;
 
+//- (void)showDataWithDeliverModel:(CommonProdutcModel *)model;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -98,6 +98,7 @@
 		2E6F968527624FF000660B4D /* XwOrderDetailTotalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F968427624FF000660B4D /* XwOrderDetailTotalCell.m */; };
 		2E6F9688276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F9687276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m */; };
 		2E6F968B276258D100660B4D /* XwOrderDetailGoodsInventory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */; };
+		2E720BCD2793D47E006811F5 /* StockQuerySkuVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E720BCC2793D47D006811F5 /* StockQuerySkuVC.m */; };
 		2E823A1F277232D70083AF02 /* XwExpressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E823A1E277232D70083AF02 /* XwExpressCell.m */; };
 		2E823A22277233060083AF02 /* XwDeliveMarkrCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E823A21277233050083AF02 /* XwDeliveMarkrCell.m */; };
 		2E835F2327639C0700C31E2D /* XwScreenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E835F2227639C0700C31E2D /* XwScreenModel.m */; };
@@ -732,6 +733,8 @@
 		2E6F9687276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailAdjustInventoryCell.m; sourceTree = "<group>"; };
 		2E6F9689276258D100660B4D /* XwOrderDetailGoodsInventory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailGoodsInventory.h; sourceTree = "<group>"; };
 		2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailGoodsInventory.m; sourceTree = "<group>"; };
+		2E720BCB2793D47D006811F5 /* StockQuerySkuVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StockQuerySkuVC.h; sourceTree = "<group>"; };
+		2E720BCC2793D47D006811F5 /* StockQuerySkuVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StockQuerySkuVC.m; sourceTree = "<group>"; };
 		2E823A1D277232D60083AF02 /* XwExpressCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwExpressCell.h; sourceTree = "<group>"; };
 		2E823A1E277232D70083AF02 /* XwExpressCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwExpressCell.m; sourceTree = "<group>"; };
 		2E823A20277233050083AF02 /* XwDeliveMarkrCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwDeliveMarkrCell.h; sourceTree = "<group>"; };
@@ -2245,6 +2248,8 @@
 			children = (
 				36A5089126B61CBE00C536DE /* StockQueryVC.h */,
 				36A5089026B61CBE00C536DE /* StockQueryVC.m */,
+				2E720BCB2793D47D006811F5 /* StockQuerySkuVC.h */,
+				2E720BCC2793D47D006811F5 /* StockQuerySkuVC.m */,
 			);
 			path = StockQuery;
 			sourceTree = "<group>";
@@ -4279,7 +4284,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 72FFB0FE21AC0F0600614F14 /* Build configuration list for PBXProject "MoenProject9" */;
+			buildConfigurationList = 72FFB0FE21AC0F0600614F14 /* Build configuration list for PBXProject "MoenProject" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -4701,6 +4706,7 @@
 				721D620F2200536300C4987E /* TZAssetCell.m in Sources */,
 				722D86EE21D63CE2002593EF /* AddSellerVC.m in Sources */,
 				7289A45F23BB4BE7005D1A5D /* STPopupControllerTransitioningSlideVertical.m in Sources */,
+				2E720BCD2793D47E006811F5 /* StockQuerySkuVC.m in Sources */,
 				72FFB20621AC134E00614F14 /* KWCommonPickView.m in Sources */,
 				72FFB23521AC134E00614F14 /* PCCircleViewConst.m in Sources */,
 				721D61BA21FCD37500C4987E /* CommonWebViewVC.m in Sources */,
@@ -5072,7 +5078,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5102,7 +5108,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5201,7 +5207,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		72FFB0FE21AC0F0600614F14 /* Build configuration list for PBXProject "MoenProject9" */ = {
+		72FFB0FE21AC0F0600614F14 /* Build configuration list for PBXProject "MoenProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				72FFB12D21AC0F0800614F14 /* Debug */,

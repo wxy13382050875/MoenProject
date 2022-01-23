@@ -478,7 +478,7 @@
             [array addObject:dict];
         }
     }
-    if (array.count > 0) {
+    if (array.count == self.dataList.count) {
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
         [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];

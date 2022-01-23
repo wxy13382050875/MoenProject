@@ -313,8 +313,8 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
         if (parserObject.success) {
             if ([operation.urlTag isEqualToString:Path_getHomePage]) {
                 HomeDataModel *model = (HomeDataModel *)parserObject;
-//                [QZLUserConfig sharedInstance].useInventory = model.useInventory;
-                [QZLUserConfig sharedInstance].useInventory = true;
+                [QZLUserConfig sharedInstance].useInventory = model.useInventory;
+//                [QZLUserConfig sharedInstance].useInventory = true;
                 if ([model.code isEqualToString:@"200"]) {
                     self.bannerModel = model;
                     [self.collectionview reloadData];

@@ -75,6 +75,7 @@
 //总仓任务详情备注
 @property (nonatomic, copy) NSString *remarks;
 
+
 @end
 
 

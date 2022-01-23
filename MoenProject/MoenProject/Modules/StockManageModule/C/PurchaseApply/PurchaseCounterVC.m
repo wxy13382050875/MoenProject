@@ -74,13 +74,7 @@
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
     
-    if(self.controllerType == SearchGoodsVCType_Stock){
-        self.title = @"进货柜台";
-        self.btn1.titleLabel.text =@"保存";
-    } if(self.controllerType == SearchGoodsVCType_Transfers){
-        self.title = @"调拨柜台";
-        self.btn1.titleLabel.text =@"继续添加";
-    }
+    
     
         
     
@@ -104,6 +98,15 @@
     self.btn2.sd_layout.rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40).widthIs(SCREEN_WIDTH/2);
     self.myTableView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).topEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight +40);
     
+    if(self.controllerType == SearchGoodsVCType_Stock){
+        self.title = @"进货柜台";
+//        self.btn1.titleLabel.text =@"保存";
+        [self.btn1 setTitle:@"保存" forState:UIControlStateNormal];
+    } if(self.controllerType == SearchGoodsVCType_Transfers){
+        self.title = @"调拨柜台";
+//        self.btn1.titleLabel.text =@"继续添加";
+        [self.btn1 setTitle:@"继续添加" forState:UIControlStateNormal];
+    }
 }
 
 - (void)configBaseData
@@ -201,7 +204,8 @@
         if(self.controllerType == SearchGoodsVCType_Stock||
            self.controllerType ==SearchGoodsVCType_Transfers){//进货柜台需要添写备注
 //            cell.orderRemarks = self.orderRemarks;
-            cell.defModel = model.Data;
+            cell.counterModel = model.Data;
+            
             
         } else {
             [cell showDataWithString: model.Data];

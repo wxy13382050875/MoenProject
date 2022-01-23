@@ -188,9 +188,24 @@
         [self.delegate selectedTimeAction];
     }
 }
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    if ([self.delegate respondsToSelector:@selector(completeStartAction:)]) {
+        [self.delegate completeStartAction:textField];
+    }
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+
+{
+
+    if ([self.delegate respondsToSelector:@selector(completeShouldBeginEditingAction:)]) {
+        [self.delegate completeShouldBeginEditingAction:textField];
+    }
 
 
+    return YES;
 
+}
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField == self.input_Txt &&

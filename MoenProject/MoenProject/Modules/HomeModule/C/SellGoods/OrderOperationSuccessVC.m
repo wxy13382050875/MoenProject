@@ -291,7 +291,7 @@ static CGFloat kMagin = 1.f;
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     
-    return CGSizeMake(SCREEN_WIDTH, 170);
+    return CGSizeMake(SCREEN_WIDTH, 210);
 }
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
 
@@ -338,16 +338,33 @@ static CGFloat kMagin = 1.f;
             titleLabel.text =NSLocalizedString(@"return_complete_t", nil);
         }
 
+        
+
+        UILabel* serveLab = [UILabel labelWithText:@"快速服务" WithTextColor:AppTitleBlackColor WithNumOfLine:1 WithBackColor:nil WithTextAlignment:NSTextAlignmentLeft WithFont:14];
+        serveLab.font = [UIFont boldSystemFontOfSize:14];
+        [header addSubview: serveLab];
+        serveLab.sd_layout
+        .leftSpaceToView(header, 15)
+        .rightSpaceToView(header, 15)
+        .bottomEqualToView(header)
+        .heightIs(40);
+
+        
         UILabel* line1 = [UILabel labelWithLine:COLOR(@"#EEEEEE")];
         [header addSubview: line1];
-        line1.sd_layout.centerYEqualToView(header)
+        line1.sd_layout
         .leftEqualToView(header)
         .rightEqualToView(header)
-        .bottomEqualToView(header)
+        .bottomSpaceToView(serveLab, 0)
         .heightIs(5);
-
-
-
+        
+        UILabel* line2 = [UILabel labelWithLine:COLOR(@"#EEEEEE")];
+        [header addSubview: line2];
+        line2.sd_layout
+        .leftEqualToView(header)
+        .rightEqualToView(header)
+        .bottomEqualToView(serveLab)
+        .heightIs(1);
         return header;
     } else {
         UICollectionReusableView * footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:NSStringFromClass([UICollectionReusableView class]) forIndexPath:indexPath];
@@ -370,6 +387,7 @@ static CGFloat kMagin = 1.f;
         {
             xw_SelectDeliveryWayVC *orderDetailVC = [[xw_SelectDeliveryWayVC alloc] init];
             orderDetailVC.orderID = self.orderID;
+            orderDetailVC.customerId = self.customerId;
             [self.navigationController pushViewController:orderDetailVC animated:YES];
         }
             break;

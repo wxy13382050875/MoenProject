@@ -149,18 +149,18 @@
     [QZLUserConfig sharedInstance].shopId = self.selectedModel.shopId;
     [QZLUserConfig sharedInstance].shopName = self.selectedModel.shopName;
     [QZLUserConfig sharedInstance].employeeId = self.selectedModel.employeeId;
+    [QZLUserConfig sharedInstance].userName = self.selectedModel.userName;
+    [self httpPath_inventory_storeCheck];
     
-    if (self.controllerType == ChangeStoreVCTypeDefault) {
-        [self dismissViewControllerAnimated:NO completion:^{
-            [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
-        }];
-    }
-    else
-    {
-        [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
-    }
 }
-
+-(void)httpPath_inventory_storeCheck{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    [parameters setValue: [QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_inventory_storeCheck;
+}
 
 #pragma mark -- Getter&Setter
 - (UITableView *)tableView
@@ -182,7 +182,42 @@
     return _tableView;
 }
 
+#pragma mark - 接口数据处理
+- (void)actionFetchRequest:(NSURLSessionDataTask *)operation result:(MoenBaseModel *)parserObject error:(NSError *)requestErr
+{
+    WEAKSELF
+    [[NSToastManager manager] hideprogress];
+    if (requestErr) {
+        [[NSToastManager manager] showtoast:NSLocalizedString(@"t_request_error", nil)];
+        if ([operation.urlTag isEqualToString:Path_oauth_token]) {
+//            [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
+        }
+    }
+    else
+    {
+        if (parserObject.success) {
+            if ([operation.urlTag isEqualToString:Path_inventory_storeCheck])
+            {
+                MoenBaseModel *model = (MoenBaseModel *)parserObject;
+                if ([model.code isEqualToString:@"200"]) {
+                    
+                    [QZLUserConfig sharedInstance].storeTypeKey = model.datas[@"datas"][@"storeTypeKey"];
+                    NSLog(@"storeTypeKey = %@ ",[QZLUserConfig sharedInstance].storeTypeKey);
+                    if (self.controllerType == ChangeStoreVCTypeDefault) {
+                        [self dismissViewControllerAnimated:NO completion:^{
+                            [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
+                        }];
+                    }
+                    else
+                    {
+                        [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
+                    }
 
+                }
+            }
+        }
+    }
+}
 
 - (UIButton *)confirmBtn
 {

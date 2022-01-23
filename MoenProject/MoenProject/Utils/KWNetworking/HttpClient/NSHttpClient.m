@@ -170,6 +170,9 @@ static NSHttpClient *client;
                      [QZLUserConfig sharedInstance].isLoginIn = NO;
                      [UTVCSkipHelper isLoginStatus];
                      return ;
+                 }else if ([resultCode isEqualToString:@"2003"]){
+                     model.success = YES;
+                     success(task,model);
                  }else{
                      /**3.2 鉴于接口无返回码 临时添加*/
                      model.success = YES;
@@ -242,7 +245,12 @@ static NSHttpClient *client;
                                    model.success = YES;
                                    success(task,model);
                                    
-                               }else if ([resultCode isEqualToString:@"401"]){
+                               }
+                               else if ([resultCode isEqualToString:@"2003"]){
+                                   model.success = YES;
+                                   success(task,model);
+                               }
+                               else if ([resultCode isEqualToString:@"401"]){
                                    [QZLUserConfig sharedInstance].isLoginIn = NO;
 //                                   [UTVCSkipHelper isLoginStatus];
                                    [[NSToastManager manager] showtoast:@"登录超时！请重新登录"];

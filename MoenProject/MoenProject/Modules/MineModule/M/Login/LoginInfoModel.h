@@ -75,6 +75,9 @@
 
 /** 备注：仓库名*/
 @property (nonatomic, copy) NSString *name;
+
+/** 备注：用户名*/
+@property (nonatomic, copy) NSString *userName;
 @end
 
 

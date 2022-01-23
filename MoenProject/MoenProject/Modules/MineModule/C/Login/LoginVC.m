@@ -456,17 +456,10 @@
                         [QZLUserConfig sharedInstance].shopId = model.shopId;
                         [QZLUserConfig sharedInstance].shopName = model.shopName;
                         [QZLUserConfig sharedInstance].employeeId = model.employeeId;
+                        [QZLUserConfig sharedInstance].userName = model.userName;
                         [QZLUserConfig sharedInstance].isMultipleStores = NO;
-
-                        if (!self.isFirstShow) {
-                            [self dismissViewControllerAnimated:NO completion:^{
-                                [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
-                            }];
-                        }
-                        else
-                        {
-                            [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
-                        }
+                        [self httpPath_inventory_storeCheck];
+                        
                     }
                     else if(listModel.userConfigDataList.count > 1)
                     {
@@ -506,6 +499,23 @@
                     }];
                 }
             }
+            else if ([operation.urlTag isEqualToString:Path_inventory_storeCheck])
+            {
+                MoenBaseModel *model = (MoenBaseModel *)parserObject;
+                if ([model.code isEqualToString:@"200"]) {
+                    [QZLUserConfig sharedInstance].storeTypeKey = model.datas[@"datas"][@"storeTypeKey"];
+                    NSLog(@"storeTypeKey = %@ ",[QZLUserConfig sharedInstance].storeTypeKey);
+                    if (!self.isFirstShow) {
+                        [self dismissViewControllerAnimated:NO completion:^{
+                            [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
+                        }];
+                    }
+                    else
+                    {
+                        [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
+                    }
+                }
+            }
         }
     }
 }
@@ -522,7 +532,14 @@
     self.requestParams = parameters;
     self.requestURL = Path_changePassword;
 }
-
+//门店类别和分销店查询
+-(void)httpPath_inventory_storeCheck{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_inventory_storeCheck;
+}
 /**忘记密码Api*/
 - (void)httpPath_forgetPassword
 {

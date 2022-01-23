@@ -70,7 +70,7 @@
         _textView.dataDetectorTypes = UIDataDetectorTypeAll; //显示数据类型的连接模式（如电话号码、网址、地址等）
         _textView.textColor = [UIColor blackColor];// 设置显示文字颜色
 //        _textView.text = @"UITextView详解";//设置显示的文本内容
-        [_textView xw_addPlaceHolder:@"添加备注"];
+        [_textView xw_addPlaceHolder:@"请填写发货备注信息"];
         _textView.xw_placeHolderTextView.textColor = COLOR(@"#AAB3BA");
         ViewBorderRadius(_textView, 3, 1, AppBgBlueGrayColor)
         WEAKSELF

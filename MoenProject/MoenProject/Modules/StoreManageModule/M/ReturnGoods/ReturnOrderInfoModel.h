@@ -88,6 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**退货数量*/
 @property (nonatomic, assign) NSInteger returnCount;
 
+/**退货数量*/
+@property (nonatomic, assign) NSInteger canReturnCount;
+
 @property (nonatomic, copy) NSString *square;
 
 @property (nonatomic, assign) BOOL isSpecial;
@@ -120,6 +123,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**退货数量*/
 @property (nonatomic, assign) NSInteger returnCount;
+
+/**退货数量*/
+@property (nonatomic, assign) NSInteger canReturnCount;
 
 @property (nonatomic, copy) NSString *photo;
 

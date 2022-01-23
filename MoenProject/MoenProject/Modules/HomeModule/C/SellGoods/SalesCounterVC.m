@@ -444,6 +444,7 @@
         NSLog(@"库存参考信息");
         xw_StockInfoVC *storeInfoVC = [xw_StockInfoVC new];
         storeInfoVC.array = [self.dataArr copy];
+        storeInfoVC.giftArray = [self.giftDataArr copy];
         storeInfoVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:storeInfoVC animated:YES];
     }
@@ -899,10 +900,12 @@
 - (void)handleSpecialGoodsAddPrice:(double)addPrice WithAtIndex:(NSInteger)atIndex
 {
     NSMutableArray *sectionArr = self.floorsAarr[atIndex];
-    CommonGoodsModel *goodsModel = self.dataArr[atIndex - 1];
-    goodsModel.kAddPrice = addPrice;
     
     CommonTVDataModel *cellModel = sectionArr[0];
+    CommonGoodsModel *goodsModel = cellModel.Data;
+    goodsModel.kAddPrice = addPrice;
+    
+    
     if (goodsModel.kAddPrice == 0 &&
         goodsModel.kGoodsCode.length == 0) {
         cellModel.cellFooterHeight = 55;
@@ -926,11 +929,12 @@
 - (void)handleSpecialGoodsAddPriceForgift:(double)addPrice WithAtIndex:(NSInteger)atIndex
 {
     NSMutableArray *sectionArr = self.floorsAarr[atIndex];
-    NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
-    CommonGoodsModel *goodsModel = self.giftDataArr[atIndex - beginIndex - self.dataArr.count];
+    CommonTVDataModel *cellModel = sectionArr[0];
+//    NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
+    CommonGoodsModel *goodsModel = cellModel.Data;
     goodsModel.kAddPrice = addPrice;
     
-    CommonTVDataModel *cellModel = sectionArr[0];
+    
     if (goodsModel.kAddPrice == 0 &&
         goodsModel.kGoodsCode.length == 0) {
         cellModel.cellFooterHeight = 55;
@@ -954,10 +958,11 @@
 - (void)handleSpecialGoodsGoodsCode:(NSString *)goodsCode WithAtIndex:(NSInteger)atIndex
 {
     NSMutableArray *sectionArr = self.floorsAarr[atIndex];
-    CommonGoodsModel *goodsModel = self.dataArr[atIndex - 1];
+    CommonTVDataModel *cellModel = sectionArr[0];
+    CommonGoodsModel *goodsModel = cellModel.Data;
     goodsModel.kGoodsCode = goodsCode;
     
-    CommonTVDataModel *cellModel = sectionArr[0];
+    
     if (goodsModel.kAddPrice == 0 &&
         goodsModel.kGoodsCode.length == 0) {
         cellModel.cellFooterHeight = 55;
@@ -981,11 +986,11 @@
 - (void)handleSpecialGoodsGoodsCodeForgift:(NSString *)goodsCode WithAtIndex:(NSInteger)atIndex
 {
     NSMutableArray *sectionArr = self.floorsAarr[atIndex];
-    NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
-    CommonGoodsModel *goodsModel = self.giftDataArr[atIndex - beginIndex - self.dataArr.count];
+    CommonTVDataModel *cellModel = sectionArr[0];
+    CommonGoodsModel *goodsModel = cellModel.Data;
     goodsModel.kGoodsCode = goodsCode;
     
-    CommonTVDataModel *cellModel = sectionArr[0];
+//    CommonTVDataModel *cellModel = sectionArr[0];
     if (goodsModel.kAddPrice == 0 &&
         goodsModel.kGoodsCode.length == 0) {
         cellModel.cellFooterHeight = 55;

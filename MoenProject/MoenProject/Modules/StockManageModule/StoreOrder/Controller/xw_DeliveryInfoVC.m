@@ -460,6 +460,7 @@
                 } else if ([operation.urlTag isEqualToString:Path_stores_confirmSend]) {
                     OrderManageVC *orderManageVC = [[OrderManageVC alloc] init];
                     orderManageVC.hidesBottomBarWhenPushed = YES;
+                    orderManageVC.customerId = self.customerId;
                     [self.navigationController pushViewController:orderManageVC animated:YES];
                 }
                 

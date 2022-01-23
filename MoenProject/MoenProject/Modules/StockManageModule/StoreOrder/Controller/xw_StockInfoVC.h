@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface xw_StockInfoVC : BaseViewController
 @property(nonatomic,strong)NSArray* array;
+@property(nonatomic,strong)NSArray* giftArray;
 @end
 
 NS_ASSUME_NONNULL_END

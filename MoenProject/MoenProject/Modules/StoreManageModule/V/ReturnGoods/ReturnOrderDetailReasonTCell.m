@@ -32,18 +32,21 @@
 {
     self.reason_Title_Lab.text = @"退货原因";
     self.reason_Lab.text = reaseon;
+    self.reason_Lab.textAlignment = NSTextAlignmentRight;
 }
 
 - (void)showPickupWithString:(NSString *)pickupMethod
 {
     self.reason_Title_Lab.text = @"提货";
     self.reason_Lab.text = pickupMethod;
+    self.reason_Lab.textAlignment = NSTextAlignmentRight;
 }
 
 - (void)showRefundWithString:(NSString *)refundMethod
 {
     self.reason_Title_Lab.text = @"退款方式";
     self.reason_Lab.text = refundMethod;
+    self.reason_Lab.textAlignment = NSTextAlignmentRight;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

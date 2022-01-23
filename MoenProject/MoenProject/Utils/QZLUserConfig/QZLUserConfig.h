@@ -83,17 +83,10 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+/**
+ *  Showroom-AD 直营门店 Showroom-Dealer 分销门店
+ */
+@property(nonatomic,assign) NSString *storeTypeKey;
 
 /**
  *  是否认证isAuth

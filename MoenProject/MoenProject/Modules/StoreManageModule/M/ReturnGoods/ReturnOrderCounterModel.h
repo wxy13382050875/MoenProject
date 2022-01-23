@@ -72,6 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) CGFloat returnAmount;
 
+/**退货数量*/
+@property (nonatomic, assign) NSInteger canReturnCount;
 @end
 
 NS_ASSUME_NONNULL_END

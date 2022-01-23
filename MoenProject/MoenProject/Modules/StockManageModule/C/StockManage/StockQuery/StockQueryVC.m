@@ -18,10 +18,13 @@
 #import "KWTypeConditionSelectView.h"
 #import "XwInventoryModel.h"
 #import "XwStoreListModel.h"
+#import "StockQuerySkuVC.h"
 @interface StockQueryVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource, SegmentHeaderViewDelegate>
 
 
 @property (nonatomic, strong) CommonSearchView *searchView;
+
+@property (nonatomic, strong) UIView *searchBgView;
 
 //@property (nonatomic, strong) SegmentHeaderView *typeSegmentView;
 
@@ -43,6 +46,8 @@
 /**商品SKU*/
 @property (nonatomic, copy) NSString *skuCode;
 
+@property (nonatomic,assign) BOOL isSkip;
+
 @end
 
 @implementation StockQueryVC
@@ -53,23 +58,41 @@
     [self configBaseUI];
     [self configBaseData];
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+}
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    
+}
 - (void)configBaseUI
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
     self.title = @"库存查询";
     
+    
     [self.view addSubview:self.searchView];
+    [self.view addSubview:self.searchBgView];
+    
     [self.view addSubview:self.tableview];
+    self.tableview.sd_layout.leftEqualToView(self.view).bottomEqualToView(self.view).rightEqualToView(self.view).heightIs(SCREEN_HEIGHT - KWNavBarAndStatusBarHeight - 50);
+    self.searchView.sd_layout.leftEqualToView(self.view).bottomSpaceToView(self.tableview, 0).rightEqualToView(self.view).heightIs(50);
+    self.searchBgView.sd_layout.leftEqualToView(self.view).bottomSpaceToView(self.tableview, 0).rightEqualToView(self.view).heightIs(50);
+    
+//
 }
 
 - (void)configBaseData
 {
     self.skuCode = @"";
     self.mealTypeID = -1;
-    
+    self.isSkip = YES;
     [self configPagingData];
 //    [[NSToastManager manager] showprogress];
+//    if(self.queryVcType == StockQueryVCType_NONE){
+//        [self httpPath_getProductList];
+//    }
 //    [self httpPath_getProductList];
 //    [self httpPath_getProductCategory];
     WEAKSELF
@@ -103,11 +126,13 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.dataList.count;
+    
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     Storelist* model = self.dataList[section];
     return model.inventoryList.count;
+    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -117,6 +142,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 30;
+    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -126,6 +152,8 @@
 {
     CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
 //    [cell showDataWithGoodsDetailModel:self.dataList[indexPath.section][indexPath.row] WithCellType:CommonSingleGoodsTCellTypeGoodsList];
+    
+    
     Storelist* model = self.dataList[indexPath.section];
     cell.inventoryModel = model.inventoryList[indexPath.row];
     return cell;
@@ -143,6 +171,7 @@
     [headerView addSubview:timeLab];
     
     return headerView;
+    
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
@@ -152,19 +181,47 @@
 #pragma mark -- UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    Inventorylist *model = self.dataList[indexPath.section][indexPath.row];
-//    GoodsDetailVC *goodsDetailVC = [[GoodsDetailVC alloc] init];
-//    goodsDetailVC.productID = model.goodsID;
-//    [self.navigationController pushViewController:goodsDetailVC animated:YES];
-}
 
-#pragma mark -- SearchViewCompleteDelete
-- (void)completeInputAction:(NSString *)keyStr
-{
-    self.skuCode = keyStr;
-    [[NSToastManager manager] showprogress];
-    [self httpPath_getProductList];
+//    if(self.queryVcType == StockQueryVCType_SKU){
+//
+//        if(self.refreshBlock){
+//            [self.view endEditing:YES];
+//            Inventorylist *model = self.dataList[indexPath.section];
+//            self.refreshBlock(model.goodsID);
+//        }
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
 }
+-(void)tapClick{
+    StockQuerySkuVC *stockQueryVC = [[StockQuerySkuVC alloc] init];
+    stockQueryVC.hidesBottomBarWhenPushed = YES;
+    stockQueryVC.refreshBlock = ^(NSString * _Nonnull goodsID) {
+        self.goodsID = goodsID;
+        [self httpPath_getProductList];
+    };
+    
+    [self.navigationController pushViewController:stockQueryVC animated:YES];
+}
+//#pragma mark -- SearchViewCompleteDelete
+//-(void)completeStartAction:(UITextField *)textField{
+////    [textField resignFirstResponder]
+////    [self.view endEditing:YES];
+//
+//    
+//}
+//-(void)completeShouldBeginEditingAction:(UITextField *)textField{
+//
+//}
+//- (void)completeInputAction:(NSString *)keyStr
+//{
+////    if(![keyStr isEqualToString:@""]&& self.queryVcType == StockQueryVCType_SKU){
+////
+////        self.skuCode = keyStr;
+////        [[NSToastManager manager] showprogress];
+////        [self httpPath_getProductList];
+////    }
+//
+//}
 
 
 
@@ -195,21 +252,7 @@
                     weakSelf.dataList = [listModel.storeList copy];
                     [weakSelf.tableview reloadData];
                 }
-//                else
-//                {
-//                    if (weakSelf.pageNumber == 1) {
-////                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_data", nil)];
-//                        [weakSelf.dataList removeAllObjects];
-//                        [weakSelf.tableview reloadData];
-//                        self.isShowEmptyData = YES;
-//                    }
-//                    else
-//                    {
-//                        weakSelf.pageNumber -= 1;
-//                        [[NSToastManager manager] showtoast:NSLocalizedString(@"c_no_more_data", nil)];
-//                    }
-//                    [weakSelf.tableview hidenRefreshFooter];
-//                }
+
             }
             
             if ([operation.urlTag isEqualToString:Path_getProductCategory]) {
@@ -233,22 +276,41 @@
     }
 }
 
-/**门店商品列表Api*/
+///**库存查询接口*/
+//- (void)httpPath_inventory_inventorySearch
+//{
+//    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+////    [parameters setValue:@(self.pageNumber) forKey:@"pageNum"];
+////    [parameters setValue:@(self.pageSize) forKey:@"pageSize"];
+//    [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
+//    [parameters setValue:self.skuCode forKey:@"goodsID"];
+//
+//    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+//    self.requestType = NO;
+//    self.requestParams = parameters;
+//
+//    self.requestURL = Path_inventory_inventorySearch;
+//}
+
+/**库存查询SKU接口*/
+
 - (void)httpPath_getProductList
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-//    [parameters setValue:@(self.pageNumber) forKey:@"pageNum"];
-//    [parameters setValue:@(self.pageSize) forKey:@"pageSize"];
+    
     [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
-    [parameters setValue:self.skuCode forKey:@"goodsID"];
-
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
+    
+    [parameters setValue:self.goodsID forKey:@"goodsID"];
+    
+
+    
     self.requestParams = parameters;
     
     self.requestURL = Path_inventory_inventorySearch;
+    
 }
-
 /**获取商品品类Api*/
 - (void)httpPath_getProductCategory
 {
@@ -265,7 +327,7 @@
 {
     if (!_searchView) {
         _searchView = [[[NSBundle mainBundle] loadNibNamed:@"CommonSearchView" owner:self options:nil] lastObject];
-        _searchView.frame = CGRectMake(0, 5, SCREEN_WIDTH, 50);
+//        _searchView.frame = CGRectMake(0, 5, SCREEN_WIDTH, 50);
         _searchView.delegate = self;
         _searchView.viewType = CommonSearchViewTypeGoodsList;
         
@@ -273,12 +335,21 @@
     return _searchView;
 }
 
-
+-(UIView*)searchBgView{
+    if(!_searchBgView){
+        _searchBgView =[UIView new];
+        _searchBgView.backgroundColor = [UIColor clearColor];
+        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick)];
+        _searchBgView.userInteractionEnabled = YES;
+        [_searchBgView addGestureRecognizer:tap];
+    }
+    return _searchBgView;
+}
 
 - (UITableView *)tableview
 {
     if (!_tableview) {
-        _tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 56, SCREEN_WIDTH, SCREEN_HEIGHT - 120) style:UITableViewStyleGrouped];
+        _tableview = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableview.backgroundColor = AppBgBlueGrayColor;
         _tableview.delegate = self;
         _tableview.dataSource = self;

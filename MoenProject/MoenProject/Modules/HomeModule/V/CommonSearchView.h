@@ -49,6 +49,11 @@ typedef NS_ENUM(NSInteger, CommonSearchViewType)
 
 @required
 
+- (void)completeStartAction:(UITextField *)textField;
+
+- (void)completeShouldBeginEditingAction:(UITextField *)textField;
+
+
 - (void)completeInputAction:(NSString *)keyStr;
 
 - (void)selectedTimeAction;

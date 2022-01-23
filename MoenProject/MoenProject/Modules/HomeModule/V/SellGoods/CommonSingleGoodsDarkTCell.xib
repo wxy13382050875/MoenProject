@@ -170,6 +170,7 @@
                     <constraint firstItem="iXz-dz-Z7M" firstAttribute="top" secondItem="X3a-Fg-M65" secondAttribute="bottom" constant="10" id="8PE-Uf-vXy"/>
                     <constraint firstItem="Fcb-Zb-x4q" firstAttribute="leading" secondItem="Wlw-n3-TsW" secondAttribute="trailing" constant="10" id="9Fm-7Q-IE9"/>
                     <constraint firstItem="Wlw-n3-TsW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="CfG-At-UrN"/>
+                    <constraint firstItem="NWg-8d-VfM" firstAttribute="top" secondItem="Wlw-n3-TsW" secondAttribute="bottom" constant="8" id="G7c-nk-dKD"/>
                     <constraint firstAttribute="trailing" secondItem="iXz-dz-Z7M" secondAttribute="trailing" constant="15" id="GGF-sf-8X9"/>
                     <constraint firstItem="NWg-8d-VfM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="HJi-rf-mwz"/>
                     <constraint firstItem="WeR-A3-VjL" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Nhx-uf-f3Z"/>
@@ -177,7 +178,6 @@
                     <constraint firstItem="iXz-dz-Z7M" firstAttribute="leading" secondItem="Wlw-n3-TsW" secondAttribute="trailing" constant="10" id="OB9-Yb-bpY"/>
                     <constraint firstItem="WeR-A3-VjL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="R1l-5x-NFS"/>
                     <constraint firstItem="JmR-6i-ykg" firstAttribute="top" secondItem="WeR-A3-VjL" secondAttribute="bottom" constant="14" id="XI5-zQ-fgl"/>
-                    <constraint firstAttribute="bottom" secondItem="NWg-8d-VfM" secondAttribute="bottom" id="Xsl-tj-hk0"/>
                     <constraint firstItem="BVq-ik-Sfl" firstAttribute="centerY" secondItem="Fcb-Zb-x4q" secondAttribute="centerY" constant="-20" id="YcH-7U-wD4"/>
                     <constraint firstItem="ape-aF-VM6" firstAttribute="bottom" secondItem="Wlw-n3-TsW" secondAttribute="bottom" id="cNd-Tg-sSR"/>
                     <constraint firstItem="Wlw-n3-TsW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="cZ1-jx-WjV"/>

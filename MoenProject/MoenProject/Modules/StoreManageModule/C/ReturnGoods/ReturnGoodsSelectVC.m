@@ -209,6 +209,7 @@
         goodsModel.returnCount = model.returnCount;
         goodsModel.deliverCount = model.deliverCount;
         goodsModel.waitDeliverCount = model.waitDeliverCount;
+        goodsModel.canReturnCount = model.canReturnCount;
         [self.goodsList addObject:goodsModel];
     }
     
@@ -285,6 +286,7 @@
         goodsModel.isSetMeal = NO;
         goodsModel.deliverCount = model.deliverCount;
         goodsModel.waitDeliverCount = model.waitDeliverCount;
+        goodsModel.canReturnCount = model.canReturnCount;
         [self.giftGoodsList addObject:goodsModel];
     }
     

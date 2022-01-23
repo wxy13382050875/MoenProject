@@ -15,6 +15,8 @@ typedef void(^RefreshBlock)();
 @property (nonatomic, assign) BOOL isHide;
 @property (nonatomic, assign) PurchaseOrderManageVCType controllerType;
 @property (nonatomic, copy) RefreshBlock refreshBlock;
+
+@property (nonatomic, assign) BOOL isDeliver;
 @end
 
 
