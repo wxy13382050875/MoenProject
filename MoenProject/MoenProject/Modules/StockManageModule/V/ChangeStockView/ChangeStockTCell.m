@@ -85,11 +85,12 @@
     _lastModel = lastModel;
     self.skuLabel.text = _lastModel.goodsSKU;
     self.goodsNameLabel.text = _lastModel.goodsName;
-    if(self.controllerType == PurchaseOrderManageVCTypeStockDaily){
-        self.changeCountTxt.text = _lastModel.goodsCountAfter;
-    } else{
-        _lastModel.goodsCountAfter = @"";
-    }
+//    if(self.controllerType == PurchaseOrderManageVCTypeStockDaily){
+//
+//    } else{
+//        _lastModel.goodsCountAfter = @"";
+//    }
+    self.changeCountTxt.text = _lastModel.goodsCountAfter;
 //
     self.goodsCountLabel.text =[NSString stringWithFormat:@"x%@",_lastModel.goodsCountBefor];
     [self.goodsImage sd_setImageWithURL:[NSURL URLWithString:_lastModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];

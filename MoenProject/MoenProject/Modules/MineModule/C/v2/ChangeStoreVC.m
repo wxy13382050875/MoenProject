@@ -10,7 +10,7 @@
 #import "ChangeStoreTCell.h"
 #import "CommonSkipHelper.h"
 #import "LoginInfoModel.h"
-
+#import "HomeDataModel.h"
 @interface ChangeStoreVC ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -150,7 +150,7 @@
     [QZLUserConfig sharedInstance].shopName = self.selectedModel.shopName;
     [QZLUserConfig sharedInstance].employeeId = self.selectedModel.employeeId;
     [QZLUserConfig sharedInstance].userName = self.selectedModel.userName;
-    [self httpPath_inventory_storeCheck];
+    [self httpPath_getHomePage];
     
 }
 -(void)httpPath_inventory_storeCheck{
@@ -160,6 +160,16 @@
     self.requestType = NO;
     self.requestParams = parameters;
     self.requestURL = Path_inventory_storeCheck;
+}
+/**首页信息 Api */
+- (void)httpPath_getHomePage
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setObject:[QZLUserConfig sharedInstance].token.length > 0 ? [QZLUserConfig sharedInstance].token:@"" forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_getHomePage;
 }
 
 #pragma mark -- Getter&Setter
@@ -214,6 +224,10 @@
                     }
 
                 }
+            } else if ([operation.urlTag isEqualToString:Path_getHomePage]) {
+                HomeDataModel *model = (HomeDataModel *)parserObject;
+                [QZLUserConfig sharedInstance].useInventory = model.useInventory;
+                [self httpPath_inventory_storeCheck];
             }
         }
     }

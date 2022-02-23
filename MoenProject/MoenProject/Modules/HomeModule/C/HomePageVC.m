@@ -24,6 +24,7 @@
 
 #import "HomeDataModel.h"
 //#import "FPSDisplay.h"
+#import "UITabBarController+AddChildController.h"
 
 @interface HomePageVC ()<UICollectionViewDelegate, UICollectionViewDataSource, FDAlertViewDelegate>
 
@@ -314,7 +315,6 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
             if ([operation.urlTag isEqualToString:Path_getHomePage]) {
                 HomeDataModel *model = (HomeDataModel *)parserObject;
                 [QZLUserConfig sharedInstance].useInventory = model.useInventory;
-//                [QZLUserConfig sharedInstance].useInventory = true;
                 if ([model.code isEqualToString:@"200"]) {
                     self.bannerModel = model;
                     [self.collectionview reloadData];

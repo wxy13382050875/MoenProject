@@ -209,38 +209,40 @@
     
     UIButton *againBtn = [UIButton buttonWithTitie:@"" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
         
-        if([model.orderStatus isEqualToString:@"ing"]){
-        
-            StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
-            startCountStockVC.hidesBottomBarWhenPushed = YES;
-            startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockAdjust;
-            startCountStockVC.goodsType = model.goodsType;
-            [self.navigationController pushViewController:startCountStockVC animated:YES];
-        } else if([model.orderStatus isEqualToString:@"wait"]){
-            NSLog(@"终止调库");
-//            FDAlertView *alert = [[FDAlertView alloc] initWithBlockTItle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"是否确认终止本次调库？" block:^(NSInteger buttonIndex, NSString *inputStr) {
-//                if(buttonIndex == 1){
-//                    [self httpPath_inventory_stopCallInventory:model];
-//                }
-//            } buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil),  nil];
-//            [alert show];
-            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
-            orderDetailVC.orderID = model.orderID;
-            orderDetailVC.controllerType = PurchaseOrderManageVCTypeLibrary;
-            orderDetailVC.refreshBlock = ^{
-                [self httpPath_orderList];
-            };
-            [self.navigationController pushViewController:orderDetailVC animated:YES];
-        } else if([model.orderStatus isEqualToString:@"problem"]){
-            NSLog(@"修正");
-            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
-            orderDetailVC.orderID = model.orderID;
-            orderDetailVC.controllerType = PurchaseOrderManageVCTypeLibrary;
-            orderDetailVC.refreshBlock = ^{
-                [self httpPath_orderList];
-            };
-            [self.navigationController pushViewController:orderDetailVC animated:YES];
-        }
+        XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+        orderDetailVC.orderID = model.orderID;
+        orderDetailVC.controllerType = PurchaseOrderManageVCTypeLibrary;
+        orderDetailVC.refreshBlock = ^{
+            [self httpPath_orderList];
+        };
+        [self.navigationController pushViewController:orderDetailVC animated:YES];
+//        if([model.orderStatus isEqualToString:@"ing"]){
+//
+//            StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
+//            startCountStockVC.hidesBottomBarWhenPushed = YES;
+//            startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockAdjust;
+//            startCountStockVC.goodsType = model.goodsType;
+//            [self.navigationController pushViewController:startCountStockVC animated:YES];
+//        } else if([model.orderStatus isEqualToString:@"wait"]){
+//            NSLog(@"终止调库");
+//
+//            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+//            orderDetailVC.orderID = model.orderID;
+//            orderDetailVC.controllerType = PurchaseOrderManageVCTypeLibrary;
+//            orderDetailVC.refreshBlock = ^{
+//                [self httpPath_orderList];
+//            };
+//            [self.navigationController pushViewController:orderDetailVC animated:YES];
+//        } else if([model.orderStatus isEqualToString:@"problem"]){
+//            NSLog(@"修正");
+//            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+//            orderDetailVC.orderID = model.orderID;
+//            orderDetailVC.controllerType = PurchaseOrderManageVCTypeLibrary;
+//            orderDetailVC.refreshBlock = ^{
+//                [self httpPath_orderList];
+//            };
+//            [self.navigationController pushViewController:orderDetailVC animated:YES];
+//        }
                     
     }];
     ViewRadius(againBtn, 5)
@@ -276,6 +278,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Orderlist *model = self.dataList[indexPath.section];
+    
+    
     XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
     orderDetailVC.orderID = model.orderID;
     orderDetailVC.controllerType = PurchaseOrderManageVCTypeLibrary;
@@ -413,7 +417,7 @@
     [parameters setValue:self.dataStart forKey:@"dateStart"];
     [parameters setValue:self.dataEnd forKey:@"dateEnd"];
     [parameters setValue:self.orderStatus forKey:@"orderStatus"];
-    [parameters setValue:self.orderCode forKey:@"callInventoryOrderKey"];
+    [parameters setValue:self.orderCode forKey:@"orderKey"];
     [parameters setValue:self.selectedTimeType forKey:@"timeQuantum"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;

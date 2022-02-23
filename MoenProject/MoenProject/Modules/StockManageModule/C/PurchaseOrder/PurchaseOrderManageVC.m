@@ -133,15 +133,20 @@
     Orderlist *model = self.dataList[section];;
     BOOL isShowBtn = YES ;
     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
-        if([model.orderStatus isEqualToString:@"wait"]){
-            
-        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]||
-                   [model.orderStatus isEqualToString:@"partDeliver"]){
-            
+        if([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]){
+            if([model.orderStatus isEqualToString:@"wait"]){
+                
+            }  else if([model.orderStatus isEqualToString:@"waitDeliver"]||
+                       [model.orderStatus isEqualToString:@"partDeliver"]){
+                
+            } else {
+    //            againBtn.hidden = YES;
+                isShowBtn = NO;
+            }
         } else {
-//            againBtn.hidden = YES;
             isShowBtn = NO;
         }
+        
     } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
        
     } else if(
@@ -149,9 +154,25 @@
         self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-  
-        if([model.orderStatus isEqualToString:@"waitGoods"]){
-            if (![model.senderKey isEqualToString:@"thisShop"]) {
+            if([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]){
+                if([model.orderStatus isEqualToString:@"waitGoods"]){
+                    if (![model.senderKey isEqualToString:@"thisShop"]) {
+                        
+                    } else {
+                        isShowBtn = NO;
+                    }
+                } else {
+                    isShowBtn = NO;
+                }
+            } else {
+                isShowBtn = NO;
+            }
+        
+    } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
+        if([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]){
+            if([model.orderStatus isEqualToString:@"wait"]){
+                
+            } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
                 
             } else {
                 isShowBtn = NO;
@@ -159,14 +180,7 @@
         } else {
             isShowBtn = NO;
         }
-    } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
-        if([model.orderStatus isEqualToString:@"wait"]){
-            
-        } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
-            
-        } else {
-            isShowBtn = NO;
-        }
+        
     } else {
         isShowBtn = NO;
     }
@@ -366,15 +380,28 @@
     
     printBtn.hidden = YES;
     if(self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
-        if([model.orderStatus isEqualToString:@"wait"]){
-            [againBtn setTitle:@"审核" forState:UIControlStateNormal];
-        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]||
-                   [model.orderStatus isEqualToString:@"partDeliver"]){
-            [againBtn setTitle:@"发货" forState:UIControlStateNormal];
-            printBtn.hidden = NO;
+        if([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]){
+            if([model.orderStatus isEqualToString:@"wait"]){
+                [againBtn setTitle:@"审核" forState:UIControlStateNormal];
+            }  else if([model.orderStatus isEqualToString:@"waitDeliver"]||
+                       [model.orderStatus isEqualToString:@"partDeliver"]){
+                [againBtn setTitle:@"发货" forState:UIControlStateNormal];
+                printBtn.hidden = NO;
+            } else {
+                againBtn.hidden = YES;
+            }
         } else {
             againBtn.hidden = YES;
         }
+//        if([model.orderStatus isEqualToString:@"wait"]){
+//            [againBtn setTitle:@"审核" forState:UIControlStateNormal];
+//        }  else if([model.orderStatus isEqualToString:@"waitDeliver"]||
+//                   [model.orderStatus isEqualToString:@"partDeliver"]){
+//            [againBtn setTitle:@"发货" forState:UIControlStateNormal];
+//            printBtn.hidden = NO;
+//        } else {
+//            againBtn.hidden = YES;
+//        }
     } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
         if([model.orderStatus isEqualToString:@"waitSub"]){
             [againBtn setTitle:@"编辑" forState:UIControlStateNormal];
@@ -385,27 +412,36 @@
         self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryStocker){
-  
-        if([model.orderStatus isEqualToString:@"waitGoods"]){
-            if (![model.senderKey isEqualToString:@"thisShop"]) {
-                [againBtn setTitle:@"确认收货" forState:UIControlStateNormal];
+        if([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]){
+            if([model.orderStatus isEqualToString:@"waitGoods"]){
+                if (![model.senderKey isEqualToString:@"thisShop"]){
+                    [againBtn setTitle:@"确认收货" forState:UIControlStateNormal];
+                } else {
+                    againBtn.hidden = YES;
+                }
+                
+                
             } else {
                 againBtn.hidden = YES;
             }
-            
-            
         } else {
             againBtn.hidden = YES;
         }
+        
     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
-        if([model.orderStatus isEqualToString:@"wait"]){
-            [againBtn setTitle:@"审核" forState:UIControlStateNormal];
-        } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
-            [againBtn setTitle:@"确认发货" forState:UIControlStateNormal];
-            printBtn.hidden = NO;
+        if([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]){
+            if([model.orderStatus isEqualToString:@"wait"]){
+                [againBtn setTitle:@"审核" forState:UIControlStateNormal];
+            } else if([model.orderStatus isEqualToString:@"waitDeliver"]){
+                [againBtn setTitle:@"确认发货" forState:UIControlStateNormal];
+                printBtn.hidden = NO;
+            } else {
+                againBtn.hidden = YES;
+            }
         } else {
             againBtn.hidden = YES;
         }
+        
     } else{
         againBtn.hidden = YES;
     }
@@ -456,6 +492,7 @@
 //
 //
 //        }
+
         XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
         orderDetailVC.orderID = model.orderID;
         orderDetailVC.controllerType = self.controllerType;
@@ -475,13 +512,18 @@
         
         NSMutableArray* selectArr = [NSMutableArray new];
         NSString* orderID = @"";
-        if([model.orderStatus isEqualToString:@"waitSub"]||
-           [model.orderStatus isEqualToString:@"wait"]){
-            NSLog(@"编辑");
+//        if([model.orderStatus isEqualToString:@"waitSub"]||
+//           [model.orderStatus isEqualToString:@"wait"]){
+//            NSLog(@"编辑");
+//            
+//            
+//        }  else {
+//            NSLog(@"再来一单");
+//            
+//        }
+        if([model.orderStatus isEqualToString:@"waitSub"]){
             orderID = model.orderID;
-            
         }  else {
-            NSLog(@"再来一单");
             orderID= @"";
         }
         for (Goodslist* tm in model.goodsList) {

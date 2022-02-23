@@ -388,6 +388,7 @@
                 if (singleModel.returnCount > 0) {
                     NSMutableDictionary *paramDic = [[NSMutableDictionary alloc] init];
                     [paramDic setValue:[NSString stringWithFormat:@"%ld", singleModel.returnCount] forKey:@"count"];
+                    [paramDic setValue:[NSString stringWithFormat:@"%@", singleModel.deliverCount] forKey:@"deliverCount"];
                     [paramDic setValue:singleModel.orderItemProductId forKey:@"orderItemProductId"];
                     [paramArr addObject:paramDic];
                 }
@@ -398,6 +399,7 @@
         {
             if (model.returnCount > 0) {
                 NSMutableDictionary *paramDic = [[NSMutableDictionary alloc] init];
+                [paramDic setValue:[NSString stringWithFormat:@"%@", model.deliverCount] forKey:@"deliverCount"];
                 [paramDic setValue:[NSString stringWithFormat:@"%ld", model.returnCount] forKey:@"count"];
                 [paramDic setValue:model.orderItemProductId forKey:@"orderItemProductId"];
                 [paramArr addObject:paramDic];
@@ -435,6 +437,7 @@
         if (parserObject.success) {
             if ([operation.urlTag isEqualToString:Path_selectReturnProduct]) {
                 ReturnOrderInfoModel *model = (ReturnOrderInfoModel *)parserObject;
+//                model = [ReturnOrderInfoModel mj_objectWithKeyValues:parserObject.datas[@"data"]];
                 if ([model.code isEqualToString:@"200"]) {
                     self.isShowEmptyData = NO;
                     self.dataModel = model;

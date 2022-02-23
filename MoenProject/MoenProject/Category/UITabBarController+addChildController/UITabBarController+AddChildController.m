@@ -30,9 +30,12 @@
     StatisticsVC *statisticsVC = [[StatisticsVC alloc] init];
     [self addChildViewController:statisticsVC imageName:@"tb_statistics_icon" selectedImageName:@"tb_statistice_hl_icon" title:NSLocalizedString(@"statistics",nil)];
     
+    if ([QZLUserConfig sharedInstance].useInventory){
+        StockManageVC *stockManageVC = [[StockManageVC alloc] init];
+        [self addChildViewController:stockManageVC imageName:@"tb_store_icon" selectedImageName:@"tb_store_hl_icon" title:NSLocalizedString(@"stock_manage",nil)];
+    }
     
-    StockManageVC *stockManageVC = [[StockManageVC alloc] init];
-    [self addChildViewController:stockManageVC imageName:@"tb_store_icon" selectedImageName:@"tb_store_hl_icon" title:NSLocalizedString(@"stock_manage",nil)];
+    
     
     //我的
     MineVC *mineVC = [[MineVC alloc] init];

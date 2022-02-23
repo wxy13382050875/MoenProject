@@ -182,7 +182,7 @@
     [self.editCountView setHidden:NO];
     [self.returnCount_Lab setHidden:NO];
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"可退%ld件",(long)model.canReturnCount]];
-    [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.canReturnCount].length)];
+//    [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.canReturnCount].length)];
     self.returnCount_Lab.attributedText = str;
     
     self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)model.returnCount];
@@ -196,7 +196,7 @@
             self.goodsPackageDes.text = [NSString stringWithFormat:@"%@  已发%@件",self.goodsPackageDes.text,model.deliverCount];
         }
         NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件,可退%ld件",(long)model.count,(long)model.canReturnCount]];
-        [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.canReturnCount].length)];
+//        [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.canReturnCount].length)];
         self.returnCount_Lab.attributedText = tmStr;
     } else {
         if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){

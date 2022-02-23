@@ -166,19 +166,22 @@ static CGFloat kMagin = 1.f;
         
         [self.dataSource addObject:model];
         
-        RoleProfileModel * model1 = [[RoleProfileModel alloc]init];
-        model1.title = @"更新发货";
-        model1.icon =@"o_placing_orderDetail_icon";
-        model1.skipid= 1;
+        if ([QZLUserConfig sharedInstance].useInventory){
+            RoleProfileModel * model1 = [[RoleProfileModel alloc]init];
+            model1.title = @"更新发货";
+            model1.icon =@"o_placing_orderDetail_icon";
+            model1.skipid= 1;
+            
+            [self.dataSource addObject:model1];
+            
+            RoleProfileModel * model2 = [[RoleProfileModel alloc]init];
+            model2.title = @"标记预约自提";
+            model2.icon =@"o_placing_orderDetail_icon";
+            model2.skipid= 2;
+            
+            [self.dataSource addObject:model2];
+        }
         
-        [self.dataSource addObject:model1];
-        
-        RoleProfileModel * model2 = [[RoleProfileModel alloc]init];
-        model2.title = @"标记预约自提";
-        model2.icon =@"o_placing_orderDetail_icon";
-        model2.skipid= 2;
-        
-        [self.dataSource addObject:model2];
         
         
       

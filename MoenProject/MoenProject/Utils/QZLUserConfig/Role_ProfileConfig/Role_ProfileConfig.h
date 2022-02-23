@@ -59,12 +59,17 @@ extern NSString* const ME_Store_Guide_Identity;
 #pragma mark 会员注册—注册
 extern NSString* const ME_Store_User_Register;
 
-#pragma mark 库存管理
+#pragma mark 库存管理-店长
 extern NSString* const ME_Store_Owner_StockManage;
 
-#pragma mark 库存管理二级菜单
+#pragma mark 库存管理-导购
+extern NSString* const ME_Store_Guide_StockManage;
+
+#pragma mark 库存管理二级菜单-店长
 extern NSString* const ME_Store_Owner_StockManageChild;
 
+#pragma mark 库存管理二级菜单-导购
+extern NSString* const ME_Store_Guide_StockManageChild;
 @end
 
 NS_ASSUME_NONNULL_END

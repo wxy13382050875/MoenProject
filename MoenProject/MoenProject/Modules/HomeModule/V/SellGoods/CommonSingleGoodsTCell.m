@@ -477,7 +477,7 @@
             }
             
             NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件,可退%ld件",(long)goodsModel.count,goodsModel.canReturnCount]];
-            [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.canReturnCount].length)];
+//            [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.canReturnCount].length)];
             self.returnCount_Lab.attributedText = tmStr;
         } else {
             if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){
@@ -667,7 +667,7 @@
         
         
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"可退%ld件",(long)goodsModel.canReturnCount]];
-        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.canReturnCount].length)];
+//        [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.canReturnCount].length)];
         self.returnCount_Lab.attributedText = str;
         
 //        self.returnCount_Lab.text = [NSString stringWithFormat:@"可退%ld件",(long)goodsModel.count];
@@ -690,7 +690,7 @@
             }
             
             NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件,可退%ld件",(long)goodsModel.count,goodsModel.canReturnCount]];
-            [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.count].length)];
+//            [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)goodsModel.count].length)];
             self.returnCount_Lab.attributedText = tmStr;
         } else {
             if([goodsModel.deliverCount integerValue] != 0 && goodsModel.deliverCount != nil){

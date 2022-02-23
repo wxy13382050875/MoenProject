@@ -28,6 +28,7 @@
 
 @property (nonatomic, strong) UILabel *titleLab;
 
+@property (nonatomic,assign)BOOL isBage;
 @end
 
 @implementation StockManageVC
@@ -35,8 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self configBaseData];
-    [self configBaseUI];
+    
 }
 
 
@@ -44,6 +44,8 @@
 {
     [super viewDidAppear:animated];
     self.titleLab.text = [QZLUserConfig sharedInstance].shopName;
+    [self configBaseData];
+    [self configBaseUI];
 }
 
 - (void)configBaseUI
@@ -69,22 +71,24 @@
 
 - (void)configBaseData
 {
-    
+    [self.roleProfileArr removeAllObjects];
     NSString* me_Config = @"";
     if ([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]) {
         me_Config = ME_Store_Owner_StockManage;
     }else
     {
-        me_Config = ME_Store_Owner_StockManage;
+        me_Config = ME_Store_Guide_StockManage;
     }
     
     NSDictionary* dict = [TransCodingHelper dictionaryWithJsonString:me_Config];
     NSArray* items = [dict objectForKey:@"datas"];
     for (NSDictionary* dict in items) {
         RoleProfileModel * model = [[RoleProfileModel alloc]init];
+        model.isBage = NO;
         [model setValuesForKeysWithDictionary:dict];
         [self.roleProfileArr addObject:model];
     }
+    [self httpPath_inventory_getNews];
 }
 
 
@@ -226,6 +230,8 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
             
         case 7:
         {
+//            model.isBage = NO;
+//            [self.collectionview reloadData];
             MasterShippingManageVC *masterShippingManageVC = [[MasterShippingManageVC alloc] init];
             masterShippingManageVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:masterShippingManageVC animated:YES];
@@ -259,5 +265,44 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
     // Pass the selected object to the new view controller.
 }
 */
-
+-(void)httpPath_inventory_getNews{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+ 
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_inventory_getNews;
+        
+}
+#pragma mark - 接口数据处理
+- (void)actionFetchRequest:(NSURLSessionDataTask *)operation result:(MoenBaseModel *)parserObject error:(NSError *)requestErr
+{
+    WEAKSELF
+    [[NSToastManager manager] hideprogress];
+    if (requestErr) {
+        if ([operation.urlTag isEqualToString:Path_inventory_getNews]) {
+            
+        }
+    }
+    else
+    {
+        if (parserObject.success) {
+            if ([parserObject.code isEqualToString:@"200"]) {
+                if ([operation.urlTag isEqualToString:Path_inventory_getNews]) {//进货单详情
+                    for (RoleProfileModel* model in self.roleProfileArr) {
+                        if([model.title isEqualToString:@"总仓发货管理"]){
+                            model.isBage = [parserObject.datas[@"info"] boolValue];
+                        }
+                    }
+                    [self.collectionview reloadData];
+                }
+            }
+            else
+            {
+                [[NSToastManager manager] showtoast:parserObject.message];
+            }
+            
+        }
+    }
+}
 @end

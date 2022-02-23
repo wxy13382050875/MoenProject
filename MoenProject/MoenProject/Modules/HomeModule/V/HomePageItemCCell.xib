@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,28 +40,38 @@
                                     <constraint firstAttribute="height" constant="30" id="iKC-ba-EZf"/>
                                 </constraints>
                             </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="p_yellow_point_icon" translatesAutoresizingMaskIntoConstraints="NO" id="wDj-Bd-qt4">
+                                <rect key="frame" x="105" y="10" width="10" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="3K5-lM-OjT"/>
+                                    <constraint firstAttribute="width" constant="10" id="kaE-Uq-hxU"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="wDj-Bd-qt4" firstAttribute="top" secondItem="VlG-ta-w2U" secondAttribute="top" constant="10" id="CJB-GT-e7X"/>
                             <constraint firstItem="1LD-mR-WmE" firstAttribute="centerY" secondItem="VlG-ta-w2U" secondAttribute="centerY" constant="-15" id="Q7M-7G-7zi"/>
                             <constraint firstItem="XyX-Xn-r7l" firstAttribute="leading" secondItem="VlG-ta-w2U" secondAttribute="leading" constant="15" id="Rur-3V-6lg"/>
                             <constraint firstItem="1LD-mR-WmE" firstAttribute="centerX" secondItem="VlG-ta-w2U" secondAttribute="centerX" id="WNm-9S-b1S"/>
                             <constraint firstItem="XyX-Xn-r7l" firstAttribute="top" secondItem="1LD-mR-WmE" secondAttribute="bottom" constant="13" id="cxN-25-2WU"/>
                             <constraint firstAttribute="trailing" secondItem="XyX-Xn-r7l" secondAttribute="trailing" constant="15" id="ojR-1r-Yyr"/>
                             <constraint firstItem="zH1-uy-be9" firstAttribute="leading" secondItem="VlG-ta-w2U" secondAttribute="leading" id="pkb-IA-B8H"/>
+                            <constraint firstAttribute="trailing" secondItem="wDj-Bd-qt4" secondAttribute="trailing" constant="10" id="s0L-R7-Xm2"/>
                             <constraint firstItem="zH1-uy-be9" firstAttribute="top" secondItem="VlG-ta-w2U" secondAttribute="top" id="y8O-6v-oJe"/>
                         </constraints>
                     </view>
                 </subviews>
             </view>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="VlG-ta-w2U" secondAttribute="bottom" id="AVV-U8-TZm"/>
                 <constraint firstItem="VlG-ta-w2U" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="FPx-3k-SbA"/>
                 <constraint firstItem="VlG-ta-w2U" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="TiP-xt-YlU"/>
                 <constraint firstAttribute="trailing" secondItem="VlG-ta-w2U" secondAttribute="trailing" id="hOT-Mg-FOd"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <connections>
+                <outlet property="bage_Img" destination="wDj-Bd-qt4" id="yNJ-5X-yD0"/>
                 <outlet property="news_Img" destination="zH1-uy-be9" id="8Jq-IJ-j3k"/>
                 <outlet property="type_Img" destination="1LD-mR-WmE" id="CP6-bg-0L1"/>
                 <outlet property="type_Lab" destination="XyX-Xn-r7l" id="I4y-54-Og9"/>
@@ -73,5 +81,6 @@
     </objects>
     <resources>
         <image name="h_news_icon" width="30" height="30"/>
+        <image name="p_yellow_point_icon" width="10" height="10"/>
     </resources>
 </document>

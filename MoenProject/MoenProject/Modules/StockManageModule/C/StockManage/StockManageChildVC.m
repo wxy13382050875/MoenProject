@@ -88,7 +88,7 @@
         me_Config = ME_Store_Owner_StockManageChild;
     }else
     {
-        me_Config = ME_Store_Owner_StockManageChild;
+        me_Config = ME_Store_Guide_StockManageChild;
     }
     
     NSDictionary* dict = [TransCodingHelper dictionaryWithJsonString:me_Config];

@@ -380,6 +380,9 @@
     
     NSMutableArray* array = [NSMutableArray array];
     for (Orderproductinfodatalist* model in self.model.orderProductInfoDataList) {
+        
+      
+        
         if([model.inputCount integerValue]> 0){
             NSMutableDictionary* dict = [NSMutableDictionary dictionary];
             [dict setObject:model.goodsSKU forKey:@"goodsSKU"];

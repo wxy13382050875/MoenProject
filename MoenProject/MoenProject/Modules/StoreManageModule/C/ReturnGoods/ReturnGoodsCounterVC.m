@@ -715,6 +715,7 @@
         [dic setValue:[NSString stringWithFormat:@"%ld", (long)model.count] forKey:@"count"];
         [dic setValue:model.refundAmount forKey:@"refundAmount"];
         [dic setValue:[NSString stringWithFormat:@"%@",model.actualRefundAmount] forKey:@"actualRefundAmount"];
+        [dic setValue:model.deliverCount forKey:@"deliverCount"];
         if ([model.actualRefundAmount isEqualToString:@"0"] ||
             model.actualRefundAmount.length == 0) {
             [[NSToastManager manager] showtoast:NSLocalizedString(@"please_input_refound_amount", nil)];

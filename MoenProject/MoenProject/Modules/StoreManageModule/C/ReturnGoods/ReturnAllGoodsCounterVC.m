@@ -886,11 +886,13 @@
                 [dic setValue:[NSString stringWithFormat:@"%ld", (long)singleModel.count] forKey:@"count"];
                 [dic setValue:singleModel.refundAmount forKey:@"refundAmount"];
                 [dic setValue:[NSString stringWithFormat:@"%@",singleModel.actualRefundAmount] forKey:@"actualRefundAmount"];
+                [dic setValue:singleModel.deliverCount forKey:@"deliverCount"];
                 if ([singleModel.actualRefundAmount isEqualToString:@"0"] ||
                     singleModel.actualRefundAmount.length == 0) {
                     [[NSToastManager manager] showtoast:NSLocalizedString(@"please_input_refound_amount", nil)];
                     return;
                 }
+                
                 [paramArr addObject:dic];
             }
         }
@@ -901,6 +903,7 @@
             [dic setValue:[NSString stringWithFormat:@"%ld", (long)goodsModel.canReturnCount] forKey:@"count"];
             [dic setValue:goodsModel.refundAmount forKey:@"refundAmount"];
             [dic setValue:[NSString stringWithFormat:@"%@",goodsModel.actualRefundAmount] forKey:@"actualRefundAmount"];
+            [dic setValue:goodsModel.deliverCount forKey:@"deliverCount"];
             if ([goodsModel.actualRefundAmount isEqualToString:@"0"] ||
                 goodsModel.actualRefundAmount.length == 0) {
                 [[NSToastManager manager] showtoast:NSLocalizedString(@"please_input_refound_amount", nil)];

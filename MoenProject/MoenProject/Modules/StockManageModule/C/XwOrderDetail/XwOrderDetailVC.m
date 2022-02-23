@@ -299,7 +299,7 @@
         }
         StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
         startCountStockVC.hidesBottomBarWhenPushed = YES;
-        startCountStockVC.controllerType = PurchaseOrderManageVCTypeStockAdjust;
+        startCountStockVC.controllerType = type;
         startCountStockVC.goodsType = self.dataModel.goodsType;
         [self.navigationController pushViewController:startCountStockVC animated:YES];
         
@@ -811,7 +811,8 @@
                     [self handleTabMarkData:NO];
                     if(![self.dataModel.orderApplyProgress isEqualToString:@"wait"]&&
                        ![self.dataModel.orderApplyProgress isEqualToString:@"waitSub"]){
-                        [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+                        
+                        [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",[self.dataModel.adRemarks isEqualToString:@""]||self.dataModel.adRemarks ==nil?@"无":self.dataModel.adRemarks]];
                         
                     }
                     [self.tableView reloadData];
@@ -837,11 +838,14 @@
                 
                 if ([parserObject.code isEqualToString:@"200"]) {
                     self.isShowEmptyData = NO;
-                    if([self.dataModel.sendOrderStatus isEqualToString:@"waitGoods"]&&
-                       ![self.dataModel.senderKey isEqualToString:@"thisShop"]&&
-                       !self.isHide){
-                        self.btn3.hidden = NO;
+                    if([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]){
+                        if([self.dataModel.sendOrderStatus isEqualToString:@"waitGoods"]&&
+                           ![self.dataModel.senderKey isEqualToString:@"thisShop"]&&
+                           !self.isHide){
+                            self.btn3.hidden = NO;
+                        }
                     }
+                    
                     
                     self.dataModel.orderStatusText =  [self getOrderStatus:self.dataModel.sendOrderStatus];;
                     
@@ -892,16 +896,19 @@
                     self.isShowEmptyData = NO;
                     self.orderRemarks = self.dataModel.orderRemarks;
                     if([self.dataModel.orderType isEqualToString:@"task"]){
-                        if(([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]||
-                           [self.dataModel.orderApplyProgress isEqualToString:@"partDeliver"])&&
-                           !self.isHide&&self.isDeliver
-                           ){
-                            self.btn2.hidden = NO;
-//                            self.isDeliver = YES;
-                        } else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]&&
-                                  self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
-                            self.btn.hidden = NO;
-                            self.btn1.hidden = NO;
+                        if([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]){
+                        
+                            if(([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]||
+                               [self.dataModel.orderApplyProgress isEqualToString:@"partDeliver"])&&
+                               !self.isHide&&self.isDeliver
+                               ){
+                                self.btn2.hidden = NO;
+    //                            self.isDeliver = YES;
+                            } else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]&&
+                                      self.controllerType == PurchaseOrderManageVCTypeAllocteTask){
+                                self.btn.hidden = NO;
+                                self.btn1.hidden = NO;
+                            }
                         }
                     }
                     
@@ -931,22 +938,22 @@
                         else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
                             [self handleTabAuditMarkData];
                         } else {
-                            [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",self.dataModel.shopRemarks]];
+                            [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",[self.dataModel.shopRemarks isEqualToString:@""]||self.dataModel.shopRemarks ==nil?@"无":self.dataModel.shopRemarks]];
                             
                             if(![self.dataModel.orderApplyProgress isEqualToString:@"waitAD"]&&
                                ![self.dataModel.orderApplyProgress isEqualToString:@"refuse"]){
-                                [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+                                [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",[self.dataModel.adRemarks isEqualToString:@""]||self.dataModel.adRemarks ==nil?@"无":self.dataModel.adRemarks]];
 
                             }
                         }
                         
                     } else {
                         if(![self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
-                            [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",self.dataModel.shopRemarks]];
+                            [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",[self.dataModel.shopRemarks isEqualToString:@""]||self.dataModel.shopRemarks ==nil?@"无":self.dataModel.shopRemarks]];
                             
                             if(![self.dataModel.orderApplyProgress isEqualToString:@"waitAD"]&&
                                ![self.dataModel.orderApplyProgress isEqualToString:@"refuse"]){
-                                [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+                                [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",[self.dataModel.adRemarks isEqualToString:@""]||self.dataModel.adRemarks ==nil?@"无":self.dataModel.adRemarks]];
 
                             }
                         }
@@ -972,15 +979,19 @@
                 
                 
             } else if ([operation.urlTag isEqualToString:Path_refund_returnOrderDetail]) {//退仓单详情
-                self.dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
+                
                 
                 if ([parserObject.code isEqualToString:@"200"]) {
+                    self.dataModel = [XwOrderDetailModel mj_objectWithKeyValues:parserObject.datas[@"datas"]];
                     self.isShowEmptyData = NO;
-                    if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]){
-                        self.btn2.hidden = NO;
-                    } else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
-                        self.btn.hidden = NO;
-                        self.btn1.hidden = NO;
+                    if([[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_LEADER"]){
+                    
+                        if([self.dataModel.orderApplyProgress isEqualToString:@"waitDeliver"]){
+                            self.btn2.hidden = NO;
+                        } else if([self.dataModel.orderApplyProgress isEqualToString:@"wait"]){
+                            self.btn.hidden = NO;
+                            self.btn1.hidden = NO;
+                        }
                     }
                     self.dataModel.orderStatusText = [self getOrderStatus:self.dataModel.orderApplyProgress];
                     self.dataModel.progressName = @"退仓进度";
@@ -1000,7 +1011,7 @@
 //                        }
 //                        self.orderRemarks = self.dataModel.checkRemarks;
 //                        [self handleTabMarkData:NO];
-                        [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",[self.dataModel.checkRemarks isEqualToString:@""]?@"无":self.dataModel.checkRemarks]];
+                        [self handleTabDefInfoData:[NSString stringWithFormat:@"门店审核信息：%@",[self.dataModel.checkRemarks isEqualToString:@""]||self.dataModel.checkRemarks ==nil?@"无":self.dataModel.checkRemarks]];
                     }
                     
                     [self.tableView reloadData];
@@ -1072,7 +1083,7 @@
                            
                            if(![self.dataModel.orderStatus isEqualToString:@"ing"]&&
                               ![self.dataModel.orderStatus isEqualToString:@"wait"]){
-                               [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+                               [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",[self.dataModel.adRemarks isEqualToString:@""]||self.dataModel.adRemarks ==nil?@"无":self.dataModel.adRemarks]];
                                
                            }
                            [self.tableView reloadData];
@@ -1118,7 +1129,7 @@
                               ![self.dataModel.orderStatus isEqualToString:@"wait"]&&
                               ![[QZLUserConfig sharedInstance].storeTypeKey isEqualToString:@"Showroom-Dealer"]
                               ){
-                               [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",self.dataModel.adRemarks]];
+                               [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",[self.dataModel.adRemarks isEqualToString:@""]||self.dataModel.adRemarks ==nil?@"无":self.dataModel.adRemarks]];
                                
                            }
                            [self.tableView reloadData];

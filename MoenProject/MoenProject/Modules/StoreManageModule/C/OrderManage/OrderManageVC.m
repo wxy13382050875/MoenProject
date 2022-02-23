@@ -152,11 +152,16 @@
         if(![self.customerId isEqualToString:@""]&&self.customerId != nil){
             if([model.orderStatus isEqualToString:@"waitDeliver"]||
                [model.orderStatus isEqualToString:@"partDeliver"]||
-               [model.orderStatus isEqualToString:@"allDeliver"]){
+               [model.orderStatus isEqualToString:@"allDeliver"]||
+               [model.orderStatus isEqualToString:@"allReturn"]){
                 return 85;
             }
         }
         
+    } else {
+        if(![self.customerId isEqualToString:@""]&&self.customerId != nil){
+            return 85;
+        }
     }
     
     return 45;
@@ -308,7 +313,8 @@
                     againBtn.sd_layout.rightSpaceToView(pickBtn, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
                 }
                 
-            } else if([model.orderStatus isEqualToString:@"allDeliver"]){
+            } else if([model.orderStatus isEqualToString:@"allDeliver"]||
+                      [model.orderStatus isEqualToString:@"allReturn"]){
                 
                 if (![self.customerId isEqualToString:@""]&&self.customerId != nil) {
                     [footerView addSubview:againBtn];
@@ -318,6 +324,16 @@
             }
         }
         
+    } else {
+        if(![self.customerId isEqualToString:@""]&&self.customerId != nil){
+        
+            UIButton *againBtn =[UIButton buttonWithTitie:@"再来一单" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+                [self buttonClick:0 model:model];
+            }];
+            ViewRadius(againBtn, 5)
+            [footerView addSubview:againBtn];
+            againBtn.sd_layout.rightSpaceToView(footerView, 15).bottomSpaceToView(footerView, 10).widthIs(90).heightIs(30);
+        }
     }
     
     UIView *lineView = [UIView new];
@@ -613,6 +629,8 @@
         orderStatus = @"部分发货";
     }else if([status isEqualToString:@"allDeliver"]){
         orderStatus = @"全部发货";
+    }else if([status isEqualToString:@"allReturn"]){
+        orderStatus = @"全部退货";
     }else if([status isEqualToString:@"finish"]){
         orderStatus = @"已完成";
     }else if([status isEqualToString:@"refuse"]){

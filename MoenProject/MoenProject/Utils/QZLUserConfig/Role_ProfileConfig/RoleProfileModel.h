@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) NSInteger isskip;
 
+@property (nonatomic, assign) BOOL isBage;
 @end
 
 NS_ASSUME_NONNULL_END

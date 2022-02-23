@@ -20,7 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *refundAmount;
 @property (nonatomic, assign) NSInteger actualRefundAmount;
 
-
 @property (nonatomic, assign) NSInteger returnCount;
 
 @property (nonatomic, assign) NSInteger giftNum;
@@ -74,6 +73,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**退货数量*/
 @property (nonatomic, assign) NSInteger canReturnCount;
+
+/**已发货数量*/
+@property (nonatomic, copy) NSString *deliverCount;
+
 @end
 
 NS_ASSUME_NONNULL_END

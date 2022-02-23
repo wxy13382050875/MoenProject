@@ -12,7 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *type_Lab;
 @property (weak, nonatomic) IBOutlet UIImageView *news_Img;
-
+@property (weak, nonatomic) IBOutlet UIImageView *bage_Img;
 @end
 
 @implementation HomePageItemCCell
@@ -31,13 +31,15 @@
     {
         self.type_Lab.font = FONTSYS(16);
     }
-    
+    self.bage_Img.hidden = YES;
 }
 
 - (void)showDataWithRoleProfileModel:(RoleProfileModel *)model
 {
     self.type_Img.image = ImageNamed(model.icon);
     self.type_Lab.text = model.title;
+    
+    self.bage_Img.hidden = !model.isBage;
 }
 
 - (void)showDataWithRoleProfileModel:(RoleProfileModel *)model WithHomeDataModel:(HomeDataModel *)homeModel

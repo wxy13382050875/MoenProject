@@ -88,37 +88,64 @@
 
 -(void)textFieldTextChange:(UITextField *)textField{
     NSLog(@"textField1 - 输入框内容改变,当前内容为: %@",textField.text);
-    
+//
+    NSString* stockNum = @"";
     if(_controllerType == DeliveryWayTypeShopSelf){
-        
-        if([self.model.notIssuedNum integerValue]> [self.model.shopNum integerValue]){
-            if([textField.text integerValue] > [self.model.shopNum integerValue]){
-                textField.text = self.model.shopNum;
-            }
-        } else {
-            if([self.model.notIssuedNum integerValue] <= 0){
-                textField.text = @"0";
-            } else if([textField.text integerValue] > [self.model.notIssuedNum integerValue]){
-                textField.text = self.model.notIssuedNum;
-            }
-        }
-        
+        stockNum = self.model.shopNum;
     } else {
-       
-        if([self.model.notIssuedNum integerValue]> [self.model.dealerNum integerValue]){
-            if([textField.text integerValue] > [self.model.dealerNum integerValue]){
-                textField.text = self.model.dealerNum;
-            }
-        } else {
-            if([self.model.notIssuedNum integerValue] <= 0){
-                textField.text = @"0";
-            } else if([textField.text integerValue] > [self.model.notIssuedNum integerValue]){
+        stockNum = self.model.dealerNum;
+    }
+    if(![[QZLUserConfig sharedInstance].storeTypeKey isEqualToString:@"Showroom-Dealer"]){//直营
+        if([stockNum integerValue] <= 0){
+            textField.text = @"0";
+        } else if([stockNum integerValue] > [self.model.notIssuedNum integerValue]){//若库存数量大于门店下单数量最多只能输入到下单数量
+            if([textField.text integerValue] > [self.model.notIssuedNum integerValue]){
                 textField.text = self.model.notIssuedNum;
             }
+        } else {//若库存数量小于门店下单数量，最多只能输入库存数量
+            if([textField.text integerValue] > [stockNum integerValue]){
+                textField.text = stockNum;
+            }
         }
-        
+    }else {//分销
+        if([textField.text integerValue] > [self.model.notIssuedNum integerValue]){
+            textField.text = self.model.notIssuedNum;
+        }
     }
-    
+//    if(_controllerType == DeliveryWayTypeShopSelf){
+////        notIssuedNum下单数量
+////        shopNum 库存数量
+//        
+//        if([self.model.notIssuedNum integerValue] > [self.model.shopNum integerValue]){
+//            if([textField.text integerValue] > [self.model.shopNum integerValue]){
+//                textField.text = self.model.shopNum;
+//            }
+//        } else {
+//            if([self.model.notIssuedNum integerValue] <= 0){
+//                textField.text = @"0";
+//            } else if([textField.text integerValue] > [self.model.notIssuedNum integerValue]){
+//                textField.text = self.model.notIssuedNum;
+//            }
+//        }
+//
+//    } else {
+//        
+//        if([self.model.notIssuedNum integerValue]> [self.model.dealerNum integerValue]){
+//            if([textField.text integerValue] > [self.model.dealerNum integerValue]){
+//                textField.text = self.model.dealerNum;
+//            }
+//        } else {
+//            if([self.model.notIssuedNum integerValue] <= 0){
+//                textField.text = @"0";
+//            } else if([textField.text integerValue] > [self.model.notIssuedNum integerValue]){
+//                textField.text = self.model.notIssuedNum;
+//            }
+//        }
+//
+//    }
+    if([textField.text integerValue] <= 0){
+        textField.text = @"0";
+    }
     self.model.inputCount =textField.text;
 }
 @end

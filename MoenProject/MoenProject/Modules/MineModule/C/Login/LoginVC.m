@@ -11,7 +11,7 @@
 #import "VerificatHelper.h"
 #import "CommonSkipHelper.h"
 #import "ChangeStoreVC.h"
-
+#import "HomeDataModel.h"
 @interface LoginVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *return_Btn;
 
@@ -458,7 +458,7 @@
                         [QZLUserConfig sharedInstance].employeeId = model.employeeId;
                         [QZLUserConfig sharedInstance].userName = model.userName;
                         [QZLUserConfig sharedInstance].isMultipleStores = NO;
-                        [self httpPath_inventory_storeCheck];
+                        [self httpPath_getHomePage];
                         
                     }
                     else if(listModel.userConfigDataList.count > 1)
@@ -515,6 +515,10 @@
                         [CommonSkipHelper skipToHomeViewContrillerWithLoginSuccess];
                     }
                 }
+            } else if ([operation.urlTag isEqualToString:Path_getHomePage]) {
+                HomeDataModel *model = (HomeDataModel *)parserObject;
+                [QZLUserConfig sharedInstance].useInventory = model.useInventory;
+                [self httpPath_inventory_storeCheck];
             }
         }
     }
@@ -593,7 +597,16 @@
     self.requestURL = Path_getUserConfig;
 }
 
-
+/**首页信息 Api */
+- (void)httpPath_getHomePage
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setObject:[QZLUserConfig sharedInstance].token.length > 0 ? [QZLUserConfig sharedInstance].token:@"" forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    self.requestURL = Path_getHomePage;
+}
 
 
 #pragma Mark- getters and setters

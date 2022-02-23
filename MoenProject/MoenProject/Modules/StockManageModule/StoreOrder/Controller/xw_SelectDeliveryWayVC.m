@@ -34,13 +34,18 @@
     
     [self.view addSubview:applyGoodsBtn];
     
-    UIButton *applySampleBtn = [UIButton buttonWithTitie:@"总仓发货" WithtextColor:COLOR(@"#ffffff") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
-        [self returnAction:DeliveryWayTypeStocker];
-    }];
-    applySampleBtn.frame = CGRectMake(leftMargin, topMargin + btnHeight + btnMargin, SCREEN_WIDTH - leftMargin * 2, btnHeight);
-    ViewRadius(applySampleBtn, 20)
     
-    [self.view addSubview:applySampleBtn];
+    if(![[QZLUserConfig sharedInstance].storeTypeKey isEqualToString:@"Showroom-Dealer"]){
+        UIButton *applySampleBtn = [UIButton buttonWithTitie:@"总仓发货" WithtextColor:COLOR(@"#ffffff") WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+            [self returnAction:DeliveryWayTypeStocker];
+        }];
+        applySampleBtn.frame = CGRectMake(leftMargin, topMargin + btnHeight + btnMargin, SCREEN_WIDTH - leftMargin * 2, btnHeight);
+        ViewRadius(applySampleBtn, 20)
+        
+        [self.view addSubview:applySampleBtn];
+    }
+    
+    
     
 }
 

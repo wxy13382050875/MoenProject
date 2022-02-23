@@ -187,11 +187,7 @@
     if(!_startBtn){
         _startBtn = [UIButton buttonWithTitie:@"开始" WithtextColor:AppBgWhiteColor WithBackColor:COLOR(@"#338CCE") WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
             
-            StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
-            startCountStockVC.hidesBottomBarWhenPushed = YES;
-            startCountStockVC.controllerType = self.controllerType;
-            startCountStockVC.goodsType = self.goodsType;
-            [self.navigationController pushViewController:startCountStockVC animated:YES];
+            [self httpPath_inventory_haveInventory];
         }];
         ViewRadius(_startBtn, 5)
     }
@@ -215,6 +211,58 @@
         } else if(sender == self.radioAdjust){
             NSLog(@" 调整库存");
             self.controllerType = PurchaseOrderManageVCTypeStockAdjust;
+        }
+    }
+}
+- (void)httpPath_inventory_haveInventory
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setValue:self.goodsType forKey:@"goodsType"];
+    
+    [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
+    self.requestType = NO;
+    self.requestParams = parameters;
+    
+    if(self.controllerType == PurchaseOrderManageVCTypeStockAdjust){
+        self.requestURL = Path_inventory_haveCallInventory;
+    } else {
+        self.requestURL = Path_inventory_haveInventoryCheckChoice;
+    }
+    
+}
+- (void)actionFetchRequest:(NSURLSessionDataTask *)operation result:(MoenBaseModel *)parserObject error:(NSError *)requestErr
+{
+    
+    [[NSToastManager manager] hideprogress];
+    if (requestErr) {
+        if ([operation.urlTag isEqualToString:Path_orderList]) {
+            
+        }
+    }
+    else
+    {
+        if (parserObject.success) {
+            if ([operation.urlTag isEqualToString:Path_inventory_haveCallInventory]||
+                [operation.urlTag isEqualToString:Path_inventory_haveInventoryCheckChoice]) {
+                 if([parserObject.code integerValue]== 200){
+//                    self.isShowHis = [parserObject.datas[@"info"] boolValue];
+                     StartCountStockVC *startCountStockVC = [[StartCountStockVC alloc] init];
+                     startCountStockVC.hidesBottomBarWhenPushed = YES;
+                     startCountStockVC.controllerType = self.controllerType;
+                     startCountStockVC.goodsType = self.goodsType;
+                     [self.navigationController pushViewController:startCountStockVC animated:YES];
+
+                } else if([parserObject.code integerValue]== 2003){
+                    NSLog(@"parserObject.code = %@",parserObject);
+//                    self.baseModel = parserObject;
+//                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    [[NSToastManager manager] showtoast:parserObject.message];
+                }
+                
+
+            }
+
         }
     }
 }

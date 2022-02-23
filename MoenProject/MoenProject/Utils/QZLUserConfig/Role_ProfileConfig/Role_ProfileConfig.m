@@ -444,7 +444,7 @@ NSString* const ME_Store_User_Register = @"{\
 }";
 
 
-#pragma mark 库存管理
+#pragma mark 库存管理-店长
 NSString* const ME_Store_Owner_StockManage = @"{\
 \"datas\": [\
 {\
@@ -497,9 +497,49 @@ NSString* const ME_Store_Owner_StockManage = @"{\
 }\
 ]\
 }";
+#pragma mark 库存管理-导购
+NSString* const ME_Store_Guide_StockManage = @"{\
+\"datas\": [\
+{\
+\"title\": \"库存管理\",\
+\"icon\": \"customer_account_icon\",\
+\"skipid\": 2,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"进货单管理\",\
+\"icon\": \"address_manage_icon\",\
+\"skipid\": 3,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"发货单管理\",\
+\"icon\": \"intention_manage_icon\",\
+\"skipid\": 4,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"调拨单管理\",\
+\"icon\": \"customer_order_icon\",\
+\"skipid\": 5,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"退仓单管理\",\
+\"icon\": \"return_icon\",\
+\"skipid\": 6,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"总仓发货管理\",\
+\"icon\": \"return_order_icon\",\
+\"skipid\": 7,\
+\"isskip\": 0\
+}\
+]\
+}";
 
-
-#pragma mark 库存管理
+#pragma mark 库存管理二级-店长
 NSString* const ME_Store_Owner_StockManageChild = @"{\
 \"datas\": [\
 {\
@@ -546,5 +586,34 @@ NSString* const ME_Store_Owner_StockManageChild = @"{\
 },\
 ]\
 }";
-
+#pragma mark 库存管理二级-店长
+NSString* const ME_Store_Guide_StockManageChild = @"{\
+\"datas\": [\
+{\
+\"title\": \"门店库存\",\
+\"icon\": \"sell_icon\",\
+\"skipid\": 0,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"库存查询\",\
+\"icon\": \"customer_activity_icon\",\
+\"skipid\": 1,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"出入库流水\",\
+\"icon\": \"customer_account_icon\",\
+\"skipid\": 2,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"门店样品库存\",\
+\"icon\": \"return_icon\",\
+\"skipid\": 6,\
+\"isskip\": 0\
+},\
+]\
+}";
+    
 @end

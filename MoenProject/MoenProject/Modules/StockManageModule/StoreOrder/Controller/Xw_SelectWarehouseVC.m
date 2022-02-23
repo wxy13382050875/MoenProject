@@ -41,23 +41,29 @@
 }
 -(void)configBaseUI{
     [self.view addSubview:self.titleLab];
-    [self.view addSubview:self.radioBtn1];
-    [self.view addSubview:self.radioBtn2];
-   
-    
-    [self.view addSubview:self.submitBtn];
-    [self.view addSubview:self.tableView];
-    
     
     self.titleLab.sd_layout.topEqualToView(self.view).leftSpaceToView(self.view, 15).widthIs(100).heightIs(40);
-    self.radioBtn1.sd_layout.leftSpaceToView(self.titleLab, 5).topEqualToView(self.view).widthIs(100).heightIs(40);
-    self.radioBtn2.sd_layout.leftSpaceToView(self.radioBtn1, 5).topEqualToView(self.view).widthIs(100).heightIs(40);
     
+    [self.view addSubview:self.radioBtn1];
+    self.radioBtn1.sd_layout.leftSpaceToView(self.titleLab, 5).topEqualToView(self.view).widthIs(100).heightIs(40);
+    [self.buttons addObject:self.radioBtn1];
+    
+    
+    if(![[QZLUserConfig sharedInstance].storeTypeKey isEqualToString:@"Showroom-Dealer"]){
+        [self.view addSubview:self.radioBtn2];
+        self.radioBtn2.sd_layout.leftSpaceToView(self.radioBtn1, 5).topEqualToView(self.view).widthIs(100).heightIs(40);
+        [self.buttons addObject:self.radioBtn2];
+    }
+    
+    [self.view addSubview:self.submitBtn];
     self.submitBtn.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view,KWBottomSafeHeight).heightIs(40);
+    
+    [self.view addSubview:self.tableView];
     self.tableView.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).topSpaceToView(self.titleLab, 0).bottomSpaceToView(self.submitBtn, 0);
     
-    [self.buttons addObject:self.radioBtn1];
-    [self.buttons addObject:self.radioBtn2];
+    
+    
+    
     [self.buttons[0] setGroupButtons:self.buttons]; // Setting buttons into the group
     
     [self.buttons[0] setSelected:YES]; // Making the first button initially selected

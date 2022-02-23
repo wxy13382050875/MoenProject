@@ -60,6 +60,9 @@
 //    [[NSToastManager manager] showprogress];
 //    [self httpPath_getProductList];
     self.dataList = self.model.LastGoodsList;
+    for (Lastgoodslist* model in self.dataList) {
+        model.goodsCountAfter = @"";
+    }
     [self.tableview reloadData];
 }
 
