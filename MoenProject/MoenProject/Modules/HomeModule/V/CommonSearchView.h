@@ -42,6 +42,9 @@ typedef NS_ENUM(NSInteger, CommonSearchViewType)
     
     /**总仓发货*/
     CommonSearchViewTypeChangeWarehouse,
+    
+    /**出水库流水*/
+    CommonSearchViewTypeOutOrIn,
 };
 
 

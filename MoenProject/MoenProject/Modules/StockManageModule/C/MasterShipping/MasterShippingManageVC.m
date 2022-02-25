@@ -292,6 +292,7 @@
     WEAKSELF
     [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(XwScreenModel *model, NSInteger type) {
         //
+        weakSelf.selectedTimeType= @"";
                 weakSelf.dataStart = model.dateStart;
                 weakSelf.dataEnd = model.dateEnd;
                 for (XWSelectModel* tm in model.selectList) {

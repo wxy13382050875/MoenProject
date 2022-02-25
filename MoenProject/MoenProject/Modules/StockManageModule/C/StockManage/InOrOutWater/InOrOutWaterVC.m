@@ -40,6 +40,10 @@
 
 @property (nonatomic, copy) NSString *dataEnd;
 
+@property (nonatomic, copy) NSString *operateType;
+
+@property (nonatomic, copy) NSString *businessType;
+
 @end
 
 @implementation InOrOutWaterVC
@@ -196,23 +200,30 @@
     [self showConditionSelectView];
 }
 
+
 - (void)showConditionSelectView
 {
     WEAKSELF
     [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(XwScreenModel *model, NSInteger type) {
         //
+        weakSelf.selectedTimeType= @"";
                 weakSelf.dataStart = model.dateStart;
                 weakSelf.dataEnd = model.dateEnd;
                 for (XWSelectModel* tm in model.selectList) {
                     if([tm.module isEqualToString:@"TimeQuantum"]){
                         weakSelf.selectedTimeType = tm.selectID;
                     }
+                    if([tm.module isEqualToString:@"operateType"]){
+                        weakSelf.operateType = tm.selectID;
+                    }
+                    if([tm.module isEqualToString:@"businessType"]){
+                        weakSelf.businessType = tm.selectID;
+                    }
                 }
         [[NSToastManager manager] showprogress];
         [weakSelf httpPath_orderList];
     }];
 }
-
 #pragma mark -- HTTP
 
 #pragma mark - 接口数据处理
@@ -281,6 +292,8 @@
                     
                     }
                 }
+                [self.selectDataArr addObject:[self getFiltrFlagState]];
+                [self.selectDataArr addObject:[self getBusinessTypesState]];
             }
         }
     }
@@ -293,12 +306,14 @@
     [parameters setValue:@(self.pageNumber) forKey:@"page"];
     [parameters setValue:@(self.pageSize) forKey:@"size"];
     [parameters setValue:self.orderCode forKey:@"goodsKey"];
-    [parameters setValue:@"" forKey:@"dateStart"];
-    [parameters setValue:@"" forKey:@"dateEnd"];
+    [parameters setValue:self.dataStart forKey:@"dateStart"];
+    [parameters setValue:self.dataEnd forKey:@"dateEnd"];
 //    操作类型（出库/入库） out/in
-    [parameters setValue:@"" forKey:@"operateType"];
+    [parameters setValue:self.operateType forKey:@"operateType"];
 //    业务类型（卖货/退货等）all/全部 卖货/sell returnGoods/退货 adAdd/ad进货 inventory/盘库 allot/调拨 withdrawal/退仓 inventoryAdjustment/库存调整
-    [parameters setValue:@"" forKey:@"businessType"];
+    [parameters setValue:self.businessType forKey:@"businessType"];
+    [parameters setValue:self.selectedTimeType forKey:@"timeQuantum"];
+    
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;
@@ -325,7 +340,7 @@
         _searchView = [[[NSBundle mainBundle] loadNibNamed:@"CommonSearchView" owner:self options:nil] lastObject];
         _searchView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 56);
         _searchView.delegate = self;
-        _searchView.viewType = CommonSearchViewTypeOrder;
+        _searchView.viewType = CommonSearchViewTypeOutOrIn;
         
     }
     return _searchView;
@@ -402,5 +417,48 @@
 {
     NSLog(@"d订单列表页面释放");
 }
-
+-(XwScreenModel* )getFiltrFlagState{
+    XwScreenModel* tmModel = [XwScreenModel new];
+    tmModel.className = @"operateType";
+    NSArray* array;
+    NSString* title;
+    
+//    else {
+    title = @"出入库标识";
+//    操作类型（出库/入库） out/in
+    array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"出库",@"itemId":@"out"},
+                           @{@"isSelected":@(NO),@"title":@"入库",@"itemId":@"in"}];
+//    }
+    tmModel.title = title;
+    tmModel.list = [KWOSSVDataModel mj_objectArrayWithKeyValuesArray:array];
+    
+    
+    return tmModel;
+}
+-(XwScreenModel* )getBusinessTypesState{
+    
+    
+    
+    XwScreenModel* tmModel = [XwScreenModel new];
+    tmModel.className = @"businessType";
+    NSArray* array;
+    NSString* title;
+    
+//    else {
+    title = @"业务类型";
+//    业务类型（卖货/退货等）all/全部 卖货/sell returnGoods/退货 adAdd/ad进货 inventory/盘库 allot/调拨 withdrawal/退仓 inventoryAdjustment/库存调整
+    array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"卖货",@"itemId":@"sell"},
+                           @{@"isSelected":@(NO),@"title":@"退货",@"itemId":@"returnGoods"},
+                           @{@"isSelected":@(NO),@"title":@"AD进货",@"itemId":@"adAdd"},
+                           @{@"isSelected":@(NO),@"title":@"盘库",@"itemId":@"inventory"},
+                           @{@"isSelected":@(NO),@"title":@"调拨",@"itemId":@"allot"},
+                           @{@"isSelected":@(NO),@"title":@"退仓",@"itemId":@"withdrawal"},
+                            @{@"isSelected":@(NO),@"title":@"库存调整",@"itemId":@"inventoryAdjustment"}];
+//    }
+    tmModel.title = title;
+    tmModel.list = [KWOSSVDataModel mj_objectArrayWithKeyValuesArray:array];
+    return tmModel;
+}
 @end

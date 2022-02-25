@@ -82,6 +82,10 @@
             [[NSToastManager manager] showtoast:@"搜索任务编号/客户手机号"];
             
         }
+        if (_viewType == CommonSearchViewTypeOutOrIn) {
+            [[NSToastManager manager] showtoast:@"搜索SKU"];
+            
+        }
         return;
     }
     [self endEditing:YES];
@@ -178,6 +182,14 @@
         [self.time_Select_View setHidden:NO];
         self.time_Select_View.userInteractionEnabled = YES;
         [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
+    }
+    if (_viewType == CommonSearchViewTypeOutOrIn) {
+        self.input_Txt.placeholder = @"搜索SKU";
+        self.container_view_Right.constant = 55;
+        [self.time_Select_View setHidden:NO];
+        self.time_Select_View.userInteractionEnabled = YES;
+        [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
+        
     }
 }
 
