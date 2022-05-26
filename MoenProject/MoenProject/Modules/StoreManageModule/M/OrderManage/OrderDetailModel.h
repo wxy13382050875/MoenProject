@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CommonGoodsModel.h"
-
+#import "XwActivityModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 
@@ -147,6 +147,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*商品发货数量*/
 @property (nonatomic, copy) NSString *deliverCount;
+
+/**订单套餐*/
+@property (nonatomic, strong) NSArray<XwActivityModel *> *activityIndexList;
 @end
 
 

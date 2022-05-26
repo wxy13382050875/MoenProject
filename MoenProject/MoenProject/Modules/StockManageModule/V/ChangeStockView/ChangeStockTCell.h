@@ -13,7 +13,7 @@
 #import "xWStockOrderModel.h"
 #import "PurchaseOrderManageVC.h"
 NS_ASSUME_NONNULL_BEGIN
-
+typedef void(^CacheDataBlock)(Lastgoodslist* model);
 @interface ChangeStockTCell : BaseTableViewCell
 
 @property (nonatomic, assign) PurchaseOrderManageVCType controllerType;
@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,copy)Goodslist* goodsModel;
 
 @property(nonatomic,strong)Goodslist* problemModel;
+
+@property (nonatomic, copy) CacheDataBlock cacheDataBlock;
 - (void)showDataWithGoodsDetailModel:(GoodsDetailModel *)model;
 
 @end

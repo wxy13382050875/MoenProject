@@ -36,6 +36,9 @@
         NSLog(@"4567 %@",x);
         if(self.lastModel != nil){
             self.lastModel.goodsCountAfter =x;
+            if(self.cacheDataBlock){
+                self.cacheDataBlock(self.lastModel);
+            }
         }
         if(self.problemModel != nil){
             self.problemModel.goodsCountAfter =x;
@@ -43,7 +46,7 @@
         if(self.goodsModel != nil){
             self.goodsModel.goodsCountAfter =x;
         }
-       
+        
     }];
     [self.ReasonTextField.rac_textSignal subscribeNext:^(NSString * _Nullable x) {
         NSLog(@"4567 %@",x);

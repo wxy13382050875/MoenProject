@@ -148,7 +148,17 @@
         }
         
     } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
-       
+        if(![[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_SELLER"]){
+            if([model.orderStatus isEqualToString:@"waitSub"]){
+                
+            }  else {
+                
+                
+            }
+            
+        } else {
+            isShowBtn = NO;
+        }
     } else if(
         self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
@@ -403,11 +413,19 @@
 //            againBtn.hidden = YES;
 //        }
     } else if(self.controllerType == PurchaseOrderManageVCTypeSTOCK){
-        if([model.orderStatus isEqualToString:@"waitSub"]){
-            [againBtn setTitle:@"编辑" forState:UIControlStateNormal];
-        }  else {
-            [againBtn setTitle:@"再来一单" forState:UIControlStateNormal];
+        
+        if(![[QZLUserConfig sharedInstance].userRole isEqualToString:@"SHOP_SELLER"]){
+            if([model.orderStatus isEqualToString:@"waitSub"]){
+                [againBtn setTitle:@"编辑" forState:UIControlStateNormal];
+            }  else {
+                [againBtn setTitle:@"再来一单" forState:UIControlStateNormal];
+                
+            }
+            
+        } else {
+            againBtn.hidden = YES;
         }
+        
     } else if(self.controllerType == PurchaseOrderManageVCTypeDeliveryOrder||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryApply||
         self.controllerType == PurchaseOrderManageVCTypeDeliveryShopSelf||

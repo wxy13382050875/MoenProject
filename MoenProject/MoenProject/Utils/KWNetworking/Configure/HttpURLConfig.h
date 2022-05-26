@@ -23,15 +23,15 @@ static NSString * const TestImageUploadPath = @"https://crm.waycomtech.com/api";
 //https://posdemo.moen.cn/api 培训环境
 #pragma mark -- 开发环境
 /**接口请求地址 -- 开发*/
-//static NSString * const DebugHostName = @"https://posdemo.moen.cn/api";
+static NSString * const DebugHostName = @"https://posdemo.moen.cn/api";
 
-static NSString * const DebugHostName = @"https://crm.waycomtech.com/api";
+//static NSString * const DebugHostName = @"https://crm.waycomtech.com/api";
 /**接口请求 主路径*/
 static NSString * const DebugHostPath = @"";
 
 /**接口请求 主路径*/
-//static NSString * const DebugImageUploadPath = @"https://posdemo.moen.cn/api";
-static NSString * const DebugImageUploadPath = @"https://crm.waycomtech.com/api";
+static NSString * const DebugImageUploadPath = @"https://posdemo.moen.cn/api";
+//static NSString * const DebugImageUploadPath = @"https://crm.waycomtech.com/api";
 
 /**接口请求 主路径*/
 static NSString * const DebugImageDownloadPath = @"";
@@ -40,15 +40,18 @@ static NSString * const DebugImageDownloadPath = @"";
 
 #pragma mark -- Distribute
 
+
 /**接口请求地址 -- 生产*/
-static NSString * const ReleaseHostName = @"https://crm.waycomtech.com/api";
+static NSString * const ReleaseHostName = @"https://posdemo.moen.cn/api";
+//static NSString * const ReleaseHostName = @"https://crm.waycomtech.com/api";
 //https://pos.moen.cn/api
 //https://posdemo.moen.cn/api
 /**接口请求 主路径 -- 生产*/
 static NSString * const ReleaseHostPath = @"";
 
 /**接口请求 主路径*/
-static NSString * const ReleaseImageUploadPath = @"https://crm.waycomtech.com/api";
+static NSString * const ReleaseImageUploadPath = @"https://posdemo.moen.cn/api";
+//static NSString * const ReleaseImageUploadPath = @"https://crm.waycomtech.com/api";
 
 /**接口请求 主路径*/
 static NSString * const ReleaseImageDownloadPath = @"";
@@ -712,5 +715,8 @@ static NSString * const Path_getProblemProducts = @"/v1/app/second/getProblemPro
 
 //问题商品盘库
 static NSString * const Path_print = @"/v1/app/second/print";
+
+//活动重点关注项
+static NSString * const Path_getActivityIndexIdList = @"/v1/app/second/getActivityIndexIdList";
 
 #endif /* HttpURLConfig_h */

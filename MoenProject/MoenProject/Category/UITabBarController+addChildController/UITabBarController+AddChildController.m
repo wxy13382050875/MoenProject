@@ -32,7 +32,7 @@
     
     if ([QZLUserConfig sharedInstance].useInventory){
         StockManageVC *stockManageVC = [[StockManageVC alloc] init];
-        [self addChildViewController:stockManageVC imageName:@"tb_store_icon" selectedImageName:@"tb_store_hl_icon" title:NSLocalizedString(@"stock_manage",nil)];
+        [self addChildViewController:stockManageVC imageName:@"tb_Inventory_nor" selectedImageName:@"tb_Inventory_sel" title:NSLocalizedString(@"stock_manage",nil)];
     }
     
     

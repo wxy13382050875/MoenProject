@@ -64,18 +64,18 @@
     self.warehouseLabel.sd_layout.leftSpaceToView(self.view, 15).topEqualToView(self.view).rightSpaceToView(self.view, 15).heightIs(80);
     
     self.radioGoods.sd_layout.leftSpaceToView(self.view, 80).topSpaceToView(self.warehouseLabel, 10).widthIs(80).heightIs(80);
-    ViewBorderRadius(self.radioGoods, 40, 1, COLOR(@"#646464"))
+    ViewBorderRadius(self.radioGoods, 40, 2, AppTitleBlueColor)
     
     self.radiosample.sd_layout.rightSpaceToView(self.view, 80).topSpaceToView(self.warehouseLabel, 10).widthIs(80).heightIs(80);
-    ViewBorderRadius(self.radiosample, 40, 1, COLOR(@"#646464"))
+    ViewBorderRadius(self.radiosample, 40, 2, AppTitleBlueColor)
     
     self.InventoryLabel.sd_layout.leftSpaceToView(self.view, 15).topSpaceToView(self.radioGoods, 10).rightSpaceToView(self.view, 15).heightIs(80);
     
     self.radioInventory.sd_layout.leftSpaceToView(self.view, 80).topSpaceToView(self.InventoryLabel, 10).widthIs(80).heightIs(80);
-    ViewBorderRadius(self.radioInventory, 40, 1, COLOR(@"#646464"))
+    ViewBorderRadius(self.radioInventory, 40, 2, AppTitleBlueColor)
     
     self.radioAdjust.sd_layout.rightSpaceToView(self.view, 80).topSpaceToView(self.InventoryLabel, 10).widthIs(80).heightIs(80);
-    ViewBorderRadius(self.radioAdjust, 40, 1, COLOR(@"#646464"))
+    ViewBorderRadius(self.radioAdjust, 40, 2, AppTitleBlueColor)
     
     self.startBtn.sd_layout.leftSpaceToView(self.view, 30).rightSpaceToView(self.view, 30).bottomSpaceToView(self.view, KWTabBarHeight +30).heightIs(40);
     
@@ -121,7 +121,7 @@
         [_radioGoods setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         _radioGoods.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         [_radioGoods setBackgroundImage:[UIImage imageWithColor:AppBgWhiteColor] forState:UIControlStateNormal];
-        [_radioGoods setBackgroundImage:[UIImage imageWithColor:COLOR(@"#338CCE")] forState:UIControlStateSelected];
+        [_radioGoods setBackgroundImage:[UIImage imageWithColor:AppTitleBlueColor] forState:UIControlStateSelected];
     }
     return _radioGoods;
 }
@@ -134,7 +134,7 @@
         [_radiosample setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         _radiosample.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         [_radiosample setBackgroundImage:[UIImage imageWithColor:AppBgWhiteColor] forState:UIControlStateNormal];
-        [_radiosample setBackgroundImage:[UIImage imageWithColor:COLOR(@"#338CCE")] forState:UIControlStateSelected];
+        [_radiosample setBackgroundImage:[UIImage imageWithColor:AppTitleBlueColor] forState:UIControlStateSelected];
     }
     return _radiosample;
 }
@@ -159,7 +159,7 @@
         [_radioInventory setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         _radioInventory.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         [_radioInventory setBackgroundImage:[UIImage imageWithColor:AppBgWhiteColor] forState:UIControlStateNormal];
-        [_radioInventory setBackgroundImage:[UIImage imageWithColor:COLOR(@"#338CCE")] forState:UIControlStateSelected];
+        [_radioInventory setBackgroundImage:[UIImage imageWithColor:AppTitleBlueColor] forState:UIControlStateSelected];
     }
     return _radioInventory;
 }
@@ -173,7 +173,7 @@
         _radioAdjust.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         
         [_radioAdjust setBackgroundImage:[UIImage imageWithColor:AppBgWhiteColor] forState:UIControlStateNormal];
-        [_radioAdjust setBackgroundImage:[UIImage imageWithColor:COLOR(@"#338CCE")] forState:UIControlStateSelected];
+        [_radioAdjust setBackgroundImage:[UIImage imageWithColor:AppTitleBlueColor] forState:UIControlStateSelected];
     }
     return _radioAdjust;
 }
@@ -185,7 +185,7 @@
 }
 -(UIButton*)startBtn{
     if(!_startBtn){
-        _startBtn = [UIButton buttonWithTitie:@"开始" WithtextColor:AppBgWhiteColor WithBackColor:COLOR(@"#338CCE") WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
+        _startBtn = [UIButton buttonWithTitie:@"开始" WithtextColor:AppBgWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
             
             [self httpPath_inventory_haveInventory];
         }];

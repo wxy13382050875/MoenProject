@@ -32,7 +32,7 @@
 #import "XWOrderDetailDefaultCell.h"
 #import "XwSystemTCellModel.h"
 #import "xw_StockInfoVC.h"
-
+#import "xw_AttentionItemVC.h"
 @interface SalesCounterVC ()<UITableViewDelegate, UITableViewDataSource, AddressListVCDelegate, CommonCouponPopViewDelegate, FDAlertViewDelegate, AddressAddVCDelegate, SearchGoodsVCDelegate>
 
 @property (nonatomic, strong) UITableView *tableview;
@@ -73,8 +73,8 @@
 @property (nonatomic, assign) BOOL isCanOperation;
 
 @property (nonatomic, assign) BOOL isUseAddress;
-
-
+//是否添写
+@property (nonatomic, strong) NSArray* attentionArry;
 
 @property (nonatomic, strong) NSMutableArray *giftDataArr;
 
@@ -442,11 +442,32 @@
         [self skipToAddressListVC];
     } else if([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]){
         NSLog(@"库存参考信息");
-        xw_StockInfoVC *storeInfoVC = [xw_StockInfoVC new];
-        storeInfoVC.array = [self.dataArr copy];
-        storeInfoVC.giftArray = [self.giftDataArr copy];
-        storeInfoVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:storeInfoVC animated:YES];
+        XwSystemTCellModel* tm = model.Data;
+        if([tm.title isEqualToString:@"库存参考信息"]){
+            xw_StockInfoVC *storeInfoVC = [xw_StockInfoVC new];
+            storeInfoVC.array = [self.dataArr copy];
+            storeInfoVC.giftArray = [self.giftDataArr copy];
+            storeInfoVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:storeInfoVC animated:YES];
+        }else {
+            if(self.counterDataModel.isActivity)
+            {
+                xw_AttentionItemVC *attentionVC = [xw_AttentionItemVC new];
+                attentionVC.hidesBottomBarWhenPushed = YES;
+                attentionVC.isDetail = NO;
+                if(self.attentionArry.count > 0){
+                    attentionVC.activityIndexIdList = self.attentionArry;
+                }
+                attentionVC.refreshBlock = ^(NSArray * _Nonnull array) {
+                    self.attentionArry = array;
+                    [self httpPath_sale];
+                };
+                
+                [self.navigationController pushViewController:attentionVC animated:YES];
+            }
+            
+        }
+        
     }
 }
 #pragma mark -- AddressListVCDelegate
@@ -1171,6 +1192,7 @@
         model.title = @"库存参考信息";
         model.showArrow = YES;
 
+        
         CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
         delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
         delivereModel.cellHeight = 40;
@@ -1322,7 +1344,28 @@
     [self.floorsAarr addObject:section7Arr];
     
     
+    if ([QZLUserConfig sharedInstance].useInventory){
     
+        //库存参考信息
+        NSMutableArray *section8Arr = [[NSMutableArray alloc] init];
+        XwSystemTCellModel* model = [XwSystemTCellModel new];
+        model.title = @"活动重点关注项";
+        NSString* fillTag = @"未填写";
+        if(self.attentionArry.count > 0){
+            fillTag = @"已填写";
+        }
+        model.value = !self.counterDataModel.isActivity?@"无活动":fillTag;
+        model.showArrow = YES;
+
+        CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+        delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+        delivereModel.cellHeight = 40;
+        delivereModel.cellHeaderHeight = 0.01;
+        delivereModel.cellFooterHeight =  5;
+        delivereModel.Data = model;
+        [section8Arr addObject:delivereModel];
+        [self.floorsAarr addObject:section8Arr];
+    }
     
     //配置
     NSMutableArray *section4Arr = [[NSMutableArray alloc] init];
@@ -1607,6 +1650,19 @@
     
     [parameters setValue:orderProductGiftArr forKey:@"orderGiftProductDatas"];
     [parameters setValue:orderSetMealGiftArr forKey:@"orderGiftSetMealDatas"];
+    
+    if(self.attentionArry.count > 0){
+        NSMutableArray* array = [NSMutableArray array];
+        for (XwActivityModel *model in self.attentionArry) {
+            NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+            [dict setObject:model.num forKey:@"num"];
+            [dict setObject:model.activityIndexName forKey:@"activityIndexName"];
+            [dict setObject:model.activityIndexId forKey:@"activityIndexId"];
+            
+            [array addObject:dict];
+        }
+        [parameters setValue:array forKey:@"activityIndexIdList"];
+    }
     
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;

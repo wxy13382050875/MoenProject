@@ -360,8 +360,9 @@
     
 //    订单编号（打印调拨单 需要传调拨单号    打印退仓单需要传退仓单号）
     [parameters setValue:@"" forKey:@"orderCode"];
-//    returnStocker/退仓   apply/调拨   inventory/盘库
+//  returnStocker/退仓   apply/调拨   inventory/盘库  order/三联单
     [parameters setValue:@"inventory" forKey:@"printType"];
+    [parameters setValue:self.goodsType forKey:@"goodsType"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;

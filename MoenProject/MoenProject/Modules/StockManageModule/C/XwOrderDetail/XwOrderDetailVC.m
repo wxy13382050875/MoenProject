@@ -118,22 +118,70 @@
 -(void)backBthOperate{
     NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
     BOOL isStock = NO;
+    NSMutableArray* vcs = [NSMutableArray array];
     for (UIViewController* vc in marr) {
+        
+        
+        
         if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
 //            [marr removeObject:vc];
             isStock = YES;
 
+        } else if([vc isKindOfClass:[XwOrderDetailVC class]]){
+            if([vc.title isEqualToString:@"进货单详情"]){
+                [vcs addObject:vc];
+            } else if([vc.title isEqualToString:@"发货单详情"]){
+                [vcs addObject:vc];
+            }
+            
         }
-//        if([vc isKindOfClass:[StockManageChildVC class]]){
-//
-//            stVC = vc;
-//        }
     }
-    if (isStock                                                                 ) {
+    
+    if (isStock) {
         [self.navigationController popToRootViewControllerAnimated:YES];
         
     } else {
-        [self.navigationController popViewControllerAnimated:YES];
+        if(vcs.count > 2){
+            UIViewController* startVC = [vcs firstObject];
+            UIViewController* endVC = [vcs lastObject];
+            if([startVC.title isEqualToString:endVC.title]){
+                NSLog(@"开始和结束都是进/发货单详情");
+                if([startVC.title isEqualToString:@"进货单详情"]){
+                    NSInteger index = -1;
+                    for (UIViewController* vc in marr) {
+                        if([vc isKindOfClass:[XwOrderDetailVC class]]){
+                            break;
+                        } else {
+                            index++;
+                        }
+                    }
+                    [self.navigationController popToViewController:marr[index] animated:YES];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
+                
+            } else {
+    //            NSLog(@"开始和结束都是进/发货单详情");
+                if([startVC.title isEqualToString:@"进货单详情"]){
+                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                } else {
+                    NSInteger index = -1;
+                    for (UIViewController* vc in marr) {
+                        if([vc isKindOfClass:[XwOrderDetailVC class]]){
+                            
+                            break;
+                        } else {
+                            index++;
+                        }
+                    }
+                    [self.navigationController popToViewController:marr[index + 1] animated:YES];
+                }
+            }
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
 }
 - (void)configBaseUI
@@ -584,7 +632,9 @@
                 
             }  else if( self.controllerType == PurchaseOrderManageVCTypeInventoryStocker){//总仓发货
                 
-                 orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryStocker;
+//                 orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryStocker;
+//                orderDetailVC.controllerType = PurchaseOrderManageVCTypeSTOCK;
+                orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryOrder;
                 
              }  else if( self.controllerType == PurchaseOrderManageVCTypeSTOCK){//进货单
                  

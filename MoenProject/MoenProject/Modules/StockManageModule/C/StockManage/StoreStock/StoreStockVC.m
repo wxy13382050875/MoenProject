@@ -58,6 +58,9 @@
 //调库单编号
 @property (nonatomic, copy) NSString *inventoryNo;
 
+
+//盘库缓存
+@property (nonatomic, copy) NSMutableArray *cacheArr;
 @end
 
 @implementation StoreStockVC
@@ -237,6 +240,10 @@
     {
         cell.controllerType = self.controllerType;
         cell.lastModel =self.dataList[indexPath.section];
+        cell.cacheDataBlock = ^(Lastgoodslist * _Nonnull model) {
+            
+            [self filterCacheData:model];
+        };
     } else {
         cell.model =self.dataList[indexPath.section];
     }
@@ -389,6 +396,21 @@
                         [weakSelf.dataList removeAllObjects];
                     }
                     [weakSelf.dataList addObjectsFromArray:listModel.LastGoodsList];
+                    if(self.cacheArr.count > 0){
+                        for (Lastgoodslist* model in self.cacheArr) {
+                            for (int i = 0; i < weakSelf.dataList.count; i ++) {
+                                Lastgoodslist* tm = weakSelf.dataList[i];
+                                if([model.goodsID isEqualToString:tm.goodsID]){
+                                    tm.goodsCountAfter = model.goodsCountAfter ;
+//                                    [weakSelf.dataList replaceObjectAtIndex:i withObject:model];
+                                }
+                            }
+                        }
+                        
+                        
+                    }
+                    
+                    
                     [weakSelf.tableview reloadData];
                 }
                 else
@@ -469,7 +491,14 @@
 {
     self.operateType = type;
     NSMutableArray* array = [NSMutableArray array];
-    for(Lastgoodslist* model in self.dataList){
+    NSArray *tmList;
+    if(self.cacheArr.count > 0){
+        tmList = self.cacheArr;
+    } else {
+        tmList = self.dataList;
+    }
+    
+    for(Lastgoodslist* model in tmList){
         NSMutableDictionary* dict =[NSMutableDictionary dictionary];
         if(![model.goodsCountAfter isEqualToString:@""]){
             [dict setObject:model.goodsID forKey:@"goodsID"];
@@ -478,7 +507,8 @@
             [array addObject:dict];
         }
     }
-    if (array.count == self.dataList.count) {
+//    if (array.count == self.dataList.count)
+    {
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
         [parameters setValue:[QZLUserConfig sharedInstance].shopId forKey:@"storeID"];
@@ -489,9 +519,10 @@
         self.requestType = NO;
         self.requestParams = parameters;
         self.requestURL = Path_inventory_inventoryCheckOperate;
-    } else {
-        [[NSToastManager manager] showtoast:@"请输入库存数"];
     }
+//    else {
+//        [[NSToastManager manager] showtoast:@"请输入库存数"];
+//    }
     
 }
 /**调库单调整（保存或确认）Api*/
@@ -534,6 +565,39 @@
     self.requestURL = Path_inventory_inventorySortByStore;
 }
 
+-(void)filterCacheData:(Lastgoodslist*) model{
+    Lastgoodslist* cpModel = [Lastgoodslist new];
+//    cpModel = [model copy];
+    cpModel.goodsID = model.goodsID;
+    cpModel.goodsCountAfter = model.goodsCountAfter;
+    cpModel.reason = model.reason;
+    if(self.cacheArr.count == 0){
+        [self.cacheArr addObject:cpModel];
+    } else {
+        BOOL isSame = NO;
+        int index = 0;
+        for (int i = 0; i < self.cacheArr.count; i++) {
+            Lastgoodslist* tm = self.cacheArr[i];
+            if([tm.goodsID isEqualToString:model.goodsID]){
+                isSame = YES;
+                index = i;
+                break;
+                
+                
+            }
+        }
+        if(isSame){
+            if([model.goodsCountAfter isEqualToString:@""]){
+                [self.cacheArr removeObjectAtIndex:index];
+            } else {
+                [self.cacheArr replaceObjectAtIndex:index withObject:cpModel];
+            }
+        } else {
+            [self.cacheArr addObject:cpModel];
+        }
+    }
+//    NSLog(@"缓存 %@",[NSString DataTOjsonString:self.cacheArr]);
+}
 #pragma mark -- Getter&Setter
 
 - (CommonSearchView *)searchView
@@ -604,7 +668,13 @@
     return _typeList;
 }
 
-
+- (NSMutableArray *)cacheArr
+{
+    if (!_cacheArr) {
+        _cacheArr = [[NSMutableArray alloc] init];
+    }
+    return _cacheArr;
+}
 #pragma mark -- 刷新重置等设置
 - (void)configPagingData
 {

@@ -59,6 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**不可用资产*/
 @property (nonatomic, strong) NSArray<CouponInfoModel *> *notUseCouponList;
 
+/**活动重点关注项 */
+@property (nonatomic, assign) BOOL isActivity;
 @end
 
 

@@ -449,49 +449,49 @@ NSString* const ME_Store_Owner_StockManage = @"{\
 \"datas\": [\
 {\
 \"title\": \"进货申请\",\
-\"icon\": \"sell_icon\",\
+\"icon\": \"icon_receipt_apply\",\
 \"skipid\": 0,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"调拨申请\",\
-\"icon\": \"customer_activity_icon\",\
+\"icon\": \"icon_transfers_apply\",\
 \"skipid\": 1,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"库存管理\",\
-\"icon\": \"customer_account_icon\",\
+\"icon\": \"icon_Inventory_manage\",\
 \"skipid\": 2,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"进货单管理\",\
-\"icon\": \"address_manage_icon\",\
+\"icon\": \"icon_receipt_manage\",\
 \"skipid\": 3,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"发货单管理\",\
-\"icon\": \"intention_manage_icon\",\
+\"icon\": \"icon_Invoice_manage\",\
 \"skipid\": 4,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"调拨单管理\",\
-\"icon\": \"customer_order_icon\",\
+\"icon\": \"icon_transfer_manage\",\
 \"skipid\": 5,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"退仓单管理\",\
-\"icon\": \"return_icon\",\
+\"icon\": \"icon_return_manage\",\
 \"skipid\": 6,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"总仓发货管理\",\
-\"icon\": \"return_order_icon\",\
+\"icon\": \"icon_warehouse_manage\",\
 \"skipid\": 7,\
 \"isskip\": 0\
 }\
@@ -502,37 +502,37 @@ NSString* const ME_Store_Guide_StockManage = @"{\
 \"datas\": [\
 {\
 \"title\": \"库存管理\",\
-\"icon\": \"customer_account_icon\",\
+\"icon\": \"icon_Inventory_manage\",\
 \"skipid\": 2,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"进货单管理\",\
-\"icon\": \"address_manage_icon\",\
+\"icon\": \"icon_receipt_manage\",\
 \"skipid\": 3,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"发货单管理\",\
-\"icon\": \"intention_manage_icon\",\
+\"icon\": \"icon_Invoice_manage\",\
 \"skipid\": 4,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"调拨单管理\",\
-\"icon\": \"customer_order_icon\",\
+\"icon\": \"icon_transfer_manage\",\
 \"skipid\": 5,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"退仓单管理\",\
-\"icon\": \"return_icon\",\
+\"icon\": \"icon_return_manage\",\
 \"skipid\": 6,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"总仓发货管理\",\
-\"icon\": \"return_order_icon\",\
+\"icon\": \"icon_warehouse_manage\",\
 \"skipid\": 7,\
 \"isskip\": 0\
 }\
@@ -544,43 +544,43 @@ NSString* const ME_Store_Owner_StockManageChild = @"{\
 \"datas\": [\
 {\
 \"title\": \"门店库存\",\
-\"icon\": \"sell_icon\",\
+\"icon\": \"icon_store_inventory\",\
 \"skipid\": 0,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"库存查询\",\
-\"icon\": \"customer_activity_icon\",\
+\"icon\": \"icon_Inventory_query\",\
 \"skipid\": 1,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"出入库流水\",\
-\"icon\": \"customer_account_icon\",\
+\"icon\": \"icon_Inventory_water\",\
 \"skipid\": 2,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"门店盘库\",\
-\"icon\": \"address_manage_icon\",\
+\"icon\": \"icon_store_check_inventory\",\
 \"skipid\": 3,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"盘库单管理\",\
-\"icon\": \"intention_manage_icon\",\
+\"icon\": \"icon_Inventory_list_manage\",\
 \"skipid\": 4,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"调库单管理\",\
-\"icon\": \"customer_order_icon\",\
+\"icon\": \"icon_transfer_order_manage\",\
 \"skipid\": 5,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"门店样品库存\",\
-\"icon\": \"return_icon\",\
+\"icon\": \"icon_sample_stock\",\
 \"skipid\": 6,\
 \"isskip\": 0\
 },\
@@ -591,25 +591,25 @@ NSString* const ME_Store_Guide_StockManageChild = @"{\
 \"datas\": [\
 {\
 \"title\": \"门店库存\",\
-\"icon\": \"sell_icon\",\
+\"icon\": \"icon_store_inventory\",\
 \"skipid\": 0,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"库存查询\",\
-\"icon\": \"customer_activity_icon\",\
+\"icon\": \"icon_Inventory_query\",\
 \"skipid\": 1,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"出入库流水\",\
-\"icon\": \"customer_account_icon\",\
+\"icon\": \"icon_Inventory_water\",\
 \"skipid\": 2,\
 \"isskip\": 0\
 },\
 {\
 \"title\": \"门店样品库存\",\
-\"icon\": \"return_icon\",\
+\"icon\": \"icon_sample_stock\",\
 \"skipid\": 6,\
 \"isskip\": 0\
 },\

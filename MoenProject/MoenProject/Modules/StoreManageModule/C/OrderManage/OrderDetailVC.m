@@ -25,6 +25,7 @@
 
 #import "xw_DeliveryInfoVC.h"
 #import "XwOrderDetailVC.h"
+#import "xw_AttentionItemVC.h"
 @interface OrderDetailVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
@@ -301,20 +302,33 @@
     if ([model.cellIdentify isEqualToString:@"XWOrderDetailDefaultCell"]&&
         ![tm.title isEqualToString:@"发货进度"]&&
         ![tm.title isEqualToString:@"发货信息"]){
-        XwSystemTCellModel* tm = model.Data;
-        XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
-        orderDetailVC.orderID = tm.deliverID;
-        orderDetailVC.isHide = YES;
-        
-        
-        if([tm.type isEqualToString:@"stocker"]){
+        if([tm.title isEqualToString:@"活动重点关注项"]){
+//            if(self.dataModel.activityIndexList.count > 0)
+            {
+                xw_AttentionItemVC *attentionVC = [xw_AttentionItemVC new];
+                attentionVC.hidesBottomBarWhenPushed = YES;
+                attentionVC.isDetail = YES;
+                attentionVC.activityIndexIdList = self.dataModel.activityIndexList;
+                [self.navigationController pushViewController:attentionVC animated:YES];
+            }
             
-            orderDetailVC.controllerType = PurchaseOrderManageVCTypeInventoryStocker;
-        } else if([tm.type isEqualToString:@"shopSelf"]){
-            orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryShopSelf;
+        }else {
+            XwSystemTCellModel* tm = model.Data;
+            XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+            orderDetailVC.orderID = tm.deliverID;
+            orderDetailVC.isHide = YES;
+            
+            
+            if([tm.type isEqualToString:@"stocker"]){
+                
+                orderDetailVC.controllerType = PurchaseOrderManageVCTypeInventoryStocker;
+            } else if([tm.type isEqualToString:@"shopSelf"]){
+                orderDetailVC.controllerType = PurchaseOrderManageVCTypeDeliveryShopSelf;
+            }
+                
+            [self.navigationController pushViewController:orderDetailVC animated:YES];
         }
-            
-        [self.navigationController pushViewController:orderDetailVC animated:YES];
+        
     }
 }
 - (void)handleGoodsShowOrHiddenDetailWith:(BOOL)isShow WithAtIndex:(NSInteger)atIndex
@@ -719,6 +733,25 @@
         [section3Arr addObject:orderActivitiesCellModel];
         [self.floorsAarr addObject:section3Arr];
     }
+    //活动重点关注项
+    if ([QZLUserConfig sharedInstance].useInventory){
+    
+        //库存参考信息
+        NSMutableArray *section7Arr = [[NSMutableArray alloc] init];
+        XwSystemTCellModel* model = [XwSystemTCellModel new];
+        model.title = @"活动重点关注项";
+        model.showArrow = YES;
+
+        CommonTVDataModel *delivereModel = [[CommonTVDataModel alloc] init];
+        delivereModel.cellIdentify = @"XWOrderDetailDefaultCell";
+        delivereModel.cellHeight = 40;
+        delivereModel.cellHeaderHeight = 0.01;
+        delivereModel.cellFooterHeight =  5;
+        delivereModel.Data = model;
+        [section7Arr addObject:delivereModel];
+        [self.floorsAarr addObject:section7Arr];
+    }
+    
     
     //配置
     NSMutableArray *section4Arr = [[NSMutableArray alloc] init];

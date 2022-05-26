@@ -163,8 +163,7 @@
         tmModel.value = self.sendGoodsDate;
         cell.model = tmModel;
         return cell;
-    } else if ([model.cellIdentify isEqualToString:KSellGoodsOrderMarkTCell])
-    {
+    } else if ([model.cellIdentify isEqualToString:KSellGoodsOrderMarkTCell]) {
         SellGoodsOrderMarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SellGoodsOrderMarkTCell" forIndexPath:indexPath];
         UITextView* textview = (UITextView*)[self.view viewWithTag:1001];
         [textview xw_addPlaceHolder:@"添加备注"];

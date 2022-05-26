@@ -99,6 +99,9 @@
 		2E6F9688276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F9687276254E000660B4D /* XwOrderDetailAdjustInventoryCell.m */; };
 		2E6F968B276258D100660B4D /* XwOrderDetailGoodsInventory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */; };
 		2E720BCD2793D47E006811F5 /* StockQuerySkuVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E720BCC2793D47D006811F5 /* StockQuerySkuVC.m */; };
+		2E742AD727EB08AB0065EDC4 /* XwActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E742AD627EB08AA0065EDC4 /* XwActivityModel.m */; };
+		2E80C0B127E9A53E00186132 /* xw_AttentionItemVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E80C0B027E9A53D00186132 /* xw_AttentionItemVC.m */; };
+		2E80C0B427E9AA2B00186132 /* xw_AttentionItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E80C0B327E9AA2B00186132 /* xw_AttentionItemCell.m */; };
 		2E823A1F277232D70083AF02 /* XwExpressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E823A1E277232D70083AF02 /* XwExpressCell.m */; };
 		2E823A22277233060083AF02 /* XwDeliveMarkrCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E823A21277233050083AF02 /* XwDeliveMarkrCell.m */; };
 		2E835F2327639C0700C31E2D /* XwScreenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E835F2227639C0700C31E2D /* XwScreenModel.m */; };
@@ -735,6 +738,12 @@
 		2E6F968A276258D100660B4D /* XwOrderDetailGoodsInventory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailGoodsInventory.m; sourceTree = "<group>"; };
 		2E720BCB2793D47D006811F5 /* StockQuerySkuVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StockQuerySkuVC.h; sourceTree = "<group>"; };
 		2E720BCC2793D47D006811F5 /* StockQuerySkuVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StockQuerySkuVC.m; sourceTree = "<group>"; };
+		2E742AD527EB08AA0065EDC4 /* XwActivityModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwActivityModel.h; sourceTree = "<group>"; };
+		2E742AD627EB08AA0065EDC4 /* XwActivityModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwActivityModel.m; sourceTree = "<group>"; };
+		2E80C0AF27E9A53C00186132 /* xw_AttentionItemVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xw_AttentionItemVC.h; sourceTree = "<group>"; };
+		2E80C0B027E9A53D00186132 /* xw_AttentionItemVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = xw_AttentionItemVC.m; sourceTree = "<group>"; };
+		2E80C0B227E9AA2B00186132 /* xw_AttentionItemCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xw_AttentionItemCell.h; sourceTree = "<group>"; };
+		2E80C0B327E9AA2B00186132 /* xw_AttentionItemCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = xw_AttentionItemCell.m; sourceTree = "<group>"; };
 		2E823A1D277232D60083AF02 /* XwExpressCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwExpressCell.h; sourceTree = "<group>"; };
 		2E823A1E277232D70083AF02 /* XwExpressCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwExpressCell.m; sourceTree = "<group>"; };
 		2E823A20277233050083AF02 /* XwDeliveMarkrCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwDeliveMarkrCell.h; sourceTree = "<group>"; };
@@ -1855,6 +1864,8 @@
 				2EA2C12D2766254800D81C47 /* XwSubscribeTakeVC.m */,
 				2EA2C12F276648B800D81C47 /* Xw_SelectWarehouseVC.h */,
 				2EA2C130276648B800D81C47 /* Xw_SelectWarehouseVC.m */,
+				2E80C0AF27E9A53C00186132 /* xw_AttentionItemVC.h */,
+				2E80C0B027E9A53D00186132 /* xw_AttentionItemVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1877,6 +1888,8 @@
 				2E384D2F26E0D95B0021EA4A /* xwDeliveryInfoCell.h */,
 				2E384D3026E0D95B0021EA4A /* xwDeliveryInfoCell.m */,
 				2E384D3126E0D95B0021EA4A /* xwDeliveryInfoCell.xib */,
+				2E80C0B227E9AA2B00186132 /* xw_AttentionItemCell.h */,
+				2E80C0B327E9AA2B00186132 /* xw_AttentionItemCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1888,6 +1901,8 @@
 				2EA2C1292765B1C500D81C47 /* XwUpdateDeliveryModel.m */,
 				2E835FB22765091E00C31E2D /* XwStockInfoModel.h */,
 				2E835FB32765091E00C31E2D /* XwStockInfoModel.m */,
+				2E742AD527EB08AA0065EDC4 /* XwActivityModel.h */,
+				2E742AD627EB08AA0065EDC4 /* XwActivityModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4740,6 +4755,7 @@
 				2E384CF526DF77940021EA4A /* UITextField+XWAdd.m in Sources */,
 				2EA2C12B2765B1C600D81C47 /* XwUpdateDeliveryModel.m in Sources */,
 				7242B25D21AD56320049E497 /* BaseViewController.m in Sources */,
+				2E80C0B127E9A53E00186132 /* xw_AttentionItemVC.m in Sources */,
 				72FFB21221AC134E00614F14 /* JHPieForeBGView.m in Sources */,
 				72B6B69F237E911D003F2AAE /* MineAwardsTCell.m in Sources */,
 				7289A44023B9FF8A005D1A5D /* ChangeStoreVC.m in Sources */,
@@ -4752,7 +4768,9 @@
 				721D62132200536300C4987E /* UIView+Layout.m in Sources */,
 				725DD15D21B54C790060C0BD /* AddressListVC.m in Sources */,
 				72C1E97A21E4B72800B61942 /* SegmentTypeModel.m in Sources */,
+				2E80C0B427E9AA2B00186132 /* xw_AttentionItemCell.m in Sources */,
 				725DD11221B4F1D90060C0BD /* CommonSaleasTCell.m in Sources */,
+				2E742AD727EB08AB0065EDC4 /* XwActivityModel.m in Sources */,
 				36A508B426B6DD3300C536DE /* StartCountStockVC.m in Sources */,
 				72C4C93F21DC9BD700CB861F /* OrderOperationSuccessVC.m in Sources */,
 				72FFB1FC21AC134E00614F14 /* NSURLSessionTask+NSAdditionals.m in Sources */,
@@ -5078,7 +5096,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 53;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5092,7 +5110,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moen.kitchen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5108,7 +5126,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 53;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5122,7 +5140,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moen.kitchen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

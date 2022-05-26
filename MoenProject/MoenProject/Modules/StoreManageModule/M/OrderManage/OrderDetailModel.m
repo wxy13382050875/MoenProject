@@ -14,6 +14,6 @@
 }
 
 + (NSDictionary *)modelContainerPropertyGenericClass {
-    return @{@"orderProductList" : [CommonProdutcModel class],@"orderSetMealList" : [CommonMealProdutcModel class],@"orderGiftProductList" : [CommonProdutcModel class],@"orderGiftSetMealList" : [CommonMealProdutcModel class]};
+    return @{@"orderProductList" : [CommonProdutcModel class],@"orderSetMealList" : [CommonMealProdutcModel class],@"orderGiftProductList" : [CommonProdutcModel class],@"orderGiftSetMealList" : [CommonMealProdutcModel class],@"activityIndexList" : [XwActivityModel class]};
 }
 @end
