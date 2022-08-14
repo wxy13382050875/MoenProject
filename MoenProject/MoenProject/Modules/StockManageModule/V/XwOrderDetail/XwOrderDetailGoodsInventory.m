@@ -73,7 +73,14 @@
     self.goodsCode.text = model.goodsSKU;
     self.goodsName.text = model.goodsName;
     self.goodsCountBefor.text = [NSString stringWithFormat:@"原库存数量:%@",model.goodsCountBefor];
-    self.goodsCountAfter.text = [NSString stringWithFormat:@"盘库后数量:%@",model.goodsCountAfter];
+    
+    if (self.controllerType == PurchaseOrderManageVCTypeLibrary) {
+        self.goodsCountAfter.text = [NSString stringWithFormat:@"调库后数量:%@",model.goodsCountAfter];
+    } else {
+        self.goodsCountAfter.text = [NSString stringWithFormat:@"盘库后数量:%@",model.goodsCountAfter];
+    }
+    
+    
     self.problemLabel.hidden = !model.isProblem;
     self.problemImg.hidden = !model.isProblem;
 }

@@ -1,6 +1,10 @@
-platform:ios,'9.0'
-target "MoenProject" do
+# Uncomment the next line to define a global platform for your project
+source 'https://github.com/CocoaPods/Specs.git'
 
+platform :ios, ‘10.0’
+
+target "MoenProject" do
+use_frameworks!
 #AFNetworking
 pod 'AFNetworking','~>3.2.0'
 pod 'SDWebImage', '~> 3.8.2'

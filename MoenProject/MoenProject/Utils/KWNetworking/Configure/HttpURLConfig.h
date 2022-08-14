@@ -719,4 +719,27 @@ static NSString * const Path_print = @"/v1/app/second/print";
 //活动重点关注项
 static NSString * const Path_getActivityIndexIdList = @"/v1/app/second/getActivityIndexIdList";
 
+
+//////////////////////////换货/////////////////////////////////////
+
+//客户换货单列表
+static NSString * const Path_getCustomerExchangeList= @"/v1/app/second/customerExchangeList";
+
+//换货单详情
+static NSString * const Path_getExchangeOrderDetail= @"/v1/app/second/exchangeOrderDetail";
+
+//确认换货
+static NSString * const Path_PostConfirmExchange= @"/v1/app/second/confirmExchange";
+
+//选择商品
+static NSString * const Path_PostSelectProduct= @"/v1/app/second/selectProduct";
+
+//选择换货商品
+static NSString * const Path_PostSelectProductInfo= @"/v1/app/second/selectProductInfo";
+
+//选择换货订单
+static NSString * const Path_PostExchangeGoods= @"/v1/app/second/exchangeGoods";
+
+//选择换货订单
+static NSString * const Path_PostShopExchangeList= @"/v1/app/second/shopExchangeList";
 #endif /* HttpURLConfig_h */

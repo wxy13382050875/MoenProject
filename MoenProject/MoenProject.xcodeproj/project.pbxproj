@@ -147,6 +147,7 @@
 		36A508C326B7008600C536DE /* ChangeStockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A508C226B7008600C536DE /* ChangeStockModel.m */; };
 		36A508CE26B7062000C536DE /* TransferStockTCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A508CC26B7062000C536DE /* TransferStockTCell.m */; };
 		36A508CF26B7062000C536DE /* TransferStockTCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36A508CD26B7062000C536DE /* TransferStockTCell.xib */; };
+		58B26D019B95169ADCD3005B /* Pods_MoenProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB423A35DF4705E10FE7D640 /* Pods_MoenProject.framework */; };
 		7206543921C2441200A2E93A /* SellGoodsScanVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7206543821C2441200A2E93A /* SellGoodsScanVC.m */; };
 		7206543D21C247E700A2E93A /* ZFMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7206543B21C247E700A2E93A /* ZFMaskView.m */; };
 		720DA550222E4606004D355D /* HXDRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 720DA54F222E4606004D355D /* HXDRefreshFooter.m */; };
@@ -536,7 +537,6 @@
 		72FFB23821AC134E00614F14 /* CALayer+Anim.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FFB1E921AC134E00614F14 /* CALayer+Anim.m */; };
 		72FFB23921AC134E00614F14 /* PCCircleInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FFB1ED21AC134E00614F14 /* PCCircleInfoView.m */; };
 		72FFB23A21AC134E00614F14 /* PCLockLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FFB1F021AC134E00614F14 /* PCLockLabel.m */; };
-		F3423D0DF0FEF945FDA34E91 /* libPods-MoenProject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E23056705A0D7443787B5891 /* libPods-MoenProject.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1513,7 +1513,7 @@
 		72FFB1F021AC134E00614F14 /* PCLockLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCLockLabel.m; sourceTree = "<group>"; };
 		72FFB1F121AC134E00614F14 /* GestureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GestureViewController.h; sourceTree = "<group>"; };
 		82159DA0DEDC484568E8D37E /* Pods-MoenProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoenProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MoenProject/Pods-MoenProject.debug.xcconfig"; sourceTree = "<group>"; };
-		E23056705A0D7443787B5891 /* libPods-MoenProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MoenProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB423A35DF4705E10FE7D640 /* Pods_MoenProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoenProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1526,7 +1526,7 @@
 				723D74DB221A93410048CE14 /* Security.framework in Frameworks */,
 				723D74D9221A933B0048CE14 /* SystemConfiguration.framework in Frameworks */,
 				723D74D7221A93060048CE14 /* Bugly.framework in Frameworks */,
-				F3423D0DF0FEF945FDA34E91 /* libPods-MoenProject.a in Frameworks */,
+				58B26D019B95169ADCD3005B /* Pods_MoenProject.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1554,7 +1554,7 @@
 				723D74DC221A934E0048CE14 /* libz.tbd */,
 				723D74DA221A93410048CE14 /* Security.framework */,
 				723D74D8221A933B0048CE14 /* SystemConfiguration.framework */,
-				E23056705A0D7443787B5891 /* libPods-MoenProject.a */,
+				CB423A35DF4705E10FE7D640 /* Pods_MoenProject.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -4230,7 +4230,7 @@
 				72FFB0FF21AC0F0600614F14 /* Sources */,
 				72FFB10021AC0F0600614F14 /* Frameworks */,
 				72FFB10121AC0F0600614F14 /* Resources */,
-				E3E73DEE4DE6D329A96766C0 /* [CP] Copy Pods Resources */,
+				73E410568DAFDD41139B334A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4479,21 +4479,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E3E73DEE4DE6D329A96766C0 /* [CP] Copy Pods Resources */ = {
+		73E410568DAFDD41139B334A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MoenProject/Pods-MoenProject-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MoenProject/Pods-MoenProject-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MoenProject/Pods-MoenProject-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MoenProject/Pods-MoenProject-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MoenProject/Pods-MoenProject-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MoenProject/Pods-MoenProject-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -5096,7 +5096,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 58;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5126,7 +5126,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 58;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

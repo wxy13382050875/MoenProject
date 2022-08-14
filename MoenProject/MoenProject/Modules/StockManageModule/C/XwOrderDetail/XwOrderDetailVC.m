@@ -570,6 +570,7 @@
         return cell;
     } else if ([model.cellIdentify isEqualToString:@"XwOrderDetailGoodsInventory"]){
         XwOrderDetailGoodsInventory *cell = [tableView dequeueReusableCellWithIdentifier:@"XwOrderDetailGoodsInventory" forIndexPath:indexPath];
+        cell.controllerType = self.controllerType;
         cell.model = model.Data;
         return cell;
     } else if ([model.cellIdentify isEqualToString:@"XwExpressCell"]){//快递单号
@@ -1132,7 +1133,8 @@
                            [self handleTabInventoryStatisticsData];
                            
                            if(![self.dataModel.orderStatus isEqualToString:@"ing"]&&
-                              ![self.dataModel.orderStatus isEqualToString:@"wait"]){
+                              ![self.dataModel.orderStatus isEqualToString:@"wait"]&&
+                              ![[QZLUserConfig sharedInstance].storeTypeKey isEqualToString:@"Showroom-Dealer"]){
                                [self handleTabDefInfoData:[NSString stringWithFormat:@"AD审核信息：%@",[self.dataModel.adRemarks isEqualToString:@""]||self.dataModel.adRemarks ==nil?@"无":self.dataModel.adRemarks]];
                                
                            }

@@ -734,7 +734,8 @@
         [self.floorsAarr addObject:section3Arr];
     }
     //活动重点关注项
-    if ([QZLUserConfig sharedInstance].useInventory){
+//    if ([QZLUserConfig sharedInstance].useInventory)
+    {
     
         //库存参考信息
         NSMutableArray *section7Arr = [[NSMutableArray alloc] init];

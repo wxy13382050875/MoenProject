@@ -10,15 +10,16 @@
 
 @implementation CommonGoodsListModel
 
-//+ (NSDictionary *)modelContainerPropertyGenericClass {
-//    return @{@"selectProducts" : [CommonGoodsModel class]};
-//}
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    return @{@"selectProducts" : [CommonGoodsModel class]};
+}
 
 + (NSDictionary *)mj_objectClassInArray{
     return @{
              @"selectProducts" : @"CommonGoodsModel"
              };
 }
+
 @end
 
 @implementation CommonGoodsModel

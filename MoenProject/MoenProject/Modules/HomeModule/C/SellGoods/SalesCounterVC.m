@@ -77,6 +77,8 @@
 @property (nonatomic, strong) NSArray* attentionArry;
 
 @property (nonatomic, strong) NSMutableArray *giftDataArr;
+//判断是否提示重点关注项
+@property (nonatomic, assign) BOOL isShowAlert;
 
 @end
 
@@ -114,6 +116,7 @@
 
 - (void)configBaseData
 {
+    self.isShowAlert = NO;
     self.isCanOperation = YES;
     self.isUseAddress = YES;
     [self httpPath_sale];
@@ -498,6 +501,15 @@
     if (self.isDamping) {
         return;
     }
+    
+    if(self.counterDataModel.isActivity&&
+           self.attentionArry.count == 0 &&
+           !self.isShowAlert){
+            [[NSToastManager manager] showtoast:@"请确认是否填写重点关注项"];
+            self.isShowAlert = YES;
+            return;
+        }
+    
     self.isDamping = YES;
     //判断淋浴房单品是有填写PO单号
     for (CommonGoodsModel *model in self.dataArr) {
@@ -1344,7 +1356,8 @@
     [self.floorsAarr addObject:section7Arr];
     
     
-    if ([QZLUserConfig sharedInstance].useInventory){
+//    if ([QZLUserConfig sharedInstance].useInventory)
+    {
     
         //库存参考信息
         NSMutableArray *section8Arr = [[NSMutableArray alloc] init];
@@ -1566,6 +1579,7 @@
 /**确认订单Api*/
 - (void)httpPath_saveOrder
 {
+    
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:self.assetId forKey:@"assetId"];
     [parameters setValue:self.configModel.shopDerate forKey:@"shopDerate"];
