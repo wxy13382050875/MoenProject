@@ -19,6 +19,8 @@
 
 #import "XwScreenModel.h"
 #import "StockSearchGoodsVC.h"
+#import "xw_SelectDeliveryWayVC.h"
+#import "XwSubscribeTakeVC.h"
 @interface PurchaseOrderManageVC ()<SearchViewCompleteDelete, UITableViewDelegate, UITableViewDataSource,UIPrintInteractionControllerDelegate>
 
 @property (nonatomic, strong) CommonSearchView *searchView;
@@ -46,6 +48,7 @@
 
 @property (nonatomic, copy) NSString *orderStatus;
 
+@property (nonatomic, assign) BOOL isAppointment;
 @end
 
 @implementation PurchaseOrderManageVC
@@ -191,7 +194,9 @@
             isShowBtn = NO;
         }
         
-    } else {
+    } else if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange){
+        
+    }else {
         isShowBtn = NO;
     }
     if(isShowBtn){
@@ -335,6 +340,10 @@
 //        tagLab.text = tagText;
     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
         str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"退货单编号: %@",model.orderID]];
+    } else if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange||
+              self.controllerType == PurchaseOrderManageVCTypeShopExchange
+              ){
+        str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"换货单编号: %@",model.orderID]];
     } else {
         str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"订单编号: %@",model.orderID]];
     }
@@ -368,7 +377,12 @@
     
     UIButton *againBtn =[UIButton buttonWithTitie:@"" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
         
-        [self buttonOperate:model];
+        if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange){
+            [self buttonClick:1 model:model];
+        } else {
+            [self buttonOperate:model];
+        }
+        
     }];
     againBtn.layer.cornerRadius = 5;
     againBtn.frame = CGRectMake(SCREEN_WIDTH - 90 - 16, 45, 90, 30);
@@ -378,7 +392,12 @@
     UIButton *printBtn =[UIButton buttonWithTitie:@"打印" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:14 EventBlock:^(id  _Nonnull params) {
         
 //        [self buttonOperate:model];
-        [self printAction:model];
+        if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange){
+            [self buttonClick:2 model:model];
+        } else {
+            [self printAction:model];
+        }
+        
     }];
     printBtn.tag = 10086;
     printBtn.layer.cornerRadius = 5;
@@ -460,6 +479,10 @@
             againBtn.hidden = YES;
         }
         
+    } else if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange){
+        [againBtn setTitle:@"更新发货" forState:UIControlStateNormal];
+        printBtn.hidden = NO;
+        [printBtn setTitle:@"预约自提" forState:UIControlStateNormal];
     } else{
         againBtn.hidden = YES;
     }
@@ -612,7 +635,23 @@
         } 
     }
 }
+-(void)buttonClick:(NSInteger)type model:(Orderlist*)model{
+    if(type == 1){//更新发货
+        xw_SelectDeliveryWayVC *orderDetailVC = [[xw_SelectDeliveryWayVC alloc] init];
+        orderDetailVC.orderID = model.id;
+        orderDetailVC.customerId = self.customerId;
+        orderDetailVC.type = @"exchange";
+        [self.navigationController pushViewController:orderDetailVC animated:YES];
+    } else if(type == 2){//预约自提
+        XwSubscribeTakeVC *orderDetailVC = [[XwSubscribeTakeVC alloc] init];
+        orderDetailVC.orderID = model.id;
+        orderDetailVC.customerId = self.customerId;
+        orderDetailVC.isIdentifion = self.isIdentifion;
+        orderDetailVC.type = @"exchange";
+        [self.navigationController pushViewController:orderDetailVC animated:YES];
+    }
 
+}
 -(void)tuneUpPrinter:(NSString*)url{
     UIPrintInteractionController *printC = [UIPrintInteractionController sharedPrintController];//显示出打印的用户界面。
     printC.delegate = self;
@@ -734,7 +773,9 @@
             } else if ([operation.urlTag isEqualToString:Path_stock_orderList]||
                 [operation.urlTag isEqualToString:Path_dallot_transferOrderList]||
                 [operation.urlTag isEqualToString:Path_delivery_sendOrderList]||
-                [operation.urlTag isEqualToString:Path_refund_returnOrderList]) {
+                [operation.urlTag isEqualToString:Path_refund_returnOrderList]||
+                [operation.urlTag isEqualToString:Path_getCustomerExchangeList]||
+                       [operation.urlTag isEqualToString:Path_PostShopExchangeList]) {
                 xWStockOrderModel *listModel = [xWStockOrderModel mj_objectWithKeyValues:parserObject.datas];
                 if (listModel.orderList.count) {
                     self.isShowEmptyData = NO;
@@ -806,6 +847,7 @@
                     [[NSToastManager manager] showtoast:parserObject.message];
                 }
             }
+            
         }
     }
 }
@@ -830,13 +872,25 @@
         [parameters setValue:@"stocker" forKey:@"orderType"];
     }
     
-    [parameters setValue:self.orderCode forKey:@"orderKey"];
+    if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange||
+       self.controllerType == PurchaseOrderManageVCTypeShopExchange){
+           [parameters setValue: self.orderCode forKey:@"orderCode"];
+           [parameters setValue: self.customerId forKey:@"customerId"];
+           [parameters setValue: @(self.isIdentifion) forKey:@"identifion"];
+           [parameters setValue: @(self.isAppointment)forKey:@"isAppointment"];
+        [parameters setValue:@(self.pageNumber) forKey:@"pageNum"];
+        [parameters setValue:@(self.pageSize) forKey:@"pageSize"];
+    } else {
+        [parameters setValue:self.orderCode forKey:@"orderKey"];
+        [parameters setValue:@(self.pageNumber) forKey:@"page"];
+        [parameters setValue:@(self.pageSize) forKey:@"size"];
+    }
+    
     [parameters setValue:self.dataStart forKey:@"orderDateStart"];
     [parameters setValue:self.dataEnd forKey:@"orderDateEnd"];
     [parameters setValue:self.orderStatus forKey:@"orderStatus"];
     [parameters setValue:self.selectedTimeType forKey:@"timeQuantum"];
-    [parameters setValue:@(self.pageNumber) forKey:@"page"];
-    [parameters setValue:@(self.pageSize) forKey:@"size"];
+    
     
     
     
@@ -864,7 +918,14 @@
     } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
              self.requestURL = Path_refund_returnOrderList;
         self.title = @"退仓单管理";
-    } else {
+    }  else if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange){
+        self.requestURL = Path_getCustomerExchangeList;
+        self.title = @"客户换货单管理";
+    } else if(self.controllerType == PurchaseOrderManageVCTypeShopExchange){
+        self.requestURL = Path_PostShopExchangeList;
+        self.title = @"门店换货单管理";
+    }
+    else {
         self.title = @"订单管理";
         self.requestURL = Path_orderList;
     }
@@ -952,7 +1013,9 @@
             _searchView.viewType = CommonSearchViewTypeChangeDeliver;
         } else if(self.controllerType == PurchaseOrderManageVCTypeReturn){
               _searchView.viewType = CommonSearchViewTypeChangeReturn;
-        } else{
+        } else if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange){
+            _searchView.viewType = CommonSearchViewTypeExchange;
+        }else{
             _searchView.viewType = CommonSearchViewTypeOrder;
         }
         
@@ -1089,6 +1152,13 @@
                            @{@"isSelected":@(NO),@"title":@"已拒绝",@"itemId":@"refuse"},
                            @{@"isSelected":@(NO),@"title":@"待收货",@"itemId":@"waitGoods"},
                            @{@"isSelected":@(NO),@"title":@"已收货",@"itemId":@"finish"}];
+    }
+    else if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange){
+        title = @"换货单状态";
+        array = @[@{@"isSelected":@(YES),@"title":@"全部",@"itemId":@"all"},
+                           @{@"isSelected":@(NO),@"title":@"待发货",@"itemId":@"waitDeliver"},
+                           @{@"isSelected":@(NO),@"title":@"部分发货",@"itemId":@"partDeliver"},
+                            @{@"isSelected":@(NO),@"title":@"全部发货",@"itemId":@"allDeliver"}];
     }
 //    else {
 //        self.title = @"订单管理";

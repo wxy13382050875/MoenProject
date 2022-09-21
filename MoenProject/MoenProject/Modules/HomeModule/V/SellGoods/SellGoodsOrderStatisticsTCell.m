@@ -12,7 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *count_Lab;
 
-
 @property (weak, nonatomic) IBOutlet UILabel *receivable_Title_Lab;
 @property (weak, nonatomic) IBOutlet UILabel *receivable_Lab;
 
@@ -28,11 +27,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *actual_Title_Lab;
 @property (weak, nonatomic) IBOutlet UILabel *actual_Lab;
 
+@property (weak, nonatomic) IBOutlet UILabel *other_Title_Lab;
+@property (weak, nonatomic) IBOutlet UILabel *other_Lab;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *coupon_View_Constraints;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *promotion_View_constraints;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *store_View_constraints;
 
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *other_View_constraints;
 @end
 
 @implementation SellGoodsOrderStatisticsTCell
@@ -40,6 +42,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     self.count_Lab.font = FONTLanTingR(14);
+    
     
     self.receivable_Title_Lab.font = FONTLanTingR(14);
     self.receivable_Lab.font = FontBinB(14);
@@ -55,6 +58,9 @@
     
     self.actual_Title_Lab.font = FONTLanTingR(14);
     self.actual_Lab.font = FontBinB(14);
+    
+    self.other_Title_Lab.font = FONTLanTingR(14);
+    self.other_Lab.font = FontBinB(14);
     
 }
 
@@ -74,34 +80,43 @@
         self.count_Lab.attributedText = str;
     }
     
-    
     self.receivable_Lab.text = [NSString stringWithFormat:@"¥%@",model.amountPayable];
     self.coupon_Lab.text = [NSString stringWithFormat:@"-¥%@",model.couponDerate];
     self.promotion_Lab.text = [NSString stringWithFormat:@"-¥%@",model.orderDerate];
     self.store_discount_Lab.text = [NSString stringWithFormat:@"-¥%@",model.shopDerate];
     self.actual_Lab.text = [NSString stringWithFormat:@"¥%@",model.payAmount];
-    if ([model.couponDerate isEqualToString:@"0"]) {
+    self.other_Lab.text = [NSString stringWithFormat:@"-¥%@",model.otherDerate == nil?@"0":model.otherDerate];
+    
+  
+    if ([model.couponDerate isEqualToString:@"0"] || model.couponDerate == nil) {
         self.coupon_View_Constraints.constant = 0.01;
     }
     else
     {
-        self.coupon_View_Constraints.constant = 26;
+        self.coupon_View_Constraints.constant = 30;
     }
-    if ([model.orderDerate isEqualToString:@"0"]) {
+    if ([model.orderDerate isEqualToString:@"0"] || model.orderDerate == nil) {
         self.promotion_View_constraints.constant = 0.01;
     }
     else
     {
-        self.promotion_View_constraints.constant = 26;
+        self.promotion_View_constraints.constant = 30;
     }
-    if ([model.shopDerate isEqualToString:@"0"]) {
+    if ([model.shopDerate isEqualToString:@"0"] || model.shopDerate == nil) {
         self.store_View_constraints.constant = 0.01;
     }
     else
     {
-        self.store_View_constraints.constant = 26;
+        self.store_View_constraints.constant = 30;
     }
-    
+    if ([model.otherDerate isEqualToString:@"0"] || model.otherDerate == nil) {
+        self.other_View_constraints.constant = 0.01;
+    }
+    else
+    {
+        self.other_View_constraints.constant = 30;
+    }
+    [self layoutIfNeeded];
 }
 
 - (void)showDataWithOrderDetailModel:(OrderDetailModel *)model
@@ -130,28 +145,37 @@
     self.promotion_Lab.text = [NSString stringWithFormat:@"-¥%@",model.orderDerate];
     self.store_discount_Lab.text = [NSString stringWithFormat:@"-¥%@",model.shopDerate];
     self.actual_Lab.text = [NSString stringWithFormat:@"¥%@",model.payAmount];
-    
-    if ([model.couponDerate isEqualToString:@"0"]) {
+    self.other_Lab.text = [NSString stringWithFormat:@"-¥%@",model.otherDerate == nil?@"0":model.otherDerate];
+ 
+    if ([model.couponDerate isEqualToString:@"0"]|| model.couponDerate == nil) {
         self.coupon_View_Constraints.constant = 0.01;
     }
     else
     {
-        self.coupon_View_Constraints.constant = 26;
+        self.coupon_View_Constraints.constant = 30;
     }
-    if ([model.orderDerate isEqualToString:@"0"]) {
+    if ([model.orderDerate isEqualToString:@"0"]|| model.orderDerate == nil) {
         self.promotion_View_constraints.constant = 0.01;
     }
     else
     {
-        self.promotion_View_constraints.constant = 26;
+        self.promotion_View_constraints.constant = 30;
     }
-    if ([model.shopDerate isEqualToString:@"0"]) {
+    if ([model.shopDerate isEqualToString:@"0"]|| model.shopDerate == nil) {
         self.store_View_constraints.constant = 0.01;
     }
     else
     {
-        self.store_View_constraints.constant = 26;
+        self.store_View_constraints.constant = 30;
     }
+    if ([model.otherDerate isEqualToString:@"0"]|| model.otherDerate == nil) {
+        self.other_View_constraints.constant = 0.01;
+    }
+    else
+    {
+        self.other_View_constraints.constant = 30;
+    }
+    [self layoutIfNeeded];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

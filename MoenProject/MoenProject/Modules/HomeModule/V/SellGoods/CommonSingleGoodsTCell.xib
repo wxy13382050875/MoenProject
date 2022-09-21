@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -167,13 +167,25 @@
                             <constraint firstAttribute="height" constant="1" id="h0O-3B-KsZ"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="不支持换货" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="un2-d3-NS5">
+                        <rect key="frame" x="233" y="100" width="72" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="VAR-Ko-6Eb"/>
+                            <constraint firstAttribute="width" constant="72" id="cO4-wb-3gb"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="6Mc-pg-hCV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="2mS-jW-BKm"/>
                     <constraint firstItem="Fx9-DY-Ga6" firstAttribute="leading" secondItem="6Mc-pg-hCV" secondAttribute="trailing" constant="10" id="7JY-xz-3YT"/>
+                    <constraint firstAttribute="trailing" secondItem="un2-d3-NS5" secondAttribute="trailing" constant="15" id="DQl-RL-r9o"/>
                     <constraint firstItem="6x4-KT-FY8" firstAttribute="leading" secondItem="XDO-Rt-Avx" secondAttribute="trailing" constant="15" id="DRB-nD-OAy"/>
                     <constraint firstItem="v2q-PQ-VVw" firstAttribute="top" secondItem="XDO-Rt-Avx" secondAttribute="bottom" id="ELy-nK-prr"/>
                     <constraint firstAttribute="trailing" secondItem="f1R-jz-QrR" secondAttribute="trailing" constant="15" id="H4t-tg-p2B"/>
+                    <constraint firstAttribute="bottom" secondItem="un2-d3-NS5" secondAttribute="bottom" id="HGC-X7-hf5"/>
                     <constraint firstAttribute="trailing" secondItem="v2q-PQ-VVw" secondAttribute="trailing" id="IO4-IP-ZII"/>
                     <constraint firstItem="kC6-nr-nef" firstAttribute="top" secondItem="6Mc-pg-hCV" secondAttribute="top" id="JSE-gB-znD"/>
                     <constraint firstAttribute="trailing" secondItem="Fx9-DY-Ga6" secondAttribute="trailing" constant="15" id="JXz-oC-ztO"/>
@@ -216,6 +228,7 @@
                 <outlet property="goodsSelectBtn" destination="hfg-Do-ld0" id="TFC-CP-rJV"/>
                 <outlet property="goodsSquare" destination="Y4Z-dg-D1z" id="CfX-l1-sti"/>
                 <outlet property="minus_Btn" destination="wfB-mz-M03" id="ah9-rf-NZV"/>
+                <outlet property="notExchange_lab" destination="un2-d3-NS5" id="OXi-M4-sgH"/>
                 <outlet property="returnCount_Lab" destination="6x4-KT-FY8" id="fq4-IV-3in"/>
             </connections>
             <point key="canvasLocation" x="132.80000000000001" y="13.493253373313344"/>

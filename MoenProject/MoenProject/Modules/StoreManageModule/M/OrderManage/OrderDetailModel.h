@@ -97,6 +97,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**门店优惠金额*/
 @property (nonatomic, copy) NSString *shopDerate;
 
+/**其他优惠金额*/
+@property (nonatomic, copy) NSString *otherDerate;
+
+/**其他优惠金额*/
+@property (nonatomic, copy) NSString *reserveAmount;
+
 
 /**安装状态*/
 @property (nonatomic, copy) NSString *installStatus;
@@ -140,6 +146,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*订单状态*/
 @property (nonatomic, copy) NSString *orderStatus;
+
+/*普通订单和预定订单*/
+@property (nonatomic, copy) NSString *orderType;
 
 /*订单状态名称*/
 @property (nonatomic, copy) NSString *orderStatusText;

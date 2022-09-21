@@ -109,6 +109,8 @@
 
 "input_additional_price" = "输入增项加价";
 "input_PU_code" = "输入PO单号";
+"input_Reserve_code" = "输入订金金额";
+"input_Remain_code" = "输入尾款";
 
 "no_coupons" = "无优惠券";
 "no_available" = "无可用";
@@ -177,6 +179,8 @@
 "stock_save" = "进货申请保存成功";
 "stock_submit" = "进货申请提交成功";
 
+"exchange_complete" = "换货完成";
+"exchange_complete_t" = "换货完成！";
 
 "transfers_submit" = "调拨申请提交成功！";
 

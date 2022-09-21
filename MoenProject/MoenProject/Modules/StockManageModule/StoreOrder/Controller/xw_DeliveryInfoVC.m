@@ -74,7 +74,7 @@
     .spaceToSuperView(UIEdgeInsetsMake(0, 0, 40, 0)) ;
     [self.view addSubview:self.confirmBth];
     self.confirmBth.sd_layout
-    .leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
+    .leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).heightIs(isIphoneX?55:45);
 }
 -(void)xw_loadDataSource{
     
@@ -341,7 +341,7 @@
 }
 -(UIButton*)confirmBth{
     if(!_confirmBth){
-        _confirmBth = [UIButton buttonWithTitie:@"确认" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnDeepBlueColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
+        _confirmBth = [UIButton buttonWithTitie:@"确认" WithtextColor:AppTitleWhiteColor WithBackColor:AppTitleBlueColor WithBackImage:nil WithImage:nil WithFont:15 EventBlock:^(id  _Nonnull params) {
             NSLog(@"确认");
             
             NSString* message ;
@@ -368,6 +368,7 @@
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:self.orderID forKey:@"orderID"];
+    [parameters setValue:self.type forKey:@"type"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;
@@ -413,7 +414,7 @@
         [parameters setObject:self.sendGoodsDate forKey:@"sendGoodsDate"];
         [parameters setValue:self.orderID forKey:@"orderID"];
         [parameters setValue:self.orderRemarks forKey:@"remarks"];
-        
+        [parameters setValue:self.type forKey:@"type"];
         [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
         self.requestType = NO;
         self.requestParams = parameters;

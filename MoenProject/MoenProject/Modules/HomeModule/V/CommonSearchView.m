@@ -86,6 +86,9 @@
             [[NSToastManager manager] showtoast:@"搜索SKU"];
             
         }
+        if(_viewType == CommonSearchViewTypeExchange){
+            [[NSToastManager manager] showtoast:@"搜索SKU"];
+        }
         return;
     }
     [self endEditing:YES];
@@ -111,7 +114,7 @@
         self.input_Txt.keyboardType = UIKeyboardTypePhonePad;
     }
     if (_viewType == CommonSearchViewTypeOrder) {
-        self.input_Txt.placeholder = @"搜索订单编号";
+        self.input_Txt.placeholder = @"输入订单编号/手机号/SKU";
         self.container_view_Right.constant = 55;
         [self.time_Select_View setHidden:NO];
         self.time_Select_View.userInteractionEnabled = YES;
@@ -190,6 +193,13 @@
         self.time_Select_View.userInteractionEnabled = YES;
         [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
         
+    }
+    if(_viewType == CommonSearchViewTypeExchange){
+        self.input_Txt.placeholder = @"搜索换货单";
+        self.container_view_Right.constant = 55;
+        [self.time_Select_View setHidden:NO];
+        self.time_Select_View.userInteractionEnabled = YES;
+        [self.time_Select_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(time_Select_ViewAction)]];
     }
 }
 

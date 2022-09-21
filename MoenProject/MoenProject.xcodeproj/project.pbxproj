@@ -113,6 +113,9 @@
 		2E835FAE2763BE1300C31E2D /* ZLDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E835FA72763BE1300C31E2D /* ZLDatePickerView.m */; };
 		2E835FB127649D3B00C31E2D /* XwOrderDetailGoodCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E835FB027649D3900C31E2D /* XwOrderDetailGoodCell.m */; };
 		2E835FB42765092100C31E2D /* XwStockInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E835FB32765091E00C31E2D /* XwStockInfoModel.m */; };
+		2E8E843028BA2F72000DF116 /* ExchangeCounterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E8E842F28BA2F72000DF116 /* ExchangeCounterVC.m */; };
+		2E8E843928BB643E000DF116 /* XwOrderDetailExchangeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E8E843828BB643E000DF116 /* XwOrderDetailExchangeCell.m */; };
+		2E8E843C28BD16E5000DF116 /* XwImproveReservationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E8E843B28BD16E5000DF116 /* XwImproveReservationVC.m */; };
 		2EA2C1282765A54B00D81C47 /* xw_SelectDeliveryWayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EA2C1272765A54B00D81C47 /* xw_SelectDeliveryWayVC.m */; };
 		2EA2C12B2765B1C600D81C47 /* XwUpdateDeliveryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EA2C1292765B1C500D81C47 /* XwUpdateDeliveryModel.m */; };
 		2EA2C12E2766254800D81C47 /* XwSubscribeTakeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EA2C12D2766254800D81C47 /* XwSubscribeTakeVC.m */; };
@@ -120,6 +123,13 @@
 		2EB5B27B275DF92000787E05 /* XwInventoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5B279275DF91F00787E05 /* XwInventoryModel.m */; };
 		2EB5B27E275E042900787E05 /* XwInOrOutWaterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5B27D275E042900787E05 /* XwInOrOutWaterModel.m */; };
 		2EB5B281275E423B00787E05 /* XwLastGoodsListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5B27F275E423B00787E05 /* XwLastGoodsListModel.m */; };
+		2ED976B228AF73390096CE61 /* ExchangeGoodsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED976B128AF73390096CE61 /* ExchangeGoodsVC.m */; };
+		2ED976B628AF7B4C0096CE61 /* ExchangeGoodsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED976B528AF7B4C0096CE61 /* ExchangeGoodsModel.m */; };
+		2ED976B928AF85500096CE61 /* ExchangeGoodsCounterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED976B828AF85500096CE61 /* ExchangeGoodsCounterVC.m */; };
+		2ED976BC28AF94440096CE61 /* ExchangProductInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED976BB28AF94440096CE61 /* ExchangProductInfoModel.m */; };
+		2ED976BF28AFDEA70096CE61 /* ExchangeGoodsSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED976BE28AFDEA70096CE61 /* ExchangeGoodsSelectVC.m */; };
+		2ED976C728AFE2380096CE61 /* SelectExchangeGoodsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ED976C528AFE2380096CE61 /* SelectExchangeGoodsCell.m */; };
+		2ED976C828AFE2380096CE61 /* SelectExchangeGoodsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2ED976C628AFE2380096CE61 /* SelectExchangeGoodsCell.xib */; };
 		368F980E26B08D5B003B8F37 /* StockManageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 368F980C26B08D5B003B8F37 /* StockManageVC.m */; };
 		368F980F26B08D5B003B8F37 /* StockManageVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 368F980D26B08D5B003B8F37 /* StockManageVC.xib */; };
 		368F983026B0F9FA003B8F37 /* PurchaseTypeChooseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 368F982F26B0F9FA003B8F37 /* PurchaseTypeChooseVC.m */; };
@@ -766,6 +776,12 @@
 		2E835FB027649D3900C31E2D /* XwOrderDetailGoodCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailGoodCell.m; sourceTree = "<group>"; };
 		2E835FB22765091E00C31E2D /* XwStockInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwStockInfoModel.h; sourceTree = "<group>"; };
 		2E835FB32765091E00C31E2D /* XwStockInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwStockInfoModel.m; sourceTree = "<group>"; };
+		2E8E842E28BA2F72000DF116 /* ExchangeCounterVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExchangeCounterVC.h; sourceTree = "<group>"; };
+		2E8E842F28BA2F72000DF116 /* ExchangeCounterVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExchangeCounterVC.m; sourceTree = "<group>"; };
+		2E8E843728BB643E000DF116 /* XwOrderDetailExchangeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwOrderDetailExchangeCell.h; sourceTree = "<group>"; };
+		2E8E843828BB643E000DF116 /* XwOrderDetailExchangeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwOrderDetailExchangeCell.m; sourceTree = "<group>"; };
+		2E8E843A28BD16E5000DF116 /* XwImproveReservationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XwImproveReservationVC.h; sourceTree = "<group>"; };
+		2E8E843B28BD16E5000DF116 /* XwImproveReservationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XwImproveReservationVC.m; sourceTree = "<group>"; };
 		2EA2C1262765A54B00D81C47 /* xw_SelectDeliveryWayVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xw_SelectDeliveryWayVC.h; sourceTree = "<group>"; };
 		2EA2C1272765A54B00D81C47 /* xw_SelectDeliveryWayVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = xw_SelectDeliveryWayVC.m; sourceTree = "<group>"; };
 		2EA2C1292765B1C500D81C47 /* XwUpdateDeliveryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XwUpdateDeliveryModel.m; sourceTree = "<group>"; };
@@ -780,6 +796,19 @@
 		2EB5B27D275E042900787E05 /* XwInOrOutWaterModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XwInOrOutWaterModel.m; sourceTree = "<group>"; };
 		2EB5B27F275E423B00787E05 /* XwLastGoodsListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XwLastGoodsListModel.m; sourceTree = "<group>"; };
 		2EB5B280275E423B00787E05 /* XwLastGoodsListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XwLastGoodsListModel.h; sourceTree = "<group>"; };
+		2ED976B028AF73390096CE61 /* ExchangeGoodsVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExchangeGoodsVC.h; sourceTree = "<group>"; };
+		2ED976B128AF73390096CE61 /* ExchangeGoodsVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExchangeGoodsVC.m; sourceTree = "<group>"; };
+		2ED976B428AF7B4C0096CE61 /* ExchangeGoodsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExchangeGoodsModel.h; sourceTree = "<group>"; };
+		2ED976B528AF7B4C0096CE61 /* ExchangeGoodsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExchangeGoodsModel.m; sourceTree = "<group>"; };
+		2ED976B728AF85500096CE61 /* ExchangeGoodsCounterVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExchangeGoodsCounterVC.h; sourceTree = "<group>"; };
+		2ED976B828AF85500096CE61 /* ExchangeGoodsCounterVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExchangeGoodsCounterVC.m; sourceTree = "<group>"; };
+		2ED976BA28AF94440096CE61 /* ExchangProductInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExchangProductInfoModel.h; sourceTree = "<group>"; };
+		2ED976BB28AF94440096CE61 /* ExchangProductInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExchangProductInfoModel.m; sourceTree = "<group>"; };
+		2ED976BD28AFDEA70096CE61 /* ExchangeGoodsSelectVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExchangeGoodsSelectVC.h; sourceTree = "<group>"; };
+		2ED976BE28AFDEA70096CE61 /* ExchangeGoodsSelectVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExchangeGoodsSelectVC.m; sourceTree = "<group>"; };
+		2ED976C428AFE2380096CE61 /* SelectExchangeGoodsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectExchangeGoodsCell.h; sourceTree = "<group>"; };
+		2ED976C528AFE2380096CE61 /* SelectExchangeGoodsCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectExchangeGoodsCell.m; sourceTree = "<group>"; };
+		2ED976C628AFE2380096CE61 /* SelectExchangeGoodsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectExchangeGoodsCell.xib; sourceTree = "<group>"; };
 		368F980B26B08D5B003B8F37 /* StockManageVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StockManageVC.h; sourceTree = "<group>"; };
 		368F980C26B08D5B003B8F37 /* StockManageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StockManageVC.m; sourceTree = "<group>"; };
 		368F980D26B08D5B003B8F37 /* StockManageVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StockManageVC.xib; sourceTree = "<group>"; };
@@ -1573,6 +1602,8 @@
 			children = (
 				2E13BECF275BFFF500287371 /* XwOrderDetailVC.m */,
 				2E13BED0275BFFF500287371 /* XwOrderDetailVC.h */,
+				2E8E843A28BD16E5000DF116 /* XwImproveReservationVC.h */,
+				2E8E843B28BD16E5000DF116 /* XwImproveReservationVC.m */,
 			);
 			path = XwOrderDetail;
 			sourceTree = "<group>";
@@ -2047,6 +2078,8 @@
 				2E823A1E277232D70083AF02 /* XwExpressCell.m */,
 				2E823A20277233050083AF02 /* XwDeliveMarkrCell.h */,
 				2E823A21277233050083AF02 /* XwDeliveMarkrCell.m */,
+				2E8E843728BB643E000DF116 /* XwOrderDetailExchangeCell.h */,
+				2E8E843828BB643E000DF116 /* XwOrderDetailExchangeCell.m */,
 			);
 			path = XwOrderDetail;
 			sourceTree = "<group>";
@@ -2084,6 +2117,42 @@
 				2E835FA72763BE1300C31E2D /* ZLDatePickerView.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		2ED976AF28AF72FE0096CE61 /* ExchangeGoods */ = {
+			isa = PBXGroup;
+			children = (
+				2ED976B028AF73390096CE61 /* ExchangeGoodsVC.h */,
+				2ED976B128AF73390096CE61 /* ExchangeGoodsVC.m */,
+				2ED976B728AF85500096CE61 /* ExchangeGoodsCounterVC.h */,
+				2ED976B828AF85500096CE61 /* ExchangeGoodsCounterVC.m */,
+				2ED976BD28AFDEA70096CE61 /* ExchangeGoodsSelectVC.h */,
+				2ED976BE28AFDEA70096CE61 /* ExchangeGoodsSelectVC.m */,
+				2E8E842E28BA2F72000DF116 /* ExchangeCounterVC.h */,
+				2E8E842F28BA2F72000DF116 /* ExchangeCounterVC.m */,
+			);
+			path = ExchangeGoods;
+			sourceTree = "<group>";
+		};
+		2ED976B328AF7B2A0096CE61 /* ExchangeGoods */ = {
+			isa = PBXGroup;
+			children = (
+				2ED976B428AF7B4C0096CE61 /* ExchangeGoodsModel.h */,
+				2ED976B528AF7B4C0096CE61 /* ExchangeGoodsModel.m */,
+				2ED976BA28AF94440096CE61 /* ExchangProductInfoModel.h */,
+				2ED976BB28AF94440096CE61 /* ExchangProductInfoModel.m */,
+			);
+			path = ExchangeGoods;
+			sourceTree = "<group>";
+		};
+		2ED976C028AFE1D40096CE61 /* ExchangeGoods */ = {
+			isa = PBXGroup;
+			children = (
+				2ED976C428AFE2380096CE61 /* SelectExchangeGoodsCell.h */,
+				2ED976C528AFE2380096CE61 /* SelectExchangeGoodsCell.m */,
+				2ED976C628AFE2380096CE61 /* SelectExchangeGoodsCell.xib */,
+			);
+			path = ExchangeGoods;
 			sourceTree = "<group>";
 		};
 		368F97CC26B0668B003B8F37 /* StockManageModule */ = {
@@ -3282,6 +3351,7 @@
 		725DD16F21B5593E0060C0BD /* C */ = {
 			isa = PBXGroup;
 			children = (
+				2ED976AF28AF72FE0096CE61 /* ExchangeGoods */,
 				7240A52621D0811A0058E279 /* ReturnGoods */,
 				7240A51F21D07A2A0058E279 /* OrderManage */,
 				7240A4D621CC8B880058E279 /* GoodsManage */,
@@ -3299,6 +3369,7 @@
 		725DD17021B5594A0060C0BD /* V */ = {
 			isa = PBXGroup;
 			children = (
+				2ED976C028AFE1D40096CE61 /* ExchangeGoods */,
 				7235DBF321F07E8A00AA60F1 /* ReturnGoods */,
 				72C1E96321E3254B00B61942 /* OrderManage */,
 				7240A4D221CC87060058E279 /* GoodsManage */,
@@ -3316,6 +3387,7 @@
 		725DD17121B559520060C0BD /* M */ = {
 			isa = PBXGroup;
 			children = (
+				2ED976B328AF7B2A0096CE61 /* ExchangeGoods */,
 				2E13BEC0275B9C8800287371 /* XwStocks */,
 				7235DBE921F0257800AA60F1 /* ReturnGoods */,
 				7235DBD521ED840500AA60F1 /* SamplingManage */,
@@ -4410,6 +4482,7 @@
 				725DD16E21B552550060C0BD /* AddressAddTCell.xib in Resources */,
 				2E384D3326E0D95B0021EA4A /* xwDeliveryInfoCell.xib in Resources */,
 				72C1E96D21E32A5800B61942 /* OrderConfigTCell.xib in Resources */,
+				2ED976C828AFE2380096CE61 /* SelectExchangeGoodsCell.xib in Resources */,
 				725DD15221B53A2B0060C0BD /* CustomerAccountVC.xib in Resources */,
 				72ED756C2211778500682DC9 /* DINPro-Regular.otf in Resources */,
 				7240A53D21D0D3ED0058E279 /* OrderDetailVC.xib in Resources */,
@@ -4538,6 +4611,7 @@
 				72A4684021F5A0B50069DCFE /* SDBrowserImageView.m in Sources */,
 				2E2A69C827677C62004FC164 /* WMZDialog+Loading.m in Sources */,
 				2E2A69CD27677C62004FC164 /* WMZDialog+DatePicker.m in Sources */,
+				2E8E843928BB643E000DF116 /* XwOrderDetailExchangeCell.m in Sources */,
 				72FDC5AF21C796570068F6AB /* HomeDataModel.m in Sources */,
 				7242B26321AD57A30049E497 /* MoenBaseModel.m in Sources */,
 				72C4C92621DA16BB00CB861F /* GoodsSalesVolumeModel.m in Sources */,
@@ -4555,6 +4629,7 @@
 				72C4C93721DC6A8600CB861F /* SalesCounterConfigModel.m in Sources */,
 				72613BDC21C74DA80084FBF9 /* StoreCustomerDetailVC.m in Sources */,
 				725DD10321B129DC0060C0BD /* UserIdentifySuccessCCell.m in Sources */,
+				2ED976BC28AF94440096CE61 /* ExchangProductInfoModel.m in Sources */,
 				2E6F966A2761D56A00660B4D /* XwOrderDetailStockCell.m in Sources */,
 				2E2A69CA27677C62004FC164 /* WMZDialog+AutoDisappear.m in Sources */,
 				72684C1621BA351A00380622 /* CouponRecordVC.m in Sources */,
@@ -4568,6 +4643,7 @@
 				2E384D0826DF946C0021EA4A /* xw_StockInfoVC.m in Sources */,
 				725DD16D21B552550060C0BD /* AddressAddTCell.m in Sources */,
 				2E384D1426DF99A10021EA4A /* SKSTableViewCell.m in Sources */,
+				2ED976BF28AFDEA70096CE61 /* ExchangeGoodsSelectVC.m in Sources */,
 				2E384CC226DF74990021EA4A /* xw_BaseViewModel.m in Sources */,
 				72FFB20821AC134E00614F14 /* JHPieChart.m in Sources */,
 				2E384CEE26DF77940021EA4A /* NSObject+XWKeychain.m in Sources */,
@@ -4603,6 +4679,7 @@
 				723C290022264ECD0034A6A7 /* FPSDisplay.m in Sources */,
 				724A387621C3907700CBD62B /* SearchGoodsVC.m in Sources */,
 				7232CC0F21BA658D003E9F9B /* LoginVC.m in Sources */,
+				2ED976B928AF85500096CE61 /* ExchangeGoodsCounterVC.m in Sources */,
 				72FFB21721AC134E00614F14 /* KSegmentMenuView.m in Sources */,
 				72FFB21021AC134E00614F14 /* JHPieItemsView.m in Sources */,
 				721D619B21FB022D00C4987E /* ReturnGoodsAmountTCell.m in Sources */,
@@ -4658,6 +4735,7 @@
 				2E2A69C927677C62004FC164 /* WMZDialog+TabbarMenu.m in Sources */,
 				7240A52F21D086D50058E279 /* CommonTimeSelectView.m in Sources */,
 				7232CC2321BE9A00003E9F9B /* PhotoDisplayView.m in Sources */,
+				2ED976B228AF73390096CE61 /* ExchangeGoodsVC.m in Sources */,
 				368F983026B0F9FA003B8F37 /* PurchaseTypeChooseVC.m in Sources */,
 				722D870121D71DEF002593EF /* CouponRecordDetailModel.m in Sources */,
 				2E384CF326DF77940021EA4A /* UITabBar+XWAdd.m in Sources */,
@@ -4734,6 +4812,7 @@
 				721D621A2200536300C4987E /* TZImagePickerController.m in Sources */,
 				7240A4D921CC8BA20058E279 /* GoodsManageVC.m in Sources */,
 				72FFB22921AC134E00614F14 /* SDCycleScrollView.m in Sources */,
+				2ED976C728AFE2380096CE61 /* SelectExchangeGoodsCell.m in Sources */,
 				2E13BEC6275BDD6D00287371 /* xWStockOrderModel.m in Sources */,
 				72C4C93421DC63FD00CB861F /* CommonCategoryModel.m in Sources */,
 				7240A52521D07F860058E279 /* CustomerOrderManageVC.m in Sources */,
@@ -4741,6 +4820,7 @@
 				7240A4C821CB9BD00058E279 /* SalesCounterVC.m in Sources */,
 				2E835FB127649D3B00C31E2D /* XwOrderDetailGoodCell.m in Sources */,
 				720DA550222E4606004D355D /* HXDRefreshFooter.m in Sources */,
+				2ED976B628AF7B4C0096CE61 /* ExchangeGoodsModel.m in Sources */,
 				72FFB23421AC134E00614F14 /* PCCircle.m in Sources */,
 				2E2A69CC27677C62004FC164 /* WMZDialog+Location.m in Sources */,
 				722D86A421D39DDC002593EF /* IMSellerManageVC.m in Sources */,
@@ -4760,6 +4840,7 @@
 				72B6B69F237E911D003F2AAE /* MineAwardsTCell.m in Sources */,
 				7289A44023B9FF8A005D1A5D /* ChangeStoreVC.m in Sources */,
 				2E6F96732762089A00660B4D /* XWOrderDetailDefaultCell.m in Sources */,
+				2E8E843028BA2F72000DF116 /* ExchangeCounterVC.m in Sources */,
 				725DD16821B550D60060C0BD /* AddressAddVC.m in Sources */,
 				722D86AC21D3A014002593EF /* IntentionManageVC.m in Sources */,
 				2E2A69DB27677C62004FC164 /* WMZDialogAnimation.m in Sources */,
@@ -4905,6 +4986,7 @@
 				2E2A69DA27677C62004FC164 /* NSDate+WMZCalendarDate.m in Sources */,
 				72C4C91A21D9FD6F00CB861F /* StoreSalesVolumeModel.m in Sources */,
 				7242B25221AD535E0049E497 /* StatisticsVC.m in Sources */,
+				2E8E843C28BD16E5000DF116 /* XwImproveReservationVC.m in Sources */,
 				7289A46923BDD75F005D1A5D /* GiftAddTCell.m in Sources */,
 				2E384D1626DF99A10021EA4A /* SKSTableViewCellIndicator.m in Sources */,
 				72FFB23021AC134E00614F14 /* PAPreferences.m in Sources */,
@@ -5096,7 +5178,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5126,7 +5208,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = H523ESQZKF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

@@ -37,8 +37,11 @@
 
 @property (nonatomic, strong) UITableView *tableview;
 
-@property (nonatomic, strong) NSDampButton *confirmBtn;
+@property (nonatomic, strong) UIButton *confirmBtn;
 
+@property (nonatomic, strong) UIButton *reserveBtn;//提交预定订单
+
+@property (nonatomic, strong) UIButton *formalBtn;//提交正式订单
 //@property (nonatomic, strong) NSMutableArray *dataList;
 
 @property (nonatomic, strong) NSMutableArray *floorsAarr;
@@ -58,7 +61,7 @@
 
 @property (nonatomic, strong) KWCommonPickView *kwPickView;
 
-@property (nonatomic, strong) SalesCounterDataModel *counterDataModel;
+
 
 @property (nonatomic, strong) SalesCounterConfigModel *configModel;
 
@@ -79,6 +82,17 @@
 @property (nonatomic, strong) NSMutableArray *giftDataArr;
 //判断是否提示重点关注项
 @property (nonatomic, assign) BOOL isShowAlert;
+
+
+//判断是否提交订金
+@property (nonatomic, assign) BOOL isReserveAmount;
+
+//判断是否提交尾款
+@property (nonatomic, assign) BOOL isRemainAmount;
+
+//是否预定 默认false（新增）
+@property (nonatomic, assign) BOOL isReserve;
+
 
 @end
 
@@ -112,6 +126,21 @@
     
     [self.view addSubview:self.tableview];
     [self.view addSubview:self.confirmBtn];
+//    [self.view addSubview:self.reserveBtn];
+//    [self.view addSubview:self.formalBtn];
+    CGFloat btnHeight = kIs_iPhoneX == true ? 55:45;
+    self.tableview.sd_layout
+    .spaceToSuperView(UIEdgeInsetsMake(0, 0, btnHeight, 0)) ;
+    
+    self.confirmBtn.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).heightIs(btnHeight);
+    
+//    self.reserveBtn.sd_layout.leftEqualToView(self.view).bottomEqualToView(self.view).heightIs(btnHeight).widthIs(SCREEN_WIDTH/2);
+//
+//    self.formalBtn.sd_layout.rightEqualToView(self.view).bottomEqualToView(self.view).heightIs(btnHeight).widthIs(SCREEN_WIDTH/2);
+//
+//    self.confirmBtn.hidden = YES;
+//    self.reserveBtn.hidden = YES;
+//    self.formalBtn.hidden = YES;
 }
 
 - (void)configBaseData
@@ -119,7 +148,61 @@
     self.isShowAlert = NO;
     self.isCanOperation = YES;
     self.isUseAddress = YES;
-    [self httpPath_sale];
+    if(self.type == SalesCounterTypeNone){
+        [self httpPath_sale];
+    } else {
+        
+        [self.dataArr removeAllObjects];
+        //处理预定商品单品和套餐
+        if(self.counterDataModel.orderProductList.count > 0){
+            for (CommonGoodsModel* model in self.counterDataModel.orderProductList) {
+                model.isSetMeal = NO;
+                model.gcode = model.sku;
+                [self.dataArr addObject:model];
+            }
+        }
+        if(self.counterDataModel.orderSetMealList.count > 0){
+            for (CommonGoodsModel* model in self.counterDataModel.orderSetMealList) {
+                model.isSetMeal = YES;
+                model.name = model.comboName;
+                model.gcode = model.code;
+                
+                [self.dataArr addObject:model];
+            }
+        }
+        //处理预定商品赠品单品和套餐
+        if(self.counterDataModel.orderGiftProductList.count > 0){
+            for (CommonGoodsModel* model in self.counterDataModel.orderGiftProductList) {
+                model.isSetMeal = NO;
+                model.gcode = model.sku;
+                [self.giftDataArr addObject:model];
+            }
+        }
+        if(self.counterDataModel.orderGiftSetMealList.count > 0){
+            for (CommonGoodsModel* model in self.counterDataModel.orderGiftSetMealList) {
+                model.isSetMeal = YES;
+                model.name = model.comboName;
+                model.gcode = model.code;
+                [self.giftDataArr addObject:model];
+            }
+        }
+        for (CommonGoodsModel *model in self.dataArr) {
+            
+            model.kGoodsCount = model.count;
+            model.kGoodsCode = model.codePu;
+            model.kGoodsArea = model.square;
+        }
+        for (CommonGoodsModel *model in self.giftDataArr) {
+            
+            model.kGoodsCount = model.count;
+            model.kGoodsCode = model.codePu;
+            model.kGoodsArea = model.square;
+        }
+        [self handleTableViewFloorsData];
+        [self handelConfigTCellAndStatisticsTCellHeight];
+        [self.tableview reloadData];
+    }
+    
     [self httpPath_load];
 }
 
@@ -298,7 +381,16 @@
                 addPriceLab.textColor = AppTitleBlueColor;
                 addPriceLab.tag = 5000 + section;
                 addPriceLab.userInteractionEnabled = YES;
-                [addPriceLab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(modifyAddPriceAction:)]];
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+                [[tap rac_gestureSignal] subscribeNext:^(__kindof UIGestureRecognizer * _Nullable x) {
+                         
+                    NSLog(@"修改增项加价");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_Reserve_code", nil) alterType:FDAltertViewTypeEditInputPrice message:[NSString stringWithFormat:@"%.2f",model.kAddPrice] delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                    [alert show];
+                    
+                }];
+                [addPriceLab addGestureRecognizer:tap];
                 // 下划线
                 NSDictionary *attribtDic = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
                 NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"增项加价：¥%.2f",model.kAddPrice] attributes:attribtDic];
@@ -312,7 +404,17 @@
                 goodsCodeLab.textColor = AppTitleBlueColor;
                 goodsCodeLab.tag = 6000 + section;
                 goodsCodeLab.userInteractionEnabled = YES;
-                [goodsCodeLab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(modifyAddCodeAction:)]];
+                
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+                [[tap rac_gestureSignal] subscribeNext:^(__kindof UIGestureRecognizer * _Nullable x) {
+                         
+                    NSLog(@"修改PO单号");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_PU_code", nil) alterType:FDAltertViewTypeEditInputCode message:model.kGoodsCode delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                    [alert show];
+                    
+                }];
+                [goodsCodeLab addGestureRecognizer:tap];
                 // 下划线
                 NSDictionary *attribtDic = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
                 NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"PO单号：%@",model.kGoodsCode] attributes:attribtDic];
@@ -320,37 +422,118 @@
                 marginTop += 30;
                 [footerView addSubview:goodsCodeLab];
             }
-            if (marginTop < 60) {
+            if (model.reserveAmount > 0) {
+                UILabel *reserveAmountLab = [[UILabel alloc] initWithFrame:CGRectMake(15, marginTop, 200, 20)];
+                reserveAmountLab.font = FONTSYS(13);
+                reserveAmountLab.textColor = AppTitleBlueColor;
+                reserveAmountLab.tag = 100 + section;
+                reserveAmountLab.userInteractionEnabled = YES;
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+                [[tap rac_gestureSignal] subscribeNext:^(__kindof UIGestureRecognizer * _Nullable x) {
+                         
+                    NSLog(@"修改订金");
+                    if(self.type == SalesCounterTypeReserve){
+                        
+                    } else {
+                        self.currentIndex = section;
+                        FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_Reserve_code", nil) alterType:FDAltertViewTypeEditInputDepositPrice message:[NSString stringWithFormat:@"%.2f",model.reserveAmount] delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                           [alert show];
+                    }
+                    
+                    
+                }];
+                [reserveAmountLab addGestureRecognizer:tap];
+                // 下划线
+                NSDictionary *attribtDic = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+                NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"交定金：¥%.2f",model.reserveAmount] attributes:attribtDic];
+                reserveAmountLab.attributedText = attribtStr;
+                marginTop += 30;
+                [footerView addSubview:reserveAmountLab];
+            }
+            if (model.remainAmount > 0) {
+                UILabel *remainAmountLab = [[UILabel alloc] initWithFrame:CGRectMake(15, marginTop, 200, 20)];
+                remainAmountLab.font = FONTSYS(13);
+                remainAmountLab.textColor = AppTitleBlueColor;
+                remainAmountLab.tag = 100 + section;
+                remainAmountLab.userInteractionEnabled = YES;
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+                [[tap rac_gestureSignal] subscribeNext:^(__kindof UIGestureRecognizer * _Nullable x) {
+                         
+                    NSLog(@"修改订金");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_Remain_code", nil) alterType:FDAltertViewTypeEditInputRemainPrice message:[NSString stringWithFormat:@"%.2f",model.remainAmount] delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                       [alert show];
+                    
+                }];
+                [remainAmountLab addGestureRecognizer:tap];
+                // 下划线
+                NSDictionary *attribtDic = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+                NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"尾款：¥%.2f",model.remainAmount] attributes:attribtDic];
+                remainAmountLab.attributedText = attribtStr;
+                marginTop += 30;
+                [footerView addSubview:remainAmountLab];
+            }
+            CGFloat footerHeight = 90;
+            if(model.remainAmount > 0&&
+               self.type == SalesCounterTypeReserve){
+                footerHeight = 120;
+            }
+            if (marginTop < footerHeight) {
                 UIView *lineTopView = [[UIView alloc] initWithFrame:CGRectMake(0, marginTop, SCREEN_WIDTH, 1)];
                 lineTopView.backgroundColor = AppBgBlueGrayColor;
                 [footerView addSubview:lineTopView];
             }
             if (model.kGoodsCode.length == 0) {
-                UIButton *codeBtn = [[UIButton alloc] initWithFrame:CGRectMake(marginLeft, marginTop + 10, 80, 30)];
-                [codeBtn setTitle:@"PO单号" forState:UIControlStateNormal];
-                codeBtn.titleLabel.font = FONTLanTingR(13);
-                [codeBtn setTitleColor:AppTitleBlueColor forState:UIControlStateNormal];
-                codeBtn.clipsToBounds = YES;
-                codeBtn.layer.borderWidth = 1;
-                codeBtn.layer.borderColor = AppTitleBlueColor.CGColor;
-                codeBtn.layer.cornerRadius = 15;
-                codeBtn.tag = 7000 + section;
-                [codeBtn addTarget:self action:@selector(AddCodeAction:) forControlEvents:UIControlEventTouchDown];
+                UIButton *codeBtn = [UIButton buttonWithTitie:@"PO单号" WithtextColor:AppTitleBlueColor WithBackColor:nil WithBackImage:nil WithImage:nil WithFont:13 EventBlock:^(id  _Nonnull params) {
+                    NSLog(@"新增PO单号");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_PU_code", nil) alterType:FDAltertViewTypeInputCode message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                    [alert show];
+                }];
+                ViewBorderRadius(codeBtn, 15, 1, AppTitleBlueColor);
+                codeBtn.frame = CGRectMake(marginLeft, marginTop + 10, 80, 30);
                 [footerView addSubview:codeBtn];
                 marginLeft -= 90;
             }
             if (model.kAddPrice == 0) {
-                UIButton *priceBtn = [[UIButton alloc] initWithFrame:CGRectMake(marginLeft, marginTop + 10, 80, 30)];
-                [priceBtn setTitle:@"增项加价" forState:UIControlStateNormal];
-                priceBtn.titleLabel.font = FONTLanTingR(13);
-                [priceBtn setTitleColor:AppTitleBlueColor forState:UIControlStateNormal];
-                priceBtn.clipsToBounds = YES;
-                priceBtn.layer.borderWidth = 1;
-                priceBtn.layer.borderColor = AppTitleBlueColor.CGColor;
-                priceBtn.layer.cornerRadius = 15;
-                priceBtn.tag = 8000 + section;
-                [priceBtn addTarget:self action:@selector(AddPriceAction:) forControlEvents:UIControlEventTouchDown];
+                UIButton *priceBtn = [UIButton buttonWithTitie:@"增项加价" WithtextColor:AppTitleBlueColor WithBackColor:nil WithBackImage:nil WithImage:nil WithFont:13 EventBlock:^(id  _Nonnull params) {
+                    NSLog(@"增项加价");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_Reserve_code", nil) alterType:FDAltertViewTypeInputPrice message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                    [alert show];
+                }];
+                ViewBorderRadius(priceBtn, 15, 1, AppTitleBlueColor);
+                priceBtn.frame = CGRectMake(marginLeft, marginTop + 10, 80, 30);
                 [footerView addSubview:priceBtn];
+                marginLeft -= 90;
+            }
+            if (model.reserveAmount == 0) {
+                
+                UIButton *reserveBtn = [UIButton buttonWithTitie:@"交定金" WithtextColor:AppTitleBlueColor WithBackColor:nil WithBackImage:nil WithImage:nil WithFont:13 EventBlock:^(id  _Nonnull params) {
+                    NSLog(@"交定金");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_Reserve_code", nil) alterType:FDAltertViewTypeInputDepositPrice message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                    [alert show];
+                }];
+                ViewBorderRadius(reserveBtn, 15, 1, AppTitleBlueColor);
+                reserveBtn.frame = CGRectMake(marginLeft, marginTop + 10, 80, 30);
+                [footerView addSubview:reserveBtn];
+                marginLeft -= 90;
+            } else {
+                
+                if (model.remainAmount == 0&&
+                    self.type == SalesCounterTypeReserve) {
+                    
+                    UIButton *remainBtn = [UIButton buttonWithTitie:@"交尾款" WithtextColor:AppTitleBlueColor WithBackColor:nil WithBackImage:nil WithImage:nil WithFont:13 EventBlock:^(id  _Nonnull params) {
+                        NSLog(@"交尾款");
+                        self.currentIndex = section;
+                        FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_Remain_code", nil) alterType:FDAltertViewTypeInputRemainPrice message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                        [alert show];
+                    }];
+                    ViewBorderRadius(remainBtn, 15, 1, AppTitleBlueColor);
+                    remainBtn.frame = CGRectMake(marginLeft, marginTop + 10, 80, 30);
+                    [footerView addSubview:remainBtn];
+                }
             }
             
             UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cellModel.cellFooterHeight - 5, SCREEN_WIDTH, 5)];
@@ -373,7 +556,18 @@
                 addPriceLab.textColor = AppTitleBlueColor;
                 addPriceLab.tag = 5000 + section;
                 addPriceLab.userInteractionEnabled = YES;
-                [addPriceLab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(modifyAddPriceActionForGift:)]];
+                
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+                [[tap rac_gestureSignal] subscribeNext:^(__kindof UIGestureRecognizer * _Nullable x) {
+                         
+                    NSLog(@"修改赠品增项加价");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_additional_price", nil) alterType:FDAltertViewTypeEditInputPriceForGift message:[NSString stringWithFormat:@"%.2f",model.kAddPrice] delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                    [alert show];
+                    
+                }];
+                [addPriceLab addGestureRecognizer:tap];
+                
                 // 下划线
                 NSDictionary *attribtDic = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
                 NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"增项加价：¥%.2f",model.kAddPrice] attributes:attribtDic];
@@ -387,7 +581,15 @@
                 goodsCodeLab.textColor = AppTitleBlueColor;
                 goodsCodeLab.tag = 6000 + section;
                 goodsCodeLab.userInteractionEnabled = YES;
-                [goodsCodeLab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(modifyAddCodeActionForGift:)]];
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
+                [[tap rac_gestureSignal] subscribeNext:^(__kindof UIGestureRecognizer * _Nullable x) {
+                         
+                    NSLog(@"修改赠品增项加价");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_PU_code", nil) alterType:FDAltertViewTypeEditInputCodeForGift message:model.kGoodsCode delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                    [alert show];
+                    
+                }];
                 // 下划线
                 NSDictionary *attribtDic = @{NSUnderlineStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
                 NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"PO单号：%@",model.kGoodsCode] attributes:attribtDic];
@@ -395,39 +597,41 @@
                 marginTop += 30;
                 [footerView addSubview:goodsCodeLab];
             }
+            
             if (marginTop < 60) {
                 UIView *lineTopView = [[UIView alloc] initWithFrame:CGRectMake(0, marginTop, SCREEN_WIDTH, 1)];
                 lineTopView.backgroundColor = AppBgBlueGrayColor;
                 [footerView addSubview:lineTopView];
             }
             if (model.kGoodsCode.length == 0) {
-                UIButton *codeBtn = [[UIButton alloc] initWithFrame:CGRectMake(marginLeft, marginTop + 10, 80, 30)];
-                [codeBtn setTitle:@"PO单号" forState:UIControlStateNormal];
-                codeBtn.titleLabel.font = FONTLanTingR(13);
-                [codeBtn setTitleColor:AppTitleBlueColor forState:UIControlStateNormal];
-                codeBtn.clipsToBounds = YES;
-                codeBtn.layer.borderWidth = 1;
-                codeBtn.layer.borderColor = AppTitleBlueColor.CGColor;
-                codeBtn.layer.cornerRadius = 15;
-                codeBtn.tag = 7000 + section;
-                [codeBtn addTarget:self action:@selector(AddCodeActionForgift:) forControlEvents:UIControlEventTouchDown];
+              
+                
+                
+                UIButton *codeBtn = [UIButton buttonWithTitie:@"PO单号" WithtextColor:AppTitleBlueColor WithBackColor:nil WithBackImage:nil WithImage:nil WithFont:13 EventBlock:^(id  _Nonnull params) {
+                    NSLog(@"新增PO单号");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_PU_code", nil) alterType:FDAltertViewTypeInputCodeForGift message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                    [alert show];
+                }];
+                ViewBorderRadius(codeBtn, 15, 1, AppTitleBlueColor);
+                codeBtn.frame = CGRectMake(marginLeft, marginTop + 10, 80, 30);
                 [footerView addSubview:codeBtn];
                 marginLeft -= 90;
             }
             if (model.kAddPrice == 0) {
-                UIButton *priceBtn = [[UIButton alloc] initWithFrame:CGRectMake(marginLeft, marginTop + 10, 80, 30)];
-                [priceBtn setTitle:@"增项加价" forState:UIControlStateNormal];
-                priceBtn.titleLabel.font = FONTLanTingR(13);
-                [priceBtn setTitleColor:AppTitleBlueColor forState:UIControlStateNormal];
-                priceBtn.clipsToBounds = YES;
-                priceBtn.layer.borderWidth = 1;
-                priceBtn.layer.borderColor = AppTitleBlueColor.CGColor;
-                priceBtn.layer.cornerRadius = 15;
-                priceBtn.tag = 8000 + section;
-                [priceBtn addTarget:self action:@selector(AddPriceActionForGift:) forControlEvents:UIControlEventTouchDown];
+                
+                UIButton *priceBtn = [UIButton buttonWithTitie:@"增项加价" WithtextColor:AppTitleBlueColor WithBackColor:nil WithBackImage:nil WithImage:nil WithFont:13 EventBlock:^(id  _Nonnull params) {
+                    NSLog(@"增项加价");
+                    self.currentIndex = section;
+                    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_additional_price", nil) alterType:FDAltertViewTypeInputPriceForGift message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
+                    [alert show];
+                }];
+                ViewBorderRadius(priceBtn, 15, 1, AppTitleBlueColor);
+                priceBtn.frame = CGRectMake(marginLeft, marginTop + 10, 80, 30);
                 [footerView addSubview:priceBtn];
+                marginLeft -= 90;
             }
-            
+
             UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cellModel.cellFooterHeight - 5, SCREEN_WIDTH, 5)];
             lineView.backgroundColor = AppBgBlueGrayColor;
             [footerView addSubview:lineView];
@@ -495,7 +699,7 @@
 
 
 
-- (void)ConfirmBtnAction:(UIButton *)sender
+- (void)ConfirmBtnAction
 {
     
     if (self.isDamping) {
@@ -511,7 +715,10 @@
         }
     
     self.isDamping = YES;
+    self.isReserveAmount = NO;
+    self.isRemainAmount = NO;
     //判断淋浴房单品是有填写PO单号
+    BOOL isAllAdd = YES;//判断订金是否全部填写
     for (CommonGoodsModel *model in self.dataArr) {
         if (!model.isSetMeal && model.isSpecial)
         {
@@ -520,9 +727,34 @@
                 self.isDamping = NO;
                 return;
             }
+            if(model.reserveAmount != 0){//卖货柜台，只要填写一个订金，生成预定订单，未填写生成正式订单
+                self.isReserveAmount = YES;
+            } else {
+                isAllAdd = NO;
+            }
+        
         }
     }
-    
+    if (!isAllAdd) {
+        [[NSToastManager manager] showtoast:@"订金必须全部填写完成才可提交"];
+        self.isDamping = NO;
+        return;
+    }
+    BOOL isSame = NO;//用于判断尾款是否全部填写，如果部分未填写生成预定订单，全部填写生成正式订单
+    for (CommonGoodsModel *model in self.dataArr) {
+        if (!model.isSetMeal && model.isSpecial)
+        {
+            if(model.remainAmount == 0){
+                isSame = YES;
+                
+            }
+        }
+    }
+    if(isSame){
+        self.isRemainAmount = YES;
+    } else {
+        self.isRemainAmount = NO;
+    }
     //判断淋浴房单品是有填写PO单号
     for (CommonGoodsModel *model in self.giftDataArr) {
         if (!model.isSetMeal && model.isSpecial)
@@ -532,6 +764,7 @@
                 self.isDamping = NO;
                 return;
             }
+           
         }
     }
     
@@ -571,81 +804,27 @@
 
 - (void)isConfirmSubmitOrder
 {
-    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:@"确认提交订单吗？" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
-    [alert show];
-}
-
-
-
-- (void)AddPriceAction:(UIButton *)sender
-{
-    NSInteger atIndex = sender.tag - 8000;
-    self.currentIndex = atIndex;
-    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_additional_price", nil) alterType:FDAltertViewTypeInputPrice message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
-    [alert show];
-}
-
-- (void)AddPriceActionForGift:(UIButton *)sender
-{
-    NSInteger atIndex = sender.tag - 8000;
-    self.currentIndex = atIndex;
-    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_additional_price", nil) alterType:FDAltertViewTypeInputPriceForGift message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
-    [alert show];
-}
-
-- (void)AddCodeAction:(UIButton *)sender
-{
-    NSInteger atIndex = sender.tag - 7000;
-    self.currentIndex = atIndex;
-    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_PU_code", nil) alterType:FDAltertViewTypeInputCode message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
-    [alert show];
-}
-
-- (void)AddCodeActionForgift:(UIButton *)sender
-{
-    NSInteger atIndex = sender.tag - 7000;
-    self.currentIndex = atIndex;
-    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_PU_code", nil) alterType:FDAltertViewTypeInputCodeForGift message:@"" delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
-    [alert show];
-}
-
-- (void)modifyAddPriceAction:(UIGestureRecognizer *)ges
-{
-    NSInteger atIndex = ges.view.tag - 5000;
-    self.currentIndex = atIndex;
-    CommonGoodsModel *goodsModel = self.dataArr[self.currentIndex - 1];
-    
-    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_additional_price", nil) alterType:FDAltertViewTypeEditInputPrice message:[NSString stringWithFormat:@"%.2f",goodsModel.kAddPrice] delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
-    [alert show];
-}
-
-- (void)modifyAddPriceActionForGift:(UIGestureRecognizer *)ges
-{
-    NSInteger atIndex = ges.view.tag - 5000;
-    self.currentIndex = atIndex;
-    NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
-    CommonGoodsModel *goodsModel = self.giftDataArr[self.currentIndex - beginIndex - self.dataArr.count];
-    
-    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_additional_price", nil) alterType:FDAltertViewTypeEditInputPriceForGift message:[NSString stringWithFormat:@"%.2f",goodsModel.kAddPrice] delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
-    [alert show];
-}
-
-- (void)modifyAddCodeAction:(UIGestureRecognizer *)ges
-{
-    NSInteger atIndex = ges.view.tag - 6000;
-    self.currentIndex = atIndex;
-    CommonGoodsModel *goodsModel = self.dataArr[self.currentIndex - 1];
-    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_PU_code", nil) alterType:FDAltertViewTypeEditInputCode message:goodsModel.kGoodsCode delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
-    [alert show];
-}
-
-- (void)modifyAddCodeActionForGift:(UIGestureRecognizer *)ges
-{
-    NSInteger atIndex = ges.view.tag - 6000;
-    self.currentIndex = atIndex;
-    NSInteger beginIndex = self.counterDataModel.rules.length > 0 ? 3:2;
-    CommonGoodsModel *goodsModel = self.giftDataArr[self.currentIndex - beginIndex - self.dataArr.count];
-    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"input_PU_code", nil) alterType:FDAltertViewTypeEditInputCodeForGift message:goodsModel.kGoodsCode delegate:self buttonTitles:NSLocalizedString(@"c_clear", nil), NSLocalizedString(@"c_confirm", nil), nil];
+    NSString* message = @"";
+    if(self.type == SalesCounterTypeNone){
+        if (self.isReserveAmount) {
+            self.isReserve = YES;
+        } else {
+            self.isReserve = NO;
+        }
+    } else {
+        if (self.isRemainAmount) {
+            self.isReserve = YES;
+        } else {
+            self.isReserve = NO;
+        }
+    }
+    if (self.isReserve) {
+        message = @"商品中存在定金信息，确认生成预定订单吗？";
+    } else {
+        message = @"商品中不存在定金信息，确认生成正式订单吗，生成后不支持进行信息修改？";
+        
+    }
+    FDAlertView *alert = [[FDAlertView alloc] initWithTitle:NSLocalizedString(@"c_remind", nil) alterType:FDAltertViewTypeTips message:message delegate:self buttonTitles:NSLocalizedString(@"c_cancel", nil), NSLocalizedString(@"c_confirm", nil), nil];
     [alert show];
 }
 
@@ -697,10 +876,6 @@
             [self.tableview reloadData];
         }
     }
-    
-    
-    
-    
     if (alertView.alterType == FDAltertViewTypeEditInputPrice) {
         if (buttonIndex == 1) {
             [self handleSpecialGoodsAddPrice:[inputStr doubleValue] WithAtIndex:self.currentIndex];
@@ -734,9 +909,49 @@
             [self.tableview reloadData];
         }
     }
+    ///交订金
+    if (alertView.alterType == FDAltertViewTypeInputDepositPrice) {
+        if (buttonIndex == 1) {
+            [self handleSpecialGoodsReserveAmount:[inputStr doubleValue] WithAtIndex:self.currentIndex];
+            self.configModel.shopDerate = @"";
+            [self httpPath_sale];
+        }
+    }
+    if (alertView.alterType == FDAltertViewTypeEditInputDepositPrice) {
+        if (buttonIndex == 1) {
+            [self handleSpecialGoodsReserveAmount:[inputStr doubleValue] WithAtIndex:self.currentIndex];
+            self.configModel.shopDerate = @"";
+            [self httpPath_sale];
+        }
+        else
+        {
+            [self handleSpecialGoodsReserveAmount:0 WithAtIndex:self.currentIndex];
+            self.configModel.shopDerate = @"";
+            [self httpPath_sale];
+        }
+    }
     
-    
-    
+    //交尾款
+    if (alertView.alterType == FDAltertViewTypeInputRemainPrice) {
+        if (buttonIndex == 1) {
+            [self handleSpecialGoodsRemainAmount:[inputStr doubleValue] WithAtIndex:self.currentIndex];
+            self.configModel.shopDerate = @"";
+            [self httpPath_sale];
+        }
+    }
+    if (alertView.alterType == FDAltertViewTypeEditInputRemainPrice) {
+        if (buttonIndex == 1) {
+            [self handleSpecialGoodsRemainAmount:[inputStr doubleValue] WithAtIndex:self.currentIndex];
+            self.configModel.shopDerate = @"";
+            [self httpPath_sale];
+        }
+        else
+        {
+            [self handleSpecialGoodsRemainAmount:0 WithAtIndex:self.currentIndex];
+            self.configModel.shopDerate = @"";
+            [self httpPath_sale];
+        }
+    }
     
     
     if (alertView.alterType == FDAltertViewTypeInputCode) {
@@ -919,7 +1134,11 @@
         
         [self httpPath_sale];
     }
-    
+    else if (selectType == SelectTypeOtherDiscount)//其他优惠
+    {
+        
+        [self httpPath_sale];
+    }
 }
 
 #pragma mark -- CommonCouponPopViewDelegate
@@ -927,6 +1146,7 @@
 {
     self.assetId = assetID;
     self.configModel.shopDerate = @"";
+    self.configModel.otherDerate = @"";
     [self httpPath_sale];
 }
 
@@ -939,26 +1159,136 @@
     goodsModel.kAddPrice = addPrice;
     
     
+   
+
+    cellModel.cellHeaderHeight = 0.01;
     if (goodsModel.kAddPrice == 0 &&
-        goodsModel.kGoodsCode.length == 0) {
+        goodsModel.kGoodsCode.length == 0&&
+        goodsModel.reserveAmount == 0 ) {
         cellModel.cellFooterHeight = 55;
+        
     }
     else if (goodsModel.kAddPrice != 0 &&
-             goodsModel.kGoodsCode.length > 0)
+             goodsModel.kGoodsCode.length > 0&&
+             goodsModel.reserveAmount != 0 )
     {
-        cellModel.cellFooterHeight = 65;
+        cellModel.cellFooterHeight = 95;
+        if(self.type == SalesCounterTypeReserve){
+            if(goodsModel.remainAmount !=0){
+                cellModel.cellFooterHeight = 125;
+            } else {
+                cellModel.cellFooterHeight =95 + 55;
+            }
+            
+        }
     }
     else
     {
-        cellModel.cellFooterHeight = 85;
+        cellModel.cellFooterHeight = 55;
+        cellModel.cellFooterHeight += goodsModel.kAddPrice != 0?30:0;
+        cellModel.cellFooterHeight += goodsModel.kGoodsCode.length > 0?30:0 ;
+        cellModel.cellFooterHeight += goodsModel.reserveAmount != 0?30:0;
+        if(self.type == SalesCounterTypeReserve){
+            cellModel.cellFooterHeight += goodsModel.remainAmount != 0?30:0;
+        }
+        
     }
-
+    
     [UIView performWithoutAnimation:^{
         NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:atIndex];
         [self.tableview reloadSections:reloadSet withRowAnimation:UITableViewRowAnimationNone];
     }];
 }
-
+- (void)handleSpecialGoodsReserveAmount:(double)reserveAmount WithAtIndex:(NSInteger)atIndex
+{
+    NSMutableArray *sectionArr = self.floorsAarr[atIndex];
+    
+    CommonTVDataModel *cellModel = sectionArr[0];
+    CommonGoodsModel *goodsModel = cellModel.Data;
+    goodsModel.reserveAmount = reserveAmount;
+    
+    if (goodsModel.kAddPrice == 0 &&
+        goodsModel.kGoodsCode.length == 0&&
+        goodsModel.reserveAmount == 0 ) {
+        cellModel.cellFooterHeight = 55;
+        
+    }
+    else if (goodsModel.kAddPrice != 0 &&
+             goodsModel.kGoodsCode.length > 0&&
+             goodsModel.reserveAmount != 0 )
+    {
+        cellModel.cellFooterHeight = 95;
+        if(self.type == SalesCounterTypeReserve){
+            if(goodsModel.remainAmount !=0){
+                cellModel.cellFooterHeight = 125;
+            } else {
+                cellModel.cellFooterHeight =95 + 55;
+            }
+            
+        }
+    }
+    else
+    {
+        cellModel.cellFooterHeight = 55;
+        cellModel.cellFooterHeight += goodsModel.kAddPrice != 0?30:0;
+        cellModel.cellFooterHeight += goodsModel.kGoodsCode.length > 0?30:0 ;
+        cellModel.cellFooterHeight += goodsModel.reserveAmount != 0?30:0;
+        if(self.type == SalesCounterTypeReserve){
+            cellModel.cellFooterHeight += goodsModel.remainAmount != 0?30:0;
+        }
+        
+    }
+    
+    [UIView performWithoutAnimation:^{
+        NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:atIndex];
+        [self.tableview reloadSections:reloadSet withRowAnimation:UITableViewRowAnimationNone];
+    }];
+}
+- (void)handleSpecialGoodsRemainAmount:(double)remainAmount WithAtIndex:(NSInteger)atIndex
+{
+    NSMutableArray *sectionArr = self.floorsAarr[atIndex];
+    
+    CommonTVDataModel *cellModel = sectionArr[0];
+    CommonGoodsModel *goodsModel = cellModel.Data;
+    goodsModel.remainAmount = remainAmount;
+    
+    if (goodsModel.kAddPrice == 0 &&
+        goodsModel.kGoodsCode.length == 0&&
+        goodsModel.reserveAmount == 0 ) {
+        cellModel.cellFooterHeight = 55;
+        
+    }
+    else if (goodsModel.kAddPrice != 0 &&
+             goodsModel.kGoodsCode.length > 0&&
+             goodsModel.reserveAmount != 0 )
+    {
+        cellModel.cellFooterHeight = 95;
+        if(self.type == SalesCounterTypeReserve){
+            if(goodsModel.remainAmount !=0){
+                cellModel.cellFooterHeight = 125;
+            } else {
+                cellModel.cellFooterHeight =95 + 55;
+            }
+            
+        }
+    }
+    else
+    {
+        cellModel.cellFooterHeight = 55;
+        cellModel.cellFooterHeight += goodsModel.kAddPrice != 0?30:0;
+        cellModel.cellFooterHeight += goodsModel.kGoodsCode.length > 0?30:0 ;
+        cellModel.cellFooterHeight += goodsModel.reserveAmount != 0?30:0;
+        if(self.type == SalesCounterTypeReserve){
+            cellModel.cellFooterHeight += goodsModel.remainAmount != 0?30:0;
+        }
+        
+    }
+    
+    [UIView performWithoutAnimation:^{
+        NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:atIndex];
+        [self.tableview reloadSections:reloadSet withRowAnimation:UITableViewRowAnimationNone];
+    }];
+}
 - (void)handleSpecialGoodsAddPriceForgift:(double)addPrice WithAtIndex:(NSInteger)atIndex
 {
     NSMutableArray *sectionArr = self.floorsAarr[atIndex];
@@ -969,7 +1299,8 @@
     
     
     if (goodsModel.kAddPrice == 0 &&
-        goodsModel.kGoodsCode.length == 0) {
+        goodsModel.kGoodsCode.length == 0&&
+        goodsModel.reserveAmount == 0 ) {
         cellModel.cellFooterHeight = 55;
     }
     else if (goodsModel.kAddPrice != 0 &&
@@ -979,9 +1310,10 @@
     }
     else
     {
-        cellModel.cellFooterHeight = 85;
+        cellModel.cellFooterHeight = 55;
+        cellModel.cellFooterHeight += goodsModel.kAddPrice != 0?30:0;
+        cellModel.cellFooterHeight += goodsModel.kGoodsCode.length > 0?30:0 ;
     }
-
     [UIView performWithoutAnimation:^{
         NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:atIndex];
         [self.tableview reloadSections:reloadSet withRowAnimation:UITableViewRowAnimationNone];
@@ -997,19 +1329,36 @@
     
     
     if (goodsModel.kAddPrice == 0 &&
-        goodsModel.kGoodsCode.length == 0) {
+        goodsModel.kGoodsCode.length == 0&&
+        goodsModel.reserveAmount == 0 ) {
         cellModel.cellFooterHeight = 55;
+        
     }
     else if (goodsModel.kAddPrice != 0 &&
-             goodsModel.kGoodsCode.length > 0)
+             goodsModel.kGoodsCode.length > 0&&
+             goodsModel.reserveAmount != 0 )
     {
-        cellModel.cellFooterHeight = 65;
+        cellModel.cellFooterHeight = 95;
+        if(self.type == SalesCounterTypeReserve){
+            if(goodsModel.remainAmount !=0){
+                cellModel.cellFooterHeight = 125;
+            } else {
+                cellModel.cellFooterHeight =95 + 55;
+            }
+            
+        }
     }
     else
     {
-        cellModel.cellFooterHeight = 85;
+        cellModel.cellFooterHeight = 55;
+        cellModel.cellFooterHeight += goodsModel.kAddPrice != 0?30:0;
+        cellModel.cellFooterHeight += goodsModel.kGoodsCode.length > 0?30:0 ;
+        cellModel.cellFooterHeight += goodsModel.reserveAmount != 0?30:0;
+        if(self.type == SalesCounterTypeReserve){
+            cellModel.cellFooterHeight += goodsModel.remainAmount != 0?30:0;
+        }
+        
     }
-    
     [UIView performWithoutAnimation:^{
         NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:atIndex];
         [self.tableview reloadSections:reloadSet withRowAnimation:UITableViewRowAnimationNone];
@@ -1025,7 +1374,7 @@
     
 //    CommonTVDataModel *cellModel = sectionArr[0];
     if (goodsModel.kAddPrice == 0 &&
-        goodsModel.kGoodsCode.length == 0) {
+        goodsModel.kGoodsCode.length == 0 ) {
         cellModel.cellFooterHeight = 55;
     }
     else if (goodsModel.kAddPrice != 0 &&
@@ -1035,9 +1384,10 @@
     }
     else
     {
-        cellModel.cellFooterHeight = 85;
+        cellModel.cellFooterHeight = 55;
+        cellModel.cellFooterHeight += goodsModel.kAddPrice != 0?30:0;
+        cellModel.cellFooterHeight += goodsModel.kGoodsCode.length > 0?30:0 ;
     }
-    
     [UIView performWithoutAnimation:^{
         NSIndexSet *reloadSet = [NSIndexSet indexSetWithIndex:atIndex];
         [self.tableview reloadSections:reloadSet withRowAnimation:UITableViewRowAnimationNone];
@@ -1073,6 +1423,7 @@
                 }
                 else
                 {
+                 
                     [[NSToastManager manager] showtoast:model.message];
                 }
             }
@@ -1231,18 +1582,39 @@
             if (model.isSpecial) {
                 cellModel.cellHeaderHeight = 0.01;
                 if (model.kAddPrice == 0 &&
-                    model.kGoodsCode.length == 0) {
+                    model.kGoodsCode.length == 0&&
+                    model.reserveAmount == 0 ) {
                     cellModel.cellFooterHeight = 55;
+                    
                 }
                 else if (model.kAddPrice != 0 &&
-                         model.kGoodsCode.length > 0)
+                         model.kGoodsCode.length > 0&&
+                         model.reserveAmount != 0 )
                 {
-                    cellModel.cellFooterHeight = 65;
+                    cellModel.cellFooterHeight = 95;
+                    if(self.type == SalesCounterTypeReserve){
+                        if(model.remainAmount !=0){
+                            cellModel.cellFooterHeight = 125;
+                        } else {
+                            cellModel.cellFooterHeight =95 + 55;
+                        }
+                        
+                    }
                 }
                 else
                 {
-                    cellModel.cellFooterHeight = 85;
+                    cellModel.cellFooterHeight = 55;
+                    cellModel.cellFooterHeight += model.kAddPrice != 0?30:0;
+                    cellModel.cellFooterHeight += model.kGoodsCode.length > 0?30:0 ;
+                    cellModel.cellFooterHeight += model.reserveAmount != 0?30:0;
+                    if(self.type == SalesCounterTypeReserve){
+                        cellModel.cellFooterHeight += model.remainAmount != 0?30:0;
+                    }
+                    
                 }
+                
+                
+                
             }
             else
             {
@@ -1314,11 +1686,13 @@
                 else if (model.kAddPrice != 0 &&
                          model.kGoodsCode.length > 0)
                 {
-                    cellModel.cellFooterHeight = 65;
+                    cellModel.cellFooterHeight = 60;
                 }
                 else
                 {
-                    cellModel.cellFooterHeight = 85;
+                    cellModel.cellFooterHeight = 55;
+                    cellModel.cellFooterHeight += model.kAddPrice != 0?30:0;
+                    cellModel.cellFooterHeight += model.kGoodsCode.length > 0?30:0 ;
                 }
             }
             else
@@ -1343,17 +1717,19 @@
 //    if(self.giftDataArr.count > 0){
 //        
 //    }
+    if(self.type == SalesCounterTypeNone){
+        //添加赠品
+        NSMutableArray *section7Arr = [[NSMutableArray alloc] init];
+        CommonTVDataModel *giftCellModel = [[CommonTVDataModel alloc] init];
+        giftCellModel.cellIdentify = KGiftAddTCell;
+        giftCellModel.cellHeight = KGiftAddTCellH;
+        giftCellModel.cellHeaderHeight = 0.01;
+        giftCellModel.cellFooterHeight = 5;
+        [section7Arr addObject:giftCellModel];
+        [self.floorsAarr addObject:section7Arr];
+    }
     
     
-    //添加赠品
-    NSMutableArray *section7Arr = [[NSMutableArray alloc] init];
-    CommonTVDataModel *giftCellModel = [[CommonTVDataModel alloc] init];
-    giftCellModel.cellIdentify = KGiftAddTCell;
-    giftCellModel.cellHeight = KGiftAddTCellH;
-    giftCellModel.cellHeaderHeight = 0.01;
-    giftCellModel.cellFooterHeight = 5;
-    [section7Arr addObject:giftCellModel];
-    [self.floorsAarr addObject:section7Arr];
     
     
 //    if ([QZLUserConfig sharedInstance].useInventory)
@@ -1400,7 +1776,8 @@
     [section5Arr addObject:statisticsCellModel];
     [self.floorsAarr addObject:section5Arr];
     self.configModel.payAmount = self.counterDataModel.payAmount;
-    
+    self.configModel.otherDerate = self.counterDataModel.otherDerate;
+    self.configModel.shopDerate = self.counterDataModel.shopDerate;
     
     //备注
     NSMutableArray *section6Arr = [[NSMutableArray alloc] init];
@@ -1504,15 +1881,20 @@
         NSMutableArray *statisticsCellArr = self.floorsAarr[self.floorsAarr.count - 2];
         CommonTVDataModel *statisticsCellModel = statisticsCellArr[0];
         statisticsCellModel.cellHeight = KSellGoodsOrderStatisticsTCellH;
-        if ([self.counterDataModel.couponDerate isEqualToString:@"0"]) {
+    
+        if ([self.counterDataModel.couponDerate isEqualToString:@"0"] ||self.counterDataModel.couponDerate == nil) {
             statisticsCellModel.cellHeight -= 30;
         }
-        if ([self.counterDataModel.orderDerate isEqualToString:@"0"]) {
+        if ([self.counterDataModel.orderDerate isEqualToString:@"0"] ||self.counterDataModel.orderDerate == nil) {
             statisticsCellModel.cellHeight -= 30;
         }
-        if ([self.counterDataModel.shopDerate isEqualToString:@"0"]) {
+        if ([self.counterDataModel.shopDerate isEqualToString:@"0"] ||self.counterDataModel.shopDerate == nil) {
             statisticsCellModel.cellHeight -= 30;
         }
+        if ([self.counterDataModel.otherDerate isEqualToString:@"0"] ||self.counterDataModel.otherDerate == nil) {
+            statisticsCellModel.cellHeight -= 30;
+        }
+        
     }
 }
 
@@ -1545,6 +1927,12 @@
                 if (model.kGoodsCode.length) {
                     [orderProductDic setObject:model.kGoodsCode forKey:@"codePU"];
                 }
+                if (model.reserveAmount > 0) {
+                    [orderProductDic setObject:[NSString stringWithFormat:@"%.2f",model.reserveAmount] forKey:@"reserveAmount"];
+                }
+                if (model.remainAmount > 0) {
+                    [orderProductDic setObject:[NSString stringWithFormat:@"%.2f",model.remainAmount] forKey:@"remainAmount"];
+                }
             }
             [orderProductArr addObject:orderProductDic];
         }
@@ -1556,6 +1944,12 @@
         self.configModel.shopDerate = @"";
     }
     [parameters setValue:self.configModel.shopDerate forKey:@"shopDerate"];
+    //其他优惠
+    if ([self.configModel.otherDerate isEqualToString:@"0"]) {
+        self.configModel.otherDerate = @"";
+    }
+    [parameters setValue:self.configModel.otherDerate forKey:@"otherDerate"];
+    
     [parameters setValue:self.customerId forKey:@"customerId"];
     if ([self.counterDataModel.addressId isEqualToString:@"0"]) {
         [parameters setValue:[NSNumber numberWithBool:false] forKey:@"isUse"];
@@ -1583,6 +1977,7 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:self.assetId forKey:@"assetId"];
     [parameters setValue:self.configModel.shopDerate forKey:@"shopDerate"];
+    [parameters setValue:self.configModel.otherDerate forKey:@"otherDerate"];
     [parameters setValue:[NSNumber numberWithBool:self.configModel.isFreeGift] forKey:@"isFreeGift"];
     [parameters setValue:[NSNumber numberWithBool:self.configModel.isMoen] forKey:@"isMoen"];
     [parameters setValue:self.counterDataModel.payAmount forKey:@"payAmount"];
@@ -1621,6 +2016,16 @@
                 if (model.kGoodsCode.length) {
                     [orderProductDic setObject:model.kGoodsCode forKey:@"codePU"];
                 }
+                if (model.reserveAmount) {
+                    [orderProductDic setObject:[NSString stringWithFormat:@"%.2f",model.reserveAmount] forKey:@"reserveAmount"];
+                }
+                if (model.remainAmount) {
+                    [orderProductDic setObject:[NSString stringWithFormat:@"%.2f",model.remainAmount] forKey:@"remainAmount"];
+                }
+                if(self.type == SalesCounterTypeReserve){
+                    [orderProductDic setObject:model.id forKey:@"id"];
+                    [orderProductDic setObject:model.productId forKey:@"productId"];
+                }
             }
             
             [orderProductArr addObject:orderProductDic];
@@ -1646,7 +2051,7 @@
         else
         {
             NSMutableDictionary *orderProductDic = [[NSMutableDictionary alloc] init];
-            [orderProductDic setObject:model.id   forKey:@"productId"];
+            [orderProductDic setObject:model.id  forKey:@"productId"];
             [orderProductDic setObject:[NSString stringWithFormat:@"%ld",(long)model.kGoodsCount] forKey:@"num"];
             if (model.isSpecial) {
                 [orderProductDic setObject:[NSString stringWithFormat:@"%.3f",model.kGoodsArea] forKey:@"square"];
@@ -1656,8 +2061,11 @@
                 if (model.kGoodsCode.length) {
                     [orderProductDic setObject:model.kGoodsCode forKey:@"codePU"];
                 }
+                if (model.reserveAmount) {
+                    [orderProductDic setObject:[NSString stringWithFormat:@"%.2f",model.reserveAmount] forKey:@"reserveAmount"];
+                }
             }
-            
+            [orderProductDic setObject:model.id  forKey:@"id"];
             [orderProductGiftArr addObject:orderProductDic];
         }
     }
@@ -1677,7 +2085,8 @@
         }
         [parameters setValue:array forKey:@"activityIndexIdList"];
     }
-    
+    [parameters setValue: @(self.isReserve) forKey:@"isReserve"];
+    [parameters setValue: self.code forKey:@"code"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;
@@ -1704,8 +2113,8 @@
 - (UITableView *)tableview
 {
     if (!_tableview) {
-        CGFloat btnHeight = kIs_iPhoneX == true ? 55:45;
-        _tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - SCREEN_NavTop_Height - btnHeight) style:UITableViewStyleGrouped];
+        
+        _tableview = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableview.backgroundColor = AppBgBlueGrayColor;
         _tableview.delegate = self;
         _tableview.dataSource = self;
@@ -1725,21 +2134,39 @@
     return _tableview;
 }
 
-- (NSDampButton *)confirmBtn
+- (UIButton *)confirmBtn
 {
     if (!_confirmBtn) {
-        CGFloat btnHeight = kIs_iPhoneX == true ? 55:45;
-        _confirmBtn = [NSDampButton buttonWithType:UIButtonTypeCustom];
-        [_confirmBtn setFrame:CGRectMake(0, SCREEN_HEIGHT - SCREEN_NavTop_Height - btnHeight, SCREEN_WIDTH, btnHeight)];
-        [_confirmBtn setBackgroundColor:AppBtnDeepBlueColor];
-        [_confirmBtn setTitle:NSLocalizedString(@"confirm_order", nil) forState:UIControlStateNormal];
-        _confirmBtn.titleLabel.font = FONTLanTingB(17);
-        [_confirmBtn setTitleColor:AppTitleWhiteColor forState:UIControlStateNormal];
-        [_confirmBtn addTarget:self action:@selector(ConfirmBtnAction:) forControlEvents:UIControlEventTouchDown];
+
+        _confirmBtn = [UIButton buttonWithTitie:NSLocalizedString(@"confirm_order", nil) WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnDeepBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+            [self ConfirmBtnAction];
+        }];
+        
     }
     return _confirmBtn;
 }
-
+//- (UIButton *)reserveBtn
+//{
+//    if (!_reserveBtn) {
+//
+//        _reserveBtn = [UIButton buttonWithTitie:@"提交预定订单" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnDeepBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+//            [self ConfirmBtnAction];
+//        }];
+//
+//    }
+//    return _reserveBtn;
+//}
+//- (UIButton *)formalBtn
+//{
+//    if (!_formalBtn) {
+//
+//        _formalBtn = [UIButton buttonWithTitie:@"提交正式订单" WithtextColor:AppTitleWhiteColor WithBackColor:AppBtnBlueColor WithBackImage:nil WithImage:nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+//            [self ConfirmBtnAction];
+//        }];
+//
+//    }
+//    return _formalBtn;
+//}
 //- (NSMutableArray *)dataList
 //{
 //    if (!_dataList) {
@@ -1816,5 +2243,11 @@
     return _receivablesDataArr;
 }
 
-
+- (NSMutableArray *)dataArr
+{
+    if (!_dataArr) {
+        _dataArr = [[NSMutableArray alloc] init];
+    }
+    return _dataArr;
+}
 @end

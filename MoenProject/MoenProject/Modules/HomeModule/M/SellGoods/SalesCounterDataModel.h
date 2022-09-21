@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CouponInfoModel.h"
-
+#import "CommonGoodsModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @class CouponInfoModel;
@@ -21,6 +21,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**门店优惠 */
 @property (nonatomic, copy) NSString *shopDerate;
 
+/**其他优惠 */
+@property (nonatomic, copy) NSString *otherDerate;
+
+/**订金款额 */
+@property (nonatomic, copy) NSString *reserveAmount;
+
+/**尾款 */
+@property (nonatomic, copy) NSString *remainAmount;
 
 /**优惠券优惠 */
 @property (nonatomic, copy) NSString *couponDerate;
@@ -51,7 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**应付款额 */
 @property (nonatomic, copy) NSString *amountPayable;
 
-
+/**应付款额 */
+@property (nonatomic, copy) NSString *code;
 /**可用资产*/
 @property (nonatomic, strong) NSArray<CouponInfoModel *> *useCouponList;
 
@@ -61,6 +70,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**活动重点关注项 */
 @property (nonatomic, assign) BOOL isActivity;
+
+/**商品单品*/
+@property (nonatomic, strong) NSArray<CommonGoodsModel *> *orderProductList;
+
+/**单品套餐*/
+@property (nonatomic, strong) NSArray<CommonGoodsModel *> *orderSetMealList;
+
+/**赠品单品*/
+@property (nonatomic, strong) NSArray<CommonGoodsModel *> *orderGiftProductList;
+
+/**赠品套餐*/
+@property (nonatomic, strong) NSArray<CommonGoodsModel *> *orderGiftSetMealList;
 @end
 
 

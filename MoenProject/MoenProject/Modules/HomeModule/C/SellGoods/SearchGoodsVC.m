@@ -280,6 +280,7 @@
             if (singleModel.isSpecial) {
 //                卖货柜台多次扫描相同淋浴房时，初始化到最小销售单位，不加数量与平方
                 singleModel.kGoodsArea = [copyModel.minNum floatValue];
+                isNewGoods = YES;
             }
             else
             {
@@ -287,8 +288,9 @@
                 if (singleModel.kGoodsCount > 999) {
                     singleModel.kGoodsCount = 999;
                 }
+                isNewGoods = NO;
             }
-            isNewGoods = NO;
+            
             [self updateShoppingCarStatus];
             break;
         }

@@ -22,7 +22,8 @@
 #import "ReturnGoodsVC.h"
 #import "ReturnGoodsManageVC.h"
 #import "UserIdentifyVC.h"
-
+#import "PurchaseOrderManageVC.h"
+#import "ExchangeGoodsVC.h"
 @interface StoreManageVC ()<UICollectionViewDelegate, UICollectionViewDataSource>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionview;
 
@@ -248,7 +249,27 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
             [self.navigationController pushViewController:couponRecordVC animated:YES];
         }
             break;
+        case 12://换货
+        {
+//            ExchangeGoodsVC *exchangeGoodsVC = [[ExchangeGoodsVC alloc] init];
+//            exchangeGoodsVC.hidesBottomBarWhenPushed = YES;
+//            exchangeGoodsVC.isIdentifion = NO;
+//            [self.navigationController pushViewController:exchangeGoodsVC animated:YES];
             
+            UserIdentifyVC *userIdentifyVC = [[UserIdentifyVC alloc] init];
+            userIdentifyVC.hidesBottomBarWhenPushed = YES;
+            userIdentifyVC.controllerType = UserIdentifyVCTypeExchangeGoods;
+            [self.navigationController pushViewController:userIdentifyVC animated:YES];
+        }
+            break;
+        case 13://换货单管理
+        {
+            PurchaseOrderManageVC *purchaseOrderManageVC = [[PurchaseOrderManageVC alloc] init];
+            purchaseOrderManageVC.hidesBottomBarWhenPushed = YES;
+            purchaseOrderManageVC.controllerType =PurchaseOrderManageVCTypeShopExchange;
+            [self.navigationController pushViewController:purchaseOrderManageVC animated:YES];
+        }
+            break;
         default:
             break;
     }

@@ -29,8 +29,17 @@ NS_ASSUME_NONNULL_BEGIN
 /** 经销商发布id或者经销商活动套餐id*/
 @property (nonatomic, copy) NSString *id;
 
+/** 经销商发布id或者经销商活动套餐id*/
+@property (nonatomic, copy) NSString *productId;
+
 /** 名称*/
 @property (nonatomic, copy) NSMutableString *name;
+
+/** 预定商品套餐名称*/
+@property (nonatomic, copy) NSMutableString *comboName;
+
+/** 预定商品单品SKU*/
+@property (nonatomic, copy) NSMutableString *sku;
 
 /** 名称*/
 @property (nonatomic, copy) NSMutableString *code;
@@ -84,6 +93,17 @@ NS_ASSUME_NONNULL_BEGIN
 /**商品数量*/
 @property (nonatomic, assign) NSInteger count;
 
+/**定金*/
+@property (nonatomic, assign) double reserveAmount;
+
+/**尾款*/
+@property (nonatomic, assign) double remainAmount;
+
+/**定金*/
+@property (nonatomic, copy) NSMutableString *codePu;
+
+/**平方*/
+@property (nonatomic, assign) CGFloat square;
 @end
 
 
@@ -112,7 +132,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**平方*/
 @property (nonatomic, copy) NSMutableString *square;
+//收订金
+@property (nonatomic, copy) NSString *reserveAmount;
 
+//收尾款
+@property (nonatomic, copy) NSString *remainAmount;
 /**已退商品数量*/
 @property (nonatomic, assign) NSInteger returnCount;
 
@@ -130,7 +154,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *waitDeliverCount;
 
 
-
+//：赠品退货ID（新增）
+@property (nonatomic, copy) NSString *orderItemProductId;
 @end
 
 
@@ -164,6 +189,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *codePu;
 @property (nonatomic, copy) NSString *addPrice;
 @property (nonatomic, copy) NSString *square;
+@property (nonatomic, copy) NSString *reserveAmount;
+@property (nonatomic, copy) NSString *remainAmount;
 
 @property (nonatomic, assign) NSInteger returnCount;
 @property (nonatomic, assign) NSInteger canReturnCount;
@@ -178,6 +205,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 //：总仓预约（新增）
 @property (nonatomic, copy) NSString *waitDeliverCount;
+
+//：赠品退货ID（新增）
+@property (nonatomic, copy) NSString *orderItemProductId;
 
 
 @end

@@ -43,7 +43,7 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *delivery_Type_View_Constraints;
 
-
+@property (weak, nonatomic) IBOutlet UITextField *other_Conpon_Txt;
 
 @property (nonatomic, strong) SalesCounterConfigModel *dataModel;
 @end
@@ -67,7 +67,7 @@
     self.coupon_Count_Lab.font = FONTLanTingR(13);
     self.store_Coupon_Title_Lab.font = FONTLanTingR(14);
     self.store_Conpon_Txt.font = FontBinB(14);
-    
+    self.other_Conpon_Txt.font = FontBinB(14);
     
     self.pickUp_Type_View.userInteractionEnabled = YES;
     [self.pickUp_Type_View addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectPickUpTypeAction)]];
@@ -83,6 +83,9 @@
     
     self.store_Conpon_Txt.delegate = self;
     self.store_Conpon_Txt.keyboardType = UIKeyboardTypeDecimalPad;
+    
+    self.other_Conpon_Txt.delegate = self;
+    self.other_Conpon_Txt.keyboardType = UIKeyboardTypeDecimalPad;
 }
 
 - (void)selectPickUpTypeAction
@@ -157,6 +160,13 @@
     {
         self.store_Conpon_Txt.text = @"";
     }
+    if (model.otherDerate.length) {
+        self.other_Conpon_Txt.text = model.otherDerate;
+    }
+    else
+    {
+        self.other_Conpon_Txt.text = @"";
+    }
     
     
     //优惠券的使用情况
@@ -197,7 +207,7 @@
 /**控制金额的输入*/
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (self.store_Conpon_Txt == textField) {
+    if (self.store_Conpon_Txt == textField||self.other_Conpon_Txt == textField) {
         NSString * toBeString = [textField.text stringByReplacingCharactersInRange:range withString:string] ;
         //限制.后面最多有两位，且不能再输入.
         if ([textField.text rangeOfString:@"."].location != NSNotFound) {
@@ -237,10 +247,18 @@
     }
     else
     {
-        self.dataModel.shopDerate = textField.text;
-        if (self.orderConfigTCellSelectBlock) {
-            self.orderConfigTCellSelectBlock(SelectTypeStoreDiscount);
+        if(self.store_Conpon_Txt == textField){
+            self.dataModel.shopDerate = textField.text;
+            if (self.orderConfigTCellSelectBlock) {
+                self.orderConfigTCellSelectBlock(SelectTypeStoreDiscount);
+            }
+        } else {
+            self.dataModel.otherDerate = textField.text;
+            if (self.orderConfigTCellSelectBlock) {
+                self.orderConfigTCellSelectBlock(SelectTypeOtherDiscount);
+            }
         }
+        
     }
 }
 

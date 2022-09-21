@@ -44,6 +44,17 @@ typedef NS_ENUM(NSInteger, FDAltertViewType)
     
     /**提交订单*/
     FDAltertViewTypeSubmitOrder,
+    
+    /**输入 - 收订金*/
+    FDAltertViewTypeInputDepositPrice,
+    /**输入 - 修改deposit*/
+    FDAltertViewTypeEditInputDepositPrice,
+    
+    /**输入 - 收尾款*/
+    FDAltertViewTypeInputRemainPrice,
+    /**输入 - 修改deposit*/
+    FDAltertViewTypeEditInputRemainPrice,
+    
 };
 
 typedef void(^buttonBlock)(NSInteger buttonIndex,NSString* inputStr);

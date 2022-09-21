@@ -16,6 +16,7 @@ static NSString *KOrderReturnStatusTCellForPackageGift = @"OrderReturnStatusTCel
 
 static CGFloat KOrderReturnStatusTCellHeight = 30;
 static CGFloat KOrderReturnStatusTCellDHeight = 57;
+static CGFloat KOrderReturnStatusTCellD2Height = 90;
 NS_ASSUME_NONNULL_BEGIN
 
 

@@ -14,7 +14,7 @@ static CGFloat KGiftTitleTCellH = 40;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GiftTitleTCell : UITableViewCell
-
+@property(nonatomic,strong)NSString* currentTitle;
 @end
 
 NS_ASSUME_NONNULL_END

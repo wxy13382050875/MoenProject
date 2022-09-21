@@ -50,12 +50,14 @@
 
 @property (nonatomic, assign) NSInteger atIndex;
 
-@property (nonatomic, assign) CommonSingleGoodsTCellType cellType;
 
+@property (nonatomic, strong) CommonMealProdutcModel *giftSingModel;
 
 @property (nonatomic, strong) ReturnOrderMealGoodsModel *mealGoodsModel;
 
+@property (weak, nonatomic) IBOutlet UILabel *notExchange_lab;
 
+@property (strong, nonatomic) UIButton *exchange_btn;
 @end
 
 @implementation CommonSingleGoodsTCell
@@ -78,7 +80,13 @@
     
     self.add_Btn.eventTimeInterval = 0.1;
     self.minus_Btn.eventTimeInterval = 0.1;
-    
+    self.notExchange_lab.hidden = YES;
+    [self.contentView addSubview:self.exchange_btn];
+    self.exchange_btn.sd_layout
+    .rightSpaceToView(self.contentView, 15)
+    .bottomEqualToView(self.contentView)
+    .widthIs(130).heightIs(40);
+    self.exchange_btn.hidden = YES;
 }
 
 - (void)showDataWithModel:(id)dataModel withAtIndex:(NSInteger)atIndex
@@ -227,6 +235,9 @@
     if (self.dataModel.isSpecial) {
         self.count_Txt.keyboardType = UIKeyboardTypeDecimalPad;
         self.count_Txt.text = [NSString stringWithFormat:@"%.3f",self.dataModel.kGoodsArea];
+        self.editCountView.hidden = NO;
+//        self.goodsCount.text = @"X1";
+        self.goodsCount.hidden = YES;
     }
     else
     {
@@ -250,10 +261,13 @@
 //    }
 //    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",self.dataModel.price];
     self.goodsPackageDes.text = self.dataModel.comboDescribe;
-    [self.editCountView setHidden:YES];
+    
     if (self.dataModel.isSpecial) {
         self.count_Txt.keyboardType = UIKeyboardTypeDecimalPad;
         self.count_Txt.text = [NSString stringWithFormat:@"%.3f",self.dataModel.kGoodsArea];
+        [self.editCountView setHidden:NO];
+//        self.goodsCount.text = @"X1";
+        self.goodsCount.hidden = YES;
     }
     else
     {
@@ -280,6 +294,9 @@
     if (self.dataModel.isSpecial) {
         self.count_Txt.keyboardType = UIKeyboardTypeDecimalPad;
         self.count_Txt.text = [NSString stringWithFormat:@"%.3f",self.dataModel.kGoodsArea];
+        self.editCountView.hidden = NO;
+//        self.goodsCount.text = @"X1";
+        self.goodsCount.hidden = YES;
     }
     else
     {
@@ -304,10 +321,13 @@
     if (model.isSpecial) {
         [self.goodsSquare setHidden:NO];
         self.goodsSquare.text = [NSString stringWithFormat:@"%.3f平方",model.kGoodsArea];
-        [self.editCountView setHidden:NO];
-        self.count_Txt.keyboardType = UIKeyboardTypeNumberPad;
-        self.count_Txt.text = [NSString stringWithFormat:@"%ld",self.dataModel.kGoodsCount];
-        [self.goodsCount setHidden:YES];
+//        [self.editCountView setHidden:NO];
+//        self.count_Txt.keyboardType = UIKeyboardTypeNumberPad;
+//        self.count_Txt.text = [NSString stringWithFormat:@"%ld",self.dataModel.kGoodsCount];
+//        [self.goodsCount setHidden:YES];
+        self.editCountView.hidden = YES;
+        self.goodsCount.text = @"X1";
+        self.goodsCount.hidden = NO;
     }
     else
     {
@@ -345,10 +365,11 @@
     if (model.isSpecial) {
         [self.goodsSquare setHidden:NO];
         self.goodsSquare.text = [NSString stringWithFormat:@"%.3f平方",model.kGoodsArea];
-        [self.editCountView setHidden:NO];
-        self.count_Txt.keyboardType = UIKeyboardTypeNumberPad;
-        self.count_Txt.text = [NSString stringWithFormat:@"%ld",self.dataModel.kGoodsCount];
-        [self.goodsCount setHidden:YES];
+        [self.editCountView setHidden:YES];
+//        self.count_Txt.keyboardType = UIKeyboardTypeNumberPad;
+//        self.count_Txt.text = [NSString stringWithFormat:@"%ld",self.dataModel.kGoodsCount];
+        [self.goodsCount setHidden:NO];
+        self.goodsCount.text = @"X1";
     }
     else
     {
@@ -421,7 +442,7 @@
 
 - (void)showDataWithCommonMealProdutcModelForGift:(CommonMealProdutcModel *)goodsModel AtIndex:(NSInteger)atIndex
 {
-    
+    self.giftSingModel = goodsModel;
     [self.goodsSquare setHidden:YES];
     [self.editCountView setHidden:YES];
     [self.returnCount_Lab setHidden:YES];
@@ -436,6 +457,7 @@
     self.goodsPrice.attributedText = str;
 //    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",goodsModel.price];
     [self.goodsPrice setHidden:NO];
+    
     self.goodsCount.text = [NSString stringWithFormat:@"x%ld",(long)goodsModel.count];
     [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:goodsModel.photo] placeholderImage:ImageNamed(@"defaultImage")];
     
@@ -465,6 +487,16 @@
         }
         [self.goodsPackageDes setHidden:YES];
         [self.goodsPackageDetailBtn setHidden:YES];
+        
+        if(self.cellType == CommonSingleGoodsTCellTypeReturnGiftSelected){
+            [self.goodsCount setHidden:YES];
+            [self.editCountView setHidden:NO];
+            [self.returnCount_Lab setHidden:NO];
+            
+            
+            self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)goodsModel.returnCount];
+            self.count_Txt.keyboardType = UIKeyboardTypeNumberPad;
+        }
         
         if([goodsModel.waitDeliverCount integerValue] != 0 && goodsModel.waitDeliverCount != nil){
             [self.goodsPackageDes setHidden:NO];
@@ -772,9 +804,132 @@
     
     
 }
+-(void)setExchangeCounterModel:(ProductlistModel *)exchangeCounterModel{
+    _exchangeCounterModel =exchangeCounterModel;
+    self.goodsCode.text = _exchangeCounterModel.nGoodsSKU;
+    self.goodsName.text = _exchangeCounterModel.nGoodsName;
+    [self.goodsPrice setHidden:YES];
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:_exchangeCounterModel.nGoodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
+    
+    [self.goodsCount setHidden:NO];
+    self.goodsCount.text = [NSString stringWithFormat:@"x%@",_exchangeCounterModel.goodsCount];
+    [self.goodsPackageDes setHidden:YES];
+    [self.goodsPackageDetailBtn setHidden:YES];
+    
+    
+    [self.goodsSquare setHidden:YES];
+}
+-(void)setExchangeModel:(ProductlistModel *)exchangeModel{
+    _exchangeModel =exchangeModel;
+    self.goodsCode.text = exchangeModel.goodsSKU;
+    self.goodsName.text = exchangeModel.goodsName;
+    self.goodsPrice.text = [NSString stringWithFormat:@"¥%@",exchangeModel.goodsPrice];
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:exchangeModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
+    
+    [self.goodsCount setHidden:NO];
+    self.goodsCount.text = [NSString stringWithFormat:@"x%@",exchangeModel.goodsCount];
+    [self.goodsPackageDes setHidden:YES];
+    [self.goodsPackageDetailBtn setHidden:YES];
+    
+    if(exchangeModel.isCan){
+        
+        self.exchange_btn.hidden = NO;
+        if([exchangeModel.nGoodsID isEqualToString:@""]||exchangeModel.nGoodsID == nil){
+            [self.exchange_btn setTitle:@"请选择要换货的商品" forState:UIControlStateNormal];
+            self.exchange_btn.sd_layout.widthIs(130);
+        } else {
+            [self.exchange_btn setTitle:exchangeModel.nGoodsSKU forState:UIControlStateNormal];
+            self.exchange_btn.sd_layout.widthIs(80);
+        }
+        [self updateLayout]; // 调用此方法更新约束
+        [self.exchange_btn setImage:[UIImage imageNamed:@"c_detail_right_icon"]  forState:UIControlStateNormal];
+        [self.exchange_btn layoutWithStatus:XWLayoutStatusImageRight andMargin:5];
+    } else {
+        self.notExchange_lab.hidden = NO;
+    }
+//    if (goodsModel.isSpecial) {
+//        [self.goodsSquare setHidden:NO];
+//        self.goodsSquare.text =self.goodsSquare.text = [NSString stringWithFormat:@"%@平方",goodsModel.square.length>0? goodsModel.square:@"0"];
+//    }
+//    else
+//    {
+//        [self.goodsSquare setHidden:YES];
+//    }
+    [self.goodsSquare setHidden:YES];
+    
+//    if([exchangeModel.waitDeliverCount integerValue] != 0 && exchangeModel.waitDeliverCount != nil){
+//        [self.goodsPackageDes setHidden:NO];
+//        self.goodsPackageDes.textColor = [UIColor redColor];
+//        self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",exchangeModel.waitDeliverCount];
+//
+//        if([exchangeModel.deliverCount integerValue] != 0 && exchangeModelgoodsModel.deliverCount != nil){
+//            self.goodsPackageDes.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsPackageDes.text,exchangeModel.deliverCount];
+//        }
+//    } else {
+//        if([exchangeModel.deliverCount integerValue] != 0 && exchangeModel.deliverCount != nil){
+//            [self.goodsPackageDes setHidden:NO];
+//            self.goodsPackageDes.textColor = [UIColor redColor];
+//            self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",exchangeModel.deliverCount];
+//        }
+//    }
+}
 
 
-
+- (void)showDataWithExchange:(SetmealinfosModel *)model AtIndex:(NSInteger)atIndex{
+    self.isShowDetail = model.isShowDetail;
+    self.atIndex = atIndex;
+    
+    self.goodsCode.text = model.goodsSKU;
+    self.goodsName.text = model.goodsName;
+    self.goodsPrice.text = model.goodsPrice;
+//    [self.goodsPrice setHidden:YES];
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:model.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
+    
+    
+    [self.goodsCount setHidden:YES];
+    self.goodsPackageDes.text = model.goodsDescribe;
+    [self.goodsPackageDes setHidden:NO];
+    self.goodsPackageDes.textColor = AppTitleBlackColor;
+    [self.goodsPackageDetailBtn setHidden:NO];
+    if (model.isShowDetail) {
+        [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_up_pull_btn_icon") forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_show_detail_icon") forState:UIControlStateNormal];
+    }
+}
+- (void)showDataWithExchangeGift:(SetmealinfosModel *)model AtIndex:(NSInteger)atIndex{
+    [self.goodsSquare setHidden:YES];
+    [self.editCountView setHidden:YES];
+    [self.returnCount_Lab setHidden:YES];
+    self.isShowDetail = model.isShowDetail;
+    self.atIndex = atIndex;
+    [self.goodsCount setHidden:NO];
+    self.goodsCode.text = model.goodsSKU;
+    self.goodsName.text = model.goodsName;
+    
+//    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥0  ￥%@",model.price]];
+//    [str addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(4, goodsModel.price.length + 1)];
+//    self.goodsPrice.attributedText = str;
+//    self.goodsPrice.text = [NSString stringWithFormat:@"￥%@",goodsModel.price];
+//    [self.goodsPrice setHidden:NO];
+//    self.goodsCount.text = [NSString stringWithFormat:@"x%@",model.goodsCount];
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:model.goodsPrice] placeholderImage:ImageNamed(@"defaultImage")];
+    
+    self.goodsPackageDes.text = model.goodsDescribe;
+    [self.goodsPackageDes setHidden:NO];
+    self.goodsPackageDes.textColor = AppTitleBlackColor;
+    [self.goodsPackageDetailBtn setHidden:NO];
+    
+    if (model.isShowDetail) {
+        [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_up_pull_btn_icon") forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.goodsPackageDetailBtn setImage:ImageNamed(@"s_show_detail_icon") forState:UIControlStateNormal];
+    }
+}
 
 - (void)showDataWithReturnOrderCounterGoodsModel:(ReturnOrderCounterGoodsModel *)model
 {
@@ -810,7 +965,22 @@
 
 }
 
-
+-(void)setReserveModel:(GoodslistModel *)reserveModel{
+    self.cellType = CommonSingleGoodsTCellTypeReserveAmount;
+    _reserveModel = reserveModel;
+    
+    //设置是否是套餐商品的特殊显示元素
+    self.goodsCode.text = reserveModel.goodsSKU;
+    self.goodsName.text = reserveModel.goodsName;
+    [self.goodsSquare setHidden:YES];
+    [self.editCountView setHidden:NO];
+    self.count_Txt.keyboardType = UIKeyboardTypeDecimalPad;
+    self.count_Txt.text = [NSString stringWithFormat:@"%.3f",reserveModel.square];
+    [self.goodsCount setHidden:YES];
+ 
+    self.goodsPrice.text = [NSString stringWithFormat:@"￥%.2f",[reserveModel.goodsPrice floatValue]];
+    [self.goodsImg sd_setImageWithURL:[NSURL URLWithString:reserveModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
+}
 
 #pragma  mark -- UITextFieldDelegate
 // 可用下个方法替换
@@ -833,7 +1003,20 @@
                 self.mealGoodsModel.returnCount = [textField.text integerValue];
             }
         }
-        
+        else if (self.cellType == CommonSingleGoodsTCellTypeReturnGiftSelected) {
+            if (textField.text.length == 0) {
+                textField.text = @"0";
+            }
+            if ([textField.text integerValue] > self.giftSingModel.canReturnCount) {
+                textField.text = [NSString stringWithFormat:@"%ld",(long)self.giftSingModel.canReturnCount];
+                self.giftSingModel.returnCount = self.giftSingModel.canReturnCount;
+                [[NSToastManager manager] showtoast:@"商品数量不能超过可退商品数量"];
+            }
+            else
+            {
+                self.giftSingModel.returnCount = [textField.text integerValue];
+            }
+        }
         else if (self.cellType == CommonSingleGoodsTCellTypeSellCounter)
         {
             if (self.dataModel.isSpecial) {
@@ -977,6 +1160,20 @@
                 NSString * filtered = [[string componentsSeparatedByCharactersInSet:characterSet] componentsJoinedByString:@""];
                 return [string isEqualToString:filtered];
             }
+        } else if(self.cellType == CommonSingleGoodsTCellTypeReserveAmount){
+            //限制首位0，后面只能输入.
+            if ([textField.text isEqualToString:@""]) {
+                if ([string isEqualToString:@"0"]) {
+                    return NO;
+                }
+            }
+            if (textField.text.length >= 4 && ![string isEqualToString:@""]) {
+                return NO;
+            }
+            //限制只能输入：1234567890.
+            NSCharacterSet * characterSet = [[NSCharacterSet characterSetWithCharactersInString:@"1234567890"] invertedSet];
+            NSString * filtered = [[string componentsSeparatedByCharactersInSet:characterSet] componentsJoinedByString:@""];
+            return [string isEqualToString:filtered];
         }
         
     }
@@ -1007,6 +1204,16 @@
         {
             self.mealGoodsModel.returnCount -= 1;
             self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.mealGoodsModel.returnCount];
+        }
+    }
+    else if (self.cellType == CommonSingleGoodsTCellTypeReturnGiftSelected) {
+        if (self.giftSingModel.returnCount == 0) {
+            return;
+        }
+        else
+        {
+            self.giftSingModel.returnCount -= 1;
+            self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.giftSingModel.returnCount];
         }
     }
     //卖货扫描
@@ -1063,6 +1270,14 @@
                 self.goodsNumberChangeBlock();
             }
         }
+    } else if (self.cellType == CommonSingleGoodsTCellTypeReserveAmount){
+        if ([[NSString stringWithFormat:@"%.3f",self.reserveModel.square] isEqualToString:@"0.001"]){
+            
+            return;
+        }
+        self.reserveModel.square -= 0.001;
+        self.count_Txt.text = [NSString stringWithFormat:@"%.3f",self.reserveModel.square];
+        
     }
     
     
@@ -1079,6 +1294,17 @@
         {
             self.mealGoodsModel.returnCount += 1;
             self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.mealGoodsModel.returnCount];
+        }
+    }
+    else if (self.cellType == CommonSingleGoodsTCellTypeReturnGiftSelected) {
+        
+        if (self.giftSingModel.returnCount == self.giftSingModel.canReturnCount) {
+            return;
+        }
+        else
+        {
+            self.giftSingModel.returnCount += 1;
+            self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.giftSingModel.returnCount];
         }
     }
     else if (self.cellType == CommonSingleGoodsTCellTypeSellGoods)
@@ -1116,9 +1342,28 @@
                 self.goodsNumberChangeBlock();
             }
         }
+    } else if (self.cellType == CommonSingleGoodsTCellTypeReserveAmount){
+        if (self.reserveModel.square >= 999.999) {
+            return;
+        }
+        self.reserveModel.square += 0.001;
+        self.count_Txt.text = [NSString stringWithFormat:@"%.3f",self.reserveModel.square];
+        
     }
 }
 
+-(UIButton*)exchange_btn{
+    if(!_exchange_btn){
+        _exchange_btn = [UIButton buttonWithTitie:@"请选择要换货的商品" WithtextColor:AppBtnDeepBlueColor WithBackColor:nil WithBackImage:nil WithImage:[UIImage imageNamed:@"c_detail_right_icon"] WithFont:13 EventBlock:^(id  _Nonnull params) {
+            NSLog(@"请选择要换货的商品");
+            if(self.exchangeBlock){
+                self.exchangeBlock(self.exchangeModel);
+            }
+        }];
+    }
+    [_exchange_btn layoutWithStatus:XWLayoutStatusImageRight andMargin:5];
+    return  _exchange_btn;
+}
 
 
 

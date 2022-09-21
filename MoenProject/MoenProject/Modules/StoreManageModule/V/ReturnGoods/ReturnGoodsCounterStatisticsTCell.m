@@ -66,7 +66,7 @@
 
 - (void)showDataWithReturnOrderDetailModel:(ReturnOrderDetailModel *)model
 {
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品",(long)model.productCount]];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件商品,%ld件赠品",(long)model.productCount]];
     [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(1, [NSString stringWithFormat:@"%ld",(long)model.productCount].length)];
     self.count_Lab.attributedText = str;
     if (model.refundAmount.length > 0) {

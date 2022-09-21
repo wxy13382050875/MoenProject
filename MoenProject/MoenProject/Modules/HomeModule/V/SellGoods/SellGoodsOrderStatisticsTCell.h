@@ -11,7 +11,7 @@
 #import "OrderDetailModel.h"
 
 static NSString *KSellGoodsOrderStatisticsTCell = @"SellGoodsOrderStatisticsTCell";
-static CGFloat KSellGoodsOrderStatisticsTCellH = 187;
+static CGFloat KSellGoodsOrderStatisticsTCellH = 215;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SellGoodsOrderStatisticsTCell : SKSTableViewCell

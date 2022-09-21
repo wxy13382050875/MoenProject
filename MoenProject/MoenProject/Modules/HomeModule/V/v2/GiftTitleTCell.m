@@ -7,7 +7,9 @@
 //
 
 #import "GiftTitleTCell.h"
-
+@interface GiftTitleTCell ()
+@property(nonatomic,weak)IBOutlet UILabel* currentTitleLabel;
+@end
 @implementation GiftTitleTCell
 
 - (void)awakeFromNib {
@@ -20,5 +22,7 @@
 
     // Configure the view for the selected state
 }
-
+-(void)setCurrentTitle:(NSString *)currentTitle{
+    self.currentTitleLabel.text = currentTitle;
+}
 @end

@@ -21,7 +21,8 @@
 #import "AddressListVC.h"
 #import "CustomerRegistVC.h"
 #import "SelectedTagVC.h"
-
+#import "PurchaseOrderManageVC.h"
+#import "ExchangeGoodsVC.h"
 @interface UserIdentifySuccessVC ()<UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionview;
@@ -293,6 +294,21 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section
             selectedTagVC.customerId = self.infoModel.customerId;
             selectedTagVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:selectedTagVC animated:YES];
+        }
+        if (indexPath.row == 9) {
+            ExchangeGoodsVC *exchangeGoodsVC = [[ExchangeGoodsVC alloc] init];
+            exchangeGoodsVC.customerId = self.infoModel.customerId;
+            exchangeGoodsVC.isIdentifion = YES;
+            exchangeGoodsVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:exchangeGoodsVC animated:YES];
+        }
+        if (indexPath.row == 10) {
+            PurchaseOrderManageVC *purchaseOrderManageVC = [[PurchaseOrderManageVC alloc] init];
+            purchaseOrderManageVC.hidesBottomBarWhenPushed = YES;
+            purchaseOrderManageVC.isIdentifion = YES;
+            purchaseOrderManageVC.customerId = self.infoModel.customerId;
+            purchaseOrderManageVC.controllerType =PurchaseOrderManageVCTypeCustomerExchange;
+            [self.navigationController pushViewController:purchaseOrderManageVC animated:YES];
         }
     }
 }

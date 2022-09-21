@@ -43,6 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *returnOrderCode;
 
+@property (nonatomic, copy) NSString *orderType;
+
 @property (nonatomic, strong) NSArray<OrderItemInfoModel *> *orderItemInfos;
 
 @property (nonatomic, strong) NSArray<OrderItemInfoModel *> *productList;

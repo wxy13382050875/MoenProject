@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, OrderOperationSuccessVCType)
     OrderOperationSuccessVCTypeStockSubmit,      //进货单提交
     OrderOperationSuccessVCTypeTransfersSave,      //调拔单保存
     OrderOperationSuccessVCTypeTransfersSubmit,      //调拔单提交
+    OrderOperationSuccessVCTypeExchangeSubmit,      //换货单提交
 };
 
 NS_ASSUME_NONNULL_BEGIN

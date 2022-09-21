@@ -41,7 +41,17 @@
     [self.contentView addGestureRecognizer:self.scrollview.panGestureRecognizer];
     
 }
-
+-(void)setExchangeModel:(ExchangeGoodsModel *)exchangeModel{
+    [self.scrollview removeAllSubviews];
+    CGFloat contentWidth = 15;
+    for (GoodslistModel *goodsModel in exchangeModel.goodsList) {
+        UIImageView *goodsImg = [[UIImageView alloc] initWithFrame:CGRectMake(contentWidth, 14, 88, 88)];
+        [goodsImg sd_setImageWithURL:[NSURL URLWithString:goodsModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
+        [self.scrollview addSubview:goodsImg];
+        contentWidth += 98;
+    }
+    self.scrollview.contentSize = CGSizeMake(contentWidth, 115);
+}
 
 - (void)showDataWithOrderManageModel:(OrderManageModel *)model
 {

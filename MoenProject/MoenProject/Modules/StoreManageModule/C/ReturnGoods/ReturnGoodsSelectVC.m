@@ -120,6 +120,7 @@
     {
         CommonMealProdutcModel *goodsModel = self.giftGoodsList[indexPath.section -self.goodsList.count - 2];
         CommonSingleGoodsTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsTCell" forIndexPath:indexPath];
+        cell.cellType = CommonSingleGoodsTCellTypeReturnGiftSelected;
         [cell showDataWithCommonMealProdutcModelForGift:goodsModel AtIndex:indexPath.section];
         cell.goodsShowDetailBlock = ^(BOOL isShow, NSInteger atIndex) {
             [weakSelf handleGiftGoodsShowOrHiddenDetailWith:isShow WithAtIndex:atIndex];
@@ -139,7 +140,7 @@
     {
         CommonMealProdutcModel *goodsModel = self.giftGoodsList[indexPath.section -self.goodsList.count - 2];
         CommonSingleGoodsDarkTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommonSingleGoodsDarkTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonProdutcModelForSearch:goodsModel.productList[indexPath.row - 1]];
+        [cell showDataWithReturnGiftModelForReturnSelected:goodsModel.productList[indexPath.row - 1]];
         return cell;
     }
     else if ([model.cellIdentify isEqualToString:KGiftTitleTCell])
@@ -264,7 +265,7 @@
             if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
                 cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
             } else {
-                cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
+                cellModel.cellHeight = KCommonSingleGoodsTCellPackageH;
                 }
             }
         cellModel.cellHeaderHeight = 0.01;
@@ -287,6 +288,7 @@
         goodsModel.deliverCount = model.deliverCount;
         goodsModel.waitDeliverCount = model.waitDeliverCount;
         goodsModel.canReturnCount = model.canReturnCount;
+        goodsModel.orderItemProductId = model.orderItemProductId;
         [self.giftGoodsList addObject:goodsModel];
     }
     
@@ -357,7 +359,7 @@
                 if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
                     cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
                 } else {
-                    cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
+                    cellModel.cellHeight = KCommonSingleGoodsDarkSelectedTCellH;
                 }
             }
 //            cellModel.cellHeight = KCommonSingleGoodsDarkTCellH;
@@ -390,6 +392,8 @@
                     [paramDic setValue:[NSString stringWithFormat:@"%ld", singleModel.returnCount] forKey:@"count"];
                     [paramDic setValue:[NSString stringWithFormat:@"%@", singleModel.deliverCount] forKey:@"deliverCount"];
                     [paramDic setValue:singleModel.orderItemProductId forKey:@"orderItemProductId"];
+                    [paramDic setValue:@"product" forKey:@"productOrGift"];
+                    
                     [paramArr addObject:paramDic];
                 }
                 
@@ -402,6 +406,35 @@
                 [paramDic setValue:[NSString stringWithFormat:@"%@", model.deliverCount] forKey:@"deliverCount"];
                 [paramDic setValue:[NSString stringWithFormat:@"%ld", model.returnCount] forKey:@"count"];
                 [paramDic setValue:model.orderItemProductId forKey:@"orderItemProductId"];
+                [paramDic setValue:@"product" forKey:@"productOrGift"];
+                [paramArr addObject:paramDic];
+            }
+        }
+    }
+    
+    for (CommonMealProdutcModel *model in self.giftGoodsList) {
+        if (model.isSetMeal) {
+            for (CommonProdutcModel *singleModel in model.productList) {
+                
+                if (singleModel.returnCount > 0) {
+                    NSMutableDictionary *paramDic = [[NSMutableDictionary alloc] init];
+                    [paramDic setValue:[NSString stringWithFormat:@"%ld", singleModel.returnCount] forKey:@"count"];
+                    [paramDic setValue:[NSString stringWithFormat:@"%@", singleModel.deliverCount] forKey:@"deliverCount"];
+                    [paramDic setValue:singleModel.orderItemProductId forKey:@"orderItemProductId"];
+                    [paramDic setValue:@"gift" forKey:@"productOrGift"];
+                    [paramArr addObject:paramDic];
+                }
+                
+            }
+        }
+        else
+        {
+            if (model.returnCount > 0) {
+                NSMutableDictionary *paramDic = [[NSMutableDictionary alloc] init];
+                [paramDic setValue:[NSString stringWithFormat:@"%@", model.deliverCount] forKey:@"deliverCount"];
+                [paramDic setValue:[NSString stringWithFormat:@"%ld", model.returnCount] forKey:@"count"];
+                [paramDic setValue:model.orderItemProductId forKey:@"orderItemProductId"];
+                [paramDic setValue:@"gift" forKey:@"productOrGift"];
                 [paramArr addObject:paramDic];
             }
         }

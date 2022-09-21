@@ -31,6 +31,7 @@
 
 @property (nonatomic, copy) NSString *senderKey;
 
+@property (nonatomic, copy) NSString *id;
 @end
 
 @interface Goodslist : NSObject
@@ -76,6 +77,12 @@
 
 @property (nonatomic, assign) NSInteger notSendNum;
 
+//换货单详情
+@property (nonatomic, copy) NSString* sendCount;
+
+@property (nonatomic, copy) NSString* oldProduct;
+
+@property (nonatomic, copy) NSString* returnCount;
 @end
 
 @interface Goodspackage : NSObject

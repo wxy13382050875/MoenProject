@@ -904,6 +904,7 @@
             [dic setValue:goodsModel.refundAmount forKey:@"refundAmount"];
             [dic setValue:[NSString stringWithFormat:@"%@",goodsModel.actualRefundAmount] forKey:@"actualRefundAmount"];
             [dic setValue:goodsModel.deliverCount forKey:@"deliverCount"];
+            [dic setValue:@"product" forKey:@"productOrGift"];
             if ([goodsModel.actualRefundAmount isEqualToString:@"0"] ||
                 goodsModel.actualRefundAmount.length == 0) {
                 [[NSToastManager manager] showtoast:NSLocalizedString(@"please_input_refound_amount", nil)];
@@ -913,7 +914,16 @@
         }
     }
 
-    
+    for (CommonProdutcModel *model in self.dataModel.giftProductInfos) {
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+        [dic setValue:model.orderItemProductId forKey:@"orderItemProductId"];
+        [dic setValue:[NSString stringWithFormat:@"%ld", (long)model.count] forKey:@"count"];
+        [dic setValue:model.deliverCount forKey:@"deliverCount"];
+        
+        [dic setValue:@"gift" forKey:@"productOrGift"];
+        
+        [paramArr addObject:dic];
+    }
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:self.dataModel.pickUpStatusID forKey:@"pickUpStatus"];

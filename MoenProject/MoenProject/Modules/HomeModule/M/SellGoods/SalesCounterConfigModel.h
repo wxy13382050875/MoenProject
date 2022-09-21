@@ -37,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**门店优惠金额*/
 @property (nonatomic, copy) NSString *shopDerate;
 
+/**其他优惠金额*/
+@property (nonatomic, copy) NSString *otherDerate;
+
 
 /**订单应付金额 用于判断门店优惠输入*/
 @property (nonatomic, copy) NSString *payAmount;

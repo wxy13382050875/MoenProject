@@ -33,8 +33,13 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *goodsPackageDes;
 
+@property (weak, nonatomic) IBOutlet UILabel *notExchange_lab;
+
+@property (strong, nonatomic) UIButton *exchange_btn;
+
 @property (nonatomic, strong) ReturnOrderSingleGoodsModel *singleGoodsModel;
 
+@property (nonatomic, strong) CommonProdutcModel *giftModel;
 //发货数量
 @property(nonatomic,strong)UITextField* deliverCount;
 @end
@@ -58,6 +63,15 @@
     self.deliverCount.hidden = YES;
     // Initialization code
     self.goodsPackageDes.hidden = YES;
+    self.notExchange_lab.hidden = YES;
+    
+
+    [self.contentView addSubview:self.exchange_btn];
+    self.exchange_btn.sd_layout
+    .rightSpaceToView(self.contentView, 15)
+    .bottomEqualToView(self.contentView)
+    .widthIs(130).heightIs(40);
+    self.exchange_btn.hidden = YES;
 }
 
 
@@ -91,6 +105,50 @@
         }
     }
 }
+//赠品套餐
+- (void)showDataWithReturnGiftModelForReturnSelected:(CommonProdutcModel *)model
+{
+    self.cellType = CommonSingleGoodsDarkTCellTypeGoodsGift;
+    self.goods_state.font = [UIFont boldSystemFontOfSize:14];
+    self.giftModel = model;
+    [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
+    self.goods_Code.text = model.sku;
+    self.goods_Name.text = model.name;
+    self.goods_Price.text = [NSString stringWithFormat:@"¥%@",model.price];
+    [self.goods_Count setHidden:YES];
+    
+    self.sendInfo_lab.hidden = YES;
+  
+    [self.editCountView setHidden:NO];
+    [self.returnCount_Lab setHidden:NO];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"可退%ld件",(long)model.canReturnCount]];
+//    [str addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.canReturnCount].length)];
+    self.returnCount_Lab.attributedText = str;
+    
+    self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)model.returnCount];
+    self.count_Txt.keyboardType = UIKeyboardTypeNumberPad;
+    if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
+        [self.goodsPackageDes setHidden:NO];
+        self.goodsPackageDes.textColor = [UIColor redColor];
+        self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",model.waitDeliverCount];
+        if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+
+            self.goodsPackageDes.text = [NSString stringWithFormat:@"%@  已发%@件",self.goodsPackageDes.text,model.deliverCount];
+        }
+        NSMutableAttributedString *tmStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"共%ld件,可退%ld件",(long)model.count,(long)model.canReturnCount]];
+//        [tmStr addAttribute:NSForegroundColorAttributeName value:AppTitleGoldenColor range:NSMakeRange(2, [NSString stringWithFormat:@"%ld",(long)model.canReturnCount].length)];
+        self.returnCount_Lab.attributedText = tmStr;
+    } else {
+        if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+            [self.goodsPackageDes setHidden:NO];
+            self.goodsPackageDes.textColor = [UIColor redColor];
+            self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
+        }
+    }
+    
+    
+}
+
 - (void)showDataWithStockTransfersForCommonSearch:(CommonProdutcModel *)model
 {
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:model.photo] placeholderImage:ImageNamed(@"defaultImage")];
@@ -128,7 +186,15 @@
     [self.goods_Price setHidden:YES];
     [self.goods_Count setHidden:YES];
 }
-
+-(void)setExchangeModel:(ExchangeGoodsModel *)exchangeModel{
+    GoodslistModel *goodsModel = exchangeModel.goodsList[0];
+    [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:goodsModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
+    self.goods_Code.text = goodsModel.goodsSKU;
+    self.goods_Name.text = goodsModel.goodsName;
+    
+    [self.goods_Price setHidden:YES];
+    [self.goods_Count setHidden:YES];
+}
 - (void)showDataWithOrderManageModel:(OrderManageModel *)model
 {
     
@@ -236,6 +302,50 @@
         }
     
 }
+-(void)setExchangeCounterModel:(ProductlistModel *)exchangeCounterModel{
+    _exchangeCounterModel = exchangeCounterModel;
+    [self.goodsPackageDes setHidden:YES];
+    [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:exchangeCounterModel.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
+    self.goods_Code.text = exchangeCounterModel.goodsSKU;
+    self.goods_Name.text = exchangeCounterModel.goodsName;
+//    [self.goods_Price setHidden:YES];
+//    self.goods_Price.text = [NSString stringWithFormat:@"¥%@",exchangeCounterModel.refundAmount];
+    self.goods_Count.text = [NSString stringWithFormat:@"x%@", exchangeCounterModel.goodsCount];
+//    [self.goods_Count setHidden:YES];
+    [self.goods_state setHidden:YES];
+    self.goods_state.font = [UIFont boldSystemFontOfSize:14];
+    if(exchangeCounterModel.isCan){
+        
+        self.exchange_btn.hidden = NO;
+        if([exchangeCounterModel.nGoodsID isEqualToString:@""]||exchangeCounterModel.nGoodsID == nil){
+            [self.exchange_btn setTitle:@"请选择要换货的商品" forState:UIControlStateNormal];
+            self.exchange_btn.sd_layout.widthIs(130);
+        } else {
+            [self.exchange_btn setTitle:exchangeCounterModel.nGoodsSKU forState:UIControlStateNormal];
+            self.exchange_btn.sd_layout.widthIs(80);
+            [self updateLayout]; // 调用此方法更新约束
+        }
+//
+        [self.exchange_btn setImage:[UIImage imageNamed:@"c_detail_right_icon"]  forState:UIControlStateNormal];
+        [self.exchange_btn layoutWithStatus:XWLayoutStatusImageRight andMargin:5];
+    } else {
+        self.notExchange_lab.hidden = NO;
+    }
+//    if([model.waitDeliverCount integerValue] != 0 && model.waitDeliverCount != nil){
+//            [self.goodsPackageDes setHidden:NO];
+//            self.goodsPackageDes.textColor = [UIColor redColor];
+//            self.goodsPackageDes.text = [NSString stringWithFormat:@"总仓预约%@件",model.waitDeliverCount];
+//            if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+//                self.goodsPackageDes.text = [NSString stringWithFormat:@"%@ 已发%@件",self.goodsPackageDes.text,model.deliverCount];
+//            }
+//        } else {
+//            if([model.deliverCount integerValue] != 0 && model.deliverCount != nil){
+//                [self.goodsPackageDes setHidden:NO];
+//                self.goodsPackageDes.textColor = [UIColor redColor];
+//                self.goodsPackageDes.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
+//            }
+//        }
+}
 -(void)setModel:(Goodslist *)model{
     [self.goods_Img sd_setImageWithURL:[NSURL URLWithString:model.goodsIMG] placeholderImage:ImageNamed(@"defaultImage")];
     self.goods_Code.text = model.goodsSKU;
@@ -325,30 +435,68 @@
     // Configure the view for the selected state
 }
 - (IBAction)goodsMinusAction:(UIButton *)sender {
-    if (self.singleGoodsModel.returnCount == 0) {
-        return;
+    if(self.cellType == CommonSingleGoodsDarkTCellTypeGoodsGift){
+        if (self.giftModel.returnCount == 0) {
+            return;
+        }
+        else
+        {
+            self.giftModel.returnCount -= 1;
+            self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.giftModel.returnCount];
+        }
+    } else {
+        if (self.singleGoodsModel.returnCount == 0) {
+            return;
+        }
+        else
+        {
+            self.singleGoodsModel.returnCount -= 1;
+            self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.singleGoodsModel.returnCount];
+        }
     }
-    else
-    {
-        self.singleGoodsModel.returnCount -= 1;
-        self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.singleGoodsModel.returnCount];
-    }
+    
 }
 - (IBAction)goodsAddAction:(UIButton *)sender {
-    if (self.singleGoodsModel.returnCount == self.singleGoodsModel.canReturnCount) {
-        return;
+    if(self.cellType == CommonSingleGoodsDarkTCellTypeGoodsGift){
+        if (self.giftModel.returnCount == self.giftModel.canReturnCount) {
+            return;
+        }
+        else
+        {
+            self.giftModel.returnCount += 1;
+            self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.giftModel.returnCount];
+        }
+    } else {
+        if (self.singleGoodsModel.returnCount == self.singleGoodsModel.canReturnCount) {
+            return;
+        }
+        else
+        {
+            self.singleGoodsModel.returnCount += 1;
+            self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.singleGoodsModel.returnCount];
+        }
     }
-    else
-    {
-        self.singleGoodsModel.returnCount += 1;
-        self.count_Txt.text = [NSString stringWithFormat:@"%ld",(long)self.singleGoodsModel.returnCount];
-    }
+    
 }
 
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (self.count_Txt == textField) {
+        if(self.cellType == CommonSingleGoodsDarkTCellTypeGoodsGift){
+            if (textField.text.length == 0) {
+                textField.text = @"0";
+            }
+            if ([textField.text integerValue] > self.giftModel.canReturnCount) {
+                textField.text = [NSString stringWithFormat:@"%ld",self.giftModel.canReturnCount];
+                self.giftModel.returnCount = self.giftModel.canReturnCount;
+                [[NSToastManager manager] showtoast:@"商品数量不能超过可退商品数量"];
+            }
+            else
+            {
+                self.giftModel.returnCount = [textField.text integerValue];
+            }
+        } else {
             if (textField.text.length == 0) {
                 textField.text = @"0";
             }
@@ -361,6 +509,8 @@
             {
                 self.singleGoodsModel.returnCount = [textField.text integerValue];
             }
+        }
+            
     
     } else if (self.deliverCount == textField) {
         
@@ -395,4 +545,17 @@
     }
     return _deliverCount;
 }
+-(UIButton*)exchange_btn{
+    if(!_exchange_btn){
+        _exchange_btn = [UIButton buttonWithTitie:@"请选择要换货的商品" WithtextColor:AppBtnDeepBlueColor WithBackColor:nil WithBackImage:nil WithImage:[UIImage imageNamed:@"c_detail_right_icon"] WithFont:13 EventBlock:^(id  _Nonnull params) {
+            NSLog(@"请选择要换货的商品");
+            if(self.exchangeBlock){
+                self.exchangeBlock(self.exchangeCounterModel);
+            }
+        }];
+    }
+    [_exchange_btn layoutWithStatus:XWLayoutStatusImageRight andMargin:5];
+    return  _exchange_btn;
+}
+
 @end

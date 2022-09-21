@@ -81,6 +81,7 @@
 {
     if ([textField.inputView isKindOfClass:NSClassFromString(@"UIDatePicker")]) {
         UIDatePicker *datePick = (UIDatePicker *)textField.inputView;
+        
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"yyyy/MM/dd";
         NSString *dateStr = [formatter  stringFromDate:datePick.date];
@@ -170,6 +171,10 @@
         //设置时间格式
         //监听DataPicker的滚动
         [_dataStartPicker addTarget:self action:@selector(dateChange:) forControlEvents:UIControlEventValueChanged];
+        if(@available(iOS 13.4, *)) {
+            _dataStartPicker.preferredDatePickerStyle = UIDatePickerStyleWheels;
+        }else{
+        }
     }
     return _dataStartPicker;
 }
@@ -191,6 +196,10 @@
         //设置时间格式
         //监听DataPicker的滚动
         [_dataEndPicker addTarget:self action:@selector(dateChange:) forControlEvents:UIControlEventValueChanged];
+        if(@available(iOS 13.4, *)) {
+            _dataEndPicker.preferredDatePickerStyle = UIDatePickerStyleWheels;
+        }else{
+        }
     }
     return _dataEndPicker;
 }

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface xw_SelectDeliveryWayVC : BaseViewController
 @property(nonatomic,strong)NSString* orderID;
 @property(nonatomic,strong)NSString* customerId;
-
+@property(nonatomic,strong)NSString* type;
 @end
 
 NS_ASSUME_NONNULL_END

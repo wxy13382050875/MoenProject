@@ -264,7 +264,42 @@ CGFloat contentViewHeight;
         
         contentViewHeight += 30 + priceTipLab.frame.size.height + 30;
     }
+    if (
+        self.alterType == FDAltertViewTypeInputDepositPrice ||
+        self.alterType == FDAltertViewTypeEditInputDepositPrice||
+        self.alterType == FDAltertViewTypeInputRemainPrice||
+        self.alterType == FDAltertViewTypeEditInputRemainPrice) {
     
+        
+        
+        UIView *inputView = [[UIView alloc] initWithFrame:CGRectMake(30, _titleView.frame.origin.y + _titleView.frame.size.height + 28, contentViewWidth - 120, 37)];
+        inputView.clipsToBounds = YES;
+        inputView.layer.borderWidth = 1;
+        inputView.layer.borderColor = UIColorFromRGB(0xAAAAAA).CGColor;
+        inputView.layer.cornerRadius = 5;
+        [_contentView addSubview:inputView];
+        
+        UITextField *priceInputTxt = [[UITextField alloc] initWithFrame:CGRectMake(5, 0, inputView.frame.size.width - 10, 37)];
+        priceInputTxt.font = FONTSYS(15);
+        priceInputTxt.textColor = AppTitleBlackColor;
+        priceInputTxt.keyboardType = UIKeyboardTypeDecimalPad;
+        priceInputTxt.delegate = self;
+        if (
+            self.alterType == FDAltertViewTypeEditInputDepositPrice||
+            self.alterType == FDAltertViewTypeEditInputRemainPrice) {
+            priceInputTxt.text = self.message;
+        }
+        self.addPriceTxt = priceInputTxt;
+        [inputView addSubview:priceInputTxt];
+        
+        UILabel *unitTipLab = [[UILabel alloc] initWithFrame:CGRectMake(contentViewWidth - 50, _titleView.frame.origin.y + _titleView.frame.size.height + 28, 35, 37)];
+        unitTipLab.font = FONTSYS(15);
+        unitTipLab.textColor = AppTitleBlackColor;
+        unitTipLab.text = @"元";
+        [_contentView addSubview:unitTipLab];
+        
+            contentViewHeight += 30 + inputView.frame.size.height + 30;
+    }
     if (self.alterType == FDAltertViewTypeInputCode ||
         self.alterType == FDAltertViewTypeInputCodeForGift ||
         self.alterType == FDAltertViewTypeEditInputCode ||
@@ -365,7 +400,11 @@ CGFloat contentViewHeight;
             if (self.alterType == FDAltertViewTypeInputPrice ||
                 self.alterType == FDAltertViewTypeInputPriceForGift ||
                 self.alterType == FDAltertViewTypeEditInputPrice ||
-                self.alterType == FDAltertViewTypeEditInputPriceForGift) {
+                self.alterType == FDAltertViewTypeEditInputPriceForGift||
+                self.alterType == FDAltertViewTypeInputDepositPrice ||
+                self.alterType == FDAltertViewTypeEditInputDepositPrice||
+                self.alterType == FDAltertViewTypeInputRemainPrice ||
+                self.alterType == FDAltertViewTypeEditInputRemainPrice) {
                 [_delegate alertView:self clickedButtonAtIndex:index WithInputStr:self.addPriceTxt.text];
             }
             else if (self.alterType == FDAltertViewTypeInputCode ||

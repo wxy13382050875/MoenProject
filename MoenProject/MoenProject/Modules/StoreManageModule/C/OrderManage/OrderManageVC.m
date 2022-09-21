@@ -216,6 +216,13 @@
     
     orderLab.sd_layout.rightSpaceToView(headerView, 15).topSpaceToView(timeLab, 0).leftSpaceToView(headerView, 15).heightIs(40);
     
+    if([model.orderType isEqualToString:@"reserve"]){
+        UILabel* orderTypelab = [UILabel labelWithText:@"预定" WithTextColor:AppTitleWhiteColor WithNumOfLine:1 WithBackColor:AppBgBlueColor WithTextAlignment:NSTextAlignmentCenter WithFont:10];
+        [headerView addSubview:orderTypelab];
+        orderTypelab.sd_layout.rightSpaceToView(headerView, 15).bottomEqualToView(headerView).widthIs(30).heightIs(30);
+        ViewRadius(orderTypelab, 15);
+    }
+    
     
     return headerView;
 }
@@ -348,6 +355,7 @@
     OrderManageModel *model = self.dataList[indexPath.section];
     OrderDetailVC *orderDetailVC = [[OrderDetailVC alloc] init];
     orderDetailVC.orderID = model.ID;
+    orderDetailVC.customerId = self.customerId;
     [self.navigationController pushViewController:orderDetailVC animated:YES];
 }
 
@@ -370,20 +378,20 @@
     [self.conditionSelectView showWithArray:self.selectDataArr WithActionBlock:^(XwScreenModel *model, NSInteger type) {
         //
         weakSelf.selectedTimeType= @"";
-                weakSelf.dataStart = model.dateStart;
-                weakSelf.dataEnd = model.dateEnd;
-                for (XWSelectModel* tm in model.selectList) {
-                    if([tm.module isEqualToString:@"TimeQuantum"]){
-                        weakSelf.selectedTimeType = tm.selectID;
-                    }
-                    if([tm.module isEqualToString:@"appointment"]){
-                        weakSelf.isAppointment = tm.selectID;
-                    }
-                    if([tm.module isEqualToString:@"State"]){
-                        weakSelf.orderStatus = tm.selectID;
-                    }
-                }
-                [[NSToastManager manager] showprogress];
+        weakSelf.dataStart = model.dateStart;
+        weakSelf.dataEnd = model.dateEnd;
+        for (XWSelectModel* tm in model.selectList) {
+            if([tm.module isEqualToString:@"TimeQuantum"]){
+                weakSelf.selectedTimeType = tm.selectID;
+            }
+            if([tm.module isEqualToString:@"appointment"]){
+                weakSelf.isAppointment = tm.selectID;
+            }
+            if([tm.module isEqualToString:@"State"]){
+                weakSelf.orderStatus = tm.selectID;
+            }
+        }
+        [[NSToastManager manager] showprogress];
         [weakSelf httpPath_orderList];
     }];
 }
@@ -440,7 +448,7 @@
                         XwScreenModel* tmModel = [XwScreenModel new];
                         tmModel.title = @"下单时间";
                         tmModel.className = itemModel.className;
-                        tmModel.showFooter =NO;
+                        tmModel.showFooter =YES;
                         NSMutableArray* array = [NSMutableArray array];
                         
                         for (CommonCategoryDataModel *model in itemModel.datas) {
@@ -496,6 +504,8 @@
     {
         [parameters setValue:@"ALL" forKey:@"type"];
     }
+    [parameters setValue:self.dataStart forKey:@"orderDateStart"];
+    [parameters setValue:self.dataEnd forKey:@"orderDateEnd"];
     [parameters setValue:self.isAppointment forKey:@"isAppointment"];
     [parameters setValue:self.orderStatus forKey:@"orderStatus"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
@@ -664,12 +674,14 @@
         xw_SelectDeliveryWayVC *orderDetailVC = [[xw_SelectDeliveryWayVC alloc] init];
         orderDetailVC.orderID = model.ID;
         orderDetailVC.customerId = self.customerId;
+        orderDetailVC.type = @"common";
         [self.navigationController pushViewController:orderDetailVC animated:YES];
     } else if(type == 2){//预约自提
         XwSubscribeTakeVC *orderDetailVC = [[XwSubscribeTakeVC alloc] init];
         orderDetailVC.orderID = model.ID;
         orderDetailVC.customerId = self.customerId;
         orderDetailVC.isIdentifion = self.isIdentifion;
+        orderDetailVC.type = @"common";
         [self.navigationController pushViewController:orderDetailVC animated:YES];
     } else {
         NSMutableArray* array = [NSMutableArray array];

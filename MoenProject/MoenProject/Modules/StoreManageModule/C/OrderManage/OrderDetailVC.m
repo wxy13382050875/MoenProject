@@ -26,6 +26,7 @@
 #import "xw_DeliveryInfoVC.h"
 #import "XwOrderDetailVC.h"
 #import "xw_AttentionItemVC.h"
+#import "XwImproveReservationVC.h"
 @interface OrderDetailVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
@@ -37,6 +38,8 @@
 
 @property (nonatomic, strong) NSMutableArray *giftGoodsList;
 
+
+@property (strong, nonatomic) UIButton *submitBtn;
 @end
 
 @implementation OrderDetailVC
@@ -51,16 +54,35 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+//    NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+//    if (marr.count > 1) {
+//        UIViewController *vc = [marr objectAtIndex:marr.count - 2];
+//        if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
+//            [marr removeObject:vc];
+//        }
+//        self.navigationController.viewControllers = marr;
+//    }
+}
+-(void)backBthOperate{
     NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
-    if (marr.count > 1) {
-        UIViewController *vc = [marr objectAtIndex:marr.count - 2];
+    BOOL isStock = NO;
+    for (UIViewController* vc in marr) {
+        
+        
+        
         if ([vc isKindOfClass:[OrderOperationSuccessVC class]]) {
-            [marr removeObject:vc];
+//            [marr removeObject:vc];
+            isStock = YES;
         }
-        self.navigationController.viewControllers = marr;
+    }
+    
+    if (isStock) {
+        NSMutableArray *marr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+        [self.navigationController popToViewController:[marr objectAtIndex:1] animated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
-
 - (void)configBaseUI
 {
     [self setShowBackBtn:YES type:NavBackBtnImageWhiteType];
@@ -85,6 +107,11 @@
     [self.tableview registerNib:[UINib nibWithNibName:@"GiftTitleTCell" bundle:nil] forCellReuseIdentifier:@"GiftTitleTCell"];
     
     [self.tableview registerClass:[XWOrderDetailDefaultCell class] forCellReuseIdentifier:@"XWOrderDetailDefaultCell"];
+    
+    [self.view addSubview:self.submitBtn];
+    self.submitBtn.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).heightIs(isIphoneX?55:40);
+
+    self.submitBtn.hidden = YES;
     
 }
 
@@ -192,13 +219,13 @@
         return cell;
     }
     
-    else if ([model.cellIdentify isEqualToString:KOrderReturnStatusTCell])
-    {
-        CommonMealProdutcModel *goodsModel = self.goodsList[indexPath.section - goodsIndex];
-        OrderReturnStatusTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderReturnStatusTCell" forIndexPath:indexPath];
-        [cell showDataWithCommonMealProdutcModel:goodsModel];
-        return cell;
-    }
+//    else if ([model.cellIdentify isEqualToString:KOrderReturnStatusTCell])
+//    {
+//        CommonMealProdutcModel *goodsModel = self.goodsList[indexPath.section - goodsIndex];
+//        OrderReturnStatusTCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OrderReturnStatusTCell" forIndexPath:indexPath];
+//        [cell showDataWithCommonMealProdutcModel:goodsModel];
+//        return cell;
+//    }
     else if ([model.cellIdentify isEqualToString:KOrderReturnStatusTCellForPackageGift])
     {
         
@@ -290,6 +317,78 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UIView *footerView = [[UIView alloc] init];
+    NSMutableArray *dataArr = self.floorsAarr[section];
+    CommonTVDataModel *cellModel = dataArr[0];
+    if ([cellModel.cellIdentify isEqualToString:KCommonSingleGoodsTCell]) {
+        CommonProdutcModel *model =  cellModel.Data;
+        if (model.isSpecial) {
+            CGFloat marginTop = 0;
+            footerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, cellModel.cellFooterHeight);
+            footerView.backgroundColor = AppBgWhiteColor;
+            if ([model.addPrice floatValue] > 0) {
+                UILabel *addPriceLab = [[UILabel alloc] initWithFrame:CGRectMake(15, marginTop, (SCREEN_WIDTH-30)/2, 30)];
+                addPriceLab.font = FONTLanTingR(14);
+                addPriceLab.textColor = AppTitleBlackColor;
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"增项加价：¥%.2f",[model.addPrice floatValue]]];
+                [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
+                addPriceLab.attributedText = str;
+                marginTop += 30;
+                [footerView addSubview:addPriceLab];
+            }
+            if (model.codePu.length  > 0) {
+                UILabel *goodsCodeLab = [[UILabel alloc] initWithFrame:CGRectMake(15, marginTop, (SCREEN_WIDTH-30)/2, 30)];
+                goodsCodeLab.font = FONTLanTingR(14);
+                goodsCodeLab.textColor = AppTitleBlackColor;
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"PO单号：%@",model.codePu]];
+                [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(0, 2)];
+                [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
+                goodsCodeLab.attributedText = str;
+                marginTop += 30;
+                [footerView addSubview:goodsCodeLab];
+            }
+            if ([model.reserveAmount floatValue] > 0) {
+                UILabel *reserveAmountLab = [[UILabel alloc] initWithFrame:CGRectMake(15, marginTop, (SCREEN_WIDTH-30)/2, 30)];
+                reserveAmountLab.font = FONTLanTingR(14);
+                reserveAmountLab.textColor = AppTitleBlackColor;
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"交定金：¥%.2f",[model.reserveAmount floatValue]]];
+ 
+                [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
+                reserveAmountLab.attributedText = str;
+                marginTop += 30;
+                [footerView addSubview:reserveAmountLab];
+            }
+            if ([model.remainAmount floatValue] > 0) {
+                UILabel *remainAmountLab = [[UILabel alloc] initWithFrame:CGRectMake(15, marginTop, (SCREEN_WIDTH-30)/2, 30)];
+                remainAmountLab.font = FONTLanTingR(14);
+                remainAmountLab.textColor = AppTitleBlackColor;
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"尾款：¥%.2f",[model.remainAmount floatValue] ]];
+   
+                [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(2, str.length - 4)];
+                remainAmountLab.attributedText = str;
+                [footerView addSubview:remainAmountLab];
+            }
+            if (model.returnCount > 0||[model.deliverCount integerValue] > 0) {
+                UILabel *rightLab = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2, 0, (SCREEN_WIDTH-30)/2, 30)];
+                rightLab.font = FontBinB(14);
+                rightLab.textColor = AppTitleBlackColor;
+                rightLab.textAlignment = NSTextAlignmentRight;
+                [footerView addSubview:rightLab];
+                if([model.deliverCount integerValue] > 0){
+                    rightLab.text = [NSString stringWithFormat:@"已发%@件",model.deliverCount];
+                    if(model.returnCount > 0){
+                        rightLab.text = [NSString stringWithFormat:@"%@ 已退%ld件",rightLab.text,(long)model.returnCount];
+                    }
+                } else {
+                    rightLab.text = [NSString stringWithFormat:@" 已退%ld件",(long)model.returnCount];
+                }
+                
+            }
+            
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cellModel.cellFooterHeight - 5, SCREEN_WIDTH, 5)];
+            lineView.backgroundColor = AppBgBlueGrayColor;
+            [footerView addSubview:lineView];
+        }
+    }
 
     return footerView;
 }
@@ -456,6 +555,12 @@
                     [self handleTabSendInfoData];
                     [self handleTableViewFloorsData];
 //                    [self handleTabAppointmentData];
+                    if([dataModel.orderStatus isEqualToString:@"waitDeliver"]&&
+                       [dataModel.orderType isEqualToString:@"reserve"]&&
+                       ![self.customerId isEqualToString:@""] &&
+                       self.customerId != nil){
+                        self.submitBtn.hidden = NO;
+                    }
                     [self.tableview reloadData];
                 }
                 else
@@ -597,23 +702,44 @@
         cellModel.cellHeight = KCommonSingleGoodsTCellSingleH;
         cellModel.cellHeaderHeight = 0.01;
         cellModel.cellFooterHeight = 5;
+        cellModel.Data =model;
+        
+        
+        if(model.isSpecial){
+            if (model.codePu.length > 0 &&
+                [model.addPrice floatValue] > 0 &&
+                [model.reserveAmount floatValue]> 0 &&
+                [model.remainAmount floatValue] > 0) {
+//                CommonTVDataModel *returnStatusCellModel = [[CommonTVDataModel alloc] init];
+//                returnStatusCellModel.cellIdentify = KOrderReturnStatusTCell;
+//                returnStatusCellModel.cellHeight = 120;
+//                [sectionArr addObject:returnStatusCellModel];
+                cellModel.cellFooterHeight = 125;
+            } else if (model.codePu.length == 0 &&
+                      [model.addPrice floatValue] == 0 &&
+                      [model.reserveAmount floatValue]== 0 &&
+                      [model.remainAmount floatValue] == 0)
+            {
+                if(model.returnCount > 0|| [model.deliverCount integerValue]> 0){
+                    cellModel.cellFooterHeight = 35;
+                }
+                
+            } else  {
+                
+                cellModel.cellFooterHeight = 5;
+                cellModel.cellFooterHeight += model.codePu.length != 0?30:0;
+                cellModel.cellFooterHeight += [model.addPrice floatValue] > 0?30:0 ;
+                cellModel.cellFooterHeight += [model.reserveAmount floatValue] != 0?30:0;
+                cellModel.cellFooterHeight += [model.remainAmount floatValue] != 0?30:0;
+            }
+            
+        }
+        
         [sectionArr addObject:cellModel];
-        
-        if (model.codePu.length > 0 && model.addPrice.length > 0) {
-            CommonTVDataModel *returnStatusCellModel = [[CommonTVDataModel alloc] init];
-            returnStatusCellModel.cellIdentify = KOrderReturnStatusTCell;
-            returnStatusCellModel.cellHeight = KOrderReturnStatusTCellDHeight;
-            [sectionArr addObject:returnStatusCellModel];
-        }
-        else if (model.codePu.length > 0 || model.addPrice.length > 0 || model.returnCount > 0|| [model.deliverCount integerValue]> 0)
-        {
-            CommonTVDataModel *returnStatusCellModel = [[CommonTVDataModel alloc] init];
-            returnStatusCellModel.cellIdentify = KOrderReturnStatusTCell;
-            returnStatusCellModel.cellHeight = KOrderReturnStatusTCellHeight;
-            [sectionArr addObject:returnStatusCellModel];
-        }
-        
         [self.floorsAarr addObject:sectionArr];
+        
+        
+        
         
         CommonMealProdutcModel *goodsModel = [[CommonMealProdutcModel alloc] init];
         goodsModel.photo = model.photo;
@@ -628,7 +754,10 @@
         goodsModel.deliverCount = model.deliverCount;
         goodsModel.isSpecial = model.isSpecial;
         goodsModel.isSetMeal = NO;
+        goodsModel.reserveAmount = model.reserveAmount;
+        goodsModel.remainAmount = model.remainAmount;
         [self.goodsList addObject:goodsModel];
+        
     }
     
     //订单套餐
@@ -673,21 +802,24 @@
         cellModel.cellFooterHeight = 5;
         [sectionArr addObject:cellModel];
         
-        if (model.codePu.length > 0 && model.addPrice.length > 0) {
-            CommonTVDataModel *returnStatusCellModel = [[CommonTVDataModel alloc] init];
-            returnStatusCellModel.cellIdentify = KOrderReturnStatusTCellForGift;
-            returnStatusCellModel.cellHeight = KOrderReturnStatusTCellDHeight;
-            [sectionArr addObject:returnStatusCellModel];
-        }
-        else if (model.codePu.length > 0 || model.addPrice.length > 0 || model.returnCount > 0|| [model.deliverCount integerValue]> 0)
-        {
-            CommonTVDataModel *returnStatusCellModel = [[CommonTVDataModel alloc] init];
-            returnStatusCellModel.cellIdentify = KOrderReturnStatusTCellForGift;
-            returnStatusCellModel.cellHeight = KOrderReturnStatusTCellHeight;
-            [sectionArr addObject:returnStatusCellModel];
+        if(model.isSpecial){
+            if (model.codePu.length > 0 && model.addPrice.length > 0) {
+                CommonTVDataModel *returnStatusCellModel = [[CommonTVDataModel alloc] init];
+                returnStatusCellModel.cellIdentify = KOrderReturnStatusTCellForGift;
+                returnStatusCellModel.cellHeight = KOrderReturnStatusTCellDHeight;
+                [sectionArr addObject:returnStatusCellModel];
+            }
+            else if (model.codePu.length > 0 || model.addPrice.length > 0 || model.returnCount > 0|| [model.deliverCount integerValue]> 0)
+            {
+                CommonTVDataModel *returnStatusCellModel = [[CommonTVDataModel alloc] init];
+                returnStatusCellModel.cellIdentify = KOrderReturnStatusTCellForGift;
+                returnStatusCellModel.cellHeight = KOrderReturnStatusTCellHeight;
+                [sectionArr addObject:returnStatusCellModel];
+            }
+            
+            [self.floorsAarr addObject:sectionArr];
         }
         
-        [self.floorsAarr addObject:sectionArr];
         
         CommonMealProdutcModel *goodsModel = [[CommonMealProdutcModel alloc] init];
         goodsModel.photo = model.photo;
@@ -775,16 +907,18 @@
     CommonTVDataModel *statisticsCellModel = [[CommonTVDataModel alloc] init];
     statisticsCellModel.cellIdentify = KSellGoodsOrderStatisticsTCell;
     statisticsCellModel.cellHeight = KSellGoodsOrderStatisticsTCellH;
-    if ([self.dataModel.couponDerate isEqualToString:@"0"]) {
+    if ([self.dataModel.couponDerate isEqualToString:@"0"]||self.dataModel.couponDerate == nil) {
         statisticsCellModel.cellHeight -= 30;
     }
-    if ([self.dataModel.orderDerate isEqualToString:@"0"]) {
+    if ([self.dataModel.orderDerate isEqualToString:@"0"]||self.dataModel.orderDerate == nil) {
         statisticsCellModel.cellHeight -= 30;
     }
-    if ([self.dataModel.shopDerate isEqualToString:@"0"]) {
+    if ([self.dataModel.shopDerate isEqualToString:@"0"]||self.dataModel.shopDerate == nil) {
         statisticsCellModel.cellHeight -= 30;
     }
-    
+    if ([self.dataModel.otherDerate isEqualToString:@"0"]||self.dataModel.otherDerate == nil) {
+        statisticsCellModel.cellHeight -= 30;
+    }
     statisticsCellModel.cellHeaderHeight = 0.01;
     statisticsCellModel.cellFooterHeight = 5;
     [section5Arr addObject:statisticsCellModel];
@@ -931,4 +1065,16 @@
     
     return orderStatus;
 }
+-(UIButton*)submitBtn{
+    if(!_submitBtn){
+        _submitBtn = [UIButton buttonWithTitie:@"完善预定信息" WithtextColor:COLOR(@"#FFFFFF")  WithBackColor:AppBtnDeepBlueColor WithBackImage:nil WithImage: nil WithFont:17 EventBlock:^(id  _Nonnull params) {
+            XwImproveReservationVC *OrderDetailVC = [[XwImproveReservationVC alloc] init];
+            OrderDetailVC.orderID = self.orderID;
+            OrderDetailVC.customerId = self.customerId;
+            [self.navigationController pushViewController:OrderDetailVC animated:YES];
+        }];
+    }
+    return _submitBtn;
+}
+
 @end

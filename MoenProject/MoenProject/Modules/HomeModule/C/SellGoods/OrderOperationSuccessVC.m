@@ -20,6 +20,7 @@
 #import "xw_SelectDeliveryWayVC.h"
 #import "XwSubscribeTakeVC.h"
 #import "XwOrderDetailVC.h"
+#import "XwImproveReservationVC.h"
 static CGFloat kMagin = 1.f;
 @interface OrderOperationSuccessVC ()<UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -157,14 +158,26 @@ static CGFloat kMagin = 1.f;
 //    [self.bottom_Lab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectAction)]];
 //    [self.bottom_Img addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectAction)]];
     
-    if (self.controllerType == OrderOperationSuccessVCTypePlacing) {
-        self.title = NSLocalizedString(@"order_complete", nil);
-        RoleProfileModel * model = [[RoleProfileModel alloc]init];
-        model.title = @"订单详情";
-        model.icon =@"o_placing_orderDetail_icon";
-        model.skipid= 0;
+    if (self.controllerType == OrderOperationSuccessVCTypePlacing||
+        self.controllerType == OrderOperationSuccessVCTypeExchangeSubmit) {
+        if(self.controllerType == OrderOperationSuccessVCTypePlacing){
+            self.title = NSLocalizedString(@"order_complete", nil);
+            RoleProfileModel * model = [[RoleProfileModel alloc]init];
+            model.title = @"订单详情";
+            model.icon =@"o_placing_orderDetail_icon";
+            model.skipid= 0;
+            
+            [self.dataSource addObject:model];
+        } else {
+            self.title = NSLocalizedString(@"exchange_complete", nil);
+            RoleProfileModel * model = [[RoleProfileModel alloc]init];
+            model.title = @"换货单详情";
+            model.icon =@"o_placing_orderDetail_icon";
+            model.skipid= 0;
+            
+            [self.dataSource addObject:model];
+        }
         
-        [self.dataSource addObject:model];
         
         if ([QZLUserConfig sharedInstance].useInventory){
             RoleProfileModel * model1 = [[RoleProfileModel alloc]init];
@@ -182,7 +195,15 @@ static CGFloat kMagin = 1.f;
             [self.dataSource addObject:model2];
         }
         
-        
+        if(self.controllerType == OrderOperationSuccessVCTypePlacing){
+            self.title = NSLocalizedString(@"order_complete", nil);
+            RoleProfileModel * model = [[RoleProfileModel alloc]init];
+            model.title = @"完善预售";
+            model.icon =@"o_placing_orderDetail_icon";
+            model.skipid= 6;
+            
+            [self.dataSource addObject:model];
+        }
         
       
         
@@ -321,6 +342,9 @@ static CGFloat kMagin = 1.f;
         if (self.controllerType == OrderOperationSuccessVCTypePlacing) {
             [imageView setImage:ImageNamed(@"o_placing_order_icon")];
             titleLabel.text = NSLocalizedString(@"order_complete_t", nil);
+        } else if (self.controllerType == OrderOperationSuccessVCTypeExchangeSubmit) {
+            [imageView setImage:ImageNamed(@"o_placing_order_icon")];
+            titleLabel.text = NSLocalizedString(@"exchange_complete_t", nil);
         } else if (self.controllerType == OrderOperationSuccessVCTypeStockSave||
                    self.controllerType == OrderOperationSuccessVCTypeStockSubmit) {
             if(self.controllerType == OrderOperationSuccessVCTypeStockSave){
@@ -381,9 +405,18 @@ static CGFloat kMagin = 1.f;
     switch (model.skipid) {
         case 0://订单详情
         {
-            OrderDetailVC *orderDetailVC = [[OrderDetailVC alloc] init];
-            orderDetailVC.orderID = self.orderID;
-            [self.navigationController pushViewController:orderDetailVC animated:YES];
+            if(self.controllerType == OrderOperationSuccessVCTypePlacing){
+                OrderDetailVC *orderDetailVC = [[OrderDetailVC alloc] init];
+                orderDetailVC.orderID = self.orderID;
+                orderDetailVC.customerId = self.customerId;
+                [self.navigationController pushViewController:orderDetailVC animated:YES];
+            } else {//换货单详情
+                XwOrderDetailVC *orderDetailVC = [[XwOrderDetailVC alloc] init];
+                orderDetailVC.orderID = self.orderID;
+                orderDetailVC.controllerType = PurchaseOrderManageVCTypeCustomerExchange;
+                [self.navigationController pushViewController:orderDetailVC animated:YES];
+            }
+            
         }
             break;
         case 1://更新发货
@@ -391,6 +424,11 @@ static CGFloat kMagin = 1.f;
             xw_SelectDeliveryWayVC *orderDetailVC = [[xw_SelectDeliveryWayVC alloc] init];
             orderDetailVC.orderID = self.orderID;
             orderDetailVC.customerId = self.customerId;
+            if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange){
+                orderDetailVC.type = @"exchange";
+            } else {
+                orderDetailVC.type = @"common";
+            }
             [self.navigationController pushViewController:orderDetailVC animated:YES];
         }
             break;
@@ -401,6 +439,11 @@ static CGFloat kMagin = 1.f;
             orderDetailVC.orderID = self.orderID;
             orderDetailVC.customerId = self.customerId;
             orderDetailVC.isIdentifion = YES;
+            if(self.controllerType == PurchaseOrderManageVCTypeCustomerExchange){
+                orderDetailVC.type = @"exchange";
+            } else {
+                orderDetailVC.type = @"common";
+            }
             [self.navigationController pushViewController:orderDetailVC animated:YES];
            
         }
@@ -426,6 +469,14 @@ static CGFloat kMagin = 1.f;
             ReturnOrderDetailVC *returnOrderDetailVC = [[ReturnOrderDetailVC alloc] init];
             returnOrderDetailVC.orderID = self.orderID;
             [self.navigationController pushViewController:returnOrderDetailVC animated:YES];
+        }
+            break;
+        case 6://完善预售
+        {
+            XwImproveReservationVC *OrderDetailVC = [[XwImproveReservationVC alloc] init];
+            OrderDetailVC.orderID = self.orderID;
+            OrderDetailVC.customerId = self.customerId;
+            [self.navigationController pushViewController:OrderDetailVC animated:YES];
         }
             break;
         default:

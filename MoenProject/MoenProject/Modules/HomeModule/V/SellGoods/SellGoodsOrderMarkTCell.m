@@ -80,7 +80,11 @@
     
     [self.mark_Txt setEditable:NO];
 }
+-(void)showExchangeReason{
+    [self.mark_Txt xw_addPlaceHolder:@"请填写换货原因"];
+    self.mark_Txt.xw_placeHolderTextView.textColor = COLOR(@"#AAB3BA");
 
+}
 -(void)setOrderRemarks:(NSString *)orderRemarks{
     _orderRemarks = orderRemarks;
     if([orderRemarks isEqualToString:@""]||orderRemarks == nil){

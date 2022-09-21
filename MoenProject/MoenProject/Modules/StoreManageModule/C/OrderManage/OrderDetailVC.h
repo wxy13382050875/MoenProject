@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) PurchaseOrderManageVCType controllerType;
 @property (nonatomic, copy) NSString *orderID;
+@property (nonatomic, copy) NSString *customerId;
+
 @end
 
 NS_ASSUME_NONNULL_END

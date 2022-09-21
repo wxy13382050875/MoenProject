@@ -15,12 +15,27 @@
 #import "xWStockOrderModel.h"
 #import "XwInOrOutWaterModel.h"
 #import "XwStockInfoModel.h"
+#import "ExchangeGoodsModel.h"
+#import "ExchangProductInfoModel.h"
+
+typedef NS_ENUM(NSInteger, CommonSingleGoodsDarkTCellType)
+{
+    /**商品套餐*/
+    CommonSingleGoodsDarkTCellTypeGoods = 0,
+    /**赠品套餐*/
+    CommonSingleGoodsDarkTCellTypeGoodsGift,
+    
+    
+    
+};
 
 static NSString *KCommonSingleGoodsDarkTCell = @"CommonSingleGoodsDarkTCell";
 static NSString *KCommonSingleGiftGoodsDarkTCell = @"CommonSingleGiftGoodsDarkTCell";
 static CGFloat KCommonSingleGoodsDarkTCellH = 118;
 static CGFloat KCommonSingleGoodsDarkSelectedTCellH = 143;
 
+
+typedef void(^ExchangeGoodsBlock)(ProductlistModel* model);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CommonSingleGoodsDarkTCell : BaseTableViewCell
@@ -28,6 +43,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) Goodslist* delModel;
 @property(nonatomic,strong)OrderlistModel* orderModel;
 @property(nonatomic,strong)XwStockInfoModel* stockInfoModel;
+@property(nonatomic,strong)ExchangeGoodsModel* exchangeModel;
+@property(nonatomic,strong)ProductlistModel* exchangeCounterModel;
+@property (nonatomic, copy) ExchangeGoodsBlock exchangeBlock;
+
+
+@property (nonatomic, assign) CommonSingleGoodsDarkTCellType cellType;
 
 - (void)showDataWithCommonProdutcModelForSearch:(CommonProdutcModel *)model;
 
@@ -53,7 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showDataWithReturnOrderSingleGoodsModelForReturnAllGoodsCounter:(ReturnOrderSingleGoodsModel *)model;
 //进货单 调拨单套餐
 - (void)showDataWithStockTransfersForCommonSearch:(CommonProdutcModel *)model;
-
+//部分退货赠品套餐
+- (void)showDataWithReturnGiftModelForReturnSelected:(CommonProdutcModel *)model;
 @end
 
 NS_ASSUME_NONNULL_END

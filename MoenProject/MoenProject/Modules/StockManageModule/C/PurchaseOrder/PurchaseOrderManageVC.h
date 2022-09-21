@@ -64,6 +64,12 @@ typedef NS_ENUM(NSInteger, PurchaseOrderManageVCType)
     /**调库单*/
     PurchaseOrderManageVCTypeLibrary ,
     
+    /**门店换货单*/
+    PurchaseOrderManageVCTypeShopExchange ,
+    
+    /**客户换货单*/
+    PurchaseOrderManageVCTypeCustomerExchange ,
+    
 };
 NS_ASSUME_NONNULL_BEGIN
 

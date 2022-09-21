@@ -21,6 +21,12 @@
 @property(nonatomic,strong)UILabel* goodsPackageDes;
 @property(nonatomic,strong)UIImageView* showDetailImage;
 
+
+//换货商品
+@property(nonatomic,strong)UIView* exchangeView;
+@property(nonatomic,strong)UILabel* oldProLabel;
+@property(nonatomic,strong)UILabel* otherLabel;
+
 @property(nonatomic,assign)BOOL isShowDetail;
 @end
 @implementation XwOrderDetailGoodCell
@@ -58,8 +64,13 @@
     [self.contentView addSubview:self.packView];
     [self.packView addSubview:self.goodsPackageDes];
     [self.packView addSubview:self.showDetailImage];
+    [self.packView setHidden:YES];
     
+    [self.contentView addSubview:self.exchangeView];
+    [self.exchangeView addSubview:self.oldProLabel];
+    [self.exchangeView addSubview:self.otherLabel];
     
+    [self.exchangeView setHidden:YES];
 }
 -(void)xw_updateConstraints{
     self.goodsImg.sd_layout.leftSpaceToView(self.contentView, 15).topSpaceToView(self.contentView, 15).widthIs(90).heightIs(90);
@@ -82,6 +93,14 @@
     self.showDetailImage.sd_layout.rightEqualToView(self.packView).centerYEqualToView(self.packView).widthIs(15).heightIs(10);
     
     self.goodsPackageDes.sd_layout.leftSpaceToView(self.packView, 15).topEqualToView(self.packView).bottomEqualToView(self.packView).rightSpaceToView(self.showDetailImage, 5);
+    
+    
+    self.exchangeView.sd_layout.leftSpaceToView(self.contentView, 15).rightSpaceToView(self.contentView, 15).bottomEqualToView(self.contentView).heightIs(40);
+    
+    
+    self.oldProLabel.sd_layout.leftSpaceToView(self.exchangeView, 0).topEqualToView(self.exchangeView).bottomEqualToView(self.exchangeView).widthIs((SCREEN_WIDTH -30)/2);
+    
+    self.otherLabel.sd_layout.rightSpaceToView(self.exchangeView, 0).topEqualToView(self.exchangeView).bottomEqualToView(self.exchangeView).widthIs((SCREEN_WIDTH -30)/2);
 }
 -(void)setModel:(Goodslist *)model{
     self.deliverCount.hidden = YES;
@@ -106,7 +125,7 @@
         }
     }
     self.goodsCount.text = [NSString stringWithFormat:@"x%@",model.goodsCount];
-    if (model.goodsPackage.goodsList.count > 0) {
+    if (model.goodsPackage.goodsList.count > 0 ) {//客户换货详情
         
         [self.packView setHidden:NO];
         NSString* strPackageDes=@"";
@@ -114,21 +133,42 @@
             strPackageDes = [NSString stringWithFormat:@"%@+%@",strPackageDes,tmModel.goodsSKU];
         }
         self.goodsPackageDes.text = [strPackageDes substringFromIndex:1];
+        if (model.isShowDetail) {
+            [self.showDetailImage setImage:ImageNamed(@"s_up_pull_btn_icon")];
+        }
+        else
+        {
+            [self.showDetailImage setImage:ImageNamed(@"s_show_detail_icon")];
+        }
     }
     else
     {
-//        self.goodsCount.text = [NSString stringWithFormat:@"x%ld",model.notSendNum];
-        
         [self.packView setHidden:YES];
     }
 
-    if (model.isShowDetail) {
-        [self.showDetailImage setImage:ImageNamed(@"s_up_pull_btn_icon")];
-    }
-    else
-    {
-        [self.showDetailImage setImage:ImageNamed(@"s_show_detail_icon")];
-    }
+    if(
+       model.controllerType == 22||//门店换货详情
+       model.controllerType == 23){
+           [self.exchangeView setHidden:NO];
+           self.oldProLabel.text = [NSString stringWithFormat:@"原有商品:%@",model.oldProduct];
+           [self.otherLabel setHidden:NO];
+           model.returnCount = @"1";
+           if([model.sendCount integerValue]> 0&& [model.returnCount integerValue]> 0){
+               self.otherLabel.text = [NSString stringWithFormat:@"已发%@件 已退%@件",model.sendCount,model.returnCount];
+           } else if([model.sendCount integerValue]> 0){
+               self.otherLabel.text = [NSString stringWithFormat:@"已发%@件",model.sendCount];
+           }  else if([model.returnCount integerValue]> 0){
+               self.otherLabel.text = [NSString stringWithFormat:@"已退%@件",model.returnCount];
+           } else {
+               [self.otherLabel setHidden:YES];
+           }
+           
+       } else {
+           [self.exchangeView setHidden:YES];
+       }
+        
+    
+    
     
 }
 -(void)setDelModel:(Goodslist *)delModel{
@@ -238,6 +278,25 @@
         _showDetailImage = [UIImageView new];
     }
     return _showDetailImage;
+}
+-(UIView*)exchangeView{
+    if(!_exchangeView){
+        _exchangeView = [UIView new];
+    }
+    return _packView;;
+}
+-(UILabel*)oldProLabel{
+    if(!_oldProLabel){
+        _oldProLabel = [UILabel labelWithText:@"" WithTextColor:COLOR(@"#646464") WithNumOfLine:1 WithBackColor:[UIColor clearColor] WithTextAlignment:NSTextAlignmentLeft WithFont:14];
+    }
+    return _oldProLabel;
+}
+
+-(UILabel*)otherLabel{
+    if(!_otherLabel){
+        _otherLabel = [UILabel labelWithText:@"" WithTextColor:COLOR(@"#646464") WithNumOfLine:1 WithBackColor:[UIColor clearColor] WithTextAlignment:NSTextAlignmentRight WithFont:14];
+    }
+    return _otherLabel;
 }
 -(UITextField*)deliverCount{
     if(!_deliverCount){

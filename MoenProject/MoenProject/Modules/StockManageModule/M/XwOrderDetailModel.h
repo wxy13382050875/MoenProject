@@ -75,6 +75,11 @@
 //总仓任务详情备注
 @property (nonatomic, copy) NSString *remarks;
 
+//换货单详情
+@property (nonatomic, copy) NSString *createUser;
+
+//换货单详情
+@property (nonatomic, copy) NSString *customer;
 
 @end
 

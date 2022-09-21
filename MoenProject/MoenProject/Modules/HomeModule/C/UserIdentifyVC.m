@@ -14,7 +14,7 @@
 #import "ReturnGoodsVC.h"
 #import "FDAlertView.h"
 #import "CustomerRegistVC.h"
-
+#import "ExchangeGoodsVC.h"
 @interface UserIdentifyVC ()<SearchViewCompleteDelete, FDAlertViewDelegate>
 
 @property (nonatomic, strong) CommonSearchView *searchView;
@@ -78,7 +78,13 @@
         sellGoodsScanVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:sellGoodsScanVC animated:YES];
     }
-    else
+    else if (self.controllerType == UserIdentifyVCTypeSaleGoods) {
+        ExchangeGoodsVC *exchangeGoodsVC = [[ExchangeGoodsVC alloc] init];
+        exchangeGoodsVC.customerId = model.customerId;
+        exchangeGoodsVC.isIdentifion = YES;
+        exchangeGoodsVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:exchangeGoodsVC animated:YES];
+    } else
     {
         ReturnGoodsVC *returnGoodsVC = [[ReturnGoodsVC alloc] init];
         returnGoodsVC.customerId = model.customerId;

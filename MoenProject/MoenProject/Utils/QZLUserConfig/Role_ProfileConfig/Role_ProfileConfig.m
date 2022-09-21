@@ -163,15 +163,13 @@ NSString* const ME_Store_Owner_StoreManage = @"{\
 \"icon\": \"coupon_record_icon\",\
 \"skipid\": 11,\
 \"isskip\": 0\
-}\
-],\
+},\
 {\
 \"title\": \"换货\",\
 \"icon\": \"coupon_record_icon\",\
 \"skipid\": 12,\
 \"isskip\": 0\
-}\
-],\
+},\
 {\
 \"title\": \"换货单管理\",\
 \"icon\": \"coupon_record_icon\",\
@@ -214,6 +212,18 @@ NSString* const ME_Store_Guide_StoreManage = @"{\
 \"title\": \"退货单管理\",\
 \"icon\": \"return_manage_icon\",\
 \"skipid\": 10,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"换货\",\
+\"icon\": \"coupon_record_icon\",\
+\"skipid\": 12,\
+\"isskip\": 0\
+},\
+{\
+\"title\": \"换货单管理\",\
+\"icon\": \"coupon_record_icon\",\
+\"skipid\": 13,\
 \"isskip\": 0\
 }\
 ]\
@@ -345,15 +355,13 @@ NSString* const ME_Store_Owner_Identity = @"{\
 \"icon\": \"customer_tag_icon\",\
 \"skipid\": 0,\
 \"isskip\": 0\
-}\
-],\
+},\
 {\
 \"title\": \"换货\",\
 \"icon\": \"coupon_record_icon\",\
 \"skipid\": 12,\
 \"isskip\": 0\
-}\
-],\
+},\
 {\
 \"title\": \"换货单管理\",\
 \"icon\": \"coupon_record_icon\",\
@@ -420,15 +428,13 @@ NSString* const ME_Store_Guide_Identity = @"{\
 \"icon\": \"customer_tag_icon\",\
 \"skipid\": 0,\
 \"isskip\": 0\
-}\
-],\
+},\
 {\
 \"title\": \"换货\",\
 \"icon\": \"coupon_record_icon\",\
 \"skipid\": 12,\
 \"isskip\": 0\
-}\
-],\
+},\
 {\
 \"title\": \"换货单管理\",\
 \"icon\": \"coupon_record_icon\",\
@@ -481,15 +487,13 @@ NSString* const ME_Store_User_Register = @"{\
 \"icon\": \"customer_tag_icon\",\
 \"skipid\": 0,\
 \"isskip\": 0\
-}\
-],\
+},\
 {\
 \"title\": \"换货\",\
 \"icon\": \"coupon_record_icon\",\
 \"skipid\": 12,\
 \"isskip\": 0\
-}\
-],\
+},\
 {\
 \"title\": \"换货单管理\",\
 \"icon\": \"coupon_record_icon\",\

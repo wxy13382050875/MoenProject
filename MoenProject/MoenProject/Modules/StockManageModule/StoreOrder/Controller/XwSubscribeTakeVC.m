@@ -43,7 +43,7 @@
     self.startTime.sd_layout.rightSpaceToView(self.view, 10).topSpaceToView(self.view, 5).leftSpaceToView(self.dateLabel, 0).heightIs(30);
     
     self.textView.sd_layout.topSpaceToView(self.dateLabel, 5).leftSpaceToView(self.view, 10).rightSpaceToView(self.view, 10).heightIs(120);
-    self.submitBtn.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomSpaceToView(self.view, KWBottomSafeHeight).heightIs(40);
+    self.submitBtn.sd_layout.leftEqualToView(self.view).rightEqualToView(self.view).bottomEqualToView(self.view).heightIs(isIphoneX?55:45);
 }
 -(void)configBaseData{
     [self httpPath_stores_selfInfo];
@@ -52,6 +52,7 @@
 -(void)httpPath_stores_selfInfo{
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:self.type forKey:@"type"];
     [parameters setValue:self.orderID forKey:@"orderID"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
@@ -66,7 +67,7 @@
     [parameters setValue:self.orderID forKey:@"orderID"];
     [parameters setValue:self.textView.text forKey:@"remarks"];
     [parameters setValue:self.startTime.text forKey:@"appointmentDate"];
-    
+    [parameters setValue:self.type forKey:@"type"];
     [parameters setValue: [QZLUserConfig sharedInstance].token forKey:@"access_token"];
     self.requestType = NO;
     self.requestParams = parameters;

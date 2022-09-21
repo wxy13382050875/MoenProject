@@ -23,15 +23,15 @@ static NSString * const TestImageUploadPath = @"https://crm.waycomtech.com/api";
 //https://posdemo.moen.cn/api 培训环境
 #pragma mark -- 开发环境
 /**接口请求地址 -- 开发*/
-static NSString * const DebugHostName = @"https://posdemo.moen.cn/api";
+//static NSString * const DebugHostName = @"https://posdemo.moen.cn/api";
 
-//static NSString * const DebugHostName = @"https://crm.waycomtech.com/api";
+static NSString * const DebugHostName = @"https://crm.waycomtech.com/api";
 /**接口请求 主路径*/
 static NSString * const DebugHostPath = @"";
 
 /**接口请求 主路径*/
-static NSString * const DebugImageUploadPath = @"https://posdemo.moen.cn/api";
-//static NSString * const DebugImageUploadPath = @"https://crm.waycomtech.com/api";
+//static NSString * const DebugImageUploadPath = @"https://posdemo.moen.cn/api";
+static NSString * const DebugImageUploadPath = @"https://crm.waycomtech.com/api";
 
 /**接口请求 主路径*/
 static NSString * const DebugImageDownloadPath = @"";
@@ -42,16 +42,16 @@ static NSString * const DebugImageDownloadPath = @"";
 
 
 /**接口请求地址 -- 生产*/
-static NSString * const ReleaseHostName = @"https://posdemo.moen.cn/api";
-//static NSString * const ReleaseHostName = @"https://crm.waycomtech.com/api";
+//static NSString * const ReleaseHostName = @"https://posdemo.moen.cn/api";
+static NSString * const ReleaseHostName = @"https://crm.waycomtech.com/api";
 //https://pos.moen.cn/api
 //https://posdemo.moen.cn/api
 /**接口请求 主路径 -- 生产*/
 static NSString * const ReleaseHostPath = @"";
 
 /**接口请求 主路径*/
-static NSString * const ReleaseImageUploadPath = @"https://posdemo.moen.cn/api";
-//static NSString * const ReleaseImageUploadPath = @"https://crm.waycomtech.com/api";
+//static NSString * const ReleaseImageUploadPath = @"https://posdemo.moen.cn/api";
+static NSString * const ReleaseImageUploadPath = @"https://crm.waycomtech.com/api";
 
 /**接口请求 主路径*/
 static NSString * const ReleaseImageDownloadPath = @"";
@@ -726,20 +726,26 @@ static NSString * const Path_getActivityIndexIdList = @"/v1/app/second/getActivi
 static NSString * const Path_getCustomerExchangeList= @"/v1/app/second/customerExchangeList";
 
 //换货单详情
-static NSString * const Path_getExchangeOrderDetail= @"/v1/app/second/exchangeOrderDetail";
+static NSString * const Path_ExchangeOrderDetail= @"/v1/app/second/exchangeOrderDetail";
 
 //确认换货
-static NSString * const Path_PostConfirmExchange= @"/v1/app/second/confirmExchange";
+static NSString * const Path_ConfirmExchange= @"/v1/app/second/confirmExchange";
 
 //选择商品
-static NSString * const Path_PostSelectProduct= @"/v1/app/second/selectProduct";
+static NSString * const Path_SelectExchangeProduct= @"/v1/app/second/selectProduct";
 
 //选择换货商品
-static NSString * const Path_PostSelectProductInfo= @"/v1/app/second/selectProductInfo";
+static NSString * const Path_SelectProductInfo= @"/v1/app/second/selectProductInfo";
 
 //选择换货订单
-static NSString * const Path_PostExchangeGoods= @"/v1/app/second/exchangeGoods";
+static NSString * const Path_ExchangeGoods= @"/v1/app/second/exchangeGoods";
 
-//选择换货订单
+//门店换货单列表
 static NSString * const Path_PostShopExchangeList= @"/v1/app/second/shopExchangeList";
+
+//完善预订商品
+static NSString * const Path_ReserveProduct= @"/v1/app/second/reserveProduct";
+//完善商品确定
+static NSString * const Path_ReserveProductFix= @"/v1/app/second/reserveProductFix";
+
 #endif /* HttpURLConfig_h */

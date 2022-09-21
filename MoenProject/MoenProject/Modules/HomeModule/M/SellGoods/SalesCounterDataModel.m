@@ -9,8 +9,23 @@
 #import "SalesCounterDataModel.h"
 
 @implementation SalesCounterDataModel
-
+@synthesize code = _code;//适用于所有特性的数据类
 + (NSDictionary *)modelContainerPropertyGenericClass {
-    return @{@"useCouponList" : [CouponInfoModel class], @"notUseCouponList" : [CouponInfoModel class]};
+    return @{@"useCouponList" : [CouponInfoModel class],
+             @"notUseCouponList" : [CouponInfoModel class],
+             @"orderProductList" : [CommonGoodsModel class],
+             @"orderGiftProductList" : [CommonGoodsModel class],
+             @"orderSetMealList" : [CommonGoodsModel class],
+             @"orderGiftSetMealList" : [CommonGoodsModel class]};
+}
++ (NSDictionary *)mj_objectClassInArray{
+    return @{
+             @"useCouponList" : @"CouponInfoModel",
+             @"notUseCouponList":@"CouponInfoModel",
+             @"orderProductList":@"CommonGoodsModel",
+             @"orderGiftProductList":@"CommonGoodsModel",
+             @"orderSetMealList":@"CommonGoodsModel",
+             @"orderGiftSetMealList":@"CommonGoodsModel",
+             };
 }
 @end

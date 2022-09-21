@@ -49,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showDataWithReturnOrderDetailModel:(ReturnOrderDetailModel *)model;
 
 - (void)showDataWithReturnOrderInfoModel:(ReturnOrderInfoModel *)model;
+//换货原因
+-(void)showExchangeReason;
 @end
 
 NS_ASSUME_NONNULL_END

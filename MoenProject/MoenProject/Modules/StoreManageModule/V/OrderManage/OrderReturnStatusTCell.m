@@ -11,7 +11,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *leftTop_Lab;
 
+@property (weak, nonatomic) IBOutlet UILabel *leftMiddle_Lab;
+
 @property (weak, nonatomic) IBOutlet UILabel *leftBottom_Lab;
+
 
 @property (weak, nonatomic) IBOutlet UILabel *rightTop_Lab;
 
@@ -25,6 +28,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     self.leftTop_Lab.font = FONTLanTingR(14);
+    self.leftBottom_Lab.font = FONTLanTingR(14);
     self.leftBottom_Lab.font = FONTLanTingR(14);
     self.rightTop_Lab.font = FONTLanTingR(14);
     // Initialization code
@@ -41,13 +45,40 @@
             [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
             self.leftTop_Lab.attributedText = str;
             
-            [self.leftBottom_Lab setHidden:YES];
+            [self.leftMiddle_Lab setHidden:YES];
             if (goodsModel.codePu.length > 0) {
-                [self.leftBottom_Lab setHidden:NO];
+                [self.leftMiddle_Lab setHidden:NO];
                 NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"PO单号：%@",goodsModel.codePu]];
                 [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(0, 2)];
                 [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
-                self.leftBottom_Lab.attributedText = str;
+                self.leftMiddle_Lab.attributedText = str;
+                
+                [self.leftBottom_Lab setHidden:YES];
+                if (goodsModel.reserveAmount.length > 0) {
+                    [self.leftBottom_Lab setHidden:NO];
+                    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"收订金：%@",goodsModel.reserveAmount]];
+                    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(0, 3)];
+                    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
+                    self.leftBottom_Lab.attributedText = str;
+                    
+                    
+                } else {
+                    
+                    [self.leftBottom_Lab setHidden:YES];
+                }
+                
+                
+            } else {
+                [self.leftMiddle_Lab setHidden:YES];
+                if (goodsModel.reserveAmount.length > 0) {
+                    [self.leftMiddle_Lab setHidden:NO];
+                    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"收订金：%@",goodsModel.reserveAmount]];
+                    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(0, 2)];
+                    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
+                    self.leftMiddle_Lab.attributedText = str;
+                    
+                    [self.leftBottom_Lab setHidden:YES];
+                }
             }
         }
         else
@@ -58,8 +89,33 @@
                 [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(0, 2)];
                 [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
                 self.leftTop_Lab.attributedText = str;
+                
+                [self.leftMiddle_Lab setHidden:YES];
+                if (goodsModel.reserveAmount.length > 0) {
+                    [self.leftMiddle_Lab setHidden:NO];
+                    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"收订金：%@",goodsModel.reserveAmount]];
+                    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(0, 2)];
+                    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
+                    self.leftMiddle_Lab.attributedText = str;
+                    
+                    
+                }
+                [self.leftBottom_Lab setHidden:YES];
+            } else {
+                [self.leftTop_Lab setHidden:YES];
+                if (goodsModel.reserveAmount.length > 0) {
+                    [self.leftTop_Lab setHidden:NO];
+                    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"收订金：%@",goodsModel.reserveAmount]];
+                    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(0, 2)];
+                    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:14] range:NSMakeRange(4, str.length - 4)];
+                    self.leftTop_Lab.attributedText = str;
+                    
+                    
+                }
+                [self.leftMiddle_Lab setHidden:YES];
+                [self.leftBottom_Lab setHidden:YES];
             }
-            [self.leftBottom_Lab setHidden:YES];
+            
         }
         
         if (goodsModel.returnCount > 0) {

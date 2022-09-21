@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,18 +18,23 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="赠品" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PD4-RA-4Yd">
-                        <rect key="frame" x="15" y="11" width="31" height="18"/>
+                        <rect key="frame" x="15" y="0.0" width="290" height="40"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.30588235294117649" green="0.30588235294117649" blue="0.30588235294117649" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="PD4-RA-4Yd" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="57u-Ac-AjE"/>
-                    <constraint firstItem="PD4-RA-4Yd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="Isi-aB-ckm"/>
+                    <constraint firstItem="PD4-RA-4Yd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="IoN-wY-54g"/>
+                    <constraint firstAttribute="bottom" secondItem="PD4-RA-4Yd" secondAttribute="bottom" id="JWm-eI-49J"/>
+                    <constraint firstItem="PD4-RA-4Yd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="qKR-hB-1kC"/>
+                    <constraint firstAttribute="trailing" secondItem="PD4-RA-4Yd" secondAttribute="trailing" constant="15" id="qfG-48-TOr"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="currentTitleLabel" destination="PD4-RA-4Yd" id="1c6-nm-abo"/>
+            </connections>
             <point key="canvasLocation" x="139" y="121"/>
         </tableViewCell>
     </objects>

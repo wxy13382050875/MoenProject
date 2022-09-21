@@ -19,6 +19,10 @@
 #import "XwOrderDetailModel.h"
 
 #import "XwInventoryModel.h"
+
+#import "ExchangProductInfoModel.h"
+
+#import "ExchangeGoodsModel.h"
 static NSString *KCommonSingleGoodsTCell = @"CommonSingleGoodsTCell";
 static NSString *KCommonSingleGoodsTCellForGift = @"CommonSingleGoodsTCellForGift";
 static CGFloat KCommonSingleGoodsTCellSingleH = 115;
@@ -43,6 +47,12 @@ typedef NS_ENUM(NSInteger, CommonSingleGoodsTCellType)
     /**退货 选择商品 */
     CommonSingleGoodsTCellTypeReturnSelected,
     
+    /**预售商品 */
+    CommonSingleGoodsTCellTypeReserveAmount,
+    
+    /**部分退货 赠品 */
+    CommonSingleGoodsTCellTypeReturnGiftSelected,
+    
 };
 
 
@@ -55,7 +65,8 @@ typedef void(^GoodsDeleteActionBlock)(NSInteger atIndex);
 
 /**商品数量变化回调*/
 typedef void(^GoodsNumberChangeActionBlock)(void);
-
+//选择换货商品
+typedef void(^ExchangeGoodsBlock)(ProductlistModel* model);
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -73,6 +84,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) Goodslist* model;
 
 @property (nonatomic, copy) Inventorylist* inventoryModel;
+//换货单品
+@property (nonatomic, copy) ProductlistModel* exchangeModel;
+
+//换货柜台
+@property (nonatomic, copy) ProductlistModel* exchangeCounterModel;
+
+@property (nonatomic, copy) ExchangeGoodsBlock exchangeBlock;
+
+@property (nonatomic, copy) GoodslistModel *reserveModel;
+
+@property (nonatomic, assign) CommonSingleGoodsTCellType cellType;
 
 /**查找商品/套餐*/
 - (void)showDataWithCommonGoodsModel:(CommonGoodsModel *)model AtIndex:(NSInteger)atIndex WihtControllerType:(NSInteger)controllerType;
@@ -127,6 +149,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 //订单详情赠品显示
 - (void)showDataWithOrderDetailForGift:(CommonMealProdutcModel *)goodsModel AtIndex:(NSInteger)atIndex;
+
+//换货详情商品套餐显示
+- (void)showDataWithExchange:(SetmealinfosModel *)model AtIndex:(NSInteger)atIndex;
+
+//换货详情赠品套餐显示
+- (void)showDataWithExchangeGift:(SetmealinfosModel *)model AtIndex:(NSInteger)atIndex;
 @end
 
 NS_ASSUME_NONNULL_END

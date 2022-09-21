@@ -14,6 +14,8 @@ typedef NS_ENUM(NSInteger, UserIdentifyVCType)
     UserIdentifyVCTypeSaleGoods = 0,
     /**退货*/
     UserIdentifyVCTypeReturnGoods,
+    /**换货*/
+    UserIdentifyVCTypeExchangeGoods,
 };
 
 NS_ASSUME_NONNULL_BEGIN

@@ -55,6 +55,7 @@
     storeInfoVC.controllerType =  type;
     storeInfoVC.orderID = self.orderID;
     storeInfoVC.customerId = self.customerId;
+    storeInfoVC.type = self.type;
     [self.navigationController pushViewController:storeInfoVC animated:YES];
 }
 @end

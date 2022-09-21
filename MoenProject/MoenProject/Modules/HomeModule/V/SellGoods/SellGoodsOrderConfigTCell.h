@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, SelectType)
     SelectTypeReceivables,
     SelectTypeCoupon,
     SelectTypeStoreDiscount,
+    SelectTypeOtherDiscount
 };
 
 typedef void(^SellGoodsOrderConfigTCellSelectBlock)(SelectType selectType);
@@ -23,7 +24,7 @@ typedef void(^SellGoodsOrderConfigTCellSelectBlock)(SelectType selectType);
 
 
 static NSString *KSellGoodsOrderConfigTCell = @"SellGoodsOrderConfigTCell";
-static CGFloat KSellGoodsOrderConfigTCellH = 287;
+static CGFloat KSellGoodsOrderConfigTCellH = 339;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SellGoodsOrderConfigTCell : SKSTableViewCell
